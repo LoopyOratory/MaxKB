@@ -108,7 +108,7 @@ jobs:
       - name: Prepare
         id: prepare
         run: |
-          DOCKER_IMAGE=1panel/maxkb
+          DOCKER_IMAGE=loopyoratory/maxkb
           DOCKER_PLATFORMS=${{ github.event.inputs.architecture }}
           TAG_NAME=${{ github.event.inputs.dockerImageTag }}          
           TAG_NAME_WITH_LATEST=${{ github.event.inputs.dockerImageTagWithLatest }}
