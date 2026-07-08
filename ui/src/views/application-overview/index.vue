@@ -217,7 +217,6 @@ import { EditionConst } from '@/utils/permission/data'
 import { hasPermission } from '@/utils/permission/index'
 import permissionMap from '@/permission'
 import { loadSharedApi } from '@/utils/dynamics-api/shared-api'
-import { t } from '@/locales'
 
 const route = useRoute()
 const {
