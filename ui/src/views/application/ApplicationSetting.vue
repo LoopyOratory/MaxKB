@@ -1565,7 +1565,7 @@ function sttModelEnableChange() {
   }
 }
 onBeforeMount(() => {
-  if (route.path.includes('WORK_FLOW')) {
+  if (route.path.includes('WORK_FLOW') && !route.path.includes('/setting')) {
     if (apiType.value == 'workspace') {
       router.push(`/application/workspace/${route.params.id}/workflow`)
     } else {
