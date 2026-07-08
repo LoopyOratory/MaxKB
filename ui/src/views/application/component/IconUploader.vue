@@ -37,7 +37,7 @@ import { ref } from 'vue'
 import { MsgError } from '@/utils/message'
 import { t } from '@/locales'
 import { resetUrl } from '@/utils/common'
-import { postUploadFile } from '@/api/application/application'
+import applicationApi from '@/api/application/application'
 import type { Ref } from 'vue'
 
 const props = withDefaults(
@@ -81,7 +81,7 @@ const handleFileChange = async (event: Event) => {
 
   uploading.value = true
   try {
-    const result: any = await postUploadFile(file, props.applicationId, 'APPLICATION', uploading)
+    const result: any = await applicationApi.postUploadFile(file, props.applicationId, 'APPLICATION', uploading)
     const path = result?.data
     if (path && typeof path === 'string') {
       emit('update:modelValue', path)
