@@ -130,7 +130,7 @@ const handleModelChange = (selectedId: string) => {
 }
 </script>
 <style lang="scss" scoped>
-// AI模型选择：添加模型hover样式
+// AIModelSelect：AddModelhoverStyle
 .select-model {
   .el-select-dropdown__footer {
     &:hover {

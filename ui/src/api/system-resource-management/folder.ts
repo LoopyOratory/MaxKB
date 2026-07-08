@@ -6,8 +6,8 @@ const prefix = '/system/resource'
 
 
 /**
- * 获得文件夹列表
- * @params 参数
+ * GetFolderList
+ * @params Parameters
  *  source : APPLICATION, KNOWLEDGE, TOOL
  *  data : {name: string}
  */

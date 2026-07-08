@@ -35,7 +35,7 @@
         </div>
       </el-col>
       <el-col :span="6" class="border-l" style="width: 300px">
-        <!-- 关联问题 -->
+        <!-- AssociationQuestion -->
         <ProblemComponent
           v-if="permissionPrecise.problem_read(id)"
           :paragraphId="paragraphId"

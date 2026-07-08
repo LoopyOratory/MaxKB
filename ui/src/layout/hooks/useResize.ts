@@ -1,10 +1,10 @@
 import { nextTick, onBeforeMount, onMounted, onBeforeUnmount } from 'vue'
 import useStore from '@/stores'
 import { DeviceType } from '@/enums/common'
-/** 参考 Bootstrap 的响应式设计 WIDTH = 768 */
+/** Reference Bootstrap ResponseStyle design WIDTH = 768 */
 const WIDTH = 768
 
-/** 根据大小变化重新布局 */
+/** Based onSizeChangeRe-Layout */
 export default () => {
   const { common } = useStore()
   const _isMobile = () => {

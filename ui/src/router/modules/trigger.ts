@@ -18,7 +18,7 @@ const ModelRouter = {
     {
       path: '/trigger',
       name: 'trigger-index',
-      meta: { title: '触发器主页', activeMenu: '/trigger' },
+      meta: { title: 'TriggerHomepage', activeMenu: '/trigger' },
       sameRoute: 'trigger',
       component: () => import('@/views/trigger/index.vue'),
     },

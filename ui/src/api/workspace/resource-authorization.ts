@@ -6,8 +6,8 @@ const prefix = '/workspace'
 
 
 /**
- * 工作空间下各资源获取资源权限
- * @query 参数
+ * WorkspaceUnder eachResourceGetResourcePermission
+ * @query Parameters
  */
 const getResourceAuthorization: (
   workspace_id: string,
@@ -25,9 +25,9 @@ const getResourceAuthorization: (
 }
 
 /**
- * 工作空间下各资源修改成员权限
- * @param 参数 member_id
- * @param 参数 {
+ * WorkspaceUnder eachResourceModificationMemberPermission
+ * @param Parameters member_id
+ * @param Parameters {
      [
       {
         "user_id": "string",

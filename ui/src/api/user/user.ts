@@ -4,22 +4,22 @@ import type {User, ResetPasswordRequest, CheckCodeRequest} from '@/api/type/user
 import type {Ref} from 'vue'
 
 /**
- * 获取用户基本信息
- * @param loading 接口加载器
- * @returns 用户基本信息
+ * GetUserBasicInfo
+ * @param loading InterfaceLoader
+ * @returns UserBasicInfo
  */
 const getUserProfile: (loading?: Ref<boolean>) => Promise<Result<User>> = (loading) => {
   return get('/user/profile', undefined, loading)
 }
 
 /**
- * 获取profile
+ * Getprofile
  */
 const getProfile: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('/profile', undefined, loading)
 }
 /**
- * 获取全部用户
+ * GetAllUser
  */
 const getUserList: (arg?: any, loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (
   arg,
@@ -29,7 +29,7 @@ const getUserList: (arg?: any, loading?: Ref<boolean>) => Promise<Result<Record<
 }
 
 /**
- * 获取全部用户
+ * GetAllUser
  */
 const getAllMemberList: (arg: any, loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (
   arg,
@@ -39,9 +39,9 @@ const getAllMemberList: (arg: any, loading?: Ref<boolean>) => Promise<Result<Rec
 }
 
 /**
- * 校验验证码
- * @param request 请求对象
- * @param loading 接口加载器
+ * ValidateVerifyCode
+ * @param request RequestObject
+ * @param loading InterfaceLoader
  * @returns
  */
 const checkCode: (request: CheckCodeRequest, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
@@ -52,9 +52,9 @@ const checkCode: (request: CheckCodeRequest, loading?: Ref<boolean>) => Promise<
 }
 
 /**
- * 发送邮件
- * @param email  邮件地址
- * @param loading 接口加载器
+ * SendEmail
+ * @param email  EmailAddress
+ * @param loading InterfaceLoader
  * @returns
  */
 const sendEmit: (
@@ -66,9 +66,9 @@ const sendEmit: (
 }
 
 /**
- * 重置密码
- * @param request 重置密码请求参数
- * @param loading 接口加载器
+ * ResetPassword
+ * @param request ResetPasswordRequestParameters
+ * @param loading InterfaceLoader
  * @returns
  */
 const postResetPassword: (
@@ -79,9 +79,9 @@ const postResetPassword: (
 }
 
 /**
- * 重置密码
- * @param data 重置密码请求参数
- * @param loading 接口加载器
+ * ResetPassword
+ * @param data ResetPasswordRequestParameters
+ * @param loading InterfaceLoader
  * @returns
  */
 const resetCurrentPassword: (

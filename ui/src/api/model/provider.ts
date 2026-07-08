@@ -7,14 +7,14 @@ import type {KeyValue} from '../type/common'
 
 const prefix_provider = '/provider'
 /**
- * 获得供应商列表
+ * GetProviderList
  */
 const getProvider: (loading?: Ref<boolean>) => Promise<Result<Array<Provider>>> = (loading) => {
   return get(`${prefix_provider}`, {}, loading)
 }
 
 /**
- * 获得供应商列表
+ * GetProviderList
  */
 const getProviderByModelType: (
   model_type: string,
@@ -24,7 +24,7 @@ const getProviderByModelType: (
 }
 
 /**
- * 获取模型创建表单
+ * GetModelCreationForm
  * @param provider
  * @param model_type
  * @param model_name
@@ -41,10 +41,10 @@ const getModelCreateForm: (
 }
 
 /**
- * 获取模型类型列表
- * @param provider 供应商
- * @param loading  加载器
- * @returns 模型类型列表
+ * GetModel typeList
+ * @param provider Provider
+ * @param loading  Loader
+ * @returns Model typeList
  */
 const listModelType: (
   provider: string,
@@ -54,7 +54,7 @@ const listModelType: (
 }
 
 /**
- * 获取基础模型列表
+ * GetBasicModelList
  * @param provider
  * @param model_type
  * @param loading

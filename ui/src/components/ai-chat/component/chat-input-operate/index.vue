@@ -219,10 +219,10 @@
           <template v-if="props.applicationDetails.stt_model_enable">
             <span v-if="mode === 'mobile'">
               <el-button text @click="switchMicrophone(!isMicrophone)">
-                <!-- 键盘 -->
+                <!-- Keyboard -->
                 <AppIcon v-if="isMicrophone" iconName="app-keyboard" :size="20"></AppIcon>
                 <el-icon v-else :size="20">
-                  <!-- 录音 -->
+                  <!-- Recording -->
                   <Microphone />
                 </el-icon>
               </el-button>
@@ -257,7 +257,7 @@
 
           <template v-if="recorderStatus === 'STOP' || mode === 'mobile'">
             <span v-if="props.applicationDetails.file_upload_enable" class="flex align-center ml-4">
-              <!-- 如果URL地址 -->
+              <!-- IfURLAddress -->
               <el-button
                 v-if="props.applicationDetails.file_upload_setting.url_upload"
                 text
@@ -267,7 +267,7 @@
               >
                 <el-icon :size="20"><Paperclip /></el-icon>
               </el-button>
-              <!-- 没有URL地址 -->
+              <!-- NoneURLAddress -->
               <el-upload
                 v-else
                 action="#"
@@ -333,7 +333,7 @@
       </el-text>
     </div>
 
-    <!-- 弹出URL设置框 -->
+    <!-- Popup URL settings dialog -->
     <div class="popperURLSetting" v-if="showURLSetting">
       <el-card
         shadow="always"
@@ -447,7 +447,7 @@ const chatId_context = computed({
     emit('update:chatId', v)
   },
 })
-// 语音转写的请求 spinner, 独立于 loading prop(loading 现在是父级单向传入的"当前会话生成态")
+// Speech-to-text request spinner, independent of loading prop (loading is now parent unidirectional "current session generating state")
 const speechLoading = ref(false)
 
 const showURLSetting = ref(false)
@@ -492,7 +492,7 @@ const getAcceptList = () => {
     accepts = [...accepts, ...videoExtensions]
   }
   if (other) {
-    // 其他文件类型
+    // OtherFileType
     otherExtensions.value = props.applicationDetails.file_upload_setting.otherExtensions
     accepts = [...accepts, ...otherExtensions.value]
   }
@@ -516,7 +516,7 @@ const checkMaxFilesLimit = () => {
 const filePromisionDict: any = ref<any>({})
 const uploadFile = async (file: any, fileList: any) => {
   const { maxFiles, fileLimit } = props.applicationDetails.file_upload_setting
-  // 单次上传文件数量限制
+  // SingleUploadFileCountLimit
   const file_limit_once =
     uploadImageList.value.length +
     uploadDocumentList.value.length +
@@ -564,36 +564,36 @@ const uploadFile = async (file: any, fileList: any) => {
   })
   showURLSetting.value = false
 }
-// 粘贴处理
+// PasteProcess
 const handlePaste = (event: ClipboardEvent) => {
   if (!props.applicationDetails.file_upload_enable) return
   const clipboardData = event.clipboardData
   if (!clipboardData) return
 
-  // 获取剪贴板中的文件
+  // GetClipboard in File
   const files = clipboardData.files
   if (files.length === 0) return
 
-  // 转换 FileList 为数组并遍历处理
+  // Transform FileList to array and traverse for processing
   Array.from(files).forEach((rawFile: File) => {
-    // 创建符合 el-upload 要求的文件对象
+    // CreationMatches el-upload RequiresFileObject
     const elFile = {
-      uid: Date.now(), // 生成唯一ID
+      uid: Date.now(), // GenerateUniqueID
       name: rawFile.name,
       size: rawFile.size,
-      raw: rawFile, // 原始文件对象
-      status: 'ready', // 文件状态
-      percentage: 0, // 上传进度
+      raw: rawFile, // OriginalFileObject
+      status: 'ready', // FileState
+      percentage: 0, // UploadProgress
     }
 
-    // 手动触发上传逻辑（模拟 on-change 事件）
+    // ManualTriggerUploadLogic(Simulate on-change Event）
     uploadFile(elFile, [elFile])
   })
 
-  // 阻止默认粘贴行为
+  // BlockDefaultPasteBehavior
   event.preventDefault()
 }
-// 新增拖拽处理
+// AddDragProcess
 const handleDrop = (event: DragEvent) => {
   if (!props.applicationDetails.file_upload_enable) return
   event.preventDefault()
@@ -612,11 +612,11 @@ const handleDrop = (event: DragEvent) => {
     uploadFile(elFile, [elFile])
   })
 }
-// 语音录制任务id
+// Voice recordingTaskid
 const intervalId = ref<any | null>(null)
-// 语音录制开始秒数
+// Voice recordingStartSeconds
 const recorderTime = ref(0)
-// START:开始录音 TRANSCRIBING:转换文字中
+// START:StartRecording TRANSCRIBING:TransformIn text
 const recorderStatus = ref<'START' | 'TRANSCRIBING' | 'STOP'>('STOP')
 
 const inputValue = ref<string>('')
@@ -654,16 +654,16 @@ const isDisabledChat = computed(
     ),
 )
 
-// 是否显示移动端语音按钮
+// WhetherShowMobile voice inputButton
 const isMicrophone = ref(false)
 const switchMicrophone = (status: boolean) => {
   if (status) {
-    // 如果显示就申请麦克风权限
+    // IfShowRequest microphonePermission
     recorderManage.open(() => {
       isMicrophone.value = true
     })
   } else {
-    // 关闭麦克风
+    // CloseMicrophone
     recorderManage.close()
     isMicrophone.value = false
   }
@@ -678,7 +678,7 @@ const TouchEnd = (bool?: boolean) => {
     recorderStatus.value = 'STOP'
   }
 }
-// 取消录音控制台日志
+// CancelRecordingConsoleLog
 Recorder.CLog = function () {}
 
 class RecorderManage {
@@ -786,10 +786,10 @@ const getSpeechToTextAPI = () => {
   }
 }
 const speechToTextAPI = getSpeechToTextAPI()
-// 上传录音文件
+// UploadRecordingFile
 const uploadRecording = async (audioBlob: Blob) => {
   try {
-    // 非自动发送切换输入框
+    // Non-automatic send mode input box
     if (!props.applicationDetails.stt_autosend) {
       switchMicrophone(false)
     }
@@ -803,7 +803,7 @@ const uploadRecording = async (audioBlob: Blob) => {
       .then((response) => {
         const newText = typeof response.data === 'string' ? response.data : ''
         inputValue.value = inputValue.value ? `${inputValue.value} ${newText}` : newText
-        // 自动发送
+        // AutomaticSend
         if (props.applicationDetails.stt_autosend) {
           nextTick(() => {
             autoSendMessage()
@@ -825,12 +825,12 @@ const uploadRecording = async (audioBlob: Blob) => {
   }
 }
 const recorderManage = new RecorderManage(uploadRecording)
-// 开始录音
+// StartRecording
 const startRecording = () => {
   recorderManage.start()
 }
 
-// 停止录音
+// StopRecording
 const stopRecording = () => {
   recorderManage.stop()
 }
@@ -859,7 +859,7 @@ const handleTimeChange = () => {
     }
   }, 1000)
 }
-// 停止计时的函数
+// Stop timer function
 const stopTimer = () => {
   if (intervalId.value !== null) {
     clearInterval(intervalId.value)
@@ -923,13 +923,13 @@ function sendChatHandle(event?: any) {
   const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent,
   )
-  // 如果是移动端，且按下回车键，不直接发送
+  // IfMoveEnd, andPressEnter key, notDirectSend
   if ((isMobile || mode === 'mobile') && event?.key === 'Enter') {
-    // 阻止默认事件
+    // BlockDefaultEvent
     return
   }
   if (!event?.ctrlKey && !event?.shiftKey && !event?.altKey && !event?.metaKey) {
-    // 如果没有按下组合键，则会阻止默认事件
+    // If no modifier key is pressed, block the default event
     event?.preventDefault()
     if (!isDisabledChat.value && !props.loading && !event?.isComposing && !uploadLoading.value) {
       if (inputValue.value.trim() || fileAllList.value.length > 0) {
@@ -937,7 +937,7 @@ function sendChatHandle(event?: any) {
       }
     }
   } else {
-    // 如果同时按下ctrl/shift/cmd/opt +enter，则会换行
+    // If ctrl/shift/cmd/opt + enter is pressed simultaneously, insert a newline
     insertNewlineAtCursor(event)
   }
 }
@@ -948,12 +948,12 @@ const insertNewlineAtCursor = (event?: any) => {
   ) as HTMLTextAreaElement
   const startPos = textarea.selectionStart
   const endPos = textarea.selectionEnd
-  // 阻止默认行为（避免额外的换行符）
+  // Block default behavior (avoid extra newlines)
   event.preventDefault()
-  // 在光标处插入换行符
+  // At cursor, insert newline
   inputValue.value = inputValue.value.slice(0, startPos) + '\n' + inputValue.value.slice(endPos)
   nextTick(() => {
-    textarea.setSelectionRange(startPos + 1, startPos + 1) // 光标定位到换行后位置
+    textarea.setSelectionRange(startPos + 1, startPos + 1) // Position cursor after newline
   })
 }
 
@@ -981,11 +981,11 @@ onMounted(() => {
     inputValue.value = decodeURIComponent(question.trim())
     sendChatHandle()
     setTimeout(() => {
-      // 获取当前路由信息
+      // GetCurrentRouteInfo
       const route = router.currentRoute.value
-      // 复制query对象
+      // CopyqueryObject
       const query = { ...route.query }
-      // 删除特定的参数
+      // DeletionSpecificParameters
       delete query.question
       const newRoute =
         Object.entries(query)?.length > 0
@@ -1191,7 +1191,7 @@ async function saveUrl() {
     )
     return
   }
-  // 允许的 MIME 类型
+  // Allowed MIME Type
   const allowedTypes: Record<string, string[]> = {
     image: imageExtensions
       .map((ext) => mime_types[ext.toLowerCase() as keyof typeof mime_types])
@@ -1210,7 +1210,7 @@ async function saveUrl() {
       .filter(Boolean) as string[],
   }
 
-  // 校验 URL 是否有效
+  // Validate URL WhetherValid
   const validUrls = urls
     .map((u) => u.trim())
     .filter((u) => {
@@ -1231,7 +1231,7 @@ async function saveUrl() {
   const expectedTypes = allowedTypes[type] || []
   const validFiles: any[] = []
 
-  // 异步校验单个 URL
+  // AsyncValidateSingle URL
   async function processUrl(url: string) {
     try {
       const appId = props.appId || props.applicationDetails?.id
@@ -1249,7 +1249,7 @@ async function saveUrl() {
       const contentLength = res.data['Content-Length']
       const fileSize = contentLength ? parseInt(contentLength, 10) : 0
 
-      // 类型校验
+      // TypeValidate
       if (expectedTypes.length > 0 && !expectedTypes.some((type) => contentType.includes(type))) {
         MsgWarning(url + ' ' + t('aiChat.uploadFile.urlErrorMessage'))
         return
@@ -1260,7 +1260,7 @@ async function saveUrl() {
         return
       }
 
-      // 文件名处理
+      // File name processing
       let fileName = url.substring(url.lastIndexOf('/') + 1)
       if (!fileName) fileName = `file_${Date.now()}`
       if (!fileName.includes('.') && getExtensionsByMime(contentType)) {
@@ -1276,7 +1276,7 @@ async function saveUrl() {
         status: 'success',
       }
 
-      // 文档/音频类型需要下载后上传
+      // Document/audio type needs download before upload
       if (type === 'document' || type === 'audio' || type === 'other') {
         const base64Data = res.data.content
         const byteString = atob(base64Data.split(',')[1] || base64Data)
@@ -1307,7 +1307,7 @@ async function saveUrl() {
     }
   }
 
-  // 并行处理所有 URL
+  // ParallelProcessAll URL
   await Promise.all(validUrls.map((url) => processUrl(url)))
 
   if (validFiles.length > 0) {

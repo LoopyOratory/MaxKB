@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： system.py
+    @Author: Tiger
+    @file: system.py
     @date：2025/6/4 16:01
     @desc:
 """
@@ -25,7 +25,7 @@ class SettingType(models.CharField):
     # Enterprise Edition
     PE = "PE", "专业版"
     # Professional Edition
-    EE = "EE", '企业版'
+    EE = "EE", 'Enterprise'
 
 
 class SystemProfileResponseSerializer(serializers.Serializer):

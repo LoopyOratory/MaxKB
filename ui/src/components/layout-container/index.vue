@@ -71,7 +71,7 @@ const onSplitterMouseDown = (e: MouseEvent) => {
     const deltaX = moveEvent.clientX - startX
     let newWidth = startWidth + deltaX
 
-    // 限制宽度在最小和最大值之间
+    // LimitWidthBetween minimum andMaximumValueBetween
     newWidth = Math.max(props.minLeftWidth, Math.min(props.maxLeftWidth, newWidth))
     leftWidth.value = newWidth
   }

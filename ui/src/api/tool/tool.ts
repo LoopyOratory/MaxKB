@@ -14,8 +14,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 工具列表带分页（无分页）
- * @params 参数 {folder_id: string}
+ * Tool list with pagination (no pagination)
+ * @params Parameters {folder_id: string}
  */
 const getToolList: (
   data?: any,
@@ -25,7 +25,7 @@ const getToolList: (
 }
 
 /**
- * 工具列表带分页（无分页）
+ * Tool list with pagination (no pagination)
  */
 const getAllToolList: (
   data?: any,
@@ -35,8 +35,8 @@ const getAllToolList: (
 }
 
 /**
- * 工具列表带分页
- * @param 参数
+ * Tool list with pagination
+ * @param Parameters
  * param  {
  "folder_id": "string",
  "name": "string",
@@ -52,8 +52,8 @@ const getToolListPage: (
 }
 
 /**
- * 创建工具
- * @param 参数
+ * CreationTool
+ * @param Parameters
  */
 const postTool: (data: toolData, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -63,8 +63,8 @@ const postTool: (data: toolData, loading?: Ref<boolean>) => Promise<Result<any>>
 }
 
 /**
- * 修改工具
- * @param 参数
+ * ModificationTool
+ * @param Parameters
 
  */
 const putTool: (tool_id: string, data: toolData, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -76,7 +76,7 @@ const putTool: (tool_id: string, data: toolData, loading?: Ref<boolean>) => Prom
 }
 
 /**
- * @param 参数
+ * @param Parameters
  */
 const postToolTestConnection: (data: toolData, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -86,10 +86,10 @@ const postToolTestConnection: (data: toolData, loading?: Ref<boolean>) => Promis
 }
 
 /**
- * 获取工具详情
- * @param tool_id 工具id
- * @param loading 加载器
- * @returns 函数详情
+ * GetToolDetails
+ * @param tool_id Toolid
+ * @param loading Loader
+ * @returns FunctionDetails
  */
 const getToolById: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   tool_id,
@@ -99,8 +99,8 @@ const getToolById: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<a
 }
 
 /**
- * 删除工具
- * @param 参数 tool_id
+ * DeletionTool
+ * @param Parameters tool_id
  */
 const delTool: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   tool_id,
@@ -122,8 +122,8 @@ const exportTool = (id: string, name: string, loading?: Ref<boolean>) => {
 }
 
 /**
- * 调试工具
- * @param 参数
+ * DebugTool
+ * @param Parameters
 
  */
 const postToolDebug: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -148,7 +148,7 @@ const postPylint: (code: string, loading?: Ref<boolean>) => Promise<Result<any>>
 }
 
 /**
- * 工具商店-添加系统内置
+ * ToolStore-AddSystemBuilt-in
  */
 const addInternalTool: (
   tool_id: string,
@@ -159,7 +159,7 @@ const addInternalTool: (
 }
 
 /**
- * 工具商店-添加
+ * ToolStore-Add
  */
 const addStoreTool: (
   tool_id: string,
@@ -204,7 +204,7 @@ const downloadSkillFile: (tool_id: string, loading?: Ref<boolean>) => Promise<Re
 }
 
 /**
- * 保存工具工作流
+ * SaveToolWorkflow
  * @param tool_id
  * @param data
  * @param loading
@@ -219,7 +219,7 @@ const putToolWorkflow: (
 }
 
 /**
- * 导出知识库工作流
+ * ExportKnowledge base workflow
  * @param knowledge_id
  * @param knowledge_name
  * @param loading
@@ -239,7 +239,7 @@ const exportKnowledgeWorkflow = (
 }
 
 /**
- * 导入工具工作流
+ * ImportToolWorkflow
  */
 const importToolWorkflow: (
   tool_id: string,
@@ -249,7 +249,7 @@ const importToolWorkflow: (
   return post(`${prefix.value}/${tool_id}/workflow/import`, data, undefined, loading)
 }
 /**
- * 获取工具工作流版本列表
+ * GetToolWorkflowVersionList
  * @param tool_id
  * @param loading
  * @returns
@@ -262,9 +262,9 @@ const listToolWorkflowVersion: (tool_id: string, loading?: Ref<boolean>) => Prom
 }
 /**
  *
- * @param tool_id 工具id
- * @param tool_version_id 工具版本id
- * @param data 数据
+ * @param tool_id Toolid
+ * @param tool_version_id ToolVersionid
+ * @param data Data
  * @param loading
  * @returns
  */
@@ -284,8 +284,8 @@ const publish: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<any>>
 }
 
 /**
- * 调试工作流
- * @param 参数
+ * DebugWorkflow
+ * @param Parameters
  * chat_id: string
  * data
  */
@@ -299,7 +299,7 @@ const generateCode: (data: any) => Promise<Result<any>> = (data: any) => {
   return postStream(`${p}${prefix.value}/generate_code`, data)
 }
 /**
- * mcp 节点
+ * mcp Node
  */
 const getMcpTools: (
   tool_id: string,
@@ -310,8 +310,8 @@ const getMcpTools: (
 }
 
 /**
- * 批量删除工具
- * @param 参数
+ * BatchDeletionTool
+ * @param Parameters
  * {
   "id_list": [String]
 }
@@ -323,8 +323,8 @@ const delMulTool: (data: any, loading?: Ref<boolean>) => Promise<Result<boolean>
   return put(`${prefix.value}/batch_delete`, { id_list: data }, undefined, loading)
 }
 /**
- * 批量删除工具
- * @param 参数
+ * BatchDeletionTool
+ * @param Parameters
  * {
   "id_list": [String]
   "folder_id": string

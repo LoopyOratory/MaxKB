@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： common.py
+    @Author: Tiger
+    @file: common.py
     @date：2025/6/9 13:42
     @desc:
 """
@@ -107,15 +107,15 @@ class ChatInfo:
                  application_id: str,
                  debug=False):
         """
-        :param chat_id:                     对话id
-        :param chat_user_id                 对话用户id
-        :param chat_user_type               对话用户类型
-        :param knowledge_id_list:           知识库列表
-        :param exclude_document_id_list:    排除的文档
-        :param application_id               应用id
-        :param debug                        是否是调试
-        :param ip_address:                  用户ip地址
-        :param source:                      用户来源
+        :param chat_id:                     Conversationid
+        :param chat_user_id                 ConversationUserid
+        :param chat_user_type               ConversationUserType
+        :param knowledge_id_list:           Knowledge baseList
+        :param exclude_document_id_list:    ExcludedDocument
+        :param application_id               Applicationid
+        :param debug                        Whether是Debug
+        :param ip_address:                  UseripAddress
+        :param source:                      UserSource
         """
         self.chat_id = chat_id
         self.chat_user_id = chat_user_id
@@ -152,13 +152,13 @@ class ChatInfo:
             if not application:
                 raise ChatException(500, _("The application has not been published. Please use it after publishing."))
         if application.type == ApplicationTypeChoices.SIMPLE.value:
-            # 数据集id列表
+            # DatasetidList
             knowledge_id_list = [str(row.target_id) for row in
                                  QuerySet(ResourceMapping).filter(source_id=self.application_id,
                                                                   source_type='APPLICATION',
                                                                   target_type='KNOWLEDGE')]
 
-            # 需要排除的文档
+            # NeedsExcludedDocument
             exclude_document_id_list = [str(document.id) for document in
                                         QuerySet(Document).filter(
                                             knowledge_id__in=knowledge_id_list,
@@ -189,7 +189,7 @@ class ChatInfo:
                 else:
                     self.chat_user = {'username': asker}
             else:
-                self.chat_user = {'username': '游客'}
+                self.chat_user = {'username': 'Guest'}
         return self.chat_user
 
     def get_chat_user_group(self, asker=None):
@@ -303,7 +303,7 @@ class ChatInfo:
         chat_record.problem_text = chat_record.problem_text[0:10240] if chat_record.problem_text is not None else ""
         chat_record.answer_text = chat_record.answer_text[0:40960] if chat_record.answer_text is not None else ""
         is_save = True
-        # 存入缓存中
+        # 存入Cache中
         for index in range(len(self.chat_record_list)):
             record = self.chat_record_list[index]
             if record.id == chat_record.id:
@@ -320,7 +320,7 @@ class ChatInfo:
                      asker=self.get_chat_user()).save()
             else:
                 QuerySet(Chat).filter(id=self.chat_id).update(update_time=timezone.now())
-            # 插入会话记录
+            # InsertSessionRecord
             QuerySet(ChatRecord).update_or_create(id=chat_record.id,
                                                   create_defaults={'id': chat_record.id,
                                                                    'chat_id': chat_record.chat_id,

@@ -5,8 +5,8 @@ import type { pageRequest } from '@/api/type/common'
 const prefix = '/workspace'
 
 /**
- * 工作空间下各个资源的映射关系
- * @query 参数
+ * Resource mapping relationships under each workspace
+ * @query Parameters
  */
 const getResourceMapping: (
   workspace_id: string,
@@ -23,7 +23,7 @@ const getResourceMapping: (
   )
 }
 /**
- * 依赖项
+ * Dependencies
  * @param workspace_id
  * @param resource
  * @param resource_id

@@ -418,7 +418,7 @@ function mapToUrlParams(map: any[]) {
     params.append(encodeURIComponent(item.name), encodeURIComponent(item.value))
   })
 
-  return params.toString() // 返回 URL 查询字符串
+  return params.toString() // Return URL QueryString
 }
 
 function deleteApplication(row: any) {

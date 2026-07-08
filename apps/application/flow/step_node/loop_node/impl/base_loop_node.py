@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： base_loop_node.py
+    @Author: Tiger
+    @file: base_loop_node.py
     @date：2025/3/11 18:24
     @desc:
 """
@@ -38,11 +38,11 @@ def _write_context(node_variable: Dict, workflow_variable: Dict, node: INode, wo
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
 
     response = node_variable.get('result')
@@ -62,11 +62,11 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
 
 def write_context(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点实例对象
-    @param workflow:           工作流管理器
+    Write context data
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance object
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     model_setting = node.context.get('model_setting',
@@ -95,9 +95,9 @@ def get_answer_list(instance, child_node_node_dict, runtime_node_id):
 
 def insert_or_replace(arr, index, value):
     if index < len(arr):
-        arr[index] = value  # 替换
+        arr[index] = value  # Replace
     else:
-        # 在末尾插入足够多的None，然后替换最后一个
+        # 在末尾Insert足够多的None，然后ReplaceLastOne
         arr.extend([None] * (index - len(arr) + 1))
         arr[index] = value
     return arr
@@ -149,7 +149,7 @@ def loop(workflow_manage_new_instance, node: INode, generate_loop):
         if 0 < max_loop_count <= index - start_index and loop_type == 'LOOP':
             raise Exception(_('Exceeding the maximum number of cycles'))
         """
-        指定次数循环
+        SpecifyCountLoop
         @return:
         """
         instance = workflow_manage_new_instance({'index': index, 'item': item}, loop_global_data, start_node_id,

@@ -1,5 +1,5 @@
 <template>
-  <!-- 开场白组件 -->
+  <!-- OpeningComponent -->
   <div class="item-content mb-16">
     <div class="avatar mr-8" v-if="prologue && showAvatar">
       <img v-if="application.avatar" :src="application.avatar" height="28px" width="28px" />

@@ -21,14 +21,14 @@ class ToolWorkflowExportApi(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tool_id",
-                description="工具id",
+                description="Toolid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

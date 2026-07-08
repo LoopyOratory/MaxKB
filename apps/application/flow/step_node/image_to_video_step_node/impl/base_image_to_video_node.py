@@ -31,7 +31,7 @@ class BaseImageToVideoNode(IImageToVideoNode):
                 first_frame_url, last_frame_url=None,
                 model_id_type=None, model_id_reference=None,
                 **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],
@@ -55,12 +55,12 @@ class BaseImageToVideoNode(IImageToVideoNode):
         self.context['negative_prompt'] = self.generate_prompt_question(negative_prompt)
         self.context['first_frame_url'] = first_frame_url
         self.context['last_frame_url'] = last_frame_url
-        # 处理首尾帧图片 这块可以是url 也可以是file_id 如果是url 可以直接传递给模型  如果是file_id 需要传base64
-        # 判断是不是 url
+        # ProcessStart/end framesImage 这块Can是url 也Can是file_id Ifurl CanDirect传递给Model  Iffile_id Needs传base64
+        # Determine是不是 url
         first_frame_url = self.get_file_base64(first_frame_url)
         last_frame_url = self.get_file_base64(last_frame_url)
         video_urls = ttv_model.generate_video(question, negative_prompt, first_frame_url, last_frame_url)
-        # 保存图片
+        # Save image
         if video_urls is None or video_urls == '':
             return NodeResult({'answer': gettext('Failed to generate video')}, {})
         file_name = 'generated_video.mp4'
@@ -81,7 +81,7 @@ class BaseImageToVideoNode(IImageToVideoNode):
             if isinstance(image_url, str) and not image_url.startswith('http'):
                 file = QuerySet(File).filter(id=image_url).first()
                 file_bytes = file.get_bytes()
-                # 如果我不知道content_type 可以用 magic 库去检测
+                # If我不知道content_type Can用 magic Database去Detect
                 file_type = file.file_name.split(".")[-1].lower()
                 content_type = mime_types.get(file_type, 'application/octet-stream')
                 encoded_bytes = base64.b64encode(file_bytes)

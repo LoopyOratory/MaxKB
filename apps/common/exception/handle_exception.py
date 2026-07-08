@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: qabot
-    @Author：虎虎
-    @file： handle_exception.py
+    @Author: Tiger
+    @file: handle_exception.py
     @date：2023/9/5 19:29
     @desc:
 """
@@ -23,11 +23,11 @@ from common.utils.logger import maxkb_logger
 
 def to_result(key, args, parent_key=None):
     """
-    将校验异常 args转换为统一数据
-    :param key:       校验key
-    :param args:      校验异常参数
+    将ValidateException argsTransform为UnifiedData
+    :param key:       Validatekey
+    :param args:      ValidateExceptionParameters
     :param parent_key 父key
-    :return: 接口响应对象
+    :return: InterfaceResponseObject
     """
     error_detail = list(filter(
         lambda d: True if isinstance(d, ErrorDetail) else True if isinstance(d, dict) and len(
@@ -40,15 +40,15 @@ def to_result(key, args, parent_key=None):
                         error_detail.keys() if len(error_detail) > 0 else []))[0]
 
     return result.Result(500 if isinstance(error_detail.code, str) else error_detail.code,
-                         message=f"【{key if parent_key is None else parent_key + '.' + key}】为必填参数" if str(
+                         message=f"【{key if parent_key is None else parent_key + '.' + key}】为RequiredParameters" if str(
                              error_detail) == "This field is required." else error_detail)
 
 
 def validation_error_to_result(exc: ValidationError):
     """
-    校验异常转响应对象
-    :param exc: 校验异常
-    :return: 接口响应对象
+    ValidateException转ResponseObject
+    :param exc: ValidateException
+    :return: InterfaceResponseObject
     """
     try:
         v = find_err_detail(exc.detail)
@@ -95,9 +95,9 @@ def get_label(key, exc_detail):
 
 def handle_exception(exc, context):
     exception_class = exc.__class__
-    # 先调用REST framework默认的异常处理方法获得标准错误响应对象
+    # 先CallREST frameworkDefault的ExceptionProcessMethodGetStandardErrorResponseObject
     response = exception_handler(exc, context)
-    # 在此处补充自定义的异常处理
+    # 在此处补充Custom的ExceptionProcess
     if issubclass(exception_class, ValidationError):
         return validation_error_to_result(exc)
     if issubclass(exception_class, AppApiException):

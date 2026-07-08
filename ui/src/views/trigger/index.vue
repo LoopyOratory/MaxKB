@@ -194,7 +194,7 @@
                   </template>
 
                   <div>
-                    <!-- 智能体部分 -->
+                    <!-- AgentPart -->
                     <div
                       v-if="
                         row.trigger_task.filter((item: any) => item.type === 'APPLICATION').length
@@ -228,7 +228,7 @@
                       "
                     />
 
-                    <!-- 工具部分 -->
+                    <!-- ToolsPart -->
                     <div v-if="row.trigger_task.filter((item: any) => item.type === 'TOOL').length">
                       <h5 class="color-input-placeholder">
                         {{ $t('views.tool.title') }}
@@ -490,7 +490,7 @@ async function changeState(row: any) {
 }
 
 /**
- * 更新状态/数据
+ * UpdateState/Data
  */
 function updateData(triggerId: string, data: TriggerData, msg: string) {
   triggerAPI

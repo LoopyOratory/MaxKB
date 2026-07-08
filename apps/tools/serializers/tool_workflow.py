@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： tool_workflow.py
+@Author: Tiger
+@file: tool_workflow.py
 @date：2026/3/6 13:59
 @desc:
 """
@@ -61,9 +61,9 @@ tool_executor = ToolExecutor()
 
 def is_valid_tool_workflow_circular_dependency(workflow, _id, visited=None, stack=None):
     """
-    workflow: 当前要检查的 workflow 对象
-    visited: 全局已经访问过的 workflow id
-    stack: 当前递归栈里的 workflow id
+    workflow: Current要Check的 workflow Object
+    visited: GlobalAlreadyAccess过的 workflow id
+    stack: CurrentRecursive栈里的 workflow id
     """
     if visited is None:
         visited = set()
@@ -166,8 +166,8 @@ class ToolWorkflowSerializer(serializers.Serializer):
             tool_record_id = instance.get("chat_record_id") or str(uuid.uuid7())
             took_execute = ToolExecute(self.data.get("tool_id"), tool_record_id, workspace_id, None, None, True)
             record = took_execute.get_record()
-            # 运行身份取自认证上下文(DB 工作空间 + 登录用户),请求体不得覆盖,
-            # 防止低权限用户伪造 workspace_id/user_id 绕过工具引用授权
+            # Run身份取自AuthenticationContext(DB Workspace + LoginUser),Request体不得Override,
+            # Prevent lowPermissionUser伪造 workspace_id/user_id BypassToolReferenceAuthorization
             identity_keys = {"workspace_id", "user_id", "chat_user_id", "chat_user_type"}
             run_params = {
                 "chat_record_id": tool_record_id,
@@ -242,7 +242,7 @@ class ToolWorkflowSerializer(serializers.Serializer):
                 default_condition = ~Q(authentication_type="WHITE_LIST") & ~Q(
                     workspace_id_list__contains=[workspace_id]
                 )
-                # 组合查询
+                # CombineQuery
                 query = white_list_condition | default_condition
                 inner = QuerySet(knowledge_workspace_authorization_model).filter(query)
                 share_knowledge_list = [
@@ -263,12 +263,12 @@ class ToolWorkflowSerializer(serializers.Serializer):
         def get_tool_knowledge_mapping(application_knowledge_id_list, knowledge_id_list, tool_id):
             """
 
-            @param application_knowledge_id_list:  当前应用可修改的知识库列表
-            @param knowledge_id_list:              用户修改的知识库列表
-            @param application_id:                 应用id
+            @param application_knowledge_id_list:  CurrentApplication可Modification的Knowledge baseList
+            @param knowledge_id_list:              UserModification的Knowledge baseList
+            @param application_id:                 Applicationid
             @return:
             """
-            # 当前知识库和应用已关联列表
+            # CurrentKnowledge base和Application已AssociationList
             knowledge_application_mapping_list = (
                 QuerySet(ResourceMapping)
                 .filter(
@@ -289,8 +289,8 @@ class ToolWorkflowSerializer(serializers.Serializer):
             tool = QuerySet(Tool).filter(id=self.data.get("tool_id")).first()
             workflow_id = tool.workspace_id
             if instance.get("work_flow"):
-                # 校验工作流中引用的工具(mcp-node 的 mcp_tool_id 等)当前用户是否有权使用,
-                # 防止低权限用户绑定他人工具并通过工作流执行绕过工具的单独授权控制
+                # ValidateWorkflow中Reference的Tool(mcp-node 的 mcp_tool_id 等)CurrentUserWhether有权Use,
+                # Prevent lowPermissionUser绑定他人Tool并ThroughWorkflowExecuteBypassTool的单独Authorization控制
                 validate_bound_tool_permissions(self.data.get("user_id"), workflow_id, instance)
                 dependency = is_valid_tool_workflow_circular_dependency(
                     workflow=instance.get("work_flow"), _id=str(tool.id)
@@ -311,7 +311,7 @@ class ToolWorkflowSerializer(serializers.Serializer):
                         "work_flow": instance.get("work_flow"),
                     },
                 )
-                # 当前用户可修改关联的知识库列表
+                # CurrentUser可ModificationAssociation的Knowledge baseList
                 tool_knowledge_id_list = [
                     str(knowledge.get("id"))
                     for knowledge in ToolWorkflowSerializer.Operate(
@@ -324,7 +324,7 @@ class ToolWorkflowSerializer(serializers.Serializer):
                 ]
                 knowledge_id_list = []
                 if "knowledge_id_list" in instance:
-                    # 当前用户可修改关联的知识库列表
+                    # CurrentUser可ModificationAssociation的Knowledge baseList
                     application_knowledge_id_list = [
                         str(knowledge.get("id"))
                         for knowledge in ToolWorkflowSerializer.Operate(
@@ -356,7 +356,7 @@ class ToolWorkflowSerializer(serializers.Serializer):
                 download_url = template_instance.get("downloadUrl")
                 if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
                     raise AppApiException(500, _("Illegal download url"))
-                # 查找匹配的版本名称
+                # Find matchingVersionName
                 res = requests.get(download_url, timeout=5)
                 tool = QuerySet(Tool).filter(id=self.data.get("tool_id")).first()
                 ToolSerializer.Import(
@@ -426,24 +426,24 @@ class StoreToolWorkflow(serializers.Serializer):
 
     def get_appstore_templates(self):
         self.is_valid(raise_exception=True)
-        # 下载zip文件
+        # DownloadzipFile
         try:
             appstore_url = CONFIG.get("APPSTORE_URL", "https://apps-assets.fit2cloud.com/stable/maxkb.json.zip")
             res = requests.get(appstore_url, timeout=5)
             res.raise_for_status()
-            # 创建临时文件保存zip
+            # CreationTemporaryFileSavezip
             with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as temp_zip:
                 temp_zip.write(res.content)
                 temp_zip_path = temp_zip.name
 
             try:
-                # 解压zip文件
+                # DecompresszipFile
                 with zipfile.ZipFile(temp_zip_path, "r") as zip_ref:
-                    # 获取zip中的第一个文件（假设只有一个json文件）
+                    # Getzip in 第OneFile(Assuming only OnejsonFile）
                     json_filename = zip_ref.namelist()[0]
                     json_content = zip_ref.read(json_filename)
 
-                # 将json转换为字典
+                # 将jsonTransform为Dict
                 tool_store = json.loads(json_content.decode("utf-8"))
                 tag_dict = {tag["name"]: tag["key"] for tag in tool_store["additionalProperties"]["tags"]}
                 filter_apps = []
@@ -469,7 +469,7 @@ class StoreToolWorkflow(serializers.Serializer):
                 tool_store["apps"] = filter_apps
                 return tool_store
             finally:
-                # 清理临时文件
+                # CleanupTemporaryFile
                 os.unlink(temp_zip_path)
         except Exception as e:
             maxkb_logger.error(f"fetch appstore tools error: {e}")

@@ -114,7 +114,7 @@
           </div>
         </div>
 
-        <!-- 右边 -->
+        <!-- Right -->
         <div class="role-right p-24" v-loading="loading">
           <div class="flex-between mb-16">
             <div class="flex align-center">
@@ -171,9 +171,9 @@ import { hasPermission } from '@/utils/permission/index'
 const filterText = ref('')
 const loading = ref(false)
 const internalRoleList = ref<RoleItem[]>([])
-const filterInternalRole = ref<RoleItem[]>([]) // 搜索过滤后列表
+const filterInternalRole = ref<RoleItem[]>([]) // SearchFilterAfterList
 const customRoleList = ref<RoleItem[]>([])
-const filterCustomRole = ref<RoleItem[]>([]) // 搜索过滤后列表
+const filterCustomRole = ref<RoleItem[]>([]) // SearchFilterAfterList
 const currentRole = ref<RoleItem>()
 
 async function getRole() {
@@ -209,7 +209,7 @@ onMounted(async () => {
 
 async function refresh(role?: RoleItem) {
   await getRole()
-  // 创建角色后选中新建的角色
+  // CreationRoleAfterSelectCreateRole
   if (role) {
     currentRole.value = role
   } else {

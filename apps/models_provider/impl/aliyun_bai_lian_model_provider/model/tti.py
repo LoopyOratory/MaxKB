@@ -49,12 +49,12 @@ class QwenTextToImageModel(MaxKBBaseModel, BaseTextToImage):
         # from openai import OpenAI
         #
         # client = OpenAI(
-        #     # 若没有配置环境变量，请用百炼API Key将下行替换为：api_key="sk-xxx"
+        #     # 若NoneConfigurationEnvironmentVariable, please用百炼API Key将下行Replace为：api_key="sk-xxx"
         #     api_key=self.api_key,
         #     base_url=self.api_base,
         # )
         # client.chat.completions.create(
-        #     # 模型列表：https://help.aliyun.com/zh/model-studio/getting-started/models
+        #     # ModelList：https://help.aliyun.com/zh/model-studio/getting-started/models
         #     model="qwen-max",
         #     messages=[
         #         {"role": "system", "content": "You are a helpful assistant."},
@@ -69,7 +69,7 @@ class QwenTextToImageModel(MaxKBBaseModel, BaseTextToImage):
         dashscope.base_http_api_url = self.api_base
         if self.model_name.startswith("wan2.6") or self.model_name.startswith("z"):
             from dashscope.api_entities.dashscope_response import Message
-            # 以下为北京地域url，各地域的base_url不同
+            # Below为北京地域url，各地域的base_urlDifferent
             message = Message(
                 role="user",
                 content=[

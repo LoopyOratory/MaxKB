@@ -118,7 +118,7 @@ function getData(): VisibilityRules | null {
         field: c.field,
         compare: c.compare,
         value: c.value,
-        // _ops, _fieldType, _options 不持久化
+        // _ops, _fieldType, _options Not persistent
       })),
   }
 }
@@ -145,7 +145,7 @@ function restore(rules: VisibilityRules | null) {
         cond._treeData = fieldConfig?.attrs?.data ?? []
         cond._treeMultiple = isTreeMultiple
         const isMultiple = ['MultiSelect'].includes(fieldType || '') || isTreeMultiple
-        // 清理脏数据
+        // Clean up dirty data
         if (cond.compare && !allowed.includes(cond.compare)) {
           cond.compare = ''
           cond.value = isMultiple ? [] : ''

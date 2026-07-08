@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： common.py
+    @Author: Tiger
+    @file: common.py
     @date：2026/3/27 19:54
     @desc:
 """
@@ -11,7 +11,7 @@ from abc import ABC, abstractmethod
 
 class BaseToolTriggerTask(ABC):
     """
-    任务执行器抽象
+    TaskExecute器抽象
     """
 
     @abstractmethod

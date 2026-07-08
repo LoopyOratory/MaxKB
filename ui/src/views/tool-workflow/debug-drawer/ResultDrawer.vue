@@ -21,9 +21,9 @@
       </div>
     </template>
     <el-tabs v-model="activeName" style="margin-top: -10px">
-      <el-tab-pane label="输出" name="result">
+      <el-tab-pane label="Output" name="result">
         <div class="scrollbar-height">
-          <h4 class="title-decoration-1 mb-16 mt-8">回复内容</h4>
+          <h4 class="title-decoration-1 mb-16 mt-8">ReplyContent</h4>
 
           <AnswerContent
             :application="details"
@@ -39,7 +39,7 @@
             :selection="true"
           ></AnswerContent>
           <div v-if="toolRecord">
-            <h4 class="title-decoration-1 mb-16 mt-16">输出参数</h4>
+            <h4 class="title-decoration-1 mb-16 mt-16">Output parameters</h4>
             <div class="mb-16" v-if="isSuccess !== undefined">
               <el-alert
                 v-if="isSuccess"
@@ -67,7 +67,7 @@
           </div>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="执行详情" name="executionDetails">
+      <el-tab-pane label="ExecuteDetails" name="executionDetails">
         <el-scrollbar>
           <div class="scrollbar-height">
             <template
@@ -98,7 +98,7 @@ const route = useRoute()
 const {
   params: { folderId },
   /*
-  folderId 可以区分 resource-management shared还是 workspace
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route as any
 const isShared = computed(() => {
@@ -160,7 +160,7 @@ const execute = (toolId: string, data: any) => {
         return Promise.reject(t('aiChat.tip.errorLimitMessage'))
       } else {
         const reader = response.body.getReader()
-        // 处理流数据
+        // Process stream data
         const write = getWrite(
           currentChat,
           reader,
@@ -202,7 +202,7 @@ const sendMessage = (val: string, other_params_data?: any, chat?: chatType) => {
         return Promise.reject(t('aiChat.tip.errorLimitMessage'))
       } else {
         const reader = response.body.getReader()
-        // 处理流数据
+        // Process stream data
         const write = getWrite(
           currentChat,
           reader,

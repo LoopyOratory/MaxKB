@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： ChatAuthentication.py
+    @Author: Tiger
+    @file: ChatAuthentication.py
     @date：2025/6/6 13:48
     @desc:
 """
@@ -30,7 +30,7 @@ class AnonymousAuthenticationSerializer(serializers.Serializer):
         token = request.META.get('HTTP_AUTHORIZATION')
         token_details = {}
         try:
-            # 校验token
+            # Validatetoken
             if token is not None:
                 token_details = signing.loads(token[7:])
         except Exception as e:

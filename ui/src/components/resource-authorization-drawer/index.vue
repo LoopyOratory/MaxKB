@@ -120,7 +120,7 @@
         </template>
       </el-table-column>
     </app-table>
-    <!-- 单个资源授权提示框 -->
+    <!-- SingleResourceAuthorizationTipDialog -->
     <el-dialog
       v-model="singleSelectDialogVisible"
       :title="$t('views.system.resourceAuthorization.setting.effectiveResource')"
@@ -150,7 +150,7 @@
       </template>
     </el-dialog>
 
-    <!-- 批量配置 弹出层 -->
+    <!-- BatchConfiguration Popover -->
     <el-dialog
       v-model="dialogVisible"
       :title="$t('views.system.resourceAuthorization.setting.configure')"
@@ -166,7 +166,7 @@
           </el-radio>
         </template>
       </el-radio-group>
-      <!-- 如果是文件夹，显示子资源选项 -->
+      <!-- IfFolder，ShowSub-ResourceOption -->
       <div v-if="isFolder" class="mt-16">
         <el-divider />
         <div class="color-text-primary mb-8">
@@ -239,7 +239,7 @@ const permissionPrecise = computed(() => {
   return permissionMap[folderType.value!]['workspace']
 })
 
-// 取出文件夹id
+// Take outFolderid
 function getAllFolderIds(data: any) {
   if (!data) return []
   return [data.id, ...(data.children?.flatMap((child: any) => getAllFolderIds(child)) || [])]
@@ -257,7 +257,7 @@ const resourceAuthorizationOfManager = computed(() => {
   return RESOURCE_PERMISSION_MAP[folderType.value]
 })
 
-// 过滤没有Manage权限的文件夹ID
+// FilterNoneManagePermissionFolderID
 function filterHasPermissionFolderIds(folderIds: string[]) {
   if (
     hasPermission(

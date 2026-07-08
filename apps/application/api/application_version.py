@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_version.py
+    @Author: Tiger
+    @file: application_version.py
     @date：2025/6/4 17:33
     @desc:
 """
@@ -35,7 +35,7 @@ class ApplicationVersionAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -56,7 +56,7 @@ class ApplicationVersionOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="application_version_id",
-                description="工作流版本id",
+                description="WorkflowVersionid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

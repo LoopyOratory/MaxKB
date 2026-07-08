@@ -62,13 +62,13 @@ def pro():
         re_path(rf'^{CONFIG.get_chat_path()[1:]}/api-doc/(?P<path>.*)$', static.serve,
                 {'document_root': os.path.join(settings.STATIC_ROOT, "drf_spectacular_sidecar")}, name='doc_chat'),
     )
-    # 暴露ui静态资源
+    # Exposeui静态Resource
     urlpatterns.append(
         re_path(rf"^{CONFIG.get_admin_path()[1:]}/(?P<path>.*)$", static.serve,
                 {'document_root': os.path.join(settings.STATIC_ROOT, "admin")},
                 name='admin'),
     )
-    # 暴露ui静态资源
+    # Exposeui静态Resource
     urlpatterns.append(
         re_path(rf'^{CONFIG.get_chat_path()[1:]}/(?P<path>.*)$', static.serve,
                 {'document_root': os.path.join(settings.STATIC_ROOT, "chat")},
@@ -105,7 +105,7 @@ static_dict = {
 
 def page_not_found(request, exception):
     """
-    页面不存在处理
+    Page not foundProcess
     """
     if request.path.startswith(admin_ui_prefix + '/api/'):
         return Result(response_status=status.HTTP_404_NOT_FOUND, code=404, message="HTTP_404_NOT_FOUND")
@@ -120,7 +120,7 @@ def page_not_found(request, exception):
         content = get_index_html(index_path)
         content = content.replace("prefix: '/chat'", f"prefix: '{CONFIG.get_chat_path()}'")
         if not os.path.exists(index_path):
-            return HttpResponse("页面不存在", status=404)
+            return HttpResponse("Page not found", status=404)
         return HttpResponse(content, status=200)
     elif request.path.startswith(admin_ui_prefix):
         in_ = [url for url in static_dict.get(admin_ui_prefix) if request.path.endswith(url)]
@@ -129,7 +129,7 @@ def page_not_found(request, exception):
             return HttpResponseRedirect(a)
         index_path = os.path.join(PROJECT_DIR, 'apps', "static", 'admin', 'index.html')
         if not os.path.exists(index_path):
-            return HttpResponse("页面不存在", status=404)
+            return HttpResponse("Page not found", status=404)
         content = get_index_html(index_path)
         content = content.replace("prefix: '/admin'", f"prefix: '{CONFIG.get_admin_path()}'").replace(
             "chatPrefix: '/chat'", f"chatPrefix: '{CONFIG.get_chat_path()}'")

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： reranker.py.py
+    @Author: Tiger
+    @file: reranker.py.py
     @date：2024/9/2 16:42
     @desc:
 """
@@ -22,7 +22,7 @@ class AliyunBaiLianReranker(MaxKBBaseModel, BaseDocumentCompressor):
     api_key: Optional[str]
     base_url: str = ''
 
-    top_n: Optional[int] = 3  # 取前 N 个最相关的结果
+    top_n: Optional[int] = 3  # Take first N 个最Related的Result
 
     @staticmethod
     def is_cache_model():

@@ -202,9 +202,9 @@ const openResetPassword = () => {
   resetPasswordRef.value?.open()
 }
 const m: any = {
-  系统管理员: 'layout.about.inner_admin',
-  工作空间管理员: 'layout.about.inner_wsm',
-  普通用户: 'layout.about.inner_user',
+  SystemAdmin: 'layout.about.inner_admin',
+  WorkspaceAdmin: 'layout.about.inner_wsm',
+  NormalUser: 'layout.about.inner_user',
 }
 const role_list = computed(() => {
   if (!user.userInfo) {

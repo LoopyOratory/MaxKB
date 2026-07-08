@@ -23,7 +23,7 @@ const props = defineProps<{
   otherParams: any
   formField: FormField
   view?: boolean
-  // 选中的值
+  // Selected in value
   modelValue?: any
 }>()
 const elFormItem = inject(formItemContextKey, void 0)

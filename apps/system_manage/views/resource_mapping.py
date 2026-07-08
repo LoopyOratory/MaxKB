@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： resource_mapping.py
+    @Author: Tiger
+    @file: resource_mapping.py
     @date：2025/12/25 15:28
     @desc:
 """

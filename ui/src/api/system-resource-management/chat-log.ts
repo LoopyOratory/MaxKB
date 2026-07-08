@@ -5,7 +5,7 @@ import { type Ref } from 'vue'
 
 const prefix = '/system/resource/application'
 /**
- * 对话记录提交至知识库
+ * ConversationRecordSubmit to Knowledge base
  * @param data
  * @param loading
  * @param application_id
@@ -21,8 +21,8 @@ const postChatLogAddKnowledge: (
 }
 
 /**
- * 对话日志
- * @param 参数
+ * ConversationLog
+ * @param Parameters
  * application_id
  * param  {
  "start_time": "string",
@@ -43,8 +43,8 @@ const getChatLog: (
 }
 
 /**
- * 获得对话日志记录
- * @param 参数
+ * GetConversationLogRecord
+ * @param Parameters
  * application_id, chart_id,order_asc
  */
 const getChatRecordLog: (
@@ -62,8 +62,8 @@ const getChatRecordLog: (
 }
 
 /**
- * 获取标注段落列表信息
- * @param 参数
+ * GetAnnotationParagraphListInfo
+ * @param Parameters
  * application_id, chart_id,  chart_record_id
  */
 const getMarkChatRecord: (
@@ -80,8 +80,8 @@ const getMarkChatRecord: (
 }
 
 /**
- * 修改日志记录内容
- * @param 参数
+ * ModificationLogRecordContent
+ * @param Parameters
  * application_id, chart_id,  chart_record_id, knowledge_id, document_id
  * data {
  "title": "string",
@@ -115,8 +115,8 @@ const putChatRecordLog: (
 }
 
 /**
- * 删除标注
- * @param 参数
+ * DeletionAnnotation
+ * @param Parameters
  * application_id, chart_id,  chart_record_id, knowledge_id, document_id,paragraph_id
  */
 const delMarkChatRecord: (
@@ -145,8 +145,8 @@ const delMarkChatRecord: (
 }
 
 /**
- * 导出对话日志
- * @param 参数
+ * ExportConversationLog
+ * @param Parameters
  * application_id
  * param  {
  "start_time": "string",

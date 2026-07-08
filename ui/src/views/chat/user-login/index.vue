@@ -14,7 +14,7 @@
         <LogoIcon v-else height="32px" class="mr-8" />
         <h1>{{ chatUser.chat_profile?.application_name }}</h1>
       </div>
-      <!-- 移动端头部标题-->
+      <!-- MoveEndpoint headerTitle-->
       <div v-else class="user-login__header">
         <div class="flex-between">
           <div class="flex align-center">
@@ -221,7 +221,7 @@ const loginForm = ref<LoginRequest>({
   captcha: '',
 })
 
-const max_attempts = ref<number>(1) // 声明为 ref
+const max_attempts = ref<number>(1) // Declared as ref
 const rules = ref<FormRules<LoginRequest>>({
   username: [
     {
@@ -257,7 +257,7 @@ const loginHandle = () => {
         })
       })
     } else {
-      // JSEncrypt 在有些打包环境可能作为 default export 或直接导出，兼容两种情况
+      // JSEncrypt In some packagingEnvironmentPossibleAs default export orDirectExport，CompatibleTwo cases
       const JSEncryptCtor = (JSEncrypt as any)?.default ? (JSEncrypt as any).default : JSEncrypt
       const js = new (JSEncryptCtor as any)()
       js.setPublicKey(chatUser?.chat_profile?.rsaKey as any)
@@ -324,7 +324,7 @@ function redirectAuth(authType: string, needMessage: boolean = false) {
 
     const config = res.data.config
     const queryParams = new URLSearchParams(route.query as any).toString()
-    // 构造带查询参数的redirectUrl
+    // Construct withQueryParametersredirectUrl
     let redirectUrl = `${config.redirectUrl}`
     let redirectUrlCallback = `${config.redirectUrl}/${accessToken}`
     if (queryParams) {
@@ -415,12 +415,12 @@ onBeforeMount(() => {
     if (modeList.value.length == 1 && ['CAS', 'OIDC', 'OAuth2'].includes(modeList.value[0])) {
       redirectAuth(modeList.value[0])
     }
-    // 这里的modeList 是oauth2 cas ldap oidc 这四个 还会有 lark wecom dingtalk
-    // 获取到的 modeList中除'CAS', 'OIDC', 'OAuth2' LOCAL之外的登录方式
+    // HeremodeList Isoauth2 cas ldap oidc These four There will also be lark wecom dingtalk
+    // Get to modeListExcept in'CAS', 'OIDC', 'OAuth2' LOCALOutside ofLoginMethod
     QrList.value = modeList.value.filter(
       (item) => !['CAS', 'OIDC', 'OAuth2', 'LOCAL', 'LDAP'].includes(item),
     )
-    // modeList需要去掉lark wecom dingtalk
+    // modeListNeedsRemovelark wecom dingtalk
     modeList.value = modeList.value.filter((item) => !['lark', 'wecom', 'dingtalk'].includes(item))
     if (QrList.value.length > 0) {
       QrList.value.forEach((item) => {
@@ -514,7 +514,7 @@ onBeforeMount(() => {
         }
       })
       .catch((error) => {
-        console.error('SDK 加载失败:', error)
+        console.error('SDK LoadFailure:', error)
       })
   }
 

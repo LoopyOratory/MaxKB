@@ -26,7 +26,7 @@
           $t('views.applicationOverview.appInfo.LimitDialog.timesDays')
         }}</span>
       </el-form-item>
-      <!--     身份验证 -->
+      <!--     IdentityVerify -->
       <el-form-item
         :label="$t('views.applicationOverview.appInfo.LimitDialog.authentication')"
         @click.prevent

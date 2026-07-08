@@ -153,7 +153,7 @@ const open = async (platform: Platform) => {
   loading.value = true
   Object.assign(currentPlatform, platform)
 
-  // 设置默认的 callback_url
+  // SettingsDefault callback_url
   const defaultCallbackUrl = window.location.origin + window.MaxKB.chatPrefix + '/api'
   switch (platform.key) {
     case 'wecom':

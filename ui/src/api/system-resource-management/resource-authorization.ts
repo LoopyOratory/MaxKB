@@ -5,8 +5,8 @@ import type { pageRequest } from '@/api/type/common'
 const prefix = 'system/workspace'
 
 /**
- * 系统资源授权获取资源权限
- * @query 参数
+ * SystemResourceAuthorizationGetResourcePermission
+ * @query Parameters
  */
 const getResourceAuthorization: (
   workspace_id: string,
@@ -23,9 +23,9 @@ const getResourceAuthorization: (
   )
 }
 /**
- * 系统资源授权修改成员权限
- * @param 参数 member_id
- * @param 参数 {
+ * SystemResourceAuthorizationModificationMemberPermission
+ * @param Parameters member_id
+ * @param Parameters {
      [
       {
         "target_id": "string",

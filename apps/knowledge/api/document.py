@@ -15,7 +15,7 @@ class DocumentSplitAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -34,15 +34,15 @@ class DocumentSplitAPI(APIMixin):
                     },
                     'limit': {
                         'type': 'integer',
-                        'description': '分段长度'
+                        'description': 'SegmentLength'
                     },
                     'patterns': {
                         'type': 'string',
-                        'description': '分段正则列表'
+                        'description': 'Segment正则List'
                     },
                     'with_filter': {
                         'type': 'boolean',
-                        'description': '是否清除特殊字符'
+                        'description': 'WhetherClearSpecial characters'
                     }
                 }
             }
@@ -55,14 +55,14 @@ class DocumentBatchAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -84,14 +84,14 @@ class DocumentBatchCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -113,14 +113,14 @@ class DocumentCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -142,21 +142,21 @@ class DocumentReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="document_id",
-                description="文档id",
+                description="Documentid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -184,14 +184,14 @@ class TableDocumentCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -256,14 +256,14 @@ class BatchEditHitHandlingAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -281,42 +281,42 @@ class DocumentTreeReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="user_id",
-                description="用户id",
+                description="Userid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="desc",
-                description="描述",
+                description="Description",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -330,14 +330,14 @@ class DocumentSplitPatternAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -355,14 +355,14 @@ class BatchRefreshAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -380,14 +380,14 @@ class BatchGenerateRelatedAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -405,14 +405,14 @@ class TemplateExportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -437,21 +437,21 @@ class DocumentExportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="document_id",
-                description="文档id",
+                description="Documentid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -469,21 +469,21 @@ class DocumentMigrateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="target_knowledge_id",
-                description="目标知识库id",
+                description="TargetKnowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -501,21 +501,21 @@ class DocumentDownloadSourceAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="document_id",
-                description="文档id",
+                description="Documentid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -533,21 +533,21 @@ class DocumentTagsAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="document_id",
-                description="文档id",
+                description="Documentid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

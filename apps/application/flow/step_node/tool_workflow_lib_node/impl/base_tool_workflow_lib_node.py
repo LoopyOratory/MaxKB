@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： base_tool_workflow_lib_node.py.py
+    @Author: Tiger
+    @file: base_tool_workflow_lib_node.py.py
     @date：2026/3/16 13:55
     @desc:
 """
@@ -54,11 +54,11 @@ def get_answer_list(instance, child_node_node_dict, runtime_node_id):
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
     workflow_manage_new_instance = node_variable.get('workflow_manage_new_instance')
     node_params = node.node_params

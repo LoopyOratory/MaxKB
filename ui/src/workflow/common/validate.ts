@@ -66,7 +66,7 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 校验开始节点
+   * Validate start node
    */
   is_valid_start_node() {
     const start_node_list = this.nodes.filter((item) =>
@@ -80,7 +80,7 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 校验基本信息节点
+   * Validate base info node
    */
   is_valid_base_node() {
     const start_node_list = this.nodes.filter((item) => item.id === WorkflowType.Base)
@@ -92,7 +92,7 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 校验节点
+   * Validate node
    */
   is_valid() {
     this.is_valid_start_node()
@@ -108,7 +108,7 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 获取开始节点
+   * Get start node
    * @returns
    */
   get_start_node() {
@@ -121,8 +121,8 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 获取基本节点
-   * @returns 基本节点
+   * Get base node
+   * @returns base node
    */
   get_base_node() {
     const base_node_list = this.nodes.filter((item) => item.id === WorkflowType.Base)
@@ -134,8 +134,8 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 校验工作流
-   * @param up_node 上一个节点
+   * Validate workflow
+   * @param up_node previous node
    */
   _is_valid_work_flow(up_node?: any) {
     if (!up_node) {
@@ -168,9 +168,9 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 获取流程下一个节点列表
-   * @param node 节点
-   * @returns 节点列表
+   * Get next node list in the flow
+   * @param node current node
+   * @returns node list
    */
   get_next_nodes(node: any) {
     const edge_list = this.edges.filter((edge) => edge.sourceNodeId == node.id)
@@ -201,8 +201,8 @@ export class WorkFlowInstance {
   }
 
   /**
-   * 校验节点
-   * @param node 节点
+   * Validate node
+   * @param node current node
    */
   is_valid_node(node: any) {
     if (node.properties.status && node.properties.status === 500) {
@@ -238,7 +238,7 @@ export class ToolWorkFlowInstance extends WorkFlowInstance {
     }
   }
   /**
-   * 校验基本信息节点
+   * Validate base info node
    */
   is_valid_base_node() {
     const base_node_list = this.nodes.filter((item) => item.id === WorkflowType.ToolBaseNode)
@@ -268,7 +268,7 @@ export class KnowledgeWorkFlowInstance extends WorkFlowInstance {
     }
   }
   /**
-   * 校验基本信息节点
+   * Validate base info node
    */
   is_valid_base_node() {
     const base_node_list = this.nodes.filter((item) => item.id === WorkflowType.KnowledgeBase)
@@ -339,9 +339,9 @@ export class KnowledgeWorkFlowInstance extends WorkFlowInstance {
   }
 
   /**
-   * 获取流程下一个节点列表
-   * @param node 节点
-   * @returns 节点列表
+   * Get next node list in the flow
+   * @param node current node
+   * @returns node list
    */
   get_next_nodes(node: any) {
     const edge_list = this.edges.filter((edge) => edge.sourceNodeId == node.id)
@@ -353,8 +353,8 @@ export class KnowledgeWorkFlowInstance extends WorkFlowInstance {
   }
 
   /**
-   * 校验节点
-   * @param node 节点
+   * Validate node
+   * @param node current node
    */
   is_valid_node(node: any) {
     if (node.properties.status && node.properties.status === 500) {

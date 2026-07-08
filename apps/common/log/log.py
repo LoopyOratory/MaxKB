@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： log.py
+    @Author: Tiger
+    @file: log.py
     @date：2025/6/4 14:13
     @desc:
 """
@@ -13,7 +13,7 @@ from system_manage.models.log_management import Log
 
 def _get_ip_address(request):
     """
-    获取ip地址
+    GetipAddress
     @param request:
     @return:
     """
@@ -27,7 +27,7 @@ def _get_ip_address(request):
 
 def _get_user(request):
     """
-    获取用户
+    GetUser
     @param request:
     @return:
     """
@@ -43,7 +43,7 @@ def _get_user(request):
         "nick_name": user.nick_name,
         "username": user.username,
     }
-    # 如果是 User 模型且有 role 属性
+    # If User Model且有 role 属性
     if hasattr(user, 'role'):
         user_info['role'] = user.role
     return user_info
@@ -76,14 +76,14 @@ def _get_workspace_id(request, kwargs):
 def log(menu: str, operate, get_user=_get_user, get_ip_address=_get_ip_address, get_details=_get_details,
         get_operation_object=None, get_workspace_id=_get_workspace_id):
     """
-    记录审计日志
-    @param menu: 操作菜单 str
-    @param operate: 操作 str|func 如果是一个函数 入参将是一个request 响应为str def operate(request): return "操作菜单"
-    @param get_user: 获取用户
-    @param get_ip_address:获取IP地址
-    @param get_details: 获取执行详情
-    @param get_operation_object: 获取操作对象
-    @param get_workspace_id: 获取工作空间id
+    RecordAuditLog
+    @param menu: ActionsMenu str
+    @param operate: Actions str|func IfOneFunction 入参将是Onerequest Response为str def operate(request): return "ActionsMenu"
+    @param get_user: GetUser
+    @param get_ip_address:GetIPAddress
+    @param get_details: GetExecuteDetails
+    @param get_operation_object: GetActionsObject
+    @param get_workspace_id: GetWorkspace id
     @return:
     """
 
@@ -109,7 +109,7 @@ def log(menu: str, operate, get_user=_get_user, get_ip_address=_get_ip_address, 
                 _operate = operate
                 if callable(operate):
                     _operate = operate(request)
-                # 插入审计日志
+                # InsertAuditLog
                 Log(menu=menu, operate=_operate, user=user, status=status, ip_address=ip, details=details,
                     operation_object=operation_object, workspace_id=workspace_id).save()
 
@@ -122,25 +122,25 @@ def record_log(menu: str, operate: str, request, user: dict = None, status: int 
                get_details=_get_details, get_operation_object=None, workspace_id: str = 'default',
                operation_object: dict = None):
     """
-    手动记录审计日志（适用于无法使用装饰器的场景，如第三方登录回调）
+    ManualRecordAuditLog（适Used for无法Use装饰器的场景, such as第三方LoginCallback）
 
-    @param menu: 操作菜单，如 'Chat User/login'
-    @param operate: 操作描述，如 'Log in'
-    @param request: Django Request 对象
-    @param user: 用户信息字典，包含 id, username, email 等字段
-    @param status: 状态码，默认 200
-    @param get_details: 获取请求详情的函数
-    @param get_operation_object: 获取操作对象的函数，如果提供则优先使用
-    @param get_workspace_id: 获取工作空间 ID 的函数
-    @param operation_object: 操作对象字典，如 {'name': 'username'}
-    @param workspace_id: 工作空间 ID，默认 'default'
+    @param menu: ActionsMenu, such as 'Chat User/login'
+    @param operate: ActionsDescription, such as 'Log in'
+    @param request: Django Request Object
+    @param user: UserInfoDict，Contains id, username, email 等Field
+    @param status: Status码，Default 200
+    @param get_details: GetRequestDetails的Function
+    @param get_operation_object: GetActionsObject的Function，IfProvide则优先Use
+    @param get_workspace_id: GetWorkspace ID 的Function
+    @param operation_object: ActionsObjectDict, such as {'name': 'username'}
+    @param workspace_id: Workspace ID，Default 'default'
     @return: None
     """
     try:
         ip = _get_ip_address(request)
         details = get_details(request)
 
-        # 如果提供了 get_operation_object 函数，优先使用它获取操作对象
+        # IfProvide了 get_operation_object Function，优先Use它GetActionsObject
         if operation_object is None and get_operation_object is not None:
             try:
                 operation_object = get_operation_object(request, {})
@@ -157,5 +157,5 @@ def record_log(menu: str, operate: str, request, user: dict = None, status: int 
             workspace_id=workspace_id
         ).save()
     except Exception as e:
-        # 日志记录失败不应影响主业务流程
+        # LogRecordFailure不应影响主业务Flow
         pass

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： i_function_lib_node.py
+    @Author: Tiger
+    @file: i_function_lib_node.py
     @date：2024/8/8 16:21
     @desc:
 """
@@ -33,7 +33,7 @@ class FunctionLibNodeParamsSerializer(serializers.Serializer):
     def is_valid(self, *, raise_exception=False):
         super().is_valid(raise_exception=True)
         f_lib = QuerySet(Tool).filter(id=self.data.get('tool_lib_id')).first()
-        # 归还链接到连接池
+        # Return connection to pool
         connection.close()
         if f_lib is None:
             raise Exception(_('The function has been deleted'))

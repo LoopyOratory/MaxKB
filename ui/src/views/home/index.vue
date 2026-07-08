@@ -14,9 +14,9 @@
         </h4>
         <ResourceAggregation />
       </el-card>
-      <!-- 监听 -->
+      <!-- Listen -->
       <StatisticsCharts />
-      <!-- 排行榜 -->
+      <!-- Leaderboard -->
       <Ranking />
 
       <br />

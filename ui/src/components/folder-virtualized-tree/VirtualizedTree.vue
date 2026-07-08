@@ -145,13 +145,13 @@ const statHandler = (stat: any) => {
   return stat
 }
 
-// 过滤文本
+// FilterText
 const filterText = ref('')
 /**
- * 递归过滤树
- * @param nodes 节点数组
- * @param text 过滤文本
- * @returns 过滤后的新树（新对象，但节点内的基本属性保持原引用）
+ * Recursive filter tree
+ * @param nodes NodeArray
+ * @param text FilterText
+ * @returns Filter afterNew tree (newObject, butNodeWithinBasicProperties remainReference）
  */
 const filterTree = (nodes: any[], text: string): any[] => {
   if (!text || !props.filterNodeMethod) {
@@ -166,7 +166,7 @@ const filterTree = (nodes: any[], text: string): any[] => {
       filteredChildren = filterTree(node.children, text)
     }
     if (isMatch || filteredChildren.length) {
-      // 创建新节点对象，保留原有属性，替换 children
+      // Create new node object, retain original properties, replace children
       result.push({
         ...node,
         children: filteredChildren,
@@ -176,12 +176,12 @@ const filterTree = (nodes: any[], text: string): any[] => {
   return result
 }
 
-// 计算过滤后的树数据
+// Calculate filtered tree data
 const filteredTreeData = computed(() => {
   return filterTree(props.modelValue, filterText.value)
 })
 
-// 暴露过滤方法给父组件
+// ExposeFilterMethodTo parentComponent
 const filter = (text: string) => {
   filterText.value = text
 }
@@ -195,7 +195,7 @@ defineExpose({
 .maxkb-virtualized-tree {
   overflow: auto !important;
   scrollbar-gutter: stable;
-  // 滚动条
+  // Scrollbar
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;

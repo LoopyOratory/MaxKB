@@ -129,7 +129,7 @@ const props = defineProps<{
 
 const route = useRoute()
 const {
-  params: { id, folderId }, // id为knowledgeID
+  params: { id, folderId }, // id is knowledgeID
 } = route as any
 
 const isShared = computed(() => {

@@ -35,7 +35,7 @@
           <div class="setting-preview-header" :style="customStyle">
             <div class="flex-between">
               <div class="flex align-center">
-                <!-- 应用头像 -->
+                <!-- ApplicationAvatar -->
                 <div class="mr-12 ml-24 flex">
                   <el-avatar
                     v-if="isAppIcon(imgUrl?.icon)"
@@ -150,7 +150,7 @@
             </div>
           </div>
         </div>
-        <!-- 悬浮头像 -->
+        <!-- HoverAvatar -->
         <div class="float_icon">
           <el-image
             v-if="imgUrl.float_icon"
@@ -204,7 +204,7 @@
                 />
               </el-select>
             </el-row>
-            <!-- 应用 LOGO -->
+            <!-- Application LOGO -->
             <el-card shadow="never" class="mb-8">
               <div class="flex-between mb-8">
                 <span class="lighter">{{ $t('views.application.title') + ' LOGO' }}</span>
@@ -228,7 +228,7 @@
                 {{ $t('views.applicationOverview.SettingDisplayDialog.imageMessage') }}
               </el-text>
             </el-card>
-            <!-- 聊天背景 -->
+            <!-- Chat background -->
             <el-card shadow="never" class="mb-8">
               <div class="flex-between mb-8">
                 <span class="lighter">{{
@@ -256,7 +256,7 @@
                 {{ $t('views.applicationOverview.SettingDisplayDialog.chatBackgroundMessage') }}
               </el-text>
             </el-card>
-            <!-- AI回复头像 -->
+            <!-- AIReplyAvatar -->
             <el-card shadow="never" class="mb-8">
               <div class="flex-between mb-8">
                 <span class="lighter">{{
@@ -285,7 +285,7 @@
                 {{ $t('views.applicationOverview.SettingDisplayDialog.imageMessage') }}
               </el-text>
             </el-card>
-            <!-- 提问头像 -->
+            <!-- AskAvatar -->
             <el-card shadow="never" class="mb-8">
               <div class="flex-between mb-8">
                 <span class="lighter">{{
@@ -316,7 +316,7 @@
                 >{{ $t('views.applicationOverview.SettingDisplayDialog.imageMessage') }}
               </el-text>
             </el-card>
-            <!-- 浮窗图标 -->
+            <!-- Floating panelIcon -->
             <el-card shadow="never" class="mb-8">
               <div class="flex-between mb-8">
                 <span class="lighter">{{
@@ -583,7 +583,7 @@ function resetForm() {
 }
 
 const onChange = (file: any, fileList: UploadFiles, attr: string) => {
-  //1、判断文件大小是否合法，文件限制不能大于 10 MB
+  //1、DetermineFileSizeWhetherValid, FileLimitCannot be greater than 10 MB
   const isLimit = file?.size / 1024 / 1024 < 10
   if (!isLimit) {
     MsgError(t('common.EditAvatarDialog.fileSizeExceeded'))

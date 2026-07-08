@@ -7,7 +7,7 @@ import { type Ref } from 'vue'
 const prefix = '/system/resource/application'
 
 /**
- * 获取全部应用
+ * GetAllApplication
  * @param param
  * @param loading
  */
@@ -18,7 +18,7 @@ const getAllApplication: (param?: any, loading?: Ref<boolean>) => Promise<Result
   return get(`${prefix}`, param, loading)
 }
 /**
- * 获取分页应用
+ * GetPaginationApplication
  * param {
  "name": "string",
  }
@@ -32,8 +32,8 @@ const getApplication: (
 }
 
 /**
- * 修改应用
- * @param 参数
+ * ModificationApplication
+ * @param Parameters
  */
 const putApplication: (
   application_id: string,
@@ -44,8 +44,8 @@ const putApplication: (
 }
 
 /**
- * 删除应用
- * @param 参数 application_id
+ * DeletionApplication
+ * @param Parameters application_id
  */
 const delApplication: (
   application_id: string,
@@ -55,8 +55,8 @@ const delApplication: (
 }
 
 /**
- * 应用详情
- * @param 参数 application_id
+ * ApplicationDetails
+ * @param Parameters application_id
  */
 const getApplicationDetail: (
   application_id: string,
@@ -66,8 +66,8 @@ const getApplicationDetail: (
 }
 
 /**
- * 获取AccessToken
- * @param 参数 application_id
+ * GetAccessToken
+ * @param Parameters application_id
  */
 const getAccessToken: (application_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   application_id,
@@ -76,8 +76,8 @@ const getAccessToken: (application_id: string, loading?: Ref<boolean>) => Promis
   return get(`${prefix}/${application_id}/access_token`, undefined, loading)
 }
 /**
- * 修改AccessToken
- * @param 参数 application_id
+ * ModificationAccessToken
+ * @param Parameters application_id
  * data {
  *  "is_active": true
  * }
@@ -91,8 +91,8 @@ const putAccessToken: (
 }
 
 /**
- * 替换社区版-修改AccessToken
- * @param 参数 application_id
+ * ReplaceCommunity edition-ModificationAccessToken
+ * @param Parameters application_id
  * data {
  *  "show_source": boolean,
  *  "show_history": boolean,
@@ -111,8 +111,8 @@ const putXpackAccessToken: (
 }
 
 /**
- * 统计
- * @param 参数 application_id, data
+ * Statistics
+ * @param Parameters application_id, data
  */
 const getStatistics: (
   application_id: string,
@@ -122,7 +122,7 @@ const getStatistics: (
   return get(`${prefix}/${application_id}/application_stats`, data, loading)
 }
 /**
- * 统计token消耗
+ * StatisticstokenConsumption
  */
 const getTokenUsage: (
   application_id: string,
@@ -139,9 +139,9 @@ const topQuestions: (
   return get(`${prefix}/${application_id}/top_questions`, data, loading)
 }
 /**
- * 打开调试对话id
- * @param application_id 应用id
- * @param loading 加载器
+ * OpenDebugConversationid
+ * @param application_id Applicationid
+ * @param loading Loader
  * @returns
  */
 const open: (application_id: string, loading?: Ref<boolean>) => Promise<Result<string>> = (
@@ -152,7 +152,7 @@ const open: (application_id: string, loading?: Ref<boolean>) => Promise<Result<s
 }
 
 /**
- * 生成提示词
+ * Generate prompt
  * @param application_id
  * @param model_id
  * @param data
@@ -169,7 +169,7 @@ const generate_prompt: (application_id:string, model_id:string, data: any) => Pr
 
 
 /**
- * 应用发布
+ * ApplicationPublish
  * @param application_id
  * @param loading
  * @returns
@@ -198,7 +198,7 @@ const playDemoText: (application_id: string, data: any, loading?: Ref<boolean>) 
 }
 
 /**
- * 文本转语音
+ * TextTo speech
  */
 const postTextToSpeech: (
   application_id: string,
@@ -208,7 +208,7 @@ const postTextToSpeech: (
   return download(`${prefix}/${application_id}/text_to_speech`, 'post', data, undefined, loading)
 }
 /**
- * 语音转文本
+ * Speech toText
  */
 const speechToText: (
   application_id: string,
@@ -219,9 +219,9 @@ const speechToText: (
 }
 
 /**
- * 获取应用设置
- * @param application_id 应用id
- * @param loading 加载器
+ * GetApplicationSettings
+ * @param application_id Applicationid
+ * @param loading Loader
  * @returns
  */
 const getApplicationSetting: (
@@ -232,7 +232,7 @@ const getApplicationSetting: (
 }
 
 /**
- * 导出应用
+ * ExportApplication
  */
 
 const exportApplication = (
@@ -249,7 +249,7 @@ const exportApplication = (
 }
 
 /**
- * 导入应用
+ * ImportApplication
  */
 const importApplication: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -259,8 +259,8 @@ const importApplication: (data: any, loading?: Ref<boolean>) => Promise<Result<a
 }
 
 /**
- * 对话
- * @param 参数
+ * Conversation
+ * @param Parameters
  * chat_id: string
  * data
  */
@@ -269,8 +269,8 @@ const chat: (chat_id: string, data: any) => Promise<any> = (chat_id, data) => {
   return postStream(`${prefix}/chat_message/${chat_id}`, data)
 }
 /**
- * 获取对话用户认证类型
- * @param loading 加载器
+ * GetConversationUserAuthenticationType
+ * @param loading Loader
  * @returns
  */
 const getChatUserAuthType: (loading?: Ref<boolean>) => Promise<any> = (loading) => {
@@ -278,13 +278,13 @@ const getChatUserAuthType: (loading?: Ref<boolean>) => Promise<any> = (loading) 
 }
 
 /**
- * 获取平台状态
+ * GetPlatformStatus
  */
 const getPlatformStatus: (application_id: string) => Promise<Result<any>> = (application_id) => {
   return get(`${prefix}/${application_id}/platform/status`)
 }
 /**
- * 更新平台状态
+ * UpdatePlatformStatus
  */
 const updatePlatformStatus: (application_id: string, data: any) => Promise<Result<any>> = (
   application_id,
@@ -293,7 +293,7 @@ const updatePlatformStatus: (application_id: string, data: any) => Promise<Resul
   return post(`${prefix}/${application_id}/platform/status`, data)
 }
 /**
- * 获取平台配置
+ * GetPlatformConfiguration
  */
 const getPlatformConfig: (application_id: string, type: string) => Promise<Result<any>> = (
   application_id,
@@ -302,7 +302,7 @@ const getPlatformConfig: (application_id: string, type: string) => Promise<Resul
   return get(`${prefix}/${application_id}/platform/${type}`)
 }
 /**
- * 更新平台配置
+ * UpdatePlatformConfiguration
  */
 const updatePlatformConfig: (
   application_id: string,
@@ -314,7 +314,7 @@ const updatePlatformConfig: (
 }
 
 /**
- * mcp 节点
+ * mcp Node
  */
 const getMcpTools: (application_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   application_id,

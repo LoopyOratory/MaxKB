@@ -54,7 +54,7 @@ class BaseIntentNode(IIntentNode):
 
     def execute(self, model_id, dialogue_number, history_chat_record, user_input, branch,
                 model_params_setting=None, model_id_type=None, model_id_reference=None, **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],
@@ -66,39 +66,39 @@ class BaseIntentNode(IIntentNode):
         if not model_id:
             raise Exception(_('Model is not allowed to be empty'))
 
-        # 设置默认模型参数
+        # Set default model parameters
         if model_params_setting is None and model_id:
             model_params_setting = get_default_model_params_setting(model_id)
 
-        # 获取模型实例
+        # Get model instance
         workspace_id = self.workflow_manage.get_body().get('workspace_id')
         chat_model = get_model_instance_by_model_workspace_id(
             model_id, workspace_id, **(model_params_setting or {})
         )
 
-        # 获取历史对话
+        # Get conversation history
         history_message = self.get_history_message(history_chat_record, dialogue_number)
         self.context['history_message'] = history_message
 
-        # 保存问题到上下文
+        # Save question to context
         self.context['user_input'] = user_input
 
-        # 构建分类提示词
+        # Build classification prompt
         prompt = self.build_classification_prompt(user_input, branch)
 
-        # 生成消息列表
+        # Generate message list
         system = self.build_system_prompt()
         message_list = self.generate_message_list(system, prompt, history_message)
         self.context['message_list'] = message_list
 
-        # 调用模型进行分类
+        # Call model for classification
         try:
             r = chat_model.invoke(message_list)
             classification_result = r.content.strip()
-            # 解析分类结果获取分支信息
+            # Parse classification result to get branch info
             matched_branch = self.parse_classification_result(classification_result, branch)
 
-            #  返回结果
+            #  Return result
             return NodeResult({
                 'result': r,
                 'chat_model': chat_model,
@@ -111,7 +111,7 @@ class BaseIntentNode(IIntentNode):
             }, {}, _write_context=write_context)
 
         except Exception as e:
-            # 错误处理：返回"其他"分支
+            # ErrorProcess：Return"Other"Branch
             other_branch = self.find_other_branch(branch)
             if other_branch:
                 return NodeResult({
@@ -124,7 +124,7 @@ class BaseIntentNode(IIntentNode):
 
     @staticmethod
     def get_history_message(history_chat_record, dialogue_number):
-        """获取历史消息"""
+        """GetHistoryMessage"""
         start_index = len(history_chat_record) - dialogue_number
         history_message = reduce(lambda x, y: [*x, *y], [
             [history_chat_record[index].get_human_message(), history_chat_record[index].get_ai_message()]
@@ -137,22 +137,22 @@ class BaseIntentNode(IIntentNode):
         return history_message
 
     def build_system_prompt(self) -> str:
-        """构建系统提示词"""
-        return "你是一个专业的意图识别助手，请根据用户输入和意图选项，准确识别用户的真实意图。"
+        """BuildSystemTip词"""
+        return "你是One专业的意图识别助手, pleaseBased onUser input和意图选项，准确识别User的真实意图。"
 
     def build_classification_prompt(self, user_input: str, branch: List[Dict]) -> str:
-        """构建分类提示词"""
+        """Build classification prompt"""
 
         classification_list = []
 
         other_branch = self.find_other_branch(branch)
-        # 添加其他分支
+        # AddOtherBranch
         if other_branch:
             classification_list.append({
                 "classificationId": 0,
                 "content": other_branch.get('content')
             })
-        # 添加正常分支
+        # Add正常Branch
         classification_id = 1
         for b in branch:
             if not b.get('isOther'):
@@ -168,7 +168,7 @@ class BaseIntentNode(IIntentNode):
         )
 
     def generate_message_list(self, system: str, prompt: str, history_message):
-        """生成消息列表"""
+        """Generate message list"""
         if system is None or len(system) == 0:
             return [*history_message, HumanMessage(self.workflow_manage.generate_prompt(prompt))]
         else:
@@ -176,7 +176,7 @@ class BaseIntentNode(IIntentNode):
                     HumanMessage(self.workflow_manage.generate_prompt(prompt))]
 
     def parse_classification_result(self, result: str, branch: List[Dict]) -> Dict[str, Any]:
-        """解析分类结果"""
+        """Parse分类Result"""
 
         other_branch = self.find_other_branch(branch)
         normal_intents = [
@@ -195,13 +195,13 @@ class BaseIntentNode(IIntentNode):
         try:
             result_json = json.loads(result)
             classification_id = result_json.get('classificationId')
-            # 如果是 0 ，返回其他分支
+            # If 0 ，ReturnOtherBranch
             matched_branch = get_branch_by_id(classification_id)
             if matched_branch:
                 return matched_branch
 
         except Exception as e:
-            # json 解析失败，re 提取
+            # json ParseFailure，re Extract
             numbers = re.findall(r'"classificationId":\s*(\d+)', result)
             if numbers:
                 classification_id = int(numbers[0])
@@ -210,39 +210,39 @@ class BaseIntentNode(IIntentNode):
                 if matched_branch:
                     return matched_branch
 
-        # 如果都解析失败，返回“other”
+        # If都ParseFailure，Return“other”
         return other_branch or (normal_intents[0] if normal_intents else {'id': 'unknown', 'content': 'unknown'})
 
     def parse_result_reason(self, result: str):
-        """解析分类的原因"""
+        """Parse分类的原因"""
         try:
             result_json = json.loads(result)
             return result_json.get('reason', '')
         except Exception as e:
             reason_patterns = [
-                r'"reason":\s*"([^"]*)"',  # 标准格式
-                r'"reason":\s*"([^"]*)',  # 缺少结束引号
-                r'"reason":\s*([^,}\n]*)',  # 没有引号包围的内容
+                r'"reason":\s*"([^"]*)"',  # StandardFormat
+                r'"reason":\s*"([^"]*)',  # 缺少End引号
+                r'"reason":\s*([^,}\n]*)',  # None引号包围的Content
             ]
             for pattern in reason_patterns:
                 match = re.search(pattern, result, re.DOTALL)
                 if match:
                     reason = match.group(1).strip()
-                    # 清理可能的尾部字符
+                    # CleanupPossible的尾部字符
                     reason = re.sub(r'["\s]*$', '', reason)
                     return reason
 
             return ''
 
     def find_other_branch(self, branch: List[Dict]) -> Dict[str, Any] | None:
-        """查找其他分支"""
+        """查找OtherBranch"""
         for b in branch:
             if b.get('isOther'):
                 return b
         return None
 
     def get_details(self, index: int, **kwargs):
-        """获取节点执行详情"""
+        """GetNodeExecuteDetails"""
         return {
             'name': self.node.properties.get('stepName'),
             'index': index,

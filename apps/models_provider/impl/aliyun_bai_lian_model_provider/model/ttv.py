@@ -51,7 +51,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         return True
 
     def _safe_call(self, func, **kwargs):
-        """带重试的请求封装"""
+        """带重试的Request封装"""
         for attempt in range(self.max_retries):
             try:
                 rsp = func(**kwargs)
@@ -59,18 +59,18 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
             except (requests.exceptions.ProxyError,
                     requests.exceptions.ConnectionError,
                     requests.exceptions.Timeout) as e:
-                maxkb_logger.error(f"⚠️ 网络错误: {e}，正在重试 {attempt + 1}/{self.max_retries}...")
+                maxkb_logger.error(f"⚠️ 网络Error: {e}，正在重试 {attempt + 1}/{self.max_retries}...")
                 time.sleep(self.retry_delay)
-        raise RuntimeError("多次重试后仍无法连接到 DashScope API，请检查代理或网络配置")
+        raise RuntimeError("多次重试后仍无法Connect到 DashScope API, pleaseCheck代理或网络Configuration")
 
-    # --- 通用异步生成函数 ---
+    # --- GeneralAsyncGenerateFunction ---
     def generate_video(self, prompt, negative_prompt=None, first_frame_url=None, last_frame_url=None, **kwargs):
         """
-            prompt: 文本描述
-            negative_prompt: 反向文本描述
-            first_frame_url: 起始关键帧图片 URL (KF2V 必填)
-            last_frame_url: 结束关键帧图片 URL (KF2V 必填)
-            如果没有提供last_frame_url，则表示只提供了first_frame_url，生成的是单关键帧视频（KFV） 参数是img_url
+            prompt: TextDescription
+            negative_prompt: ReverseTextDescription
+            first_frame_url: 起始关键帧Image URL (KF2V Required)
+            last_frame_url: End关键帧Image URL (KF2V Required)
+            IfNoneProvidelast_frame_url, then表示只Provide了first_frame_url，Generate is单关键帧Video（KFV） Parameters是img_url
             """
         import dashscope
         dashscope.base_http_api_url = self.api_base
@@ -80,17 +80,17 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         is_wan27_model = 'wan2.7' in self.model_name.lower()
 
         if is_wan27_model:
-            # wan2.7 模型使用特殊的 media 参数结构
+            # wan2.7 ModelUse特殊的 media Parameters结构
             media = []
 
-            # 添加首帧图片
+            # Add首帧Image
             if first_frame_url:
                 media.append({
                     "type": "first_frame",
                     "url": first_frame_url
                 })
 
-            # 添加尾帧图片（如果存在）
+            # Add尾帧Image（IfExists）
             if last_frame_url:
                 media.append({
                     "type": "last_frame",
@@ -104,7 +104,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
                 "negative_prompt": negative_prompt
             }
         else:
-            # 构建基础参数
+            # BuildBasicParameters
             params = {"api_key": self.api_key, "prompt": prompt, "model": self.model_name,
                       "negative_prompt": negative_prompt}
 
@@ -114,36 +114,36 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
             elif first_frame_url:
                 params['img_url'] = first_frame_url
 
-        # 合并所有额外参数
+        # MergeAllExtraParameters
         params.update(self.params)
 
-        # --- 异步提交任务 ---
+        # --- AsyncSubmitTask ---
         rsp = self._safe_call(VideoSynthesis.async_call, **params)
         if rsp.status_code != HTTPStatus.OK:
-            maxkb_logger.info(f'提交任务失败，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
-            raise RuntimeError(f'提交任务失败，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
+            maxkb_logger.info(f'SubmitTaskFailure，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
+            raise RuntimeError(f'SubmitTaskFailure，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
 
         maxkb_logger.info("task_id:", rsp.output.task_id)
 
-        # --- 查询任务状态 ---
+        # --- QueryTaskStatus ---
         status = self._safe_call(VideoSynthesis.fetch, task=rsp, api_key=self.api_key)
         if status.status_code == HTTPStatus.OK:
-            maxkb_logger.info("当前任务状态:", status.output.task_status)
+            maxkb_logger.info("CurrentTaskStatus:", status.output.task_status)
         else:
             maxkb_logger.error(
-                f'获取任务状态失败，status_code: {status.status_code}, code: {status.code}, message: {status.message}')
+                f'GetTaskStatusFailure，status_code: {status.status_code}, code: {status.code}, message: {status.message}')
             raise RuntimeError(
-                f'获取任务状态失败，status_code: {status.status_code}, code: {status.code}, message: {status.message}')
+                f'GetTaskStatusFailure，status_code: {status.status_code}, code: {status.code}, message: {status.message}')
 
-        # --- 等待任务完成 ---
+        # --- WaitTaskComplete ---
         rsp = self._safe_call(VideoSynthesis.wait, task=rsp, api_key=self.api_key)
         if rsp.status_code == HTTPStatus.OK:
             if rsp.output.task_status == "SUCCEEDED":
-                maxkb_logger.info(f'视频生成完成！视频 URL: {rsp.output.video_url}')
+                maxkb_logger.info(f'VideoGenerateComplete！Video URL: {rsp.output.video_url}')
                 return rsp.output.video_url
             else:
-                maxkb_logger.error(f'视频生成失败: {rsp.output.message}')
-                raise RuntimeError(f'视频生成失败, message: {rsp.output.message}')
+                maxkb_logger.error(f'VideoGenerateFailure: {rsp.output.message}')
+                raise RuntimeError(f'VideoGenerateFailure, message: {rsp.output.message}')
         else:
-            maxkb_logger.error(f'生成失败，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
-            raise RuntimeError(f'生成失败，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
+            maxkb_logger.error(f'GenerateFailure，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')
+            raise RuntimeError(f'GenerateFailure，status_code: {rsp.status_code}, code: {rsp.code}, message: {rsp.message}')

@@ -78,7 +78,7 @@ const route = useRoute()
 const {
   params: {id, folderId},
   /*
-  id 为 knowledge_id
+  id is knowledge_id
   */
 } = route as any
 const ak = {

@@ -36,7 +36,7 @@ const props = defineProps<{
 }>()
 const route = useRoute()
 const {
-  params: { id, documentId }, // id为knowledgeID
+  params: { id, documentId }, // id is knowledgeID
   query: { from, isShared },
 } = route as any
 

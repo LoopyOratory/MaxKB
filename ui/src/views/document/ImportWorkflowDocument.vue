@@ -87,8 +87,8 @@ const {
   params: { folderId },
   query: { id },
   /*
-  id为knowledgeID
-  folderId 可以区分 resource-management shared还是 workspace
+  id is knowledgeID
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route
 const apiType = computed(() => {

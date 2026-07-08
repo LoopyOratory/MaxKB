@@ -4,7 +4,7 @@
       <div class="pdf-actions">
         <el-button size="small" type="primary" plain @click="toggleFullscreen">
           <el-icon><FullScreen /></el-icon>
-          <span>{{ isFullscreen ? '退出全屏' : '全屏' }}</span>
+          <span>{{ isFullscreen ? 'Exit fullscreen' : 'Fullscreen' }}</span>
         </el-button>
       </div>
 
@@ -12,7 +12,7 @@
 
       <div v-if="loading" class="pdf-overlay">
         <el-icon class="is-loading"><Loading /></el-icon>
-        <span>PDF 加载中...</span>
+        <span>PDF Load in ...</span>
       </div>
 
       <div v-else-if="overlayText" class="pdf-overlay" :class="{ 'pdf-overlay--error': !!error }">
@@ -71,7 +71,7 @@ const pdfSrc = computed(() => {
 
 const overlayText = computed(() => {
   if (error.value) return error.value
-  if (!isPdf.value) return '暂无 PDF 预览'
+  if (!isPdf.value) return 'No PDF Preview'
   return ''
 })
 
@@ -220,7 +220,7 @@ async function loadPdf(url: string) {
     await renderAllPages()
   } catch (err: any) {
     console.error(err)
-    error.value = err?.message || 'PDF 加载失败'
+    error.value = err?.message || 'PDF LoadFailure'
     clearPages()
   } finally {
     if (currentToken === requestToken.value) {
@@ -244,7 +244,7 @@ async function handleResize() {
     await renderAllPages()
   } catch (err: any) {
     console.error(err)
-    error.value = err?.message || 'PDF 重绘失败'
+    error.value = err?.message || 'PDF RepaintFailure'
   } finally {
     if (currentToken === requestToken.value) {
       loading.value = false

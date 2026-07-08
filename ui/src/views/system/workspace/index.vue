@@ -84,7 +84,7 @@
           </div>
         </div>
 
-        <!-- 右边 -->
+        <!-- Right -->
         <div class="workspace-right p-24" v-loading="loading">
           <div class="flex align-center mb-16">
             <h4 class="medium">{{ i18n_name(currentWorkspace?.name as string) }}</h4>
@@ -118,7 +118,7 @@ import { loadPermissionApi } from '@/utils/dynamics-api/permission-api.ts'
 const filterText = ref('')
 const loading = ref(false)
 const list = ref<WorkspaceItem[]>([])
-const filterList = ref<WorkspaceItem[]>([]) // 搜索过滤后列表
+const filterList = ref<WorkspaceItem[]>([]) // SearchFilterAfterList
 const currentWorkspace = ref<WorkspaceItem>()
 
 async function getWorkspace() {
@@ -146,7 +146,7 @@ const dlePermission = () => {
 
 async function refresh(workspace?: WorkspaceItem) {
   await getWorkspace()
-  // 创建后选中新建的
+  // CreationAfterSelectCreate
   if (workspace) {
     currentWorkspace.value = workspace
   } else {
@@ -184,7 +184,7 @@ async function check(id: string) {
 }
 
 async function deleteWorkspace(item: WorkspaceItem) {
-  // 判断是否能删除
+  // Determine whether deletion is possible
   const res = await check(item.id as string)
   const canDelete = res ? res.data.can_delete : true
   if (canDelete) {

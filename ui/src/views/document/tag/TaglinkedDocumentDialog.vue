@@ -172,7 +172,7 @@ import type { TabPaneName } from 'element-plus'
 
 const route = useRoute()
 const {
-  params: { id, folderId, type }, // id为knowledgeID
+  params: { id, folderId, type }, // id is knowledgeID
 } = route as any
 const emit = defineEmits(['refresh'])
 

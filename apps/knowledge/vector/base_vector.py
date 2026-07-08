@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： base_vector.py
+@Author: Tiger
+@file: base_vector.py
 @date：2023/10/18 19:16
 @desc:
 """
@@ -61,22 +61,22 @@ class BaseVectorStore(ABC):
     @abstractmethod
     def vector_is_create(self) -> bool:
         """
-        判断向量库是否创建
-        :return: 是否创建向量库
+        DetermineVector库WhetherCreation
+        :return: WhetherCreationVector库
         """
         pass
 
     @abstractmethod
     def vector_create(self):
         """
-        创建 向量库
+        Creation Vector库
         :return:
         """
         pass
 
     def save_pre_handler(self):
         """
-        插入前置处理器 主要是判断向量库是否创建
+        Insert前置Process器 主要是DetermineVector库WhetherCreation
         :return: True
         """
         if not BaseVectorStore.vector_exists:
@@ -97,15 +97,15 @@ class BaseVectorStore(ABC):
         embedding: Embeddings,
     ):
         """
-        插入向量数据
-        :param source_id:  资源id
-        :param knowledge_id: 知识库id
-        :param text: 文本
-        :param source_type: 资源类型
-        :param document_id: 文档id
-        :param is_active:   是否禁用
-        :param embedding:   向量化处理器
-        :param paragraph_id 段落id
+        InsertVectorData
+        :param source_id:  Resourceid
+        :param knowledge_id: Knowledge baseid
+        :param text: Text
+        :param source_type: Resource type
+        :param document_id: Documentid
+        :param is_active:   WhetherDisable
+        :param embedding:   VectorizationProcess器
+        :param paragraph_id Paragraphid
         :return:  bool
         """
         self.save_pre_handler()
@@ -125,10 +125,10 @@ class BaseVectorStore(ABC):
 
     def batch_save(self, data_list: List[Dict], embedding: Embeddings, is_the_task_interrupted):
         """
-        批量插入
-        @param data_list: 数据列表
-        @param embedding: 向量化处理器
-        @param is_the_task_interrupted: 判断是否中断任务
+        BatchInsert
+        @param data_list: DataList
+        @param embedding: VectorizationProcess器
+        @param is_the_task_interrupted: DetermineWhetherInterruptTask
         :return: bool
         """
         self.save_pre_handler()

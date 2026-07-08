@@ -226,7 +226,7 @@ function deleteClassifyBranch(id: string) {
   if (commonItems.length <= 1) {
     return
   }
-  // 删除连接线
+  // Delete connection line
   const delete_anchor_id = `${props.nodeModel.id}_${id}_right`
   const edgetToDelete = (props.nodeModel.outgoing?.edges || [])
     .filter((edge: any) => edge.sourceAnchorId === delete_anchor_id)
@@ -236,10 +236,10 @@ function deleteClassifyBranch(id: string) {
     props.nodeModel.graphModel.eventCenter.emit('delete_edge', edgetToDelete)
   }
 
-  const newList = list.filter((item: any) => item.id !== id) // 删除分支
+  const newList = list.filter((item: any) => item.id !== id) // Delete branch
 
-  set(props.nodeModel.properties.node_data, 'branch', newList) // 更新数据
-  refreshBranchAnchor(newList, false) // 刷新锚点
+  set(props.nodeModel.properties.node_data, 'branch', newList) // Update data
+  refreshBranchAnchor(newList, false) // Refresh anchor
 }
 
 function refreshBranchAnchor(list: Array<any>, is_add: boolean) {
@@ -276,7 +276,7 @@ const resizeBranch = (wh: any, row: any, index: number) => {
     if (item.id === row.id) {
       return {
         ...item,
-        height: wh.height, //该分支高度
+        height: wh.height, //Branch height
         index: index,
       }
     }

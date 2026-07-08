@@ -46,7 +46,7 @@ export const MsgAlert = (title: string, description: string, options?: any) => {
 }
 
 /**
- * 删除知识库
+ * DeletionKnowledge base
  * @param title
  * @param description
  * @param options

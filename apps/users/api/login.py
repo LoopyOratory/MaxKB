@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： login.py
+    @Author: Tiger
+    @file: login.py
     @date：2025/4/14 10:30
     @desc:
 """
@@ -20,12 +20,12 @@ class ApiLoginResponse(ResultSerializer):
 
 
 """
-Request 和Response 都可以使用此方法
-使用serializers.Serializer
+Request 和Response 都CanUse此Method
+Useserializers.Serializer
 class LoginRequest(serializers.Serializer):
     username = serializers.CharField(required=True, max_length=64, help_text=_("Username"), label=_("Username"))
     password = serializers.CharField(required=True, max_length=128, label=_("Password"))
-使用serializers.ModelSerializer Request不要使用serializers.ModelSerializer的方式
+Useserializers.ModelSerializer Request不要Useserializers.ModelSerializer的Method
 class LoginRequest(serializers.ModelSerializer):
     class Meta:
         model = User

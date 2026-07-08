@@ -12,10 +12,10 @@ from models_provider.base_model_provider import MaxKBBaseModel
 
 def get_max_tokens_keyword(model_name):
     """
-    根据模型名称返回正确的 max_tokens 关键字。
+    Based onModelNameReturn正确的 max_tokens Keyword。
 
-    :param model_name: 模型名称字符串
-    :return: 对应的 max_tokens 关键字字符串
+    :param model_name: ModelNameString
+    :return: Corresponding max_tokens KeywordString
     """
     maxTokens = ["ai21.j2-ultra-v1", "ai21.j2-mid-v1"]
     # max_tokens_to_sample = ["anthropic.claude-v2:1", "anthropic.claude-v2", "anthropic.claude-instant-v1"]
@@ -51,7 +51,7 @@ class BedrockModel(MaxKBBaseModel, ChatBedrock):
         optional_params = MaxKBBaseModel.filter_optional_params(model_kwargs)
 
         config = {}
-        # 判断model_kwargs是否包含 base_url 且不为空
+        # Determinemodel_kwargsWhetherContains base_url 且不为空
         if 'base_url' in model_credential and model_credential['base_url']:
             proxy_url = model_credential['base_url']
             config = Config(

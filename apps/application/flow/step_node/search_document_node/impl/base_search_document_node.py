@@ -32,15 +32,15 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                 **kwargs) -> NodeResult:
         workspace_id = self.workflow_manage.get_body().get('workspace_id')
 
-        if search_scope_type == 'custom':  # 手动选择知识库
+        if search_scope_type == 'custom':  # ManualSelectKnowledgeDatabase
             knowledge_id_list = filter_authorized_ids('knowledge', knowledge_id_list, workspace_id)
             document_id_list = QuerySet(Document).filter(
                 knowledge_id__in=knowledge_id_list
             ).values_list('id', flat=True)
-        else:  # 引用上一步知识库/文档
-            if search_scope_source == 'document':  # 文档
+        else:  # Reference上一步KnowledgeDatabase/Document
+            if search_scope_source == 'document':  # Document
                 document_id_list = self.get_reference_content(search_scope_reference)
-            else:  # 知识库
+            else:  # KnowledgeDatabase
                 ref_knowledge_ids = filter_authorized_ids('knowledge',
                                                           self.get_reference_content(search_scope_reference),
                                                           workspace_id)
@@ -48,7 +48,7 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                     knowledge_id__in=ref_knowledge_ids
                 ).values_list('id', flat=True)
 
-        # 权限过滤
+        # PermissionFilter
         get_knowledge_list_of_authorized = DatabaseModelManage.get_model('get_knowledge_list_of_authorized')
         chat_user_type = self.workflow_manage.get_body().get('chat_user_type')
 
@@ -66,11 +66,11 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                 knowledge_id__in=authorized_knowledge_ids
             ).values_list('id', flat=True)
 
-        if search_mode == 'auto':  # 通过问题自动检索
+        if search_mode == 'auto':  # ThroughQuestionAutomaticSearch
             matched_doc_ids = self.handle_auto_tags(document_id_list, question_reference)
 
             final_document_ids = list(matched_doc_ids)
-        else:  # 自定义检索条件
+        else:  # CustomSearchCondition
             matched_document_ids = self.handle_custom_tags(
                 document_id_list, search_condition_list, search_condition_type
             )
@@ -93,17 +93,17 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
     def handle_auto_tags(self, document_id_list: list, question_reference: list):
         question = self.get_reference_content(question_reference)
 
-        # 使用jieba分词
+        # UsejiebaTokenization
         keywords = jieba.lcut(question)
         if not keywords:
             return set()
 
-        # 构建OR查询,一次性获取所有匹配的文档
+        # BuildORQuery,Once性GetAllMatch的Document
         q_objects = Q()
         for keyword in keywords:
             q_objects |= Q(tag__value__icontains=keyword)
 
-        # 单次数据库查询
+        # SingleDataDatabaseQuery
         matched_doc_ids = set(
             QuerySet(DocumentTag)
             .filter(document_id__in=document_id_list)
@@ -120,7 +120,7 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
             return set(document_id_list)
 
         if search_condition_type == 'AND':
-            # AND逻辑:使用子查询和聚合
+            # ANDLogic:Use子Query和Aggregation
             matched_doc_ids = set(document_id_list)
 
             for condition in search_condition_list:
@@ -131,9 +131,9 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                 if not field_value or field_value == 'None' or len(field_value) == 0:
                     continue
 
-                # 构建查询条件
+                # BuildQueryCondition
                 if compare_type == 'not_contain':
-                    # 反向查询:找出包含该标签的文档,然后排除
+                    # ReverseQuery:FindContains该Tag的Document,然后Exclude
                     exclude_docs = set(QuerySet(DocumentTag).filter(
                         document_id__in=matched_doc_ids,
                         tag__key=tag_key,
@@ -149,7 +149,7 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                     else:
                         continue
 
-                    # 单次查询获取符合条件的文档
+                    # SingleQueryGetMatchesCondition的Document
                     tag_docs = set(QuerySet(DocumentTag).filter(
                         document_id__in=matched_doc_ids
                     ).filter(q_filter).values_list('document_id', flat=True).distinct())
@@ -159,7 +159,7 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
             return matched_doc_ids
 
         else:
-            # OR逻辑
+            # ORLogic
             matched_docs = set()
 
             for condition in search_condition_list:
@@ -171,7 +171,7 @@ class BaseSearchDocumentNode(ISearchDocumentStepNode):
                     continue
 
                 if compare_type == 'not_contain':
-                    # 反向查询:找出包含该标签的文档,然后用全集减去
+                    # ReverseQuery:FindContains该Tag的Document,然后用全集减去
                     exclude_docs = set(QuerySet(DocumentTag).filter(
                         document_id__in=document_id_list,
                         tag__key=tag_key,

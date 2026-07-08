@@ -12,7 +12,7 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * workflow历史版本
+ * workflowHistoryVersion
  */
 const getWorkFlowVersion: (
   application_id: string,
@@ -22,7 +22,7 @@ const getWorkFlowVersion: (
 }
 
 /**
- * workflow历史版本详情
+ * workflowHistoryVersionDetails
  */
 const getWorkFlowVersionDetail: (
   application_id: string,
@@ -36,7 +36,7 @@ const getWorkFlowVersionDetail: (
   )
 }
 /**
- * 修改workflow历史版本
+ * ModificationworkflowHistoryVersion
  */
 const putWorkFlowVersion: (
   application_id: string,

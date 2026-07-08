@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_search_dataset_node.py
+    @Author: Tiger
+    @file: base_search_dataset_node.py
     @date：2024/6/4 11:56
     @desc:
 """
@@ -28,9 +28,9 @@ from models_provider.tools import get_model_instance_by_model_workspace_id
 def get_embedding_id(dataset_id_list):
     dataset_list = QuerySet(Knowledge).filter(id__in=dataset_id_list)
     if len(set([dataset.embedding_model_id for dataset in dataset_list])) > 1:
-        raise Exception("关联知识库的向量模型不一致，无法召回分段。")
+        raise Exception("AssociationKnowledgeDatabase的VectorModel不Consistent, cannot召回Segment。")
     if len(dataset_list) == 0:
-        raise Exception("知识库设置错误,请重新设置知识库")
+        raise Exception("Knowledge database settingsError,请Re-SettingsKnowledgeDatabase")
     return dataset_list[0].embedding_model_id
 
 
@@ -82,10 +82,10 @@ class BaseSearchKnowledgeNode(ISearchKnowledgeStepNode):
         self.context['show_knowledge'] = show_knowledge
 
         document_id_list = None
-        if search_scope_type == 'referencing':  # 引用上一步知识库/文档
-            if search_scope_source == 'knowledge':  # 知识库
+        if search_scope_type == 'referencing':  # Reference上一步KnowledgeDatabase/Document
+            if search_scope_source == 'knowledge':  # KnowledgeDatabase
                 knowledge_id_list = self.get_reference_content(search_scope_reference)
-            else:  # 文档
+            else:  # Document
                 document_id_list = self.get_reference_content(search_scope_reference)
                 knowledge_id_list = [str(k) for k in QuerySet(Document).filter(
                     id__in=document_id_list
@@ -115,7 +115,7 @@ class BaseSearchKnowledgeNode(ISearchKnowledgeStepNode):
                                       exclude_paragraph_id_list, True, knowledge_setting.get('top_n'),
                                       knowledge_setting.get('similarity'),
                                       SearchMode(knowledge_setting.get('search_mode')))
-        # 手动关闭数据库连接
+        # ManualCloseDataDatabaseConnect
         connection.close()
         if embedding_list is None:
             return get_none_result(question)
@@ -164,7 +164,7 @@ class BaseSearchKnowledgeNode(ISearchKnowledgeStepNode):
                                            os.path.join(PROJECT_DIR, "apps", "application", 'sql',
                                                         'list_knowledge_paragraph_by_paragraph_id.sql')),
                                        with_table_name=True)
-        # 如果向量库中存在脏数据 直接删除
+        # IfVectorDatabase中Exists脏Data DirectDeletion
         if len(paragraph_list) != len(paragraph_id_list):
             exist_paragraph_list = [row.get('id') for row in paragraph_list]
             for paragraph_id in paragraph_id_list:

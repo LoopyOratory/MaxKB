@@ -6,8 +6,8 @@ import type { Dict, pageRequest } from '@/api/type/common'
 const prefix = '/system/resource/knowledge'
 
 /**
- * 知识库列表（无分页）
- * @param 参数
+ * Knowledge baseList(NonePagination）
+ * @param Parameters
  * param  {
  "folder_id": "string",
  "name": "string",
@@ -23,8 +23,8 @@ const getKnowledgeList: (param?: any, loading?: Ref<boolean>) => Promise<Result<
 }
 
 /**
- * 知识库分页列表
- * @param 参数
+ * Knowledge basePaginationList
+ * @param Parameters
  * param  {
  "folder_id": "string",
  "name": "string",
@@ -41,8 +41,8 @@ const getKnowledgeListPage: (
 }
 
 /**
- * 知识库详情
- * @param 参数 knowledge_id
+ * Knowledge baseDetails
+ * @param Parameters knowledge_id
  */
 const getKnowledgeDetail: (knowledge_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   knowledge_id,
@@ -52,8 +52,8 @@ const getKnowledgeDetail: (knowledge_id: string, loading?: Ref<boolean>) => Prom
 }
 
 /**
- * 修改知识库信息
- * @param 参数
+ * ModificationKnowledge baseInfo
+ * @param Parameters
  * knowledge_id
  * {
  "name": "string",
@@ -69,8 +69,8 @@ const putKnowledge: (
 }
 
 /**
- * 删除知识库
- * @param 参数 knowledge_id
+ * DeletionKnowledge base
+ * @param Parameters knowledge_id
  */
 const delKnowledge: (knowledge_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   knowledge_id,
@@ -80,8 +80,8 @@ const delKnowledge: (knowledge_id: string, loading?: Ref<boolean>) => Promise<Re
 }
 
 /**
- * 向量化知识库
- * @param 参数 knowledge_id
+ * VectorizationKnowledge base
+ * @param Parameters knowledge_id
  */
 const putReEmbeddingKnowledge: (
   knowledge_id: string,
@@ -91,9 +91,9 @@ const putReEmbeddingKnowledge: (
 }
 
 /**
- * 导出知识库
- * @param knowledge_name 知识库名称
- * @param knowledge_id   知识库id
+ * ExportKnowledge base
+ * @param knowledge_name Knowledge baseName
+ * @param knowledge_id   Knowledge baseid
  * @returns
  */
 const exportKnowledge: (
@@ -109,10 +109,10 @@ const exportKnowledge: (
   )
 }
 /**
- *导出Zip知识库
- * @param knowledge_name 知识库名称
- * @param knowledge_id   知识库id
- * @param loading      加载器
+ *ExportZipKnowledge base
+ * @param knowledge_name Knowledge baseName
+ * @param knowledge_id   Knowledge baseid
+ * @param loading      Loader
  * @returns
  */
 const exportZipKnowledge: (
@@ -129,7 +129,7 @@ const exportZipKnowledge: (
 }
 
 /**
- * 导出知识库
+ * ExportKnowledge base
  * @param knowledge_name
  * @param knowledge_id
  * @param loading
@@ -150,8 +150,8 @@ const exportKnowledgeBundle: (
 }
 
 /**
- * 生成关联问题
- * @param knowledge_id 知识库id
+ * GenerateAssociationQuestion
+ * @param knowledge_id Knowledge baseid
  * @param data
  * @param loading
  * @returns
@@ -164,7 +164,7 @@ const putGenerateRelated: (
   return put(`${prefix}/${knowledge_id}/generate_related`, data, null, loading)
 }
 /**
- * 命中测试列表
+ * HitTestList
  * @param knowledge_id
  * @param loading
  * @query  { query_text: string, top_number: number, similarity: number }
@@ -179,9 +179,9 @@ const putKnowledgeHitTest: (
 }
 
 /**
- * 同步知识库
- * @param 参数 knowledge_id
- * @query 参数 sync_type // 同步类型->replace:替换同步,complete:完整同步
+ * SyncKnowledge base
+ * @param Parameters knowledge_id
+ * @query Parameters sync_type // SyncType->replace:ReplaceSync,complete:CompleteSync
  */
 const putSyncWebKnowledge: (
   knowledge_id: string,
@@ -192,7 +192,7 @@ const putSyncWebKnowledge: (
 }
 
 /**
- * 获取当前用户可使用的向量化模型列表（没用到）
+ * GetCurrentUsercanUseVectorizationModelList(Unused)
  * @param application_id
  * @param loading
  * @query  { query_text: string, top_number: number, similarity: number }
@@ -206,7 +206,7 @@ const getKnowledgeEmdeddingModel: (
 }
 
 /**
- * 获取当前用户可使用的模型列表
+ * Get model list available to current user
  * @param application_id
  * @param loading
  * @query  { query_text: string, top_number: number, similarity: number }
@@ -337,7 +337,7 @@ const getWorkflowAction: (
 }
 
 /**
- * 保存知识库工作流
+ * SaveKnowledge base workflow
  * @param knowledge_id
  * @param data
  * @param loading
@@ -352,7 +352,7 @@ const putKnowledgeWorkflow: (
 }
 
 /**
- * 导出知识库工作流
+ * ExportKnowledge base workflow
  * @param knowledge_id
  * @param knowledge_name
  * @param loading
@@ -372,7 +372,7 @@ const exportKnowledgeWorkflow = (
 }
 
 /**
- * 导入知识库工作流
+ * ImportKnowledge base workflow
  * @param knowledge_id
  * @param data
  * @param loading

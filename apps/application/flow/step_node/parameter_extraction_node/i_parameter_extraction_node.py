@@ -38,7 +38,7 @@ class IParameterExtractionNode(INode):
         model_id_reference = self.node_params_serializer.data.get('model_id_reference')
         model_id = self.node_params_serializer.data.get('model_id')
         model_params_setting = self.node_params_serializer.data.get('model_params_setting')
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],

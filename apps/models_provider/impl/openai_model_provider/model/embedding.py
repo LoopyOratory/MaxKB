@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： embedding.py
+    @Author: Tiger
+    @file: embedding.py
     @date：2024/7/12 17:44
     @desc:
 """

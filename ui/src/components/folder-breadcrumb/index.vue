@@ -66,14 +66,14 @@ const emit = defineEmits(['click'])
 function getBreadcrumbData() {
   const targetId = folder.currentFolder?.id
   const list = TreeToFlatten(props.folderList)
-  if (!folder.currentFolder) return [] // 如果没有 id，返回空数组
+  if (!folder.currentFolder) return [] // If no id, return empty array
   const breadcrumbList: any[] = []
   let currentId: string | null = targetId
   while (currentId) {
     const currentNode = list.find((item: any) => item.id === currentId)
-    if (!currentNode) break // 如果找不到节点，终止循环
-    breadcrumbList.unshift(currentNode) // 添加到面包屑
-    currentId = currentNode.parent_id // 继续查找父级
+    if (!currentNode) break // IfNot foundNode, terminateLoop
+    breadcrumbList.unshift(currentNode) // AddTo breadcrumb
+    currentId = currentNode.parent_id // Continue searching parent
   }
   return breadcrumbList
 }

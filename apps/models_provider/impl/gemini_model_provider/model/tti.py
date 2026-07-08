@@ -56,7 +56,7 @@ class GeminiTextToImage(MaxKBBaseModel, BaseTextToImage):
         if self.model.startswith('imagen'):
             config = types.GenerateImagesConfig(**self.params)
 
-            # 如果有 negative_prompt 就加入
+            # If有 negative_prompt 就加入
             if negative_prompt:
                 config.negative_prompt = negative_prompt
             response = client.models.generate_images(

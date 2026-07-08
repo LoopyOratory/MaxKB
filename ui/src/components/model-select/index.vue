@@ -35,7 +35,7 @@
             <Check />
           </el-icon>
         </el-option>
-        <!-- 不可用 -->
+        <!-- Not available -->
         <el-option
           v-for="item in value.filter((v: any) => v.status !== 'SUCCESS')"
           :key="item.id"
@@ -83,7 +83,7 @@
         </slot>
       </template>
     </el-select>
-    <!-- 添加模板 -->
+    <!-- AddTemplate -->
     <CreateModelDialog
       v-if="showFooter"
       ref="createModelRef"
@@ -173,7 +173,7 @@ onMounted(() => {
 })
 </script>
 <style lang="scss" scoped>
-// AI模型选择：添加模型hover样式
+// AIModelSelect：AddModelhoverStyle
 .select-model {
   .el-select-dropdown__footer {
     &:hover {

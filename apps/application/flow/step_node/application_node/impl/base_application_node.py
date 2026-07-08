@@ -39,11 +39,11 @@ def _write_context(node_variable: Dict, workflow_variable: Dict, node: INode, wo
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     answer = ''
@@ -53,7 +53,7 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
     application_node_dict = node.context.get('application_node_dict', {})
     is_interrupt_exec = False
     for chunk in response:
-        # 先把流转成字符串
+        # 先把流Convert toString
         response_content = chunk.decode('utf-8')[6:]
         response_content = json.loads(response_content)
         content = (response_content.get('content', '') or '')
@@ -106,16 +106,16 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
 
 def write_context(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点实例对象
-    @param workflow:           工作流管理器
+    Write context data
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance object
+    @param workflow: workflow manager
     """
     response = node_variable.get('result', {}).get('data', {})
     node_variable['result'] = {'usage': {'completion_tokens': response.get('completion_tokens'),
                                          'prompt_tokens': response.get('prompt_tokens')}}
-    answer = response.get('content', '') or "抱歉，没有查找到相关内容，请重新描述您的问题或提供更多信息。"
+    answer = response.get('content', '') or "抱歉，None查找到RelatedContent, pleaseRe-Description您的Question或Provide更多Info。"
     reasoning_content = response.get('reasoning_content', '')
     answer_list = response.get('answer_list', [])
     node_variable['application_node_dict'] = {answer.get('real_node_id'): {**answer, 'index': index} for answer, index
@@ -192,7 +192,7 @@ class BaseApplicationNode(IApplicationNode):
         from chat.serializers.chat import ChatSerializers
         if application_id == self.workflow_manage.get_body().get('application_id'):
             raise Exception(_("The sub application cannot use the current node"))
-        # 生成嵌入应用的chat_id
+        # GenerateEmbeddingApplication的chat_id
         current_chat_id = string_to_uuid(chat_id + application_id)
         Chat.objects.get_or_create(id=current_chat_id, defaults={
             'application_id': application_id,

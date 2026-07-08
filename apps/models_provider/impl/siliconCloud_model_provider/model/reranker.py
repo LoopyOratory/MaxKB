@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： siliconcloud_reranker.py
+    @Author: Tiger
+    @file: siliconcloud_reranker.py
     @date：2024/9/10 9:45
-    @desc: SiliconCloud 文档重排封装
+    @desc: SiliconCloud Document重排封装
 """
 
 from typing import Sequence, Optional, Any, Dict
@@ -21,11 +21,11 @@ class SiliconCloudReranker(MaxKBBaseModel, BaseDocumentCompressor):
     api_base: Optional[str]
     """SiliconCloud API URL"""
     model: Optional[str]
-    """SiliconCloud 重排模型 ID"""
+    """SiliconCloud 重排Model ID"""
     api_key: Optional[str]
     """API Key"""
 
-    top_n: Optional[int] = 3  # 取前 N 个最相关的结果
+    top_n: Optional[int] = 3  # Take first N 个最Related的Result
 
     @staticmethod
     def new_instance(model_type, model_name, model_credential: Dict[str, object], **model_kwargs):
@@ -41,10 +41,10 @@ class SiliconCloudReranker(MaxKBBaseModel, BaseDocumentCompressor):
         if not documents:
             return []
 
-        # 预处理文本
+        # 预ProcessText
         texts = [doc.page_content for doc in documents]
 
-        # 发送请求到 SiliconCloud API
+        # SendRequest到 SiliconCloud API
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
@@ -60,11 +60,11 @@ class SiliconCloudReranker(MaxKBBaseModel, BaseDocumentCompressor):
         response = requests.post(f"{self.api_base}/rerank", json=payload, headers=headers)
 
         if response.status_code != 200:
-            raise RuntimeError(f"SiliconCloud API 请求失败: {response.text}")
+            raise RuntimeError(f"SiliconCloud API RequestFailure: {response.text}")
 
         res = response.json()
 
-        # 解析返回结果
+        # ParseReturn result
         return [
             Document(
                 page_content=item.get('document', {}).get('text', ''),

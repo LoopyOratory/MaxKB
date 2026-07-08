@@ -123,7 +123,7 @@ function onFieldChange() {
   props.cond._treeData = fieldConfig?.attrs?.data ?? []
   props.cond._treeMultiple = isTreeMultiple
 
-  // 类型切换时重置 value
+  // Reset value on type switch
   const isMultiple = ['MultiSelect'].includes(fieldType || '') || isTreeMultiple
 
   if (!allowed.includes(props.cond.compare)) {

@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-讯飞超拟人语音合成 (Super Humanoid TTS) Credential
+iFlytekSuper-realistic TTS (Super Humanoid TTS) Credential
 """
 from typing import Dict
 
@@ -13,7 +13,7 @@ from models_provider.base_model_provider import BaseModelCredential, ValidCode
 
 
 class XunFeiSuperHumanoidTTSModelParams(BaseForm):
-    """超拟人语音合成参数"""
+    """Super-realistic TTSParameters"""
     vcn = forms.SingleSelect(
         TooltipLabel(_('Speaker'), _('Speaker selection for super-humanoid TTS service')),
         required=True, default_value='x5_lingxiaoxuan_flow',
@@ -49,7 +49,7 @@ class XunFeiSuperHumanoidTTSModelParams(BaseForm):
 
 
 class XunFeiSuperHumanoidTTSModelCredential(BaseForm, BaseModelCredential):
-    """讯飞超拟人语音合成 Credential"""
+    """iFlytekSuper-realistic TTS Credential"""
     spark_api_url = forms.TextInputField('API URL', required=True,
                                          default_value='wss://cbm01.cn-huabei-1.xf-yun.com/v1/private/mcd9m97e6')
     spark_app_id = forms.TextInputField('APP ID', required=True)

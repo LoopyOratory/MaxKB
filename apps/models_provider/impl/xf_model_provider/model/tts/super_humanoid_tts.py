@@ -2,7 +2,7 @@
 #
 #   author: iflytek
 #
-#  错误码链接：https://www.xfyun.cn/document/error-code （code返回错误码时必看）
+#  Error码Link：https://www.xfyun.cn/document/error-code （codeReturnErrorMust-read when coding)
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 import asyncio
 import base64
@@ -27,7 +27,7 @@ ssl_context.verify_mode = ssl.CERT_NONE
 
 
 class XFSparkSuperHumanoidTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
-    """讯飞超拟人语音合成 (Super Humanoid TTS)"""
+    """iFlytekSuper-realistic TTS (Super Humanoid TTS)"""
     spark_app_id: str
     spark_api_key: str
     spark_api_secret: str

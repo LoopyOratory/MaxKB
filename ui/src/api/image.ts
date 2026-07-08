@@ -3,8 +3,8 @@ import {get, post, del, put} from '@/request/index'
 
 const prefix = '/oss/file'
 /**
- * 上传图片
- * @param 参数  file:file
+ * UploadImage
+ * @param Parameters  file:file
  */
 const postImage: (data: any) => Promise<Result<any>> = (data) => {
   return post(`${prefix}`, data)

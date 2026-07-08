@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： application.py
+@Author: Tiger
+@file: application.py
 @date：2025/5/26 17:03
 @desc:
 """
@@ -71,7 +71,7 @@ from application.serializers.common import update_resource_mapping_by_applicatio
 
 def get_bound_tool_ids(instance: Dict) -> List[str]:
     """
-    收集应用配置(含工作流节点)中引用的所有工具id,用于绑定前的权限校验
+    CollectApplicationConfiguration(含WorkflowNode)中Reference的AllToolid,Used for绑定前的PermissionValidate
     """
     tool_ids = set()
     for key in ("tool_ids", "skill_tool_ids", "mcp_tool_ids"):
@@ -100,9 +100,9 @@ def get_bound_tool_ids(instance: Dict) -> List[str]:
 
 def get_authorized_tool_ids(user_id: str, workspace_id: str, tool_ids: List[str]) -> List[str]:
     """
-    返回 tool_ids 中当前用户被授权绑定/使用的工具id。
-    工作空间管理员默认拥有全部工具权限;其他用户必须在 workspace_user_resource_permission
-    中存在针对该工具的显式授权记录(默认拒绝)。
+    Return tool_ids 中CurrentUser被Authorization绑定/Use的Toolid。
+    WorkspaceAdminDefaultHasAllToolPermission;OtherUserMust在 workspace_user_resource_permission
+    中Exists针对该Tool的显式AuthorizationRecord(Default拒绝)。
     """
     if not tool_ids:
         return []
@@ -124,8 +124,8 @@ def get_authorized_tool_ids(user_id: str, workspace_id: str, tool_ids: List[str]
 
 def validate_bound_tool_permissions(user_id: str, workspace_id: str, instance: Dict):
     """
-    校验应用/工作流中绑定的工具,当前用户是否都有权限使用,防止低权限成员
-    绑定自己被禁止访问的工具,并通过应用/工作流执行绕过工具的单独授权控制。
+    ValidateApplication/Workflow中绑定的Tool,CurrentUserWhether都有PermissionUse,Prevent lowPermissionMember
+    绑定自己被ForbiddenAccess的Tool,并ThroughApplication/WorkflowExecuteBypassTool的单独Authorization控制。
     """
     tool_ids = get_bound_tool_ids(instance)
     if not tool_ids:
@@ -227,10 +227,10 @@ class ApplicationSerializerModel(serializers.ModelSerializer):
 
 
 class NoReferencesChoices(models.TextChoices):
-    """订单类型"""
+    """OrderType"""
 
-    ai_questioning = "ai_questioning", "ai回答"
-    designated_answer = "designated_answer", "指定回答"
+    ai_questioning = "ai_questioning", "aiAnswer"
+    designated_answer = "designated_answer", "SpecifyAnswer"
 
 
 class NoReferencesSetting(serializers.Serializer):
@@ -394,16 +394,16 @@ class ApplicationCreateSerializer(serializers.Serializer):
             allow_null=True,
             label=_("Related Knowledge Base"),
         )
-        # 数据集相关设置
+        # DatasetRelatedSettings
         knowledge_setting = KnowledgeSettingSerializer(required=True)
-        # 模型相关设置
+        # ModelRelatedSettings
         model_setting = ModelSettingSerializer(required=True)
-        # 问题补全
+        # QuestionCompletion
         problem_optimization = serializers.BooleanField(required=True, label=_("Question completion"))
         problem_optimization_prompt = serializers.CharField(
             required=False, max_length=102400, label=_("Question completion prompt")
         )
-        # 应用类型
+        # ApplicationType
         type = serializers.CharField(
             required=True,
             label=_("Application Type"),
@@ -638,11 +638,11 @@ class ApplicationEditSerializer(serializers.Serializer):
     knowledge_id_list = serializers.ListSerializer(
         required=False, child=serializers.UUIDField(required=True), label=_("Related Knowledge Base")
     )
-    # 数据集相关设置
+    # DatasetRelatedSettings
     knowledge_setting = KnowledgeSettingSerializer(required=False, allow_null=True, label=_("Dataset settings"))
-    # 模型相关设置
+    # ModelRelatedSettings
     model_setting = ModelSettingSerializer(required=False, allow_null=True, label=_("Model setup"))
-    # 问题补全
+    # QuestionCompletion
     problem_optimization = serializers.BooleanField(required=False, allow_null=True, label=_("Question completion"))
     icon = serializers.CharField(required=False, allow_null=True, label=_("Icon"))
 
@@ -672,7 +672,7 @@ class ApplicationSerializer(serializers.Serializer):
         work_flow_template = instance.get("work_flow_template")
         application_type = instance.get("type")
 
-        # 处理工作流模板安装逻辑
+        # ProcessWorkflowTemplate安装Logic
         if work_flow_template:
             return self.insert_template_workflow(instance)
         if "WORK_FLOW" == application_type:
@@ -694,7 +694,7 @@ class ApplicationSerializer(serializers.Serializer):
         download_url = work_flow_template.get("downloadUrl")
         if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
             raise AppApiException(500, _("Illegal download url"))
-        # 查找匹配的版本名称
+        # Find matchingVersionName
         res = requests.get(download_url, timeout=5)
         app = ApplicationSerializer(
             data={"user_id": self.data.get("user_id"), "workspace_id": self.data.get("workspace_id")}
@@ -732,7 +732,7 @@ class ApplicationSerializer(serializers.Serializer):
         validate_bound_tool_permissions(user_id, workspace_id, instance)
         application_model = wq.to_application_model(user_id, workspace_id, instance)
         application_model.save()
-        # 插入认证信息
+        # InsertAuthenticationInfo
         ApplicationAccessToken(
             application_id=application_model.id, access_token=hashlib.md5(str(uuid.uuid7()).encode()).hexdigest()[8:24]
         ).save()
@@ -761,13 +761,13 @@ class ApplicationSerializer(serializers.Serializer):
             self.to_application_knowledge_mapping(application_model.id, knowledge_id)
             for knowledge_id in knowledge_id_list
         ]
-        # 插入应用
+        # InsertApplication
         application_model.save()
-        # 插入认证信息
+        # InsertAuthenticationInfo
         ApplicationAccessToken(
             application_id=application_model.id, access_token=hashlib.md5(str(uuid.uuid7()).encode()).hexdigest()[8:24]
         ).save()
-        # 插入关联数据
+        # InsertAssociationData
         QuerySet(ResourceMapping).bulk_create(application_knowledge_mapping_model_list)
         return ApplicationCreateSerializer.ApplicationResponse(application_model).data
 
@@ -793,11 +793,11 @@ class ApplicationSerializer(serializers.Serializer):
                 [[tool.get("id"), generate_uuid((tool.get("id") + workspace_id or ""))] for tool in tool_list],
                 [],
             )
-            # 存在的工具列表
+            # ExistingToolList
             exits_tool_id_list = [
                 str(tool.id) for tool in QuerySet(Tool).filter(id__in=tool_id_list, workspace_id=workspace_id)
             ]
-            # 需要更新的工具集合
+            # NeedsUpdate的Toolset合
             update_tool_map = {
                 tool.get("id"): generate_uuid((tool.get("id") + workspace_id or ""))
                 for tool in tool_list
@@ -810,7 +810,7 @@ class ApplicationSerializer(serializers.Serializer):
                 if not exits_tool_id_list.__contains__(tool.get("id"))
                 and not exits_tool_id_list.__contains__(generate_uuid((tool.get("id") + workspace_id or "")))
             ]
-        # 导入包内新建的工具由导入者本人持有,无需校验;仅需校验绑定到已存在工具的引用
+        # Import包内Create的Tool由Import者本人持有,无需Validate;仅需Validate绑定到已ExistsTool的Reference
         existing_bound_tool_ids = [
             tool_id for tool_id in get_bound_tool_ids(application) if tool_id not in update_tool_map
         ]
@@ -827,7 +827,7 @@ class ApplicationSerializer(serializers.Serializer):
         application_model = self.to_application(application, workspace_id, user_id, update_tool_map, folder_id)
         tool_model_list = [self.to_tool(f, workspace_id, user_id) for f in tool_list]
         application_model.save()
-        # 插入授权数据
+        # InsertAuthorizationData
         UserResourcePermissionSerializer(
             data={
                 "workspace_id": self.data.get("workspace_id"),
@@ -835,7 +835,7 @@ class ApplicationSerializer(serializers.Serializer):
                 "auth_target_type": AuthTargetType.APPLICATION.value,
             }
         ).auth_resource(str(application_model.id))
-        # 插入认证信息
+        # InsertAuthenticationInfo
         ApplicationAccessToken(
             application_id=application_model.id, access_token=hashlib.md5(str(uuid.uuid7()).encode()).hexdigest()[8:24]
         ).save()
@@ -867,11 +867,11 @@ class ApplicationSerializer(serializers.Serializer):
     def to_tool(tool, workspace_id, user_id):
         """
         @param workspace_id:
-        @param user_id: 用户id
-        @param tool: 工具
+        @param user_id: Userid
+        @param tool: Tool
         @return:
         """
-        # 如果是技能类型的工具，需要将code保存为文件
+        # IfSkillsType的Tool，Needs将codeSave为File
         code = tool.get("code")
         if tool.get("tool_type") == ToolType.SKILL:
             skill_file_id = uuid.uuid7()
@@ -956,24 +956,24 @@ class ApplicationSerializer(serializers.Serializer):
 
         def get_appstore_templates(self):
             self.is_valid(raise_exception=True)
-            # 下载zip文件
+            # DownloadzipFile
             try:
                 appstore_url = CONFIG.get("APPSTORE_URL", "https://apps-assets.fit2cloud.com/stable/maxkb.json.zip")
                 res = requests.get(appstore_url, timeout=5)
                 res.raise_for_status()
-                # 创建临时文件保存zip
+                # CreationTemporaryFileSavezip
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as temp_zip:
                     temp_zip.write(res.content)
                     temp_zip_path = temp_zip.name
 
                 try:
-                    # 解压zip文件
+                    # DecompresszipFile
                     with zipfile.ZipFile(temp_zip_path, "r") as zip_ref:
-                        # 获取zip中的第一个文件（假设只有一个json文件）
+                        # Getzip in 第OneFile(Assuming only OnejsonFile）
                         json_filename = zip_ref.namelist()[0]
                         json_content = zip_ref.read(json_filename)
 
-                    # 将json转换为字典
+                    # 将jsonTransform为Dict
                     tool_store = json.loads(json_content.decode("utf-8"))
                     tag_dict = {tag["name"]: tag["key"] for tag in tool_store["additionalProperties"]["tags"]}
                     filter_apps = []
@@ -997,7 +997,7 @@ class ApplicationSerializer(serializers.Serializer):
                     tool_store["apps"] = filter_apps
                     return tool_store
                 finally:
-                    # 清理临时文件
+                    # CleanupTemporaryFile
                     os.unlink(temp_zip_path)
             except Exception as e:
                 maxkb_logger.error(f"fetch appstore tools error: {e}")
@@ -1109,7 +1109,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
                     tool_id__in=[tool.id for tool in tool_list if tool.tool_type == ToolType.WORKFLOW]
                 )
             }
-            # 如果是技能工具，则需要将code字段转换为文件内容的base64字符串
+            # IfSkillsTool, thenNeeds将codeFieldTransform为FileContent的base64String
             for tool in tool_list:
                 if tool.tool_type == ToolType.SKILL:
                     skill_file = QuerySet(File).filter(id=tool.code).first()
@@ -1274,11 +1274,11 @@ class ApplicationOperateSerializer(serializers.Serializer):
         knowledge_node_list = ApplicationOperateSerializer.get_search_node(instance.get("work_flow"))
         for knowledge_node in knowledge_node_list:
             node_data = knowledge_node.get("properties").get("node_data")
-            # 全部知识库id
+            # AllKnowledge baseid
             all_knowledge_id_list = node_data.get("all_knowledge_id_list") or []
-            # 用户修改的知识库id
+            # UserModification的Knowledge baseid
             knowledge_id_list = node_data.get("knowledge_id_list") or []
-            # 用户可以看到的知识库
+            # UserCan看 toKnowledge base
             knowledge_list = node_data.get("knowledge_list") or []
 
             no_permission_knowledge_id_list = node_data.get("no_permission_knowledge_id_list") or []
@@ -1307,7 +1307,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
         application_id = self.data.get("application_id")
 
         application = QuerySet(Application).get(id=application_id)
-        #  处理工作流模板逻辑
+        #  ProcessWorkflowTemplateLogic
         if "work_flow_template" in instance:
             return self.update_template_workflow(instance, application)
 
@@ -1338,7 +1338,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             if model is None:
                 raise AppApiException(500, _("Model does not exist"))
         if "work_flow" in instance:
-            # 把工作流中的字段提取到表上
+            # 把Workflow in FieldExtract到表上
             self.update_work_flow_model(instance)
         if "mcp_servers" in instance and len(instance.get("mcp_servers", {})) > 0:
             ToolExecutor().validate_mcp_transport(json.dumps(instance.get("mcp_servers")))
@@ -1392,13 +1392,13 @@ class ApplicationOperateSerializer(serializers.Serializer):
             if update_key in instance and instance.get(update_key) is not None:
                 application.__setattr__(update_key, instance.get(update_key))
         application.save()
-        # 当前用户可修改关联的知识库列表
+        # CurrentUser可ModificationAssociation的Knowledge baseList
         application_knowledge_id_list = [
             str(knowledge.get("id")) for knowledge in self.list_knowledge(with_valid=False)
         ]
         knowledge_id_list = []
         if "knowledge_id_list" in instance:
-            # 当前用户可修改关联的知识库列表
+            # CurrentUser可ModificationAssociation的Knowledge baseList
             application_knowledge_id_list = [
                 str(knowledge.get("id")) for knowledge in self.list_knowledge(with_valid=False)
             ]
@@ -1429,7 +1429,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
         download_url = work_flow_template.get("downloadUrl")
         if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
             raise AppApiException(500, _("Illegal download url"))
-        # 查找匹配的版本名称
+        # Find matchingVersionName
         res = requests.get(download_url, timeout=5)
         try:
             mk_instance = restricted_loads(res.content)
@@ -1444,11 +1444,11 @@ class ApplicationOperateSerializer(serializers.Serializer):
                 [[tool.get("id"), generate_uuid((tool.get("id") + app.workspace_id or ""))] for tool in tool_list],
                 [],
             )
-            # 存在的工具列表
+            # ExistingToolList
             exits_tool_id_list = [
                 str(tool.id) for tool in QuerySet(Tool).filter(id__in=tool_id_list, workspace_id=app.workspace_id)
             ]
-            # 需要更新的工具集合
+            # NeedsUpdate的Toolset合
             update_tool_map = {
                 tool.get("id"): generate_uuid((tool.get("id") + app.workspace_id or ""))
                 for tool in tool_list
@@ -1558,18 +1558,18 @@ class ApplicationOperateSerializer(serializers.Serializer):
 
     def update_knowledge_node(self, workflow, available_knowledge_dict):
         """
-        修改知识库检索节点 数据
-        定义 all_knowledge_id_list:    所有的关联知识库
-            knowledge_id_list:          当前用户可看到的关联知识库列表
-            knowledge_list:           用户
-        @param workflow:              知识库
-        @param available_knowledge_dict:   当前用户可用的知识库
+        ModificationKnowledge base searchNode Data
+        Definition all_knowledge_id_list:    All的AssociationKnowledge base
+            knowledge_id_list:          CurrentUser可看 toAssociationKnowledge baseList
+            knowledge_list:           User
+        @param workflow:              Knowledge base
+        @param available_knowledge_dict:   CurrentUserAvailable的Knowledge base
         @return:
         """
         knowledge_node_list = self.get_search_node(workflow)
         for search_node in knowledge_node_list:
             node_data = search_node.get("properties", {}).get("node_data", {})
-            # 当前知识库关联的所有知识库
+            # CurrentKnowledge baseAssociation的AllKnowledge base
             knowledge_id_list = node_data.get("knowledge_id_list", [])
             knowledge_list = [
                 available_knowledge_dict.get(knowledge_id)
@@ -1595,7 +1595,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
         if knowledge_workspace_authorization_model is not None:
             white_list_condition = Q(authentication_type="WHITE_LIST") & Q(workspace_id_list__contains=[workspace_id])
             default_condition = ~Q(authentication_type="WHITE_LIST") & ~Q(workspace_id_list__contains=[workspace_id])
-            # 组合查询
+            # CombineQuery
             query = white_list_condition | default_condition
             inner = QuerySet(knowledge_workspace_authorization_model).filter(query)
             share_knowledge_list = [
@@ -1614,17 +1614,17 @@ class ApplicationOperateSerializer(serializers.Serializer):
 
     @staticmethod
     def save_application_knowledge_mapping(application_knowledge_id_list, knowledge_id_list, application_id):
-        # 需要排除已删除的数据集
+        # NeedsExclude已Deletion的Dataset
         knowledge_id_list = [knowledge.id for knowledge in QuerySet(Knowledge).filter(id__in=knowledge_id_list)]
 
-        # 删除已经关联的id
+        # DeletionAlreadyAssociation的id
         QuerySet(ResourceMapping).filter(
             target_id__in=application_knowledge_id_list,
             source_id=application_id,
             source_type="APPLICATION",
             target_type="KNOWLEDGE",
         ).delete()
-        # 插入
+        # Insert
         QuerySet(ResourceMapping).bulk_create(
             [
                 ResourceMapping(
@@ -1638,12 +1638,12 @@ class ApplicationOperateSerializer(serializers.Serializer):
     def get_application_knowledge_mapping(application_knowledge_id_list, knowledge_id_list, application_id):
         """
 
-        @param application_knowledge_id_list:  当前应用可修改的知识库列表
-        @param knowledge_id_list:              用户修改的知识库列表
-        @param application_id:                 应用id
+        @param application_knowledge_id_list:  CurrentApplication可Modification的Knowledge baseList
+        @param knowledge_id_list:              UserModification的Knowledge baseList
+        @param application_id:                 Applicationid
         @return:
         """
-        # 当前知识库和应用已关联列表
+        # CurrentKnowledge base和Application已AssociationList
         knowledge_application_mapping_list = (
             QuerySet(ResourceMapping)
             .filter(
@@ -1699,7 +1699,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             return model.text_to_speech(content)
 
     def play_demo_text(self, instance, with_valid=True):
-        text = "你好，这里是语音播放测试"
+        text = "你好，这里是Voice playbackTest"
         if with_valid:
             self.is_valid(raise_exception=True)
             PlayDemoTextRequest(data=instance).is_valid(raise_exception=True)

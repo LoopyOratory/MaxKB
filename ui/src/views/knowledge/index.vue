@@ -57,7 +57,7 @@ function getFolder(bool?: boolean) {
     .then((res: any) => {
       folderList.value = res.data
       if (bool) {
-        // 初始化刷新
+        // InitializeRefresh
         folder.setCurrentFolder(res.data?.[0] || {})
       }
     })

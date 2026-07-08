@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： base_data_source_web_node.py
+    @Author: Niu
+    @file: base_data_source_web_node.py
     @date：2025/11/12 13:47
     @desc:
 """

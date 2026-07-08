@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： workspace_user_resource_permission.py
+    @Author: Tiger
+    @file: workspace_user_resource_permission.py
     @date：2025/4/28 17:17
     @desc:
 """
@@ -71,7 +71,7 @@ class ResourceMappingSerializer(serializers.Serializer):
 
     def get_resource_count(self, result_list):
         """
-        获取资源映射计数
+        GetResourceMapping计数
         """
         if not result_list:
             return result_list
@@ -80,21 +80,21 @@ class ResourceMappingSerializer(serializers.Serializer):
         data_to_process = result_list.get('records') if is_paginated else result_list
 
         if isinstance(data_to_process, list) and data_to_process:
-            # 提取ID列表，确保每个项目都是字典且包含'id'键
+            # ExtractIDList，EnsureEach项目都是Dict且Contains'id'键
             ids = [item['id'] for item in data_to_process
                    if isinstance(item, dict) and 'id' in item and item['id']]
 
-            if ids:  # 只有在ids非空时才执行查询
+            if ids:  # 只有在ids非空时才ExecuteQuery
                 mapping_counts = ResourceMapping.objects.filter(
                     target_id__in=ids
                 ).values('target_id').annotate(
                     count=models.Count('id')
                 )
 
-                # 构建目标ID到计数的映射
+                # BuildTargetID到计数的Mapping
                 count_dict = {str(item['target_id']): item['count'] for item in mapping_counts}
 
-                # 为每个结果项添加资源计数
+                # 为EachResult项AddResource计数
                 for model in data_to_process:
                     if isinstance(model, dict) and 'id' in model:
                         model_id = str(model['id'])

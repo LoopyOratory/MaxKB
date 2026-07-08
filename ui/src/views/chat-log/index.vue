@@ -323,7 +323,7 @@ const search_type_change = () => {
   search_form.value = { abstract: '', username: '' }
 }
 
-// 定义源类型枚举
+// Define source type enum
 enum SourceType {
   ONLINE = 'ONLINE',
   API_CALL = 'API_CALL',
@@ -336,7 +336,7 @@ enum SourceType {
   SLACK = 'SLACK',
 }
 
-// 创建国际化键值映射
+// Create internationalization key-value mapping
 const SOURCE_TYPE_TRANSLATIONS: Record<SourceType, string> = {
   [SourceType.ONLINE]: 'views.chatLog.online',
   [SourceType.API_CALL]: 'views.chatLog.apiCall',
@@ -352,7 +352,7 @@ const SOURCE_TYPE_TRANSLATIONS: Record<SourceType, string> = {
 const dayOptions = [
   {
     value: 7,
-    label: t('home.pastDayOptions.past7Days'), // 使用 t 方法来国际化显示文本
+    label: t('home.pastDayOptions.past7Days'), // Use t MethodToInternationalizationShowText
   },
   {
     value: 30,
@@ -372,7 +372,7 @@ const dayOptions = [
   },
 ]
 const daterangeValue = ref('')
-// 提交日期时间
+// SubmitDateTime
 const daterange = ref({
   start_time: '',
   end_time: '',
@@ -456,7 +456,7 @@ function filterChange(val: string) {
 }
 
 /**
- * 下一页
+ * Next page
  */
 const nextChatRecord = () => {
   let index = tableIndexMap.value[currentChatId.value] + 1
@@ -492,7 +492,7 @@ const next_disable = computed(() => {
   )
 })
 /**
- * 上一页
+ * Previous page
  */
 const preChatRecord = () => {
   let index = tableIndexMap.value[currentChatId.value] - 1

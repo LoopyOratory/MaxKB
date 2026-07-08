@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： database_model_manage.py
+    @Author: Tiger
+    @file: database_model_manage.py
     @date：2025/4/15 11:06
     @desc:
 """
@@ -12,7 +12,7 @@ from django.conf import settings
 
 def new_instance_by_class_path(class_path: str):
     """
-    根据class_path 创建实例
+    Based onclass_path CreationInstance
     """
     parts = class_path.rpartition('.')
     package_path = parts[0]
@@ -24,14 +24,14 @@ def new_instance_by_class_path(class_path: str):
 
 class DatabaseModelManage:
     """
-    模型字典
+    ModelDict
     """
     model_dict = {}
 
     @staticmethod
     def get_model(model_name):
         """
-        根据模型
+        Based onModel
         """
         return DatabaseModelManage.model_dict.get(model_name)
 

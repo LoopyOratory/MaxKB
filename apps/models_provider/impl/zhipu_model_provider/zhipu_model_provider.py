@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： zhipu_model_provider.py
+    @Author: Tiger
+    @file: zhipu_model_provider.py
     @date：2024/04/19 13:5
     @desc:
 """

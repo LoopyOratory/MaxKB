@@ -165,17 +165,17 @@ const getDefaultValue = (row: any) => {
 function onDragHandle() {
   if (!tableRef.value) return
 
-  // 获取表格的 tbody DOM 元素
+  // Get table tbody DOM element
   const wrapper = tableRef.value.$el as HTMLElement
   const tbody = wrapper.querySelector('.el-table__body-wrapper tbody')
   if (!tbody) return
-  // 初始化 Sortable
+  // Initialize Sortable
   Sortable.create(tbody as HTMLElement, {
     animation: 150,
     ghostClass: 'ghost-row',
     onEnd: (evt) => {
       if (evt.oldIndex === undefined || evt.newIndex === undefined) return
-      // 更新数据顺序
+      // Update data order
       const items = cloneDeep([...inputFieldList.value])
       const [movedItem] = items.splice(evt.oldIndex, 1)
       items.splice(evt.newIndex, 0, movedItem)

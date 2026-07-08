@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： slider_field.py
+    @Author: Tiger
+    @file: slider_field.py
     @date：2024/8/22 17:06
     @desc:
 """
@@ -15,7 +15,7 @@ from django.utils.translation import gettext_lazy as _
 
 class SliderField(BaseField):
     """
-    滑块输入框
+    滑块Input框
     """
 
     def __init__(self, label: str or BaseLabel,
@@ -28,13 +28,13 @@ class SliderField(BaseField):
                  relation_show_field_dict: Dict = None,
                  attrs=None, props_info=None):
         """
-        @param label: 提示
+        @param label: Tip
         @param _min:  最小值
-        @param _max:  最大值
+        @param _max:  Maximum值
         @param _step: 步长
-        @param precision: 保留多少小数
-        @param required:  是否必填
-        @param default_value: 默认值
+        @param precision: Retain多少小数
+        @param required:  WhetherRequired
+        @param default_value: Default值
         @param relation_show_field_dict:
         @param attrs:
         @param props_info:

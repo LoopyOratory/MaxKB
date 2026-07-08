@@ -104,14 +104,14 @@ watch(dialogVisible, (bool) => {
 const open = (source: string, id: string, data?: any) => {
   sourceType.value = source
   if (data) {
-    //  编辑当前id
+    //  EditCurrentid
     editId.value = data.id
     folderForm.value.name = data.name
     folderForm.value.desc = data.desc
     folderForm.value.parent_id = data.parent_id
     isEdit.value = true
   } else {
-    //  给当前id添加子id
+    //  forCurrentidAddSub-id
     folderForm.value.parent_id = id
   }
   dialogVisible.value = true

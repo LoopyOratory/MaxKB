@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: qabot
-    @Author：虎
-    @file： lock.py
+    @Author: Tiger
+    @file: lock.py
     @date：2023/9/11 11:45
     @desc:
 """
@@ -20,14 +20,14 @@ class RedisLock():
 
     def try_lock(self, key: str, timeout=None):
         """
-        获取锁
-        :param key:    获取锁 key
-        :param timeout 超时时间
-        :return: 是否获取到锁
+        Get锁
+        :param key:    Get锁 key
+        :param timeout Timeout
+        :return: WhetherGet到锁
         """
         redis_client = get_redis_connection("default")
         if timeout is None:
-            timeout = 3600  # 默认超时时间为3600秒
+            timeout = 3600  # DefaultTimeout为3600秒
         self.lock_value = str(uuid.uuid7())
         return redis_client.set(key, self.lock_value, nx=True, ex=timeout)
 
@@ -36,7 +36,7 @@ class RedisLock():
         """
         解锁
         :param key: 解锁 key
-        :return: 是否解锁成功
+        :return: Whether解锁Success
         """
         redis_client = get_redis_connection("default")
         unlock_script = """
@@ -51,10 +51,10 @@ class RedisLock():
 
 def lock(lock_key, timeout=None):
     """
-    给一个函数上锁
-    @param lock_key: 上锁key 字符串|函数  函数返回值为字符串
-    @param timeout:  超时时间
-    :return: 装饰器函数 当前装饰器主要限制一个key只能一个线程去调用 相同key只能阻塞等待上一个任务执行完毕 不同key不需要等待
+    给OneFunction上锁
+    @param lock_key: 上锁key String|Function  FunctionReturn值为String
+    @param timeout:  Timeout
+    :return: 装饰器Function Current装饰器主要LimitOnekey只能One线程去Call Samekey只能阻塞Wait上OneTaskExecute完毕 Differentkey不NeedsWait
 
     """
 
@@ -64,7 +64,7 @@ def lock(lock_key, timeout=None):
             key = lock_key(*args, **kwargs) if callable(lock_key) else lock_key
             rlock = RedisLock()
             if not rlock.try_lock(key, timeout):
-                # 获取锁失败，可自定义异常或返回
+                # Get锁Failure，可CustomException或Return
                 return None
             try:
                 return func(*args, **kwargs)

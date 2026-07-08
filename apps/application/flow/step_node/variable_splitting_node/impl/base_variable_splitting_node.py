@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： base_variable_splitting_node.py
+    @Author: Tiger
+    @file: base_variable_splitting_node.py
     @date：2025/10/13 15:02
     @desc:
 """
@@ -14,10 +14,10 @@ from application.flow.i_step_node import NodeResult
 from application.flow.step_node.variable_splitting_node.i_variable_splitting_node import IVariableSplittingNode
 
 jsonpath_expr_cache = MemCache('parse_path', {
-    'TIMEOUT': 3600, # 缓存有效期为 1 小时
+    'TIMEOUT': 3600, # CacheValid for 1 Hours
     'OPTIONS': {
-        'MAX_ENTRIES': 1000, # 最多缓存 1000 个条目
-        'CULL_FREQUENCY': 10, # 达到上限时，删除约 1/10 的缓存
+        'MAX_ENTRIES': 1000, # At mostCache 1000  entries
+        'CULL_FREQUENCY': 10, # When limit is reached, Deletion约 1/10 的Cache
     },
 })
 
@@ -30,11 +30,11 @@ def parse_and_cache(path):
 
 def smart_jsonpath_search(data: dict, path: str):
     """
-    智能JSON Path搜索
-    返回:
-    - 单个匹配: 直接返回值
-    - 多个匹配: 返回值的列表
-    - 无匹配: 返回None
+    智能JSON PathSearch
+    Return:
+    - 单个Match: DirectReturn值
+    - 多个Match: ReturnValueList
+    - 无Match: ReturnNone
     """
     jsonpath_expr = parse_and_cache(path)
     matches = jsonpath_expr.find(data)

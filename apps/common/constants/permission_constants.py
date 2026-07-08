@@ -1,9 +1,9 @@
 """
     @project: qabot
-    @Author：虎虎
-    @file： permission_constants.py
+    @Author: Tiger
+    @file: permission_constants.py
     @date：2023/9/13 18:23
-    @desc: 权限,角色 常量
+    @desc: Permission, role constants
 """
 from enum import Enum
 from functools import reduce
@@ -17,21 +17,21 @@ from maxkb import settings
 
 class Group(Enum):
     """
-    权限组 一个组一般对应前端一个菜单
+    Permission group - a group generally corresponds to a frontend menu
     """
 
     USER = "USER_MANAGEMENT"
-    # 应用
+    # Application
     APPLICATION = "APPLICATION"
-    # 应用概览
+    # Application概览
     APPLICATION_OVERVIEW = "APPLICATION_OVERVIEW"
-    # 应用接入
+    # ApplicationAccess
     APPLICATION_ACCESS = "APPLICATION_ACCESS"
-    # 应用 对话用户
+    # Application ConversationUser
     APPLICATION_CHAT_USER = "APPLICATION_CHAT_USER"
-    # 知识库 对话用户
+    # KnowledgeDatabase ConversationUser
     KNOWLEDGE_CHAT_USER = "KNOWLEDGE_CHAT_USER"
-    # 应用对话日志
+    # ApplicationConversationLog
     APPLICATION_CHAT_LOG = "APPLICATION_CHAT_LOG"
 
     KNOWLEDGE = "KNOWLEDGE"
@@ -107,7 +107,7 @@ class Group(Enum):
 
 class SystemGroup(Enum):
     """
-    一级菜单
+    一级Menu
     """
     USER_MANAGEMENT = "USER_MANAGEMENT"
     ROLE = "ROLE"
@@ -150,7 +150,7 @@ class UserGroup(Enum):
 
 class Operate(Enum):
     """
-     一个权限组的操作权限
+     OnePermission group的ActionsPermission
     """
     SELF = ""
     READ = 'READ'
@@ -158,41 +158,41 @@ class Operate(Enum):
     CREATE = "READ+CREATE"
     DELETE = "READ+DELETE"
     """
-    使用权限
+    UsePermission
     """
     USE = "USE"
     IMPORT = "READ+IMPORT"
-    EXPORT = "READ+EXPORT"  # 导入导出
-    PUBLISH = "READ+PUBLISH"  # 发布
-    SYNC = "READ+SYNC"  # 同步
-    GENERATE = "READ+GENERATE"  # 生成
-    ADD_MEMBER = "READ+ADD_MEMBER"  # 添加成员
-    REMOVE_MEMBER = "READ+REMOVE_MEMBER"  # 添加成员
-    VECTOR = "READ+VECTOR"  # 向量化
-    MIGRATE = "READ+MIGRATE"  # 迁移
-    RELATE = "READ+RELATE"  # 关联
-    USER_GROUP = "READ+USER_GROUP"  # 用户组
-    ANNOTATION = "READ+ANNOTATION"  # 标注
+    EXPORT = "READ+EXPORT"  # ImportExport
+    PUBLISH = "READ+PUBLISH"  # Publish
+    SYNC = "READ+SYNC"  # Sync
+    GENERATE = "READ+GENERATE"  # Generate
+    ADD_MEMBER = "READ+ADD_MEMBER"  # AddMember
+    REMOVE_MEMBER = "READ+REMOVE_MEMBER"  # AddMember
+    VECTOR = "READ+VECTOR"  # Vectorization
+    MIGRATE = "READ+MIGRATE"  # Migration
+    RELATE = "READ+RELATE"  # Association
+    USER_GROUP = "READ+USER_GROUP"  # User组
+    ANNOTATION = "READ+ANNOTATION"  # Annotation
     CLEAR_POLICY = "READ+CLEAR_POLICY"
-    EMBED = "READ+EMBED"  # 嵌入
-    ACCESS = "READ+ACCESS"  # 访问限制
-    DISPLAY = "READ+DISPLAY"  # 显示设置
+    EMBED = "READ+EMBED"  # Embedding
+    ACCESS = "READ+ACCESS"  # AccessLimit
+    DISPLAY = "READ+DISPLAY"  # ShowSettings
     API_KEY = "READ+API_KEY"  # API_KEY
-    PUBLIC_ACCESS = "READ+PUBLIC_ACCESS"  # 公共访问链接
+    PUBLIC_ACCESS = "READ+PUBLIC_ACCESS"  # PublicAccessLink
     Q_WEIXIN = "READ+Q_WEIXIN"  # 企业微信
-    FEISHU = "READ+FEISHU"  # 飞书
+    FEISHU = "READ+FEISHU"  # Feishu
     DD = "READ+DD"  # 钉钉
     WEIXIN_PUBLIC_ACCOUNT = "READ+WEIXIN_PUBLIC_ACCOUNT"  # 微信公众号
     SLACK = "READ+SLACK"  # SLACK
-    ADD_KNOWLEDGE = "READ+ADD_KNOWLEDGE"  # 添加到知识库
-    TO_CHAT = "READ+TO_CHAT"  # 去对话
-    SETTING = "READ+SETTING"  # 管理
-    DOWNLOAD = "READ+DOWNLOAD"  # 下载
+    ADD_KNOWLEDGE = "READ+ADD_KNOWLEDGE"  # Add到KnowledgeDatabase
+    TO_CHAT = "READ+TO_CHAT"  # 去Conversation
+    SETTING = "READ+SETTING"  # Manage
+    DOWNLOAD = "READ+DOWNLOAD"  # Download
     COPY = "READ+COPY"
-    AUTH = "READ+AUTH"  # 资源授权
-    TAG = "READ+TAG"  # 标签设置
-    REPLACE = "READ+REPLACE"  # 标签设置
-    UPDATE = "READ+UPDATE"  # 更新license
+    AUTH = "READ+AUTH"  # ResourceAuthorization
+    TAG = "READ+TAG"  # TagSettings
+    REPLACE = "READ+REPLACE"  # TagSettings
+    UPDATE = "READ+UPDATE"  # Updatelicense
     RELATE_VIEW = "READ+RELATE_VIEW"
     RECORD = "READ+RECORD"
     TRIGGER_READ = "READ+TRIGGER_READ"
@@ -204,15 +204,15 @@ class Operate(Enum):
 
 
 class RoleGroup(Enum):
-    # 系统用户
+    # SystemUser
     SYSTEM_USER = "SYSTEM_USER"
-    # 对话用户
+    # ConversationUser
     CHAT_USER = "CHAT_USER"
 
 
 class ResourcePermissionRole(models.TextChoices):
     """
-    资源权限根据角色
+    ResourcePermissionBased onRole
     """
     ROLE = "ROLE"
 
@@ -222,11 +222,11 @@ class ResourcePermissionRole(models.TextChoices):
 
 class ResourcePermission(models.TextChoices):
     """
-    资源权限组
+    ResourcePermission group
     """
     # 查看
     VIEW = "VIEW"
-    # 管理
+    # Manage
     MANAGE = "MANAGE"
 
     def __eq__(self, other):
@@ -274,12 +274,12 @@ class ResourcePermissionConst:
 
 class ResourceAuthType(models.TextChoices):
     """
-    资源授权类型
+    ResourceAuthorizationType
     """
-    "当授权类型是Role时候"
+    "当AuthorizationType是Role时候"
     ROLE = "ROLE"
 
-    """资源权限组"""
+    """ResourcePermission group"""
     RESOURCE_PERMISSION_GROUP = "RESOURCE_PERMISSION_GROUP"
 
 
@@ -303,15 +303,15 @@ class Role:
 
 
 class RoleConstants(Enum):
-    ADMIN = Role("ADMIN", '超级管理员', RoleGroup.SYSTEM_USER)
-    WORKSPACE_MANAGE = Role("WORKSPACE_MANAGE", '工作空间管理员', RoleGroup.SYSTEM_USER)
-    USER = Role("USER", '普通用户', RoleGroup.SYSTEM_USER)
-    CHAT_ANONYMOUS_USER = Role("CHAT_ANONYMOUS_USER", "对话匿名用户", RoleGroup.CHAT_USER)
-    CHAT_USER = Role("CHAT_USER", "对话用户", RoleGroup.CHAT_USER)
+    ADMIN = Role("ADMIN", '超级Admin', RoleGroup.SYSTEM_USER)
+    WORKSPACE_MANAGE = Role("WORKSPACE_MANAGE", 'WorkspaceAdmin', RoleGroup.SYSTEM_USER)
+    USER = Role("USER", 'NormalUser', RoleGroup.SYSTEM_USER)
+    CHAT_ANONYMOUS_USER = Role("CHAT_ANONYMOUS_USER", "ConversationAnonymousUser", RoleGroup.CHAT_USER)
+    CHAT_USER = Role("CHAT_USER", "ConversationUser", RoleGroup.CHAT_USER)
 
-    EXTENDS_ADMIN = Role("EXTENDS_ADMIN", '继承超级管理员', RoleGroup.SYSTEM_USER)
-    EXTENDS_WORKSPACE_MANAGE = Role("EXTENDS_WORKSPACE_MANAGE", "继承工作空间管理员", RoleGroup.CHAT_USER)
-    EXTENDS_USER = Role("EXTENDS_USER", "继承普通用户", RoleGroup.CHAT_USER)
+    EXTENDS_ADMIN = Role("EXTENDS_ADMIN", '继承超级Admin', RoleGroup.SYSTEM_USER)
+    EXTENDS_WORKSPACE_MANAGE = Role("EXTENDS_WORKSPACE_MANAGE", "继承WorkspaceAdmin", RoleGroup.CHAT_USER)
+    EXTENDS_USER = Role("EXTENDS_USER", "继承NormalUser", RoleGroup.CHAT_USER)
 
     def get_workspace_role(self):
         return lambda r, kwargs: Role(name=self.value.name,
@@ -449,7 +449,7 @@ Permission_Label = {
 
 class Permission:
     """
-    权限信息
+    PermissionInfo
     """
 
     def __init__(self, group: Group, operate: Operate, resource_path=None, role_list=None,
@@ -461,13 +461,13 @@ class Permission:
         self.group = group
         self.operate = operate
         self.resource_path = resource_path
-        # 用于获取角色与权限的关系,只适用于没有权限管理的
+        # Used forGetRole与Permission的Relation,只适Used forNonePermissionManage的
         self.role_list = role_list
-        # 用于资源权限权限分组
+        # Used forResourcePermissionPermissionGroup
         self.resource_permission_group_list = resource_permission_group_list
-        self.parent_group = parent_group  # 新增字段：父级组
+        self.parent_group = parent_group  # AddField：父级组
         self.label = label
-        self.is_ee = is_ee  # 是否是企业版权限
+        self.is_ee = is_ee  # Whether是EnterprisePermission
 
     @staticmethod
     def new_instance(permission_str: str):
@@ -491,7 +491,7 @@ class Permission:
 
 class PermissionConstants(Enum):
     """
-     权限枚举
+     Permission枚举
     """
     HOMEPAGE_READ = Permission(
         group=Group.HOMEPAGE, operate=Operate.READ, role_list=[RoleConstants.ADMIN, RoleConstants.USER],
@@ -1219,7 +1219,7 @@ class PermissionConstants(Enum):
                                              resource_permission_group_list=[ResourcePermissionConst.APPLICATION_MANGE],
 
                                              )
-    # 应用接入
+    # ApplicationAccess
     APPLICATION_ACCESS_READ = Permission(group=Group.APPLICATION_ACCESS, operate=Operate.READ,
                                          role_list=[RoleConstants.ADMIN, RoleConstants.USER],
                                          parent_group=[WorkspaceGroup.APPLICATION, UserGroup.APPLICATION],
@@ -1722,7 +1722,7 @@ class PermissionConstants(Enum):
         group=Group.SYSTEM_RES_APPLICATION_OVERVIEW, operate=Operate.PUBLIC_ACCESS, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_APPLICATION], is_ee=settings.edition == "EE"
     )
-    # 应用接入
+    # ApplicationAccess
     RESOURCE_APPLICATION_ACCESS_READ = Permission(
         group=Group.SYSTEM_RES_APPLICATION_ACCESS, operate=Operate.READ, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_APPLICATION], is_ee=settings.edition == "EE"
@@ -1759,7 +1759,7 @@ class PermissionConstants(Enum):
         group=Group.SYSTEM_RES_APPLICATION_CHAT_LOG, operate=Operate.CLEAR_POLICY, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_APPLICATION], is_ee=settings.edition == "EE"
     )
-    # 知识库
+    # KnowledgeDatabase
     RESOURCE_KNOWLEDGE_READ = Permission(
         group=Group.SYSTEM_RES_KNOWLEDGE, operate=Operate.READ, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_KNOWLEDGE], is_ee=settings.edition == "EE"
@@ -1800,7 +1800,7 @@ class PermissionConstants(Enum):
         group=Group.SYSTEM_RES_KNOWLEDGE, operate=Operate.RELATE_VIEW, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_KNOWLEDGE], is_ee=settings.edition == "EE"
     )
-    # 文档
+    # Document
     RESOURCE_KNOWLEDGE_WORKFLOW_READ = Permission(
         group=Group.SYSTEM_RES_KNOWLEDGE_WORKFLOW, operate=Operate.READ, role_list=[RoleConstants.ADMIN],
         parent_group=[SystemGroup.RESOURCE_KNOWLEDGE], is_ee=settings.edition == "EE"
@@ -2053,9 +2053,9 @@ class PermissionConstants(Enum):
 
 def get_default_permission_list_by_role(role: RoleConstants):
     """
-    根据角色 获取角色对应的权限
-    :param role: 角色
-    :return: 权限
+    Based onRole GetRoleCorrespondingPermission
+    :param role: Role
+    :return: Permission
     """
     return list(map(lambda k: PermissionConstants[k],
                     list(filter(lambda k: PermissionConstants[k].value.role_list.__contains__(role),
@@ -2089,7 +2089,7 @@ def get_default_workspace_user_role_mapping_list(user_role_list: list):
 
 def get_permission_list_by_resource_group(resource_group: ResourcePermissionGroup):
     """
-    根据资源组获取权限
+    Based onResource组GetPermission
     """
     return [PermissionConstants[k].value for k in PermissionConstants.__members__ if
             PermissionConstants[k].value.resource_permission_group_list.__contains__(resource_group)]
@@ -2102,9 +2102,9 @@ class ChatAuth:
                  chat_user_id,
                  chat_user_type,
                  application_id):
-        # 权限列表
+        # PermissionList
         self.permission_list = permission_list
-        # 角色列表
+        # RoleList
         self.role_list = current_role_list
         self.chat_user_id = chat_user_id
         self.chat_user_type = chat_user_type
@@ -2113,22 +2113,22 @@ class ChatAuth:
 
 class Auth:
     """
-     用于存储当前用户的角色和权限
+     Used forStorageCurrentUser的Role和Permission
     """
 
     def __init__(self,
                  current_role_list: List[RoleConstants | Role],
                  permission_list: List[PermissionConstants | Permission],
                  **keywords):
-        # 权限列表
+        # PermissionList
         self.permission_list = permission_list
-        # 角色列表
+        # RoleList
         self.role_list = current_role_list
         self.keywords = keywords
 
 
 class CompareConstants(Enum):
-    # 或者
+    # Or
     OR = "OR"
     # 并且
     AND = "AND"

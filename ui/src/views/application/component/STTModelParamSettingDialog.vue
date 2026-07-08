@@ -85,7 +85,7 @@ const open = (model_id: string, application_id?: string, model_setting_data?: an
         })
       }
       model_setting_data = { ...resp, ...model_setting_data }
-      // 渲染动态表单
+      // RenderDynamicForm
       dynamicsFormRef.value?.render(model_form_field.value, model_setting_data)
     })
   dialogVisible.value = true

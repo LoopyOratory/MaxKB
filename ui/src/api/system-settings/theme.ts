@@ -5,15 +5,15 @@ import type {Ref} from 'vue'
 const prefix = '/display'
 
 /**
- * 查看外观设置
+ * View appearanceSettings
  */
 const getThemeInfo: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix}/info`, undefined, loading)
 }
 
 /**
- * 更新外观设置
- * @param 参数
+ * UpdateAppearanceSettings
+ * @param Parameters
  * * formData {
  *   theme
  *   icon

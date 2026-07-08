@@ -57,7 +57,7 @@ import {t} from '@/locales'
 import JSEncrypt from "jsencrypt";
 
 const props = defineProps<{
-  emitConfirm?: boolean // 在父级调接口
+  emitConfirm?: boolean // At parent callInterface
 }>()
 
 const emit = defineEmits<{

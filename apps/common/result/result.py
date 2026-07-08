@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： result.py
+    @Author: Tiger
+    @file: result.py
     @date：2025/4/14 15:18
     @desc:
 """
@@ -15,7 +15,7 @@ from rest_framework import status
 
 class Page(dict):
     """
-    分页对象
+    PaginationObject
     """
 
     def __init__(self, total: int, records: List, current_page: int, page_size: int, **kwargs):
@@ -25,7 +25,7 @@ class Page(dict):
 class Result(JsonResponse):
     charset = 'utf-8'
     """
-     接口统一返回对象
+     InterfaceUnifiedReturnObject
     """
 
     def __init__(self, code=200, message=_('Success'), data=None, response_status=status.HTTP_200_OK, **kwargs):
@@ -35,17 +35,17 @@ class Result(JsonResponse):
 
 def success(data, **kwargs):
     """
-    获取一个成功的响应对象
-    :param data: 接口响应数据
-    :return: 请求响应对象
+    GetOneSuccess的ResponseObject
+    :param data: InterfaceResponseData
+    :return: RequestResponseObject
     """
     return Result(data=data, **kwargs)
 
 
 def error(message, **kwargs):
     """
-    获取一个失败的响应对象
-    :param message: 错误提示
-    :return: 接口响应对象
+    GetOneFailure的ResponseObject
+    :param message: ErrorTip
+    :return: InterfaceResponseObject
     """
     return Result(code=500, message=message, **kwargs)

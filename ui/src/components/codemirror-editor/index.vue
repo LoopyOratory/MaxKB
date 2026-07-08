@@ -16,7 +16,7 @@
         <AppIcon iconName="app-magnify" style="font-size: 16px"></AppIcon>
       </el-button>
     </div>
-    <!-- Codemirror 弹出层 -->
+    <!-- Codemirror Popover -->
     <el-dialog v-model="dialogVisible" :title="title" append-to-body fullscreen>
       <template #title>
         <div class="flex-between">
@@ -123,7 +123,7 @@ const regexpLinter = linter(async (view) => {
   if (!lintResults || lintResults.length === 0) {
     return diagnostics
   }
-  // 限制诊断数量，避免过多诊断信息
+  // LimitDiagnosisCount, avoid excessive diagnosticsInfo
   const maxDiagnostics = 50
   const limitedResults = lintResults.slice(0, maxDiagnostics)
 
@@ -135,7 +135,7 @@ const regexpLinter = linter(async (view) => {
         element.column,
         element.endColumn,
       )
-      // 验证范围有效性
+      // VerifyRangeValidity
       if (range.from >= 0 && range.to >= range.from) {
         diagnostics.push({
           from: range.from,
@@ -156,7 +156,7 @@ const codemirrorStyle = {
   width: '100%',
 }
 const cmRef = ref<InstanceType<typeof Codemirror>>()
-// 弹出框相关代码
+// Popup dialog related code
 const dialogVisible = ref<boolean>(false)
 
 const cloneContent = ref<string>('')

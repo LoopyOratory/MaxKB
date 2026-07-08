@@ -16,16 +16,16 @@ class FileUploadAPI(APIMixin):
                     'file': {
                         'type': 'string',
                         'format': 'binary',
-                        'description': '要上传的文件'
+                        'description': '要Upload的File'
 
                     },
                     "source_id": {
                         'type': 'string',
-                        'description': '资源id 如果source_type为[TEMPORARY_30_MINUTE,TEMPORARY_120_MINUTE,TEMPORARY_1_DAY,SYSTEM] 其他的需要为对应资源的id'
+                        'description': 'Resourceid Ifsource_type为[TEMPORARY_30_MINUTE,TEMPORARY_120_MINUTE,TEMPORARY_1_DAY,SYSTEM] Other的Needs为对应Resource的id'
                     },
                     "source_type": {
                         'type': 'string',
-                        'description': '资源类型[KNOWLEDGE,APPLICATION,TOOL,DOCUMENT,CHAT,SYSTEM,TEMPORARY_30_MINUTE,TEMPORARY_120_MINUTE,TEMPORARY_1_DAY]'
+                        'description': 'Resource type[KNOWLEDGE,APPLICATION,TOOL,DOCUMENT,CHAT,SYSTEM,TEMPORARY_30_MINUTE,TEMPORARY_120_MINUTE,TEMPORARY_1_DAY]'
                     }
                 }
             }
@@ -42,7 +42,7 @@ class FileGetAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="file_id",
-                description="文件id",
+                description="Fileid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -59,7 +59,7 @@ class GetUrlContentAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="url",
-                description="文件url",
+                description="Fileurl",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： common.py
+@Author: Tiger
+@file: common.py
 @date：2025/4/14 18:23
 @desc:
 """
@@ -45,20 +45,20 @@ def _legacy_md5_hash(row_password):
 
 def password_encrypt(row_password):
     """
-    密码加密（使用 Django PBKDF2）
-    :param row_password: 密码
-    :return:  加密后密码
+    PasswordEncrypt（Use Django PBKDF2）
+    :param row_password: Password
+    :return:  Encrypt后Password
     """
     return make_password(row_password)
 
 
 def password_verify(row_password, hashed_password):
     """
-    验证密码是否匹配已存储的哈希值。
-    支持透明升级：如果存储的是旧版 MD5 哈希，也能正确验证。
-    :param row_password: 明文密码
-    :param hashed_password: 数据库中存储的密码哈希
-    :return: 是否匹配
+    VerifyPasswordWhetherMatch已Storage的哈希值。
+    支持透明升级：IfStorage is旧版 MD5 哈希，也能正确Verify。
+    :param row_password: 明文Password
+    :param hashed_password: Data库中Storage的Password哈希
+    :return: WhetherMatch
     """
     # First try Django's built-in check (PBKDF2, bcrypt, argon2, etc.)
     if check_password(row_password, hashed_password):
@@ -94,7 +94,7 @@ def needs_password_upgrade(hashed_password):
 def group_by(list_source: List, key):
     """
     將數組分組
-    :param list_source: 需要分組的數組
+    :param list_source: Needs分組的數組
     :param key: 分組函數
     :return: key->[]
     """
@@ -110,7 +110,7 @@ def group_by(list_source: List, key):
 SAFE_CHAR_SET = (
     [chr(i) for i in range(65, 91) if chr(i) not in {"I", "O"}]  # 大写字母 A-H, J-N, P-Z
     + [chr(i) for i in range(97, 123) if chr(i) not in {"i", "l", "o"}]  # 小写字母 a-h, j-n, p-z
-    + [str(i) for i in range(10) if str(i) not in {"0", "1", "7"}]  # 数字 2-6, 8-9
+    + [str(i) for i in range(10) if str(i) not in {"0", "1", "7"}]  # Number 2-6, 8-9
 )
 
 
@@ -122,11 +122,11 @@ def get_random_chars(number=4):
 
 def encryption(message: str):
     """
-        加密敏感字段数据  加密方式是 如果密码是 1234567890  那么给前端则是 123******890
+        EncryptSensitiveFieldData  EncryptMethod是 IfPassword是 1234567890  那么给Frontend则是 123******890
     :param message:
     :return:
     """
-    if not message:  # 处理空字符串情况
+    if not message:  # Process空String情况
         return "***************"
     max_pre_len = 8
     max_post_len = 4
@@ -159,34 +159,34 @@ def _remove_empty_lines(text):
 
 
 def markdown_to_plain_text(md: str) -> str:
-    # 移除图片 ![alt](url)
+    # RemoveImage ![alt](url)
     text = re.sub(r"!\[.*?\]\(.*?\)", "", md)
-    # 移除链接 [text](url)
+    # RemoveLink [text](url)
     text = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", text)
-    # 移除 Markdown 标题符号 (#, ##, ###)
+    # Remove Markdown TitleSymbol (#, ##, ###)
     text = re.sub(r"^#{1,6}\s+", "", text, flags=re.MULTILINE)
-    # 移除加粗 **text** 或 __text__
+    # Remove加粗 **text** 或 __text__
     text = re.sub(r"\*\*(.*?)\*\*", r"\1", text)
     text = re.sub(r"__(.*?)__", r"\1", text)
-    # 移除斜体 *text* 或 _text_
+    # Remove斜体 *text* 或 _text_
     text = re.sub(r"\*(.*?)\*", r"\1", text)
     text = re.sub(r"_(.*?)_", r"\1", text)
-    # 移除行内代码 `code`
+    # RemoveInlineCode `code`
     text = re.sub(r"`(.*?)`", r"\1", text)
-    # 移除代码块 ```code```
+    # RemoveCode块 ```code```
     text = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
-    # 移除多余的换行符
+    # RemoveExtraNewline
     text = re.sub(r"\n{2,}", "\n", text)
-    # 使用正则表达式去除所有 HTML 标签
+    # Use正则表达式去除All HTML Tag
     text = re.sub(r"<[^>]+>", "", text)
-    # 先移除特定媒体标签（优先级高于通用HTML标签移除）
+    # 先Remove特定媒体Tag（优先级高于GeneralHTMLTagRemove）
     text = re.sub(
         r"<(?:audio|video)(?:\s+[^>]*)?>.*?(?:</(?:audio|video)>)?", "", text, flags=re.DOTALL | re.IGNORECASE
     )
-    text = re.sub(r"<img[^>]*>", "", text)  # 匹配图片标签
-    # 去除多余的空白字符（包括换行符、制表符等）
+    text = re.sub(r"<img[^>]*>", "", text)  # MatchImageTag
+    # 去除ExtraBlank字符（包括Newline、制表符等）
     text = re.sub(r"\s+", " ", text)
-    # 去除表单渲染
+    # 去除FormRender
     text = re.sub(r"<form_rander>.*?<\/form_rander>", "", text, flags=re.DOTALL)
     # 去除首尾空格
     text = text.strip()
@@ -215,15 +215,15 @@ def sub_array(array: List, item_num=10):
 def bytes_to_uploaded_file(file_bytes, file_name="file.txt"):
     content_type, _ = mimetypes.guess_type(file_name)
     if content_type is None:
-        # 如果未能识别，设置为默认的二进制文件类型
+        # IfIf not recognized, Settings为Default binaryFileType
         content_type = "application/octet-stream"
-    # 创建一个内存中的字节流对象
+    # CreationOneMemory in Byte streamObject
     file_stream = io.BytesIO(file_bytes)
 
-    # 获取文件大小
+    # GetFileSize
     file_size = len(file_bytes)
 
-    # 创建 InMemoryUploadedFile 对象
+    # Creation InMemoryUploadedFile Object
     uploaded_file = InMemoryUploadedFile(
         file=file_stream,
         field_name=None,
@@ -237,7 +237,7 @@ def bytes_to_uploaded_file(file_bytes, file_name="file.txt"):
 
 def any_to_amr(any_path, amr_path):
     """
-    把任意格式转成amr文件
+    把任意FormatConvert toamrFile
     """
     if any_path.endswith(".amr"):
         shutil.copy2(any_path, amr_path)
@@ -252,7 +252,7 @@ def any_to_amr(any_path, amr_path):
 
 def any_to_mp3(any_path, mp3_path):
     """
-    把任意格式转成mp3文件
+    把任意FormatConvert tomp3File
     """
     if any_path.endswith(".mp3"):
         shutil.copy2(any_path, mp3_path)
@@ -267,7 +267,7 @@ def any_to_mp3(any_path, mp3_path):
 
 def sil_to_wav(silk_path, wav_path, rate: int = 24000):
     """
-    silk 文件转 wav
+    silk File转 wav
     """
     try:
         import pysilk
@@ -400,9 +400,9 @@ def restricted_loads(s):
 
 def flat_map(array: List[List]):
     """
-    将二位数组转为一维数组
-    :param array: 二维数组
-    :return: 一维数组
+    将二位Array转为一维Array
+    :param array: 二维Array
+    :return: 一维Array
     """
     result = []
     for e in array:
@@ -438,7 +438,7 @@ def filter_workspace(query_list):
 
 def filter_special_character(_str):
     """
-    过滤特殊字符
+    FilterSpecial characters
     """
     s_list = ["\\u0000"]
     for t in s_list:
@@ -447,7 +447,7 @@ def filter_special_character(_str):
 
 
 def is_valid_uuid(uuid_string):
-    """判断字符串是否为有效的UUID"""
+    """DetermineStringIs有效的UUID"""
     try:
         uuid_obj = uuid.UUID(uuid_string)
         return str(uuid_obj) == uuid_string

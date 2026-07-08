@@ -17,7 +17,7 @@ class VideoUnderstandNodeSerializer(serializers.Serializer):
     system = serializers.CharField(required=False, allow_blank=True, allow_null=True,
                                    label=_("Role Setting"))
     prompt = serializers.CharField(required=True, label=_("Prompt word"))
-    # 多轮对话数量
+    # Multi-turn conversation count
     dialogue_number = serializers.IntegerField(required=True, label=_("Number of multi-round conversations"))
 
     dialogue_type = serializers.CharField(required=True, label=_("Conversation storage type"))

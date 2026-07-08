@@ -86,7 +86,7 @@ const route = useRoute()
 const {
   params: { id },
   /*
-  folderId 可以区分 resource-management shared还是 workspace
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route as any
 
@@ -161,7 +161,7 @@ async function getStoreToolList() {
       filterList.value = null
       categories = tags.map((tag: any) => ({
         id: tag.key,
-        title: tag.name, // 国际化
+        title: tag.name, // Internationalization
         tools: storeTools.filter((tool: any) => tool.label === tag.key),
       }))
     }

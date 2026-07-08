@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： radio_field.py
+    @Author: Tiger
+    @file: radio_field.py
     @date：2023/10/31 17:59
     @desc:
 """
@@ -13,7 +13,7 @@ from common.forms.base_field import BaseExecField, TriggerType
 
 class RadioButton(BaseExecField):
     """
-    下拉单选
+    DropdownSingle select
     """
 
     def __init__(self,

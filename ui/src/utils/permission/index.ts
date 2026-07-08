@@ -11,9 +11,9 @@ import {
 import { isFunction } from '@/utils/common'
 
 /**
- * 是否包含当前权限
- * @param permission 当前权限
- * @returns  True 包含 false 不包含
+ * WhetherContainsCurrentPermission
+ * @param permission CurrentPermission
+ * @returns  True Contains false NotContains
  */
 const hasPermissionChild = (
   permission: Role | string | Permission | ComplexPermission | Edition | PF,
@@ -62,10 +62,10 @@ const hasPermissionChild = (
   return false
 }
 /**
- * 判断是否有角色和权限
- * @param role         角色
- * @param permissions  权限
- * @param requiredPermissions  权限
+ * Determine whether user has role and permission
+ * @param role         Role
+ * @param permissions  Permission
+ * @param requiredPermissions  Permission
  * @returns
  */
 export const hasPermission = (

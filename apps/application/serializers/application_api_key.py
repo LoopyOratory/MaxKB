@@ -117,6 +117,6 @@ class ApplicationKeySerializer(serializers.Serializer):
                 else:
                     application_api_key.expire_time = timezone.now()
             application_api_key.save()
-            # 写入缓存
+            # WriteCache
             get_application_api_key('Bearer ' + application_api_key.secret_key, False)
             return True

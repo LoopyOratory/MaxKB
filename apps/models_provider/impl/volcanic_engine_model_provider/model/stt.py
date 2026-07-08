@@ -27,7 +27,7 @@ from common.utils.logger import maxkb_logger
 from models_provider.base_model_provider import MaxKBBaseModel
 from models_provider.impl.base_stt import BaseSpeechToText
 
-audio_format = "mp3"  # wav 或者 mp3，根据实际音频格式设置
+audio_format = "mp3"  # wav Or mp3，Based onActualAudioFormatSettings
 
 PROTOCOL_VERSION = 0b0001
 DEFAULT_HEADER_SIZE = 0b0001
@@ -82,8 +82,8 @@ def generate_header(
     protocol_version(4 bits), header_size(4 bits),
     message_type(4 bits), message_type_specific_flags(4 bits)
     serialization_method(4 bits) message_compression(4 bits)
-    reserved （8bits) 保留字段
-    header_extensions 扩展头(大小等于 8 * 4 * (header_size - 1) )
+    reserved （8bits) RetainField
+    header_extensions 扩展头(Size等于 8 * 4 * (header_size - 1) )
     """
     header = bytearray()
     header_size = int(len(extension_header) / 4) + 1
@@ -117,9 +117,9 @@ def parse_response(res):
     protocol_version(4 bits), header_size(4 bits),
     message_type(4 bits), message_type_specific_flags(4 bits)
     serialization_method(4 bits) message_compression(4 bits)
-    reserved （8bits) 保留字段
-    header_extensions 扩展头(大小等于 8 * 4 * (header_size - 1) )
-    payload 类似与http 请求体
+    reserved （8bits) RetainField
+    header_extensions 扩展头(Size等于 8 * 4 * (header_size - 1) )
+    payload 类似与http Request体
     """
     protocol_version = res[0] >> 4
     header_size = res[0] & 0x0f
@@ -298,7 +298,7 @@ class VolcanicEngineSpeechToText(MaxKBBaseModel, BaseSpeechToText):
 
     async def segment_data_processor(self, wav_data: bytes, segment_size: int):
         reqid = str(uuid.uuid7())
-        # 构建 full client request，并序列化压缩
+        # Build full client request, and序列化压缩
         request_params = self.construct_request(reqid)
         payload_bytes = str.encode(json.dumps(request_params))
         payload_bytes = gzip.compress(payload_bytes)
@@ -312,7 +312,7 @@ class VolcanicEngineSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             header = self.signature_auth(full_client_request)
         async with websockets.connect(self.volcanic_api_url, additional_headers=header, max_size=1000000000,
                                       ssl=ssl_context) as ws:
-            # 发送 full client request
+            # Send full client request
             await ws.send(full_client_request)
             res = await ws.recv()
             result = parse_response(res)
@@ -327,7 +327,7 @@ class VolcanicEngineSpeechToText(MaxKBBaseModel, BaseSpeechToText):
                     audio_only_request = bytearray(generate_last_audio_default_header())
                 audio_only_request.extend((len(payload_bytes)).to_bytes(4, 'big'))  # payload size(4 bytes)
                 audio_only_request.extend(payload_bytes)  # payload
-                # 发送 audio-only client request
+                # Send audio-only client request
                 await ws.send(audio_only_request)
                 res = await ws.recv()
                 result = parse_response(res)

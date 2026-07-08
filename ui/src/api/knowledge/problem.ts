@@ -13,8 +13,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 创建问题
- * @param 参数 knowledge_id
+ * CreationQuestion
+ * @param Parameters knowledge_id
  * data: array[string]
  */
 const postProblems: (
@@ -26,8 +26,8 @@ const postProblems: (
 }
 
 /**
- * 问题分页列表
- * @param 参数  knowledge_id,
+ * QuestionPaginationList
+ * @param Parameters  knowledge_id,
  * query {
      "content": "string",
    }
@@ -47,8 +47,8 @@ const getProblemsPage: (
 }
 
 /**
- * 修改问题
- * @param 参数
+ * ModificationQuestion
+ * @param Parameters
  * knowledge_id, problem_id,
  * {
  "content": "string",
@@ -64,8 +64,8 @@ const putProblems: (
 }
 
 /**
- * 删除问题
- * @param 参数 knowledge_id, problem_id,
+ * DeletionQuestion
+ * @param Parameters knowledge_id, problem_id,
  */
 const delProblems: (
   knowledge_id: string,
@@ -76,8 +76,8 @@ const delProblems: (
 }
 
 /**
- * 问题详情
- * @param 参数
+ * QuestionDetails
+ * @param Parameters
  * knowledge_id, problem_id,
  */
 const getDetailProblems: (
@@ -89,8 +89,8 @@ const getDetailProblems: (
 }
 
 /**
- * 批量关联段落
- * @param 参数 knowledge_id,
+ * BatchAssociationParagraph
+ * @param Parameters knowledge_id,
  * {
       "problem_id_list": "Array",
       "paragraph_list": "Array",
@@ -105,8 +105,8 @@ const putMulAssociationProblem: (
 }
 
 /**
- * 批量删除问题
- * @param 参数 knowledge_id,
+ * BatchDeletionQuestion
+ * @param Parameters knowledge_id,
  * data: array[string]
  */
 const putMulProblem: (

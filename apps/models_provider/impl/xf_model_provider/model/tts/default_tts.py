@@ -2,9 +2,9 @@
 """
     @project: MaxKB
     @Author：
-    @file： default_tts.py
+    @file: default_tts.py
     @date：2025/12/9
-    @desc: 讯飞 TTS 工厂类，根据 api_version 路由到具体实现
+    @desc: iFlytek TTS 工厂类，Based on api_version Route toSpecificImplementation
 """
 from typing import Dict
 
@@ -13,7 +13,7 @@ from models_provider.impl.base_tts import BaseTextToSpeech
 
 
 class XFSparkDefaultTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
-    """讯飞 TTS 工厂类，根据 api_version 参数路由到具体实现"""
+    """iFlytek TTS 工厂类，Based on api_version ParametersRoute toSpecificImplementation"""
 
     def check_auth(self):
         pass
@@ -42,7 +42,7 @@ class XFSparkDefaultTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
                 **model_kwargs
             )
         else:
-            # 在线语音：从 credential 获取 vcn_online
+            # Online语音：从 credential Get vcn_online
             return XFSparkTextToSpeech(
                 spark_app_id=model_credential.get('spark_app_id'),
                 spark_api_key=model_credential.get('spark_api_key'),

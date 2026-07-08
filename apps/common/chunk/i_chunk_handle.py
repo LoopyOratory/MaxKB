@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： i_chunk_handle.py
+    @Author: Tiger
+    @file: i_chunk_handle.py
     @date：2024/7/23 16:51
     @desc:
 """

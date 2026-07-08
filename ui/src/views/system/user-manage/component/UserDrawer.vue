@@ -188,7 +188,7 @@ const permissionOptions = computed(() => {
 })
 
 const showPermission = computed(() => {
-  //社区版本的可以显示 别的版本 过期了 也可以显示
+  //Community version can show; other versions can show even if expired
   if (user.isCE() || user.isExpire()) {
     return true
   }
@@ -403,17 +403,17 @@ const submit = async (formEl: FormInstance | undefined) => {
         list.value = list.value.map((item) => {
           const isAdminRole = adminRoleList.value.find((item1) => item1.id === item.role_id)
 
-          // 如果是管理员角色，则设置为 ['None']
+          // IfAdminRole, thenSettingsis ['None']
           if (isAdminRole) {
             return {...item, workspace_ids: ['None']}
           }
 
-          // 如果是普通用户且是 PE 类型，则设置为 ['default']
+          // IfNormalUserAnd is PE Type, thenSettingsis ['default']
           if (user.isPE()) {
             return {...item, workspace_ids: ['default']}
           }
 
-          // 其他情况保持原样
+          // OtherKeep situation as-is
           return item
         })
       }

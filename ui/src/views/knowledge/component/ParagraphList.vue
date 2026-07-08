@@ -23,11 +23,11 @@
             style="--el-card-padding: 8px 12px; --el-card-border-radius: 8px"
             @click.stop
           >
-            <!-- 编辑分段按钮 -->
+            <!-- EditSegmentButton -->
             <el-button link @click="editHandle(child, cIndex)">
               <AppIcon iconName="app-edit"></AppIcon>
             </el-button>
-            <!-- 删除分段按钮  -->
+            <!-- DeletionSegmentButton  -->
             <el-button link @click="deleteHandle(child, cIndex)">
               <AppIcon iconName="app-delete"></AppIcon>
             </el-button>
@@ -85,7 +85,7 @@ const props = defineProps({
   knowledgeId: String,
 })
 
-// 初始化加载数据
+// InitializeLoadData
 watchEffect(() => {
   if (props.modelValue && props.modelValue.length > 0) {
     const end = page_size.value * current_page.value
@@ -93,11 +93,11 @@ watchEffect(() => {
   }
 })
 
-// 监听分页变化，只加载需要的数据
+// ListenPaginationChange, onlyLoadNeedsData
 watchEffect(() => {
   const start = 0
   const end = page_size.value * current_page.value
-  // 不管数据量多少，都确保获取所有应该显示的数据
+  // RegardlessDataAmount, allEnsureGetAllShouldShowData
   localParagraphList.value = props.modelValue.slice(start, Math.min(end, props.modelValue.length))
 })
 
@@ -123,7 +123,7 @@ const next = () => {
 }
 
 const editHandle = (item: any, cIndex: number) => {
-  // 计算实际索引，考虑分页
+  // CalculateActualIndex, considerPagination
   currentCIndex.value = cIndex
   // currentCIndex.value = cIndex + page_size.value * (current_page.value - 1)
   // console.log('Edit index:', cIndex, page_size.value, current_page.value, currentCIndex.value)
@@ -144,7 +144,7 @@ const updateContent = (data: any) => {
   new_value[currentCIndex.value] = cloneDeep(data)
   emit('update:modelValue', new_value)
 
-  // 更新本地列表
+  // UpdateLocalList
   const localIndex = currentCIndex.value - page_size.value * (current_page.value - 1)
   if (localIndex >= 0 && localIndex < localParagraphList.value.length) {
     localParagraphList.value[localIndex] = cloneDeep(data)
@@ -165,9 +165,9 @@ const deleteHandle = (item: any, cIndex: number) => {
       new_value.splice(cIndex, 1)
       emit('update:modelValue', new_value)
 
-      // 更新本地列表
+      // UpdateLocalList
       localParagraphList.value.splice(cIndex, 1)
-      // 如果当前页删除完了，从总数据中再取一条添加到末尾
+      // If current page deletion is done, fetch one more from total data and append to end
       if (props.modelValue.length > localParagraphList.value.length * current_page.value) {
         const nextItem = props.modelValue[localParagraphList.value.length * current_page.value]
         if (nextItem) {

@@ -120,7 +120,7 @@ const checkCode = () => {
     .then(() => router.push({name: 'ResetPassword', params: CheckEmailForm.value}))
 }
 /**
- * 发送验证码
+ * SendVerifyCode
  */
 const sendEmail = () => {
   resetPasswordFormRef.value?.validateField('email', (v: boolean) => {

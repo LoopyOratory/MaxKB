@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： resource_mapping.py
+    @Author: Tiger
+    @file: resource_mapping.py
     @date：2025/12/26 14:07
     @desc:
 """
@@ -15,14 +15,14 @@ from common.mixins.api_mixin import APIMixin
 
 
 class ResourceMappingResponse(serializers.Serializer):
-    id = serializers.UUIDField(required=True, label="主键id")
-    target_id = serializers.CharField(required=True, label="被关联资源名称")
-    target_type = serializers.CharField(required=True, label="被关联资源类型")
-    source_id = serializers.CharField(required=True, label="关联资源Id")
-    source_type = serializers.CharField(required=True, label="关联资源类型")
-    name = serializers.CharField(required=True, label="名称")
-    desc = serializers.CharField(required=False, label="描述")
-    user_id = serializers.UUIDField(required=True, label="主键id")
+    id = serializers.UUIDField(required=True, label="Primary keyid")
+    target_id = serializers.CharField(required=True, label="被AssociationResourceName")
+    target_type = serializers.CharField(required=True, label="被AssociationResource type")
+    source_id = serializers.CharField(required=True, label="AssociationResourceId")
+    source_type = serializers.CharField(required=True, label="AssociationResource type")
+    name = serializers.CharField(required=True, label="Name")
+    desc = serializers.CharField(required=False, label="Description")
+    user_id = serializers.UUIDField(required=True, label="Primary keyid")
 
 
 class ResourceMappingAPI(APIMixin):
@@ -32,21 +32,21 @@ class ResourceMappingAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_id",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -67,7 +67,7 @@ class ResourceMappingAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="resource_name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False

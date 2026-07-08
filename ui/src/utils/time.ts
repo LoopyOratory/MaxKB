@@ -13,26 +13,26 @@ export const expiredTimeList = {
   'custom': t('common.custom'),
 }
 
-// 当天日期 YYYY-MM-DD
+// Same dayDate YYYY-MM-DD
 export const nowDate = moment().format('YYYY-MM-DD')
 
-// 当前时间的前n天
+// Current time previous n days
 export function beforeDay(n: number | string) {
   return moment().subtract(n, 'days').format('YYYY-MM-DD')
 }
 
-// 当前时间的n天后的时间戳
+// Current time n days after timestamp
 export function AfterTimestamp(n: number | string) {
   return moment().add(parseInt(n as string), 'days').format('YYYY-MM-DD HH:mm:ss')
 }
 
 export function formatEndDate(date: any) {
   return Number(moment(date).endOf('day').format('x'));
-} // date的23点59分
+} // date 23:59
 
 export function formatStartDate(date: any) {
   return Number(moment(date).startOf('day').format('x'));
-} // date的0点
+} // date 00:00
 
 const getCheckDate = (timestamp: any) => {
   if (!timestamp) return false
@@ -70,15 +70,15 @@ export function fromNowDate(time: any) {
   const futureTime = new Date(time)
   const timeDiff = futureTime.getTime() - curTime.getTime()
 
-  // 统一时间单位
+  // UnifiedTimeUnit
   const absTimeDiff = Math.abs(timeDiff)
   const min = 60 * 1000
   const hour = min * 60
   const day = hour * 24
 
-  // 按优先级判断
+  // By priorityDetermine
   if (timeDiff < 0) {
-    return t('layout.time.expired') // 已过期
+    return t('layout.time.expired') // Expired
   }
 
   if (absTimeDiff < hour) {

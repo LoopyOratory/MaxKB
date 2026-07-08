@@ -4,7 +4,7 @@ export type PF = () => Role | string | Permission | ComplexPermission
 export type CRF = () => Role | string
 export type CPF = () => Permission | string
 /**
- * 角色对象
+ * RoleObject
  */
 export class Role {
   role: string
@@ -26,7 +26,7 @@ export class Role {
   }
 }
 /**
- * 权限对象
+ * PermissionObject
  */
 export class Permission {
   permission: string
@@ -35,16 +35,16 @@ export class Permission {
     this.permission = permission
   }
   /**
-   * 工作空间权限
-   * @param workspace_id 工作空间id
-   * @returns 工作空间权限
+   * WorkspacePermission
+   * @param workspace_id Workspace id
+   * @returns WorkspacePermission
    */
   getWorkspacePermission = () => {
     const { user } = useStore()
     return `${this.permission}:/WORKSPACE/${user.getWorkspaceId()}`
   }
   /**
-   * 自定义工作空间管理员权限
+   * CustomWorkspaceAdminPermission
    * @returns
    */
   getWorkspacePermissionWorkspaceManageRole = () => {
@@ -52,11 +52,11 @@ export class Permission {
     return `${this.permission}:/WORKSPACE/${user.getWorkspaceId()}:ROLE/WORKSPACE_MANAGE`
   }
   /**
-   * 工作空间资源权限
-   * @param workspace_id 工作空间id
-   * @param resource     资源
-   * @param resource_id  资源id
-   * @returns  工作空间资源权限
+   * WorkspaceResourcePermission
+   * @param workspace_id Workspace id
+   * @param resource     Resource
+   * @param resource_id  Resourceid
+   * @returns  WorkspaceResourcePermission
    */
   getWorkspaceResourcePermission = (resource: string, resource_id: string) => {
     const { user } = useStore()
@@ -64,8 +64,8 @@ export class Permission {
   }
   /**
    *
-   * @param resource_id 资源id
-   * @returns 工作空间下知识库资源权限
+   * @param resource_id Resourceid
+   * @returns Workspace under Knowledge baseResourcePermission
    */
   getKnowledgeWorkspaceResourcePermission = (resource_id: string) => {
     return this.getWorkspaceResourcePermission('KNOWLEDGE', resource_id)
@@ -78,16 +78,16 @@ export class Permission {
   }
   /**
    *
-   * @param resource_id  资源id
-   * @returns 工作空间下应用资源权限
+   * @param resource_id  Resourceid
+   * @returns Workspace under ApplicationResourcePermission
    */
   getApplicationWorkspaceResourcePermission = (resource_id: string) => {
     return this.getWorkspaceResourcePermission('APPLICATION', resource_id)
   }
   /**
    * 
-   * @param resource_id 资源id
-   * @returns 工作空间下模型资源权限
+   * @param resource_id Resourceid
+   * @returns Workspace under ModelResourcePermission
    */
   getModelWorkspaceResourcePermission = (resource_id: string) => {
     return this.getWorkspaceResourcePermission('MODEL', resource_id)
@@ -95,7 +95,7 @@ export class Permission {
   /**
    * 
    * @param resource_id 
-   * @returns 工作空间下工具资源权限
+   * @returns Workspace under ToolResourcePermission
    */
   getToolWorkspaceResourcePermission = (resource_id: string) => {
     return this.getWorkspaceResourcePermission('TOOL', resource_id)
@@ -107,7 +107,7 @@ export class Permission {
 }
 
 /**
- * 复杂权限对象
+ * ComplexPermissionObject
  */
 export class ComplexPermission {
   roleList: Array<string | Role | CRF>
@@ -131,7 +131,7 @@ export class ComplexPermission {
   }
 }
 /**
- * 版本
+ * Version
  */
 export class Edition {
   edition: string

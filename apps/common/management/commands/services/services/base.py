@@ -162,7 +162,7 @@ class BaseService(object):
         now = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if self.process:
             try:
-                self.process.wait(1)  # 不wait，子进程可能无法回收
+                self.process.wait(1)  # 不wait，子进程Possible无法回收
             except:
                 pass
 

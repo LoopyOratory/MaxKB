@@ -1,17 +1,17 @@
 <template>
   <div>
-    <!-- 推理过程 -->
+    <!-- Reasoning process -->
     <ReasoningRander v-if="reasoning_content?.trim()" :content="reasoning_content" />
 
     <template v-for="(item, index) in mdViewList" :key="index">
-      <!-- 动态组件 -->
+      <!-- DynamicComponent -->
       <component
         v-if="componentMap[item.type]"
         :is="componentMap[item.type]"
         v-bind="getComponentProps(item)"
       />
 
-      <!-- 快捷问题 -->
+      <!-- QuickQuestion -->
       <div
         v-else-if="item.type === 'question'"
         class="problem-button mt-4 mb-4"
@@ -138,7 +138,7 @@ function parseByPlugin(source: string, plugin: TagPlugin): RenderNode[] {
     let end = source.indexOf(endTag, start)
     if (end === -1) break
 
-    // 处理嵌套
+    // ProcessNested
     if (plugin.nested) {
       let depth = 1
       let tempIndex = start + startTag.length

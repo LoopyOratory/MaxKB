@@ -332,7 +332,7 @@ const days = ref<number>(180)
 const dayOptions = [
   {
     value: 7,
-    label: t('home.pastDayOptions.past7Days'), // 使用 t 方法来国际化显示文本
+    label: t('home.pastDayOptions.past7Days'), // Use t MethodToInternationalizationShowText
   },
   {
     value: 30,

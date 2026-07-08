@@ -79,7 +79,7 @@ const route = useRoute()
 const {
   params: { folderId },
   /*
-  folderId 可以区分 resource-management shared还是 workspace
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route as any
 const isShared = computed(() => {

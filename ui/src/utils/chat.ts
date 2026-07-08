@@ -1,9 +1,9 @@
 import { ChatManagement, type chatType } from '@/api/type/application'
 /**
- * 获取一个递归函数,处理流式数据
- * @param chat    每一条对话记录
- * @param reader  流数据
- * @param stream  是否是流式数据
+ * Get a recursive function to process streaming data
+ * @param chat    Each conversation record
+ * @param reader  Stream data
+ * @param stream  Whether it is streaming data
  */
 export const getWrite = (chat: any, reader: any, stream: boolean) => {
   let tempResult = ''
@@ -27,7 +27,7 @@ export const getWrite = (chat: any, reader: any, stream: boolean) => {
           str = split.join('')
           tempResult = tempResult.replace(str, '')
 
-          // 批量处理所有 chunk
+          // BatchProcessAll chunk
           for (const item of split) {
             const chunk = JSON.parse(item.replace('data:', ''))
             chat.chat_id = chunk.chat_id
@@ -42,7 +42,7 @@ export const getWrite = (chat: any, reader: any, stream: boolean) => {
             }
           }
         }
-        // 如果没有匹配到完整chunk，继续读取下一块
+        // IfNoneMatchToCompletechunk, continueReadNext block
       }
     } catch (e) {
       return Promise.reject(e)

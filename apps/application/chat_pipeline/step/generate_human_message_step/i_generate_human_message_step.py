@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_generate_human_message_step.py
+    @Author: Tiger
+    @file: i_generate_human_message_step.py
     @date：2024/1/9 18:15
-    @desc: 生成对话模板
+    @desc: GenerateConversationTemplate
 """
 from abc import abstractmethod
 from typing import Type, List
@@ -22,27 +22,27 @@ from common.field.common import InstanceField
 
 class IGenerateHumanMessageStep(IBaseChatPipelineStep):
     class InstanceSerializer(serializers.Serializer):
-        # 问题
+        # Question
         problem_text = serializers.CharField(required=True, label=_("question"))
-        # 段落列表
+        # ParagraphList
         paragraph_list = serializers.ListField(child=InstanceField(model_type=ParagraphPipelineModel, required=True),
                                                label=_("Paragraph List"))
-        # 历史对答
+        # Conversation history
         history_chat_record = serializers.ListField(child=InstanceField(model_type=ChatRecord, required=True),
                                                     label=_("History Questions"))
-        # 多轮对话数量
+        # 多轮ConversationCount
         dialogue_number = serializers.IntegerField(required=True, label=_("Number of multi-round conversations"))
-        # 最大携带知识库段落长度
+        # Maximum携带Knowledge baseParagraphLength
         max_paragraph_char_number = serializers.IntegerField(required=True,
                                                              label=_("Maximum length of the knowledge base paragraph"))
-        # 模板
+        # Template
         prompt = serializers.CharField(required=True, label=_("Prompt word"))
         system = serializers.CharField(required=False, allow_null=True, allow_blank=True,
                                        label=_("System prompt words (role)"))
-        # 补齐问题
+        # 补齐Question
         padding_problem_text = serializers.CharField(required=False,
                                                      label=_("Completion problem"))
-        # 未查询到引用分段
+        # 未Query到ReferenceSegment
         no_references_setting = NoReferencesSetting(required=True,
                                                     label=_("No reference segment settings"))
 
@@ -67,16 +67,16 @@ class IGenerateHumanMessageStep(IBaseChatPipelineStep):
                 **kwargs) -> List[BaseMessage]:
         """
 
-        :param problem_text:               原始问题文本
-        :param paragraph_list:             段落列表
-        :param history_chat_record:        历史对话记录
-        :param dialogue_number:            多轮对话数量
-        :param max_paragraph_char_number:  最大段落长度
-        :param prompt:                     模板
-        :param padding_problem_text        用户修改文本
-        :param kwargs:                     其他参数
-        :param no_references_setting:     无引用分段设置
-        :param system                     系统提示称
+        :param problem_text:               OriginalQuestionText
+        :param paragraph_list:             ParagraphList
+        :param history_chat_record:        HistoryConversationRecord
+        :param dialogue_number:            多轮ConversationCount
+        :param max_paragraph_char_number:  MaximumParagraphLength
+        :param prompt:                     Template
+        :param padding_problem_text        UserModificationText
+        :param kwargs:                     OtherParameters
+        :param no_references_setting:     无ReferenceSegmentSettings
+        :param system                     SystemTip称
         :return:
         """
         pass

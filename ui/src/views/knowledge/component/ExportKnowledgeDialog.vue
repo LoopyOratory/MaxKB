@@ -6,8 +6,8 @@
     width="450"
   >
     <el-checkbox v-model="with_source_file" style="align-items: start; min-height: 60px;">
-      <p class="bold mb-8">同时导出源文件</p>
-      <p class="color-secondary pre-wrap line-height-22">勾选后将原始文件一并打包至ZIP，导入时可自动恢复文件关联；不勾选则仅导出文本内容。</p>
+      <p class="bold mb-8">Simultaneously export source files</p>
+      <p class="color-secondary pre-wrap line-height-22">After checking, OriginalFilePackage together toZIP，ImportWhen canAutomaticRestoreFileAssociation; if unchecked, onlyExportTextContent。</p>
     </el-checkbox>
 
     <template #footer>

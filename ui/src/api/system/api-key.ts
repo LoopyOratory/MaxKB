@@ -6,14 +6,14 @@ import {type Ref} from 'vue'
 const prefix = '/system/api_key'
 
 /**
- * API_KEY列表
+ * API_KEYList
  */
 const getAPIKey: (currentPage: number, pageSize: number, params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (currentPage: number, pageSize: number, params, loading?: Ref<boolean>) => {
   return get(`${prefix}/${currentPage}/${pageSize}`, params)
 }
 
 /**
- * 新增API_KEY
+ * AddAPI_KEY
  */
 const postAPIKey: (loading?: Ref<boolean>) => Promise<Result<any>> = (
   loading
@@ -22,8 +22,8 @@ const postAPIKey: (loading?: Ref<boolean>) => Promise<Result<any>> = (
 }
 
 /**
- * 删除API_KEY
- * @param 参数 application_id api_key_id
+ * DeletionAPI_KEY
+ * @param Parameters application_id api_key_id
  */
 const delAPIKey: (
   api_key_id: string,
@@ -33,7 +33,7 @@ const delAPIKey: (
 }
 
 /**
- * 修改API_KEY
+ * ModificationAPI_KEY
  * data {
  *   is_active: boolean
  * }

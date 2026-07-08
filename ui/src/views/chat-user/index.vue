@@ -33,7 +33,7 @@
           </div>
         </div>
 
-        <!-- 右边 -->
+        <!-- Right -->
         <div class="user-right" v-loading="rightLoading">
           <div class="flex-between">
             <div class="flex align-center">
@@ -187,7 +187,7 @@ const resource = reactive({
 const filterText = ref('')
 const loading = ref(false)
 const list = ref<ChatUserGroupItem[]>([])
-const filterList = ref<ChatUserGroupItem[]>([]) // 搜索过滤后列表
+const filterList = ref<ChatUserGroupItem[]>([]) // SearchFilterAfterList
 const current = ref<ChatUserGroupItem>()
 const apiType = computed(() => {
   if (route.path.includes('shared')) {
@@ -231,10 +231,10 @@ watch(filterText, (val: string) => {
   filterList.value = filter(list.value, val)
 })
 
-const checkedMap = reactive<Record<string, boolean>>({}) // 选中的
+const checkedMap = reactive<Record<string, boolean>>({}) // Selected in 
 
 function clickUserGroup(item: ChatUserGroupItem) {
-  // 清空跨组勾选缓存
+  // Clear cross-group selectionCache
   for (const key in checkedMap) delete checkedMap[key]
   current.value = item
 }
@@ -291,7 +291,7 @@ async function getList() {
       isShared: isShared.value,
       systemType: apiType.value,
     }).getUserGroupUserList(resource, current.value?.id, paginationConfig, params, rightLoading)
-    // 更新缓存和回显状态
+    // UpdateCacheAnd echoState
     res.data.records.forEach((item: any) => {
       if (checkedMap[item.id] === undefined) {
         checkedMap[item.id] = item.is_auth

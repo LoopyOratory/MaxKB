@@ -114,7 +114,7 @@ const props = defineProps<{
 
 const route = useRoute()
 const {
-  params: { id, documentId }, // id为knowledgeID
+  params: { id, documentId }, // idisknowledgeID
 } = route as any
 
 const { model, prompt, user } = useStore()
@@ -126,7 +126,7 @@ const loading = ref<boolean>(false)
 const dialogVisible = ref<boolean>(false)
 const modelOptions = ref<any>(null)
 const idList = ref<string[]>([])
-const apiSubmitType = ref('') // 文档document或段落paragraph
+const apiSubmitType = ref('') // DocumentdocumentorParagraphparagraph
 const state = ref<'all' | 'error'>('error')
 const stateMap = {
   all: ['0', '1', '2', '3', '4', '5', 'n'],
@@ -196,7 +196,7 @@ const submitHandle = async (formEl: FormInstance) => {
   }
   await formEl.validate((valid, fields) => {
     if (valid) {
-      // 保存提示词
+      // SaveTipPrompt
       prompt.save(user.userInfo?.id as string, form.value)
       if (apiSubmitType.value === 'paragraph') {
         const data = {

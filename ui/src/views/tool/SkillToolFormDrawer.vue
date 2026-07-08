@@ -156,7 +156,7 @@
               >
                 <el-button link type="primary">{{ $t('views.tool.skill.reUpload') }}</el-button>
               </el-upload>
-              <el-button link type="primary" @click="downloadZip">下载</el-button>
+              <el-button link type="primary" @click="downloadZip">Download</el-button>
             </div>
           </div>
           <el-upload
@@ -354,19 +354,19 @@ function deleteInitField(index: any) {
 }
 
 const fileHandleChange = (file: any, fileList: UploadFiles) => {
-  // 按文件唯一标识精确定位并移除当前文件
-  // 注意：不能使用 splice(-1, 1) 盲删末尾元素，文件夹上传时会误删正常文件而放走超限文件
+  // Confirm position by file unique identifier and remove current file
+  // Note: cannotUse splice(-1, 1) Blind delete tailElement，FolderUploadwill mistakenly delete normalFilewhile letting over-limit ones throughFile
   const removeCurrentFile = () => {
     const index = fileList.findIndex((item: any) => item.uid === file.uid)
     if (index !== -1) {
       fileList.splice(index, 1)
     }
   }
-  //1、判断文件大小是否合法，文件限制不能大于100M
+  //1、DetermineFileSizeWhetherValid, FileLimitCannot be greater than100M
   const isLimit = file?.size / 1024 / 1024 < file_size_limit.value
   if (!isLimit) {
     MsgError(t('views.document.tip.fileLimitSizeTip1') + file_size_limit.value + 'MB')
-    removeCurrentFile() //移除当前超出大小的文件
+    removeCurrentFile() //RemoveCurrentExceedSizeFile
     return false
   }
 
@@ -376,7 +376,7 @@ const fileHandleChange = (file: any, fileList: UploadFiles) => {
     return false
   }
   if (fileList.length > 1) {
-    form.value.fileList = fileList.slice(-1) // 截取最后一个文件
+    form.value.fileList = fileList.slice(-1) // CaptureLastOneFile
   }
   const fd = new FormData()
   fd.append('file', file.raw)

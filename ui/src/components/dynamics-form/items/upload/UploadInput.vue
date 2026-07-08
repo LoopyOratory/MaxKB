@@ -158,7 +158,7 @@ const files_with_url = computed(() =>
 const image_list = computed(() => files_with_url.value.filter(ofType(imageExtensions)))
 const audio_list = computed(() => files_with_url.value.filter(ofType(audioExtensions)))
 const video_list = computed(() => files_with_url.value.filter(ofType(videoExtensions)))
-// 非图片/音频/视频的（文档、压缩包等）统一走下载卡片
+// Non-image/audio/video (documents, compressed packages, etc.) uniformly use download card
 const download_list = computed(() =>
   files_with_url.value.filter(
     (f: any) => !ofType([...imageExtensions, ...audioExtensions, ...videoExtensions])(f),
@@ -199,7 +199,7 @@ const uploadFile = async (file: any, fileList: Array<any>) => {
 }
 </script>
 <style lang="scss" scoped>
-/* hover 显示下载按钮，样式照抄 question-content/index.vue */
+/* hover ShowDownloadButton，StyleCopy exactly question-content/index.vue */
 .download-file {
   height: 43px;
 

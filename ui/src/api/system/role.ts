@@ -7,28 +7,28 @@ import type { pageRequest, PageList } from '@/api/type/common'
 
 const prefix = '/system/role'
 /**
- * 获取角色列表
+ * GetRoleList
  */
 const getRoleList: (loading?: Ref<boolean>) => Promise<Result<{ internal_role: RoleItem[], custom_role: RoleItem[] }>> = (loading) => {
   return get(`${prefix}`, undefined, loading)
 }
 
 /**
- * 根据类型获取角色权限模板列表
+ * Based onTypeGetRolePermissionTemplateList
  */
 const getRoleTemplate: (role_type: RoleTypeEnum, loading?: Ref<boolean>) => Promise<Result<RolePermissionItem[]>> = (role_type, loading) => {
   return get(`${prefix}/template/${role_type}`, undefined, loading)
 }
 
 /**
- * 获取角色权限选中
+ * GetRolePermissionSelect
  */
 const getRolePermissionList: (role_id: string, loading?: Ref<boolean>) => Promise<Result<RolePermissionItem[]>> = (role_id, loading) => {
   return get(`${prefix}/${role_id}/permission`, undefined, loading)
 }
 
 /**
- * 新建或更新角色
+ * Create or update role
  */
 const CreateOrUpdateRole: (
   data: CreateOrUpdateParams,
@@ -38,7 +38,7 @@ const CreateOrUpdateRole: (
 }
 
 /**
- * 删除角色
+ * DeletionRole
  */
 const deleteRole: (role_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   role_id,
@@ -48,7 +48,7 @@ const deleteRole: (role_id: string, loading?: Ref<boolean>) => Promise<Result<bo
 }
 
 /**
- * 保存角色权限
+ * SaveRolePermission
  */
 const saveRolePermission: (
   role_id: string,
@@ -59,7 +59,7 @@ const saveRolePermission: (
 }
 
 /**
- * 获取角色成员列表
+ * GetRoleMemberList
  */
 const getRoleMemberList: (
   role_id: string,
@@ -75,7 +75,7 @@ const getRoleMemberList: (
 }
 
 /**
- * 新建角色成员
+ * CreateRoleMember
  */
 const CreateMember: (
   role_id: string,
@@ -86,7 +86,7 @@ const CreateMember: (
 }
 
 /**
- * 删除角色成员
+ * DeletionRoleMember
  */
 const deleteRoleMember: (role_id: string, user_relation_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   role_id,

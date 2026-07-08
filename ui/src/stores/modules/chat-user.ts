@@ -6,7 +6,7 @@ import type {Ref} from 'vue'
 import {getBrowserLang} from '@/locales/index'
 
 interface ChatUser {
-  // 用户id
+  // Userid
   id: string
 }
 
@@ -80,7 +80,7 @@ const useChatUserStore = defineStore('chat-user', {
       localStorage.setItem(`${this.accessToken}-accessToken`, token)
     },
     /**
-     *匿名认证
+     *AnonymousAuthentication
      */
     anonymousAuthentication() {
       return ChatAPI.anonymousAuthentication(this.accessToken as string).then((ok) => {

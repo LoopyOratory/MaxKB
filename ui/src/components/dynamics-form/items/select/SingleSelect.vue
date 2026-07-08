@@ -61,7 +61,7 @@ const option_list = computed(() => {
 })
 
 const label = (option: any) => {
-  //置空
+  //Set empty
   if (props.modelValue && option_list.value && !attrs['allow-create']) {
     const oldItem = option_list.value.find((item) => item[valueField.value] === props.modelValue)
     if (!oldItem) {

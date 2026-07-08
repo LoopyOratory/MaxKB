@@ -10,7 +10,7 @@ import type { pageRequest, PageList } from '@/api/type/common'
 
 const prefix = '/workspace/role'
 /**
- * 获取角色列表
+ * GetRoleList
  */
 const getRoleList: (
   loading?: Ref<boolean>,
@@ -19,7 +19,7 @@ const getRoleList: (
 }
 
 /**
- * 新建角色成员
+ * CreateRoleMember
  */
 const CreateMember: (
   role_id: string,
@@ -30,7 +30,7 @@ const CreateMember: (
 }
 
 /**
- * 获取角色成员列表
+ * GetRoleMemberList
  */
 const getRoleMemberList: (
   role_id: string,
@@ -46,7 +46,7 @@ const getRoleMemberList: (
 }
 
 /**
- * 删除角色成员
+ * DeletionRoleMember
  */
 const deleteRoleMember: (
   role_id: string,

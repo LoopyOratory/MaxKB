@@ -33,8 +33,8 @@ const getKnowledgeListPage: (
 }
 
 /**
- * 知识库详情
- * @param 参数 knowledge_id
+ * Knowledge baseDetails
+ * @param Parameters knowledge_id
  */
 const getKnowledgeDetail: (knowledge_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   knowledge_id,
@@ -44,8 +44,8 @@ const getKnowledgeDetail: (knowledge_id: string, loading?: Ref<boolean>) => Prom
 }
 
 /**
- * 文档分页列表
- * @param 参数  knowledge_id,
+ * DocumentPaginationList
+ * @param Parameters  knowledge_id,
  * param {
  "name": "string",
  folder_id: "string",
@@ -66,8 +66,8 @@ const getDocumentPage: (
 }
 
 /**
- * 文档详情
- * @param 参数 knowledge_id
+ * DocumentDetails
+ * @param Parameters knowledge_id
  */
 const getDocumentDetail: (
   knowledge_id: string,
@@ -82,8 +82,8 @@ const getDocumentDetail: (
 }
 
 /**
- * 问题分页列表
- * @param 参数  knowledge_id,
+ * QuestionPaginationList
+ * @param Parameters  knowledge_id,
  * query {
  "content": "string",
  }
@@ -103,7 +103,7 @@ const getProblemsPage: (
 }
 
 /**
- * 获取工作空间下共享知识库用户组的用户列表
+ * GetWorkspace under SharedKnowledge baseUserGroupUserList
  */
 const getUserGroupUserList: (
   resource: any,
@@ -119,15 +119,15 @@ const getUserGroupUserList: (
 }
 
 /**
- * 获取工作空间下共享知识库的用户组
+ * Get user groups under shared knowledge base workspace
  */
 const getUserGroupList: (resource: any, loading?: Ref<boolean>) => Promise<Result<ChatUserGroupItem[]>> = (resource, loading) => {
   return get(`${prefix}/${prefix_workspace.value}/KNOWLEDGE/${resource.resource_id}/user_group`, undefined, loading)
 }
 
 /**
- * 段落分页列表
- * @param 参数 knowledge_id document_id
+ * ParagraphPaginationList
+ * @param Parameters knowledge_id document_id
  * param {
  "title": "string",
  "content": "string",
@@ -171,7 +171,7 @@ const getToolListPage: (
 }
 
 /**
- * 获取全部用户
+ * GetAllUser
  */
 const getAllMemberList: (arg: string, loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (
   arg,

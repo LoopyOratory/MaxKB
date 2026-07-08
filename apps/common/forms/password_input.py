@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： password_input.py
+    @Author: Tiger
+    @file: password_input.py
     @date：2023/11/1 14:48
     @desc:
 """
@@ -13,7 +13,7 @@ from common.forms import BaseField, TriggerType
 
 class PasswordInputField(BaseField):
     """
-    文本输入框
+    TextInput框
     """
 
     def __init__(self, label: str,

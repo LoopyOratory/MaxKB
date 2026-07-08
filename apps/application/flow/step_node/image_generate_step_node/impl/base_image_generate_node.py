@@ -27,7 +27,7 @@ class BaseImageGenerateNode(IImageGenerateNode):
                 chat_record_id,
                 model_id_type=None, model_id_reference=None,
                 **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],
@@ -52,16 +52,16 @@ class BaseImageGenerateNode(IImageGenerateNode):
         self.context['dialogue_type'] = dialogue_type
         self.context['negative_prompt'] = self.generate_prompt_question(negative_prompt)
         image_urls = tti_model.generate_image(question, negative_prompt)
-        # 保存图片
+        # Save image
         file_urls = []
         for image_url in image_urls:
             file_name = 'generated_image.png'
             if isinstance(image_url, str):
                 if image_url.startswith('http'):
-                    # HTTP URL 情况
+                    # HTTP URL case
                     image_url = requests.get(image_url).content
                 elif image_url.startswith('data:image'):
-                    # Data URL 格式 (data:image/png;base64,...)
+                    # Data URL format (data:image/png;base64,...)
                     import base64
                     header, encoded = image_url.split(',', 1)
                     image_url = base64.b64decode(encoded)

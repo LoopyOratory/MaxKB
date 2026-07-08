@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_task.py
+    @Author: Tiger
+    @file: application_task.py
     @date：2026/1/14 19:14
     @desc:
 """
@@ -216,7 +216,7 @@ class ApplicationTask(BaseTriggerTask):
                 'abstract': message,
                 'chat_user_id': chat_user_id,
                 'chat_user_type': ChatUserType.ANONYMOUS_USER.value,
-                'asker': {'username': "游客"},
+                'asker': {'username': "Guest"},
                 'ip_address': ip_address,
                 'source': {
                     'type': ChatSourceChoices.TRIGGER.value

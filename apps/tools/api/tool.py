@@ -20,7 +20,7 @@ class ToolCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -42,14 +42,14 @@ class ToolReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tool_id",
-                description="工具id",
+                description="Toolid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -80,14 +80,14 @@ class ToolTreeReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -111,14 +111,14 @@ class ToolExportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tool_id",
-                description="工具id",
+                description="Toolid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -136,7 +136,7 @@ class ToolImportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -169,42 +169,42 @@ class ToolPageAPI(ToolReadAPI):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="current_page",
-                description="当前页码",
+                description="CurrentPage number",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="page_size",
-                description="每页大小",
+                description="Per pageSize",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
             ),
             OpenApiParameter(
                 name="user_id",
-                description="创建者id",
+                description="Creation者id",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="scope",
-                description="工具类型",
+                description="ToolType",
                 type=OpenApiTypes.STR,
                 enum=["SHARED", "WORKSPACE"],
                 location='query',
@@ -212,7 +212,7 @@ class ToolPageAPI(ToolReadAPI):
             ),
             OpenApiParameter(
                 name="name",
-                description="工具名称",
+                description="ToolName",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -226,7 +226,7 @@ class PylintAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -245,14 +245,14 @@ class EditIconAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tool_id",
-                description="工具id",
+                description="Toolid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -284,7 +284,7 @@ class GetInternalToolAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="name",
-                description="工具名称",
+                description="ToolName",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -310,14 +310,14 @@ class AddInternalToolAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tool_id",
-                description="工具id",
+                description="Toolid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -330,7 +330,7 @@ class ToolBatchOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

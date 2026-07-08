@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： array_object_card.py
+    @Author: Tiger
+    @file: array_object_card.py
     @date：2023/10/31 18:03
     @desc:
 """
@@ -13,7 +13,7 @@ from common.forms.base_field import BaseExecField, TriggerType
 
 class ArrayCard(BaseExecField):
     """
-    收集List[Object]
+    CollectList[Object]
     """
 
     def __init__(self,

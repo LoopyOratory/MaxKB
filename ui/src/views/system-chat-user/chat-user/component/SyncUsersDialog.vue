@@ -88,7 +88,7 @@ const submit = async (formEl: FormInstance | undefined) => {
           const count = res.data.success_count
           let ErrorMsg = ''
           if (res.data.conflict_users && res.data.conflict_users.length > 0) {
-            // 遍历res.data.conflict_users， 他是一个数组里面是对象
+            // Traverseres.data.conflict_users， He isOneArrayContainsObject
             res.data.conflict_users.forEach((item: any) => {
               if (item.type === 'username') {
                 ErrorMsg += '\n\n' + t('views.chatUser.syncMessage.usernameExist') + " [ " + item.users.join(',') + '\n' + ' ]'

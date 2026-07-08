@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： xlsx_parse_qa_handle.py
+    @Author: Tiger
+    @file: xlsx_parse_qa_handle.py
     @date：2024/5/21 14:59
     @desc:
 """
@@ -69,7 +69,7 @@ class XlsxSplitHandle(BaseSplitHandle):
     def fill_merged_cells(self, sheet, image_dict):
         data = []
 
-        # 获取第一行作为标题行
+        # GetFirst rowAsTitle行
         headers = []
         for idx, cell in enumerate(sheet[1]):
             if cell.value is None:
@@ -77,13 +77,13 @@ class XlsxSplitHandle(BaseSplitHandle):
             else:
                 headers.append(cell.value)
 
-        # 从第二行开始遍历每一行
+        # 从第二行StartTraverse每一行
         for row in sheet.iter_rows(min_row=2, values_only=False):
             row_data = {}
             for col_idx, cell in enumerate(row):
                 cell_value = cell.value
 
-                # 如果单元格为空，并且该单元格在合并单元格内，获取合并单元格的值
+                # IfCell为空, and且该Cell在MergeCell内，GetMergeCell的值
                 if cell_value is None:
                     for merged_range in sheet.merged_cells.ranges:
                         if cell.coordinate in merged_range:
@@ -94,7 +94,7 @@ class XlsxSplitHandle(BaseSplitHandle):
                 if image is not None:
                     cell_value = f'![](./oss/file/{image.id})'
 
-                # 使用标题作为键，单元格的值作为值存入字典
+                # UseTitleAs键，Cell的值As值存入Dict
                 row_data[headers[col_idx]] = cell_value
             data.append(row_data)
 
@@ -126,7 +126,7 @@ class XlsxSplitHandle(BaseSplitHandle):
 
     def get_content(self, file, save_image):
         try:
-            # 加载 Excel 文件
+            # Load Excel File
             workbook = load_workbook(file)
             try:
                 image_dict: dict = xlsx_embed_cells_images(file)
@@ -136,20 +136,20 @@ class XlsxSplitHandle(BaseSplitHandle):
                 maxkb_logger.error(f'Exception: {e}')
                 image_dict = {}
             md_tables = ''
-            # 遍历所有工作表
+            # TraverseAllWork表
             for sheetname in workbook.sheetnames:
                 sheet = workbook[sheetname]
                 rows = self.fill_merged_cells(sheet, image_dict)
                 if len(rows) == 0:
                     continue
 
-                # 添加 sheet 名称作为标题
+                # Add sheet NameAsTitle
                 md_tables += f'## {sheetname}\n\n'
 
-                # 提取表头和内容
+                # ExtractHeader和Content
                 headers = [f"{key}" for key, value in rows[0].items()]
 
-                # 构建 Markdown 表格
+                # Build Markdown Table
                 md_table = '| ' + ' | '.join(headers) + ' |\n'
                 md_table += '| ' + ' | '.join(['---'] * len(headers)) + ' |\n'
                 for row in rows:
@@ -164,19 +164,19 @@ class XlsxSplitHandle(BaseSplitHandle):
             return f'error: {e}'
 
     def _escape_cell_content(self, cell_value):
-        """转义单元格内容,避免破坏 Markdown 表格结构"""
+        """转义CellContent,避免破坏 Markdown Table结构"""
         if cell_value is None:
             return ''
 
         cell_str = str(cell_value)
 
-        # 替换换行符为 <br>
+        # ReplaceNewline为 <br>
         cell_str = cell_str.replace('\n', '<br>')
 
         # 转义管道符 | 为 HTML 实体
         cell_str = cell_str.replace('|', '&#124;')
 
-        # 如果内容包含反引号,需要转义
+        # IfContentContains反引号,Needs转义
         if '`' in cell_str:
             cell_str = cell_str.replace('`', '&#96;')
 

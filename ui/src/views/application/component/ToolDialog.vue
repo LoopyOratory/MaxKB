@@ -21,7 +21,7 @@
         </el-button>
       </div>
     </template>
-    <!-- 共享的知识库工作流中，只能查共享的工具，这里不需要展示左边的树，只需展示右边的内容   -->
+    <!-- In shared knowledge base workflow, can only query shared tools; no need to display the tree on the left, just show the right content   -->
     <LayoutContainer class="application-manage" :show-left="apiType !== 'systemShare'">
       <template #left>
         <FolderVirtualizedTree
@@ -259,7 +259,7 @@ const refresh = () => {
 const folderList = ref<any[]>([])
 const currentFolder = ref<any>({})
 const folderLoading = ref(false)
-// 文件
+// File
 function folderClickHandle(row: any) {
   if (row.id === currentFolder.value?.id) {
     return

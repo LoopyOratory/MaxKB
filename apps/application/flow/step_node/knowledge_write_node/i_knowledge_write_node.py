@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： i_knowledge_write_node.py
+    @Author: Niu
+    @file: i_knowledge_write_node.py
     @date：2025/11/13 11:19
     @desc:
 """

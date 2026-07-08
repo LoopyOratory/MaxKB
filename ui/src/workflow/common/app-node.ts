@@ -323,9 +323,9 @@ class AppNode extends HtmlResize.view {
 
 class AppNodeModel extends HtmlResize.model {
   refreshDeges() {
-    // 更新节点连接边的path
+    // Update the path of connected edges for the node
     this.incoming.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
     this.outgoing.edges.forEach((edge: any) => {
@@ -366,7 +366,7 @@ class AppNodeModel extends HtmlResize.model {
     }
     return style
   }
-  // 如果不用修改锚地形状，可以重写颜色相关样式
+  // If anchor shape modification is not needed, color-related styles can be overridden
   getAnchorStyle(anchorInfo: any) {
     const style = super.getAnchorStyle(anchorInfo)
     if (anchorInfo.type === 'left') {
@@ -387,11 +387,11 @@ class AppNodeModel extends HtmlResize.model {
     this.properties['height'] = targetHeight
     this.move(0, (targetHeight - sourceHeight) / 2)
     this.outgoing.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
     this.incoming.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
   }

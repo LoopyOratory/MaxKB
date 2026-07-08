@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_reply_node.py
+    @Author: Tiger
+    @file: base_reply_node.py
     @date：2024/6/11 17:25
     @desc:
 """

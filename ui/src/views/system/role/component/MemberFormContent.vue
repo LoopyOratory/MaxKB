@@ -45,7 +45,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <!-- 删除按钮 -->
+        <!-- DeletionButton -->
         <el-button
           :disabled="
             (props.keepOneLine && (form as Record<string, any>[]).length === 1) || props.deleteButtonDisabled?.(element)
@@ -60,7 +60,7 @@
         </el-button>
       </div>
     </el-scrollbar>
-    <!-- 添加按钮 -->
+    <!-- AddButton -->
     <el-button type="primary" text class="mt-2" @click="handleAdd" v-if="needAddButton">
       <AppIcon iconName="app-add-outlined" class="mr-4"></AppIcon>
       {{ props.addText ?? $t('views.role.member.add') }}
@@ -97,7 +97,7 @@ const selectedRoles = computed(() => {
 
 function getOptions(element: any, model: FormItemModel) {
   const dynamicOptions = element[`_${model.path}_options`]
-  // 检查是否已经设置过动态选项（包括空数组）
+  // Check whether dynamic options have already been set (include empty array)
   if (element.hasOwnProperty(`_${model.path}_options`)) {
     return dynamicOptions
   }

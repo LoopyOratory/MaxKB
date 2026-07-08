@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： model.py
+    @Author: Tiger
+    @file: model.py
     @date：2025/11/5 15:26
     @desc:
 """
@@ -29,7 +29,7 @@ class LocalEmbedding(MaxKBBaseModel, HuggingFaceEmbeddings):
                                            model_kwargs={'device': model_credential.get('device')},
                                            encode_kwargs={'normalize_embeddings': True}
                                            )
-                # 测试一下是否真的能用
+                # Test一下Whether真的能用
                 embedding.embed_query("test")
                 return embedding
             except Exception as e:

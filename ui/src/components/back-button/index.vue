@@ -15,7 +15,7 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['click'])
-/* 上一层路由 */
+/* Parent route */
 const back: any = router.options.history.state.back
 function jump() {
   if (props.to === '-1') {

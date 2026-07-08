@@ -64,7 +64,7 @@ async function getUserFormItem() {
       })) || []
     }
 
-    // 初始加载
+    // InitialLoad
     userOptions.value = await fetchUserOptions()
 
     userFormItem.value = [
@@ -81,9 +81,9 @@ async function getUserFormItem() {
           options: userOptions.value,
           placeholder: `${t('common.selectPlaceholder')}${t('views.role.member.title')}`,
           remoteMethod: async (query: string, element: any) => {
-            // 关键：直接更新 selectProps.options
+            // Key: DirectUpdate selectProps.options
             const newOptions = await fetchUserOptions(query)
-            // 更新当前项的 options
+            // UpdateCurrentItem options
             const currentItem = userFormItem.value.find(
               item => item.path === 'user_ids'
             )

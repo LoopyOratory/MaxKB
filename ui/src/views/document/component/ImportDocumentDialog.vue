@@ -139,11 +139,11 @@ const form = ref<any>({
   allow_download: true,
 })
 
-// 文档设置
+// DocumentSettings
 const documentId = ref('')
-const documentType = ref<string | number>('') //文档类型：1: web文档；0:普通文档
+const documentType = ref<string | number>('') //DocumentType：1: webDocument；0:NormalDocument
 
-// 批量设置
+// BatchSettings
 const documentList = ref<Array<string>>([])
 
 const rules = reactive({
@@ -193,10 +193,10 @@ const open = (row: any, list: Array<string>) => {
     }
     isImport.value = false
   } else if (list) {
-    // 批量设置
+    // BatchSettings
     documentList.value = list
   } else {
-    // 导入 只有web文档类型
+    // Import OnlywebDocumentType
     documentType.value = 1
     isImport.value = true
   }
@@ -225,7 +225,7 @@ const submit = async (formEl: FormInstance | undefined) => {
           const obj = {
             hit_handling_method: form.value.hit_handling_method,
             directly_return_similarity: form.value.directly_return_similarity,
-            // 飞书文档需要传递meta信息，不能被页面上的form覆盖
+            // FeishuDocumentNeedsPassmetaInfo, notCan be by pageformOverride
             meta: {
               ...form.value.meta,
               ...{
@@ -243,7 +243,7 @@ const submit = async (formEl: FormInstance | undefined) => {
               dialogVisible.value = false
             })
         } else if (documentList.value.length > 0) {
-          // 批量设置
+          // BatchSettings
           const obj = {
             hit_handling_method: form.value.hit_handling_method,
             directly_return_similarity: form.value.directly_return_similarity,

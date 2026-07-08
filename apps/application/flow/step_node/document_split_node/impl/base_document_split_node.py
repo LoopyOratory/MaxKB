@@ -16,15 +16,15 @@ def bytes_to_uploaded_file(file_bytes, file_name="file.txt"):
         file_name = "file.txt"
     content_type, _ = mimetypes.guess_type(file_name)
     if content_type is None:
-        # 如果未能识别，设置为默认的二进制文件类型
+        # IfIf not recognized, Settings为Default binaryFileType
         content_type = "application/octet-stream"
-    # 创建一个内存中的字节流对象
+    # CreationOneMemory in Byte streamObject
     file_stream = io.BytesIO(file_bytes)
 
-    # 获取文件大小
+    # GetFileSize
     file_size = len(file_bytes)
 
-    # 创建 InMemoryUploadedFile 对象
+    # Creation InMemoryUploadedFile Object
     uploaded_file = InMemoryUploadedFile(
         file=file_stream,
         field_name=None,
@@ -53,7 +53,7 @@ class BaseDocumentSplitNode(IDocumentSplitNode):
         self.context['knowledge_id'] = knowledge_id
         file_list = self.get_reference_content(document_list)
 
-        # 处理引用类型的参数
+        # Handle reference types的Parameters
         if patterns_type == 'referencing':
             patterns = self.get_reference_content(patterns_reference)
         if limit_type == 'referencing':
@@ -73,7 +73,7 @@ class BaseDocumentSplitNode(IDocumentSplitNode):
             else:
                 result = default_split_handle.handle(file_mem, patterns, with_filter, limit, get_buffer,
                                                      self._save_image)
-            # 统一处理结果为列表
+            # UnifiedProcessResult为List
             results = result if isinstance(result, list) else [result]
 
             for item in results:
@@ -107,7 +107,7 @@ class BaseDocumentSplitNode(IDocumentSplitNode):
             document_name_relate_problem_type, document_name_relate_problem,
             document_name_relate_problem_reference, chunk_size
     ):
-        """处理文档分割结果"""
+        """ProcessDocumentSplitResult"""
         item['meta'] = {
             'knowledge_id': knowledge_id,
             'source_file_id': source_file_id,
@@ -163,7 +163,7 @@ class BaseDocumentSplitNode(IDocumentSplitNode):
 
     def get_details(self, index: int, **kwargs):
         paragraph_list = self.context.get('paragraph_list', [])
-        # 每个文档保留前5个分段
+        # EachDocumentRetain前5个Segment
         limited_paragraph_list = []
         for doc in paragraph_list:
             if doc.get('paragraphs'):

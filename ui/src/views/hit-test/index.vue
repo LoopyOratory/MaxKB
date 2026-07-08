@@ -270,7 +270,7 @@ const formInline = ref({
   search_mode: 'embedding',
 })
 
-// 第一次加载
+// First load
 const first = ref(true)
 
 const cloneForm = ref<any>({})
@@ -305,13 +305,13 @@ function editParagraph(row: any) {
 
 function sendChatHandle(event: any) {
   if (!event?.ctrlKey && !event?.shiftKey && !event?.altKey && !event?.metaKey) {
-    // 如果没有按下组合键，则会阻止默认事件
+    // If no modifier key is pressed, block the default event
     event.preventDefault()
     if (!isDisabledChart.value && !loading.value) {
       getHitTestList()
     }
   } else {
-    // 如果同时按下ctrl/shift/cmd/opt +enter，则会换行
+    // If ctrl/shift/cmd/opt + enter is pressed simultaneously, insert a newline
     insertNewlineAtCursor(event)
   }
 }
@@ -321,12 +321,12 @@ const insertNewlineAtCursor = (event?: any) => {
   ) as HTMLTextAreaElement
   const startPos = textarea.selectionStart
   const endPos = textarea.selectionEnd
-  // 阻止默认行为（避免额外的换行符）
+  // Block default behavior (avoid extra newlines)
   event.preventDefault()
-  // 在光标处插入换行符
+  // At cursor, insert newline
   inputValue.value = inputValue.value.slice(0, startPos) + '\n' + inputValue.value.slice(endPos)
   nextTick(() => {
-    textarea.setSelectionRange(startPos + 1, startPos + 1) // 光标定位到换行后位置
+    textarea.setSelectionRange(startPos + 1, startPos + 1) // Position cursor after newline
   })
 }
 

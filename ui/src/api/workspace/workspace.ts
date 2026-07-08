@@ -11,7 +11,7 @@ import type {pageRequest, PageList} from '@/api/type/common'
 const prefix = '/workspace'
 
 /**
- * 获取首页的工作空间下拉列表
+ * GetHomepageWorkspaceDropdownList
  */
 const getWorkspaceListByUser: (loading?: Ref<boolean>) => Promise<Result<WorkspaceItem[]>> = (
   loading,
@@ -20,7 +20,7 @@ const getWorkspaceListByUser: (loading?: Ref<boolean>) => Promise<Result<Workspa
 }
 
 /**
- * 获取添加成员时的工作空间下拉列表
+ * GetAddMember at WorkspaceDropdownList
  */
 const getWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (
   loading,
@@ -29,7 +29,7 @@ const getWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<Record<string
 }
 
 /**
- * 获取工作空间列表
+ * GetWorkspaceList
  */
 const getSystemWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<WorkspaceItem[]>> = (
   loading,
@@ -38,7 +38,7 @@ const getSystemWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<Workspa
 }
 
 /**
- * 获取工作空间成员列表
+ * GetWorkspaceMemberList
  */
 const getWorkspaceMemberList: (
   workspace_id: string,
@@ -54,7 +54,7 @@ const getWorkspaceMemberList: (
 }
 
 /**
- * 获取工作空间全部成员列表
+ * GetWorkspaceAllMemberList
  */
 const getAllMemberList: (
   workspace_id: string | null,
@@ -65,7 +65,7 @@ const getAllMemberList: (
 }
 
 /**
- * 新建工作空间成员
+ * CreateWorkspaceMember
  */
 const CreateWorkspaceMember: (
   workspace_id: string,
@@ -76,7 +76,7 @@ const CreateWorkspaceMember: (
 }
 
 /**
- * 删除工作空间成员
+ * DeletionWorkspaceMember
  */
 const deleteWorkspaceMember: (
   workspace_id: string,
@@ -87,7 +87,7 @@ const deleteWorkspaceMember: (
 }
 
 /**
- * 获取添加成员时的角色下拉列表
+ * GetAddMember at RoleDropdownList
  */
 const getWorkspaceRoleList: (loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (
   loading,

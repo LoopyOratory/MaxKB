@@ -79,7 +79,7 @@
         </el-dropdown>
       </div>
     </div>
-    <!-- 下拉框 -->
+    <!-- DropdownDialog -->
     <el-collapse-transition>
       <DropdownMenu
         :show="showPopover"
@@ -90,11 +90,11 @@
         :workflowRef="workflowRef"
       />
     </el-collapse-transition>
-    <!-- 主画布 -->
+    <!-- Main canvas -->
     <div class="workflow-main" ref="workflowMainRef">
       <workflow ref="workflowRef" v-if="detail" :data="detail?.work_flow" />
     </div>
-    <!-- 调试 -->
+    <!-- Debug -->
     <el-collapse-transition>
       <div class="workflow-debug-container" :class="enlarge ? 'enlarge' : ''" v-if="showDebug">
         <div class="workflow-debug-header" :class="!isDefaultTheme ? 'custom-header' : ''">
@@ -138,7 +138,7 @@
         </div>
       </div>
     </el-collapse-transition>
-    <!-- 发布历史 -->
+    <!-- PublishHistory -->
     <PublishHistory
       v-if="showHistory"
       @click="checkVersion"
@@ -479,7 +479,7 @@ function getDetail() {
         workflowRef.value?.render(detail.value.work_flow)
         cloneWorkFlow.value = getGraphData()
       })
-      // 企业版和专业版
+      // EnterpriseAnd Professional
       if (hasPermission([EditionConst.IS_EE, EditionConst.IS_PE], 'OR')) {
         loadSharedApi({ type: 'application', systemType: apiType.value })
           .getApplicationSetting(id)
@@ -633,7 +633,7 @@ const get_route = () => {
 }
 
 /**
- * 定时保存
+ * ScheduledSave
  */
 const initInterval = () => {
   interval = setInterval(() => {
@@ -642,7 +642,7 @@ const initInterval = () => {
 }
 
 /**
- * 关闭定时
+ * CloseScheduled
  */
 const closeInterval = () => {
   if (interval) {
@@ -659,14 +659,14 @@ onMounted(() => {
   getDetail()
   const workflowAutoSave = localStorage.getItem('workflowAutoSave')
   isSave.value = workflowAutoSave === 'true' ? true : false
-  // 初始化定时任务
+  // InitializeScheduledTask
   if (isSave.value) {
     initInterval()
   }
 })
 
 onBeforeUnmount(() => {
-  // 清除定时任务
+  // ClearScheduledTask
   closeInterval()
   workflowRef.value?.clearGraphData()
 })

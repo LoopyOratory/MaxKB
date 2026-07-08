@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： common.py
+    @Author: Tiger
+    @file: common.py
     @date：2023/11/10 10:41
     @desc:
 """

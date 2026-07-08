@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： llm.py
+    @Author: Tiger
+    @file: llm.py
     @date：2024/7/12 10:19
     @desc:
 """
@@ -39,7 +39,7 @@ class WenxinLLMModelParams(BaseForm):
 class WenxinLLMModelCredential(BaseForm, BaseModelCredential):
     def is_valid(self, model_type: str, model_name, model_credential: Dict[str, object], model_params, provider,
                  raise_exception=False):
-        # 根据api_version检查必需字段
+        # Based onapi_versionCheck必需Field
         api_version = model_credential.get('api_version', 'v1')
         model = provider.get_model(model_type, model_name, model_credential, **model_params)
         if api_version == 'v1':
@@ -70,7 +70,7 @@ class WenxinLLMModelCredential(BaseForm, BaseModelCredential):
         return True
 
     def encryption_dict(self, model_info: Dict[str, object]):
-        # 根据api_version加密不同字段
+        # Based onapi_versionEncryptDifferentField
         api_version = model_info.get('api_version', 'v1')
         if api_version == 'v1':
             return {**model_info, 'secret_key': super().encryption(model_info.get('secret_key', ''))}
@@ -79,7 +79,7 @@ class WenxinLLMModelCredential(BaseForm, BaseModelCredential):
 
     def build_model(self, model_info: Dict[str, object]):
         api_version = model_info.get('api_version', 'v1')
-        # 根据api_version检查必需字段
+        # Based onapi_versionCheck必需Field
         if api_version == 'v1':
             for key in ['api_version', 'api_key', 'secret_key', 'model']:
                 if key not in model_info:
@@ -94,7 +94,7 @@ class WenxinLLMModelCredential(BaseForm, BaseModelCredential):
             self.api_key = model_info.get('api_key')
         return self
 
-    # 动态字段定义 - 根据api_version显示不同字段
+    # DynamicFieldDefinition - Based onapi_versionShowDifferentField
     api_version = forms.Radio('API Version', required=True, text_field='label', value_field='value',
                               option_list=[
                                   {'label': 'v1', 'value': 'v1'},
@@ -104,10 +104,10 @@ class WenxinLLMModelCredential(BaseForm, BaseModelCredential):
                               provider='',
                               method='', )
 
-    # v2版本字段
+    # v2VersionField
     api_base = forms.TextInputField("API URL", required=True, relation_show_field_dict={"api_version": ["v2"]})
 
-    # v1版本字段
+    # v1VersionField
     api_key = forms.PasswordInputField('API Key', required=True)
     secret_key = forms.PasswordInputField("Secret Key", required=True,
                                           relation_show_field_dict={"api_version": ["v1"]})

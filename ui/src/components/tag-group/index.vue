@@ -39,7 +39,7 @@ const props = defineProps<{
 
 <style lang="scss" scoped>
 .tag-group {
-  /* tag超出省略号 */
+  /* tagExceedEllipsis */
   .tag-ellipsis {
     box-sizing: border-box;
     max-width: 130px;

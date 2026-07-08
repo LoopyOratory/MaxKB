@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： text_split_handle.py
+    @Author: Tiger
+    @file: text_split_handle.py
     @date：2024/3/27 18:19
     @desc:
 """
@@ -37,8 +37,8 @@ combine_nsmap = {**ns.nsmap, **old_docx_nsmap}
 
 def image_to_mode(image, doc: Document, images_list, get_image_id):
     image_ids = image['get_image_id_handle'](image.get('image'))
-    for img_id in image_ids:  # 获取图片id
-        part = doc.part.related_parts[img_id]  # 根据图片id获取对应的图片
+    for img_id in image_ids:  # GetImageid
+        part = doc.part.related_parts[img_id]  # Based onImageidGetCorrespondingImage
         if isinstance(part, ImagePart):
             image_uuid = get_image_id(img_id)
             if len([i for i in images_list if i.id == image_uuid]) == 0:
@@ -126,8 +126,8 @@ def get_title_level(paragraph: Paragraph):
     try:
         if paragraph.style is not None:
             psn = paragraph.style.name
-            if psn.startswith('Heading') or psn.startswith('TOC 标题') or psn.startswith('标题'):
-                return int(psn.replace("Heading ", '').replace('TOC 标题', '').replace('标题',
+            if psn.startswith('Heading') or psn.startswith('TOC Title') or psn.startswith('Title'):
+                return int(psn.replace("Heading ", '').replace('TOC Title', '').replace('Title',
                                                                                        ''))
         if len(paragraph.runs) >= 1:
             font_size = paragraph.runs[0].font.size
@@ -166,7 +166,7 @@ class DocSplitHandle(BaseSplitHandle):
     def table_to_md(table, doc: Document, images_list, get_image_id):
         rows = table.rows
 
-        # 创建 Markdown 格式的表格
+        # Creation Markdown Format的Table
         md_table = '| ' + ' | '.join(
             [get_cell_text(cell, doc, images_list, get_image_id) for cell in rows[0].cells]) + ' |\n'
         md_table += '| ' + ' | '.join(['---' for i in range(len(rows[0].cells))]) + ' |\n'
@@ -180,11 +180,11 @@ class DocSplitHandle(BaseSplitHandle):
         for element in doc.element.body:
             tag = str(element.tag)
             if tag.endswith('tbl'):
-                # 处理表格
+                # ProcessTable
                 table = Table(element, doc)
                 elements.append(table)
             elif tag.endswith('p'):
-                # 处理段落
+                # ProcessParagraph
                 paragraph = Paragraph(element, doc)
                 elements.append(paragraph)
         return "\n".join(

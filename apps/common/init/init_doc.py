@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： init_doc.py
+    @Author: Tiger
+    @file: init_doc.py
     @date：2024/5/24 14:11
     @desc:
 """
@@ -19,9 +19,9 @@ chat_api_prefix = CONFIG.get_chat_path()[1:] + '/api/'
 def init_app_doc(system_urlpatterns):
     system_urlpatterns += [
         path(f'{CONFIG.get_admin_path()[1:]}/api-doc/schema/', SpectacularAPIView.as_view(), name='schema'),
-        # schema的配置文件的路由，下面两个ui也是根据这个配置文件来生成的
+        # schema的ConfigurationFile route，下面两个ui也是Based on这个ConfigurationFile来Generate的
         path(f'{CONFIG.get_admin_path()[1:]}/api-doc/', SpectacularSwaggerView.as_view(url_name='schema'),
-             name='swagger-ui'),  # swagger-ui的路由
+             name='swagger-ui'),  # swagger-ui route
     ]
 
 
@@ -43,9 +43,9 @@ def init_chat_doc(system_urlpatterns, chat_urlpatterns):
                             default_args=url.default_args,
                             name=url.name) for url in chat_urlpatterns if
                  ['chat', 'open', 'profile'].__contains__(url.name)]),
-             name='chat_schema'),  # schema的配置文件的路由，下面两个ui也是根据这个配置文件来生成的
+             name='chat_schema'),  # schema的ConfigurationFile route，下面两个ui也是Based on这个ConfigurationFile来Generate的
         path(f'{CONFIG.get_chat_path()[1:]}/api-doc/', ChatSpectacularSwaggerView.as_view(url_name='chat_schema'),
-             name='swagger-ui'),  # swagger-ui的路由
+             name='swagger-ui'),  # swagger-ui route
     ]
 
 

@@ -1,29 +1,29 @@
 <template>
-  <div>说明: v-hasPermission 是使用v-show 本质上组件是渲染的 v-if="hasPermission('xxxx')"</div>
-  <div>这种方式组件不会渲染(用于比如像组件挂载的时候需要调用接口,不想让组件渲染)</div>
-  <div>比如工作空间的下拉列表组件使用v-if 示例： 企业版组件:</div>
+  <div>Note: v-hasPermission IsUsev-show EssentiallyComponentIsRender v-if="hasPermission('xxxx')"</div>
+  <div>This kindMethodComponentWill notRender(Used forFor exampleComponentMountWhenNeedsCallInterface,Do not want toComponentRender)</div>
+  <div>For exampleWorkspaceDropdownListComponentUsev-if Example:  EnterpriseComponent:</div>
 
-  <button v-if="hasPermission(EditionConst.IS_CE, 'OR')">我是社区版组件</button>
+  <button v-if="hasPermission(EditionConst.IS_CE, 'OR')">I amCommunity editionComponent</button>
 
-  <button v-hasPermission="EditionConst.IS_CE">我是社区版组件</button>
-  <!-- ================我是企业版组件================== -->
-  <button v-if="hasPermission(EditionConst.IS_EE, 'OR')">我是企业版组件</button>
-  <button v-hasPermission="EditionConst.IS_EE">我是企业版组件</button>
+  <button v-hasPermission="EditionConst.IS_CE">I amCommunity editionComponent</button>
+  <!-- ================I amEnterpriseComponent================== -->
+  <button v-if="hasPermission(EditionConst.IS_EE, 'OR')">I amEnterpriseComponent</button>
+  <button v-hasPermission="EditionConst.IS_EE">I amEnterpriseComponent</button>
 
-  <!-- ================企业版组件 并且是ADMIN角色================== -->
+  <!-- ================EnterpriseComponent And isADMINRole================== -->
   <button v-if="hasPermission([EditionConst.IS_EE, RoleConst.ADMIN], 'AND')">
-    我是企业版并且是ADMIN角色
+    I amEnterpriseAnd isADMINRole
   </button>
   <button
     v-hasPermission="new ComplexPermission([RoleConst.ADMIN], [], [EditionConst.IS_EE], 'AND')"
   >
-    我是企业版并且是ADMIN角色
+    I amEnterpriseAnd isADMINRole
   </button>
-  <!-- ================企业版组件 并且是当前工作空间管理员================== -->
+  <!-- ================EnterpriseComponent And isCurrentWorkspaceAdmin================== -->
   <button
     v-if="hasPermission([EditionConst.IS_EE, RoleConst.WORKSPACE_MANAGE.getWorkspaceRole], 'AND')"
   >
-    我是企业版并且拥有当前工作空间管理员角色
+    I amEnterpriseAndHasCurrentWorkspaceAdminRole
   </button>
   <button
     v-hasPermission="
@@ -35,9 +35,9 @@
       )
     "
   >
-    我是企业版并且拥有当前工作空间管理员角色
+    I amEnterpriseAndHasCurrentWorkspaceAdminRole
   </button>
-  <!-- ================企业版组件 （并且是当前工作空间管理员 或者有用户只读）================== -->
+  <!-- ================Enterprise component (and is current workspace admin or has user read-only)================== -->
   <button
     v-if="
       hasPermission(
@@ -51,7 +51,7 @@
       )
     "
   >
-    我是企业版 （并且是当前工作空间管理员 或者有用户只读）
+    I am enterprise component (and is current workspace admin or has user read-only)
   </button>
   <button
     v-hasPermission="
@@ -63,7 +63,7 @@
       )
     "
   >
-    我是企业版（并且是当前工作空间管理员 或者有用户只读）
+    I am enterprise component (and is current workspace admin or has user read-only)
   </button>
 </template>
 <script setup lang="ts">

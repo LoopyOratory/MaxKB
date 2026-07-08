@@ -26,7 +26,7 @@ class CsvParseTableHandle(BaseParseTableHandle):
 
         csv_model = content.split('\n')
         paragraphs = []
-        # 第一行为标题
+        # First row为Title
         title = csv_model[0].split(',')
         for row in csv_model[1:]:
             if not row:
@@ -45,20 +45,20 @@ class CsvParseTableHandle(BaseParseTableHandle):
             if not rows:
                 return ""
 
-            # 构建 Markdown 表格
+            # Build Markdown Table
             md_lines = []
 
-            # 添加表头
+            # AddHeader
             header = [cell.replace('\n', '<br>').replace('\r', '') for cell in rows[0]]
             md_lines.append('| ' + ' | '.join(header) + ' |')
 
-            # 添加分隔线
+            # Add分隔线
             md_lines.append('| ' + ' | '.join(['---'] * len(header)) + ' |')
 
-            # 添加数据行
+            # AddData行
             for row in rows[1:]:
                 if row:  # 跳过空行
-                    # 确保行长度与表头一致,并将换行符转换为 <br>
+                    # Ensure行Length与HeaderConsistent,并将NewlineTransform为 <br>
                     padded_row = [
                                      cell.replace('\n', '<br>').replace('\r', '') for cell in row
                                  ] + [''] * (len(header) - len(row))

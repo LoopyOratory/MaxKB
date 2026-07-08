@@ -7,34 +7,34 @@ interface modelRequest {
 
 interface Provider {
   /**
-   * 供应商代号
+   * ProviderCode name
    */
   provider: string
   /**
-   * 供应商名称
+   * ProviderName
    */
   name: string
   /**
-   * 供应商icon
+   * Providericon
    */
   icon: string
 }
 
 interface ListModelRequest {
   /**
-   * 模型名称
+   * ModelName
    */
   name?: string
   /**
-   * 模型类型
+   * Model type
    */
   model_type?: string
   /**
-   * 基础模型名称
+   * BasicModelName
    */
   model_name?: string
   /**
-   * 供应商
+   * Provider
    */
   provider?: string
 
@@ -43,42 +43,42 @@ interface ListModelRequest {
 
 interface Model {
   /**
-   * 主键id
+   * Primary keyid
    */
   id: string
   /**
-   * 模型名
+   * Model name
    */
   name: string
   /**
-   * 模型类型
+   * Model type
    */
   model_type: string
   user_id: string
   username: string
   nick_name: string
   /**
-   * 基础模型
+   * BasicModel
    */
   model_name: string
   /**
-   * 认证信息
+   * AuthenticationInfo
    */
   credential: any
   /**
-   * 供应商
+   * Provider
    */
   provider: string
   /**
-   * 状态
+   * Status
    */
   status: 'SUCCESS' | 'DOWNLOAD' | 'ERROR' | 'PAUSE_DOWNLOAD'
   /**
-   * 元数据
+   * Metadata
    */
   meta: Dict<any>
   /**
-   * 模型参数配置
+   * ModelParametersConfiguration
    */
   model_params_form: Dict<any>[]
   resource_count: number
@@ -86,57 +86,57 @@ interface Model {
 }
 interface CreateModelRequest {
   /**
-   * 模型名
+   * Model name
    */
   name: string
   /**
-   * 模型类型
+   * Model type
    */
   model_type: string
   /**
-   * 基础模型
+   * BasicModel
    */
   model_name: string
   /**
-   * 认证信息
+   * AuthenticationInfo
    */
   credential: any
   /**
-   * 供应商
+   * Provider
    */
   provider: string
 }
 
 interface EditModelRequest {
   /**
-   * 模型名
+   * Model name
    */
   name: string
   /**
-   * 模型类型
+   * Model type
    */
   model_type: string
   /**
-   * 基础模型
+   * BasicModel
    */
   model_name: string
   /**
-   * 认证信息
+   * AuthenticationInfo
    */
   credential: any
 }
 
 interface BaseModel {
   /**
-   * 基础模型名称
+   * BasicModelName
    */
   name: string
   /**
-   * 基础模型描述
+   * BasicModelDescription
    */
   desc: string
   /**
-   * 基础模型类型
+   * BasicModel type
    */
   model_type: string
 }

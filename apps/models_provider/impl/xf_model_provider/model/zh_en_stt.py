@@ -66,18 +66,18 @@ class XFZhEnSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             **model_kwargs
         )
 
-    # 生成url
+    # Generateurl
     def create_url(self):
         url = self.spark_api_url
         host = urlparse(url).hostname
 
         gmt_format = '%a, %d %b %Y %H:%M:%S GMT'
         date = datetime.now(UTC).strftime(gmt_format)
-        # 拼接字符串
+        # ConcatenateString
         signature_origin = "host: " + host + "\n"
         signature_origin += "date: " + date + "\n"
         signature_origin += "GET " + "/v1 HTTP/1.1"
-        # 进行hmac-sha256进行加密
+        # Performhmac-sha256PerformEncrypt
         signature_sha = hmac.new(
             self.spark_api_secret.encode('utf-8'),
             signature_origin.encode('utf-8'),
@@ -107,15 +107,15 @@ class XFZhEnSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
     def speech_to_text(self, audio_file_path):
         async def handle():
             async with websockets.connect(self.create_url(), max_size=1000000000, ssl=ssl_context) as ws:
-                # print("连接成功")
-                # 发送音频数据
+                # print("ConnectSuccess")
+                # SendAudioData
                 await self.send_audio(ws, audio_file_path)
-                # 接收识别结果
+                # Receive识别Result
                 return await self.handle_message(ws)
         try:
             return asyncio.run(handle())
         except Exception as err:
-            maxkb_logger.error(f"语音识别错误: {str(err)}: {traceback.format_exc()}")
+            maxkb_logger.error(f"Speech recognitionError: {str(err)}: {traceback.format_exc()}")
             raise
 
     def merge_params_to_frame(self, frame,params):
@@ -123,7 +123,7 @@ class XFZhEnSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
         return deep_merge_dict(frame, params)
 
     async def send_audio(self, ws, audio_file):
-        """发送音频数据"""
+        """SendAudioData"""
         chunk_size = 4000
         seq = 1
         max_chunks = 10000
@@ -175,7 +175,7 @@ class XFZhEnSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             await ws.send(json.dumps(frame))
             seq += 1
 
-        # 发送结束帧
+        # SendEnd帧
         end_frame = {
             "header": {"app_id": self.spark_app_id, "status": 2},
             "payload": {
@@ -191,7 +191,7 @@ class XFZhEnSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
 
         await ws.send(json.dumps(end_frame))
 
-    # 接受信息处理器
+    # 接受InfoProcess器
     async def handle_message(self, ws):
         result_text = ""
         while True:

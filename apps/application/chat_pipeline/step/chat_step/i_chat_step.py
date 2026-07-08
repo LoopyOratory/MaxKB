@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_chat_step.py
+    @Author: Tiger
+    @file: i_chat_step.py
     @date：2024/1/9 18:17
-    @desc: 对话
+    @desc: Conversation
 """
 from abc import abstractmethod
 from typing import Type, List
@@ -50,29 +50,29 @@ class PostResponseHandler:
 
 class IChatStep(IBaseChatPipelineStep):
     class InstanceSerializer(serializers.Serializer):
-        # 对话列表
+        # ConversationList
         message_list = serializers.ListField(required=True, child=MessageField(required=True),
                                              label=_("Conversation list"))
         model_id = serializers.UUIDField(required=False, allow_null=True, label=_("Model id"))
-        # 段落列表
+        # ParagraphList
         paragraph_list = serializers.ListField(label=_("Paragraph List"))
-        # 对话id
+        # Conversationid
         chat_id = serializers.UUIDField(required=True, label=_("Conversation ID"))
-        # 用户问题
+        # UserQuestion
         problem_text = serializers.CharField(required=True, label=_("User Questions"))
-        # 后置处理器
+        # PostProcess器
         post_response_handler = InstanceField(model_type=PostResponseHandler,
                                               label=_("Post-processor"))
-        # 补全问题
+        # CompletionQuestion
         padding_problem_text = serializers.CharField(required=False,
                                                      label=_("Completion Question"))
-        # 是否使用流的形式输出
+        # WhetherUse流的形式Output
         stream = serializers.BooleanField(required=False, label=_("Streaming Output"))
         chat_user_id = serializers.CharField(required=True, label=_("Chat user id"))
         chat_record_id = serializers.CharField(required=False, label=_("Chat record id"))
 
         chat_user_type = serializers.CharField(required=True, label=_("Chat user Type"))
-        # 未查询到引用分段
+        # 未Query到ReferenceSegment
         no_references_setting = NoReferencesSetting(required=True,
                                                     label=_("No reference segment settings"))
 
@@ -83,13 +83,13 @@ class IChatStep(IBaseChatPipelineStep):
 
         model_params_setting = serializers.DictField(required=False, allow_null=True,
                                                      label=_("Model parameter settings"))
-        mcp_tool_ids = serializers.JSONField(label="MCP工具ID列表", required=False, default=list)
-        mcp_servers = serializers.JSONField(label="MCP服务列表", required=False, default=dict)
+        mcp_tool_ids = serializers.JSONField(label="MCPToolIDList", required=False, default=list)
+        mcp_servers = serializers.JSONField(label="MCPServiceList", required=False, default=dict)
         mcp_source = serializers.CharField(label="MCP Source", required=False, default="referencing")
-        tool_ids = serializers.JSONField(label="工具ID列表", required=False, default=list)
-        application_ids = serializers.JSONField(label="应用ID列表", required=False, default=list)
-        skill_tool_ids = serializers.JSONField(label="技能ID列表", required=False, default=list)
-        mcp_output_enable = serializers.BooleanField(label="MCP输出是否启用", required=False, default=True)
+        tool_ids = serializers.JSONField(label="ToolIDList", required=False, default=list)
+        application_ids = serializers.JSONField(label="ApplicationIDList", required=False, default=list)
+        skill_tool_ids = serializers.JSONField(label="SkillsIDList", required=False, default=list)
+        mcp_output_enable = serializers.BooleanField(label="MCPOutputIs enabled", required=False, default=True)
 
         def is_valid(self, *, raise_exception=False):
             super().is_valid(raise_exception=True)

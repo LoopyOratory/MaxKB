@@ -375,7 +375,7 @@
         </el-checkbox-group>
       </InfiniteScroll>
     </div>
-    <!-- 批量操作拦 -->
+    <!-- Batch actions bar -->
     <div class="mul-operation border-t w-full flex align-center" v-if="isBatch">
       <el-checkbox
         v-model="checkAll"
@@ -477,7 +477,7 @@ onBeforeRouteLeave((to, from) => {
 const emit = defineEmits(['refreshFolder'])
 
 const apiType = computed(() => {
-  // 工作空间普通用户的共享是share。系统的共享是shared
+  // WorkspaceNormalUserSharedIsshare。SystemSharedIsshared
   if (route.path.includes('shared')) {
     return 'systemShare'
   } else if (route.path.includes('resource-management')) {
@@ -527,7 +527,7 @@ const paginationConfig = reactive({
   total: 0,
 })
 
-// 批量操作
+// BatchActions
 const isBatch = ref(false)
 const multipleSelection = ref<any[]>([])
 const checkAll = ref(false)
@@ -624,7 +624,7 @@ function openMoveToDialog(data?: any) {
       id_list: multipleSelection.value,
     }
   } else {
-    // 仅2个参数就行
+    // Only 2 parameters are sufficient
     obj = {
       id: data.id,
       folder_id: data.folder,
@@ -636,7 +636,7 @@ function openMoveToDialog(data?: any) {
 
 function refreshKnowledgeList(row: any) {
   if (row) {
-    // 不是根目录才会移除
+    // Not rootDirectoryOnly thenRemove
     if (folder.currentFolder?.parent_id) {
       const list = cloneDeep(knowledge.knowledgeList)
       const index = list.findIndex((v) => v.id === row.id)
@@ -783,7 +783,7 @@ function openAuthorizedWorkspaceDialog(row: any) {
   }
 }
 
-// 文件夹相关
+// FolderRelated
 const CreateFolderDialogRef = ref()
 
 function openCreateFolder() {

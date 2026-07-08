@@ -12,7 +12,7 @@ class AliyunBaiLianOmiSTTModelParams(BaseForm):
     CueWord = forms.TextInputField(
         TooltipLabel(_('CueWord'), _('If not passed, the default value is What is this audio saying? Only answer the audio content')),
         required=True,
-        default_value='这段音频在说什么，只回答音频的内容',
+        default_value='这段Audio在说什么，只AnswerAudio的Content',
     )
 
 

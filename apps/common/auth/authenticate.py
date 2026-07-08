@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: qabot
-    @Author：虎虎
-    @file： authenticate.py
+    @Author: Tiger
+    @file: authenticate.py
     @date：2023/9/4 11:16
-    @desc:  认证类
+    @desc:  Authentication类
 """
 from importlib import import_module
 
@@ -28,16 +28,16 @@ class AnonymousAuthentication(TokenAuthentication):
 
 
 class AnonymousAuthenticationScheme(OpenApiAuthenticationExtension):
-    target_class = AnonymousAuthentication  # 绑定到你的自定义认证类
-    name = "AnonymousAuth"  # 自定义认证名称（显示在 Swagger UI 中）
+    target_class = AnonymousAuthentication  # 绑定到你的CustomAuthentication类
+    name = "AnonymousAuth"  # CustomAuthenticationName（Show在 Swagger UI 中）
 
     def get_security_definition(self, auto_schema):
-        # 定义认证方式，这里假设匿名认证不需要凭证
+        # DefinitionAuthenticationMethod，这里假设AnonymousAuthentication不Needs凭证
         return {
         }
 
     def get_security_requirement(self, auto_schema):
-        # 返回安全要求（空字典表示无需认证）
+        # Return安全Requires（空Dict表示无需Authentication）
         return {}
 
 
@@ -74,10 +74,10 @@ class TokenDetails:
 class TokenAuth(TokenAuthentication):
     keyword = "Bearer"
 
-    # 重新 authenticate 方法，自定义认证规则
+    # Re- authenticate Method，CustomAuthenticationRule
     def authenticate(self, request):
         auth = request.META.get('HTTP_AUTHORIZATION')
-        # 未认证
+        # 未Authentication
         if auth is None:
             raise AppAuthenticationFailed(1003, _('Not logged in, please log in first'))
         if not auth.startswith("Bearer "):
@@ -100,10 +100,10 @@ class TokenAuth(TokenAuthentication):
 class ChatTokenAuth(TokenAuthentication):
     keyword = "Bearer"
 
-    # 重新 authenticate 方法，自定义认证规则
+    # Re- authenticate Method，CustomAuthenticationRule
     def authenticate(self, request):
         auth = request.META.get('HTTP_AUTHORIZATION')
-        # 未认证
+        # 未Authentication
         if auth is None:
             raise AppAuthenticationFailed(1003, _('Not logged in, please log in first'))
         if not auth.startswith("Bearer "):
@@ -126,10 +126,10 @@ class ChatTokenAuth(TokenAuthentication):
 class AllTokenAuth(TokenAuthentication):
     keyword = "Bearer"
 
-    # 重新 authenticate 方法，自定义认证规则
+    # Re- authenticate Method，CustomAuthenticationRule
     def authenticate(self, request):
         auth = request.META.get('HTTP_AUTHORIZATION')
-        # 未认证
+        # 未Authentication
         if auth is None:
             raise AppAuthenticationFailed(1003, _('Not logged in, please log in first'))
         if not auth.startswith("Bearer "):
@@ -152,6 +152,6 @@ class AllTokenAuth(TokenAuthentication):
 class WebhookAuth(TokenAuthentication):
     keyword = "Bearer"
 
-    # 重新 authenticate 方法，自定义认证规则
+    # Re- authenticate Method，CustomAuthenticationRule
     def authenticate(self, request):
         return None, {}

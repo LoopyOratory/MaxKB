@@ -101,9 +101,9 @@ const useUserStore = defineStore('user', {
         .filter((permission) => permission.startsWith('WORKSPACE_MANAGE'))
         .map((permission) => {
           const parts = permission.split('/WORKSPACE/');
-          return parts.length > 1 ? parts[1] : null; // 提取工作空间ID
+          return parts.length > 1 ? parts[1] : null; // ExtractWorkspaceID
         })
-        .filter((id) => id !== null); // 过滤掉无效的ID
+        .filter((id) => id !== null); // FilterRemove invalidID
       if (workspaceManagePermissions && workspaceManagePermissions.length > 0) {
         if (workspaceManagePermissions.includes(localStorage.getItem('workspace_id') || 'default')) {
           return

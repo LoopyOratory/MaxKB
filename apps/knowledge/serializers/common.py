@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： common_serializers.py
+    @Author: Tiger
+    @file: common_serializers.py
     @date：2023/11/17 11:00
     @desc:
 """
@@ -89,7 +89,7 @@ class ProblemParagraphManage:
         problem_list = [item.problem_content for item in self.problem_paragraph_object_list]
         exists_problem_list = []
         if len(self.problem_paragraph_object_list) > 0:
-            # 查询到已存在的问题列表
+            # Query到已ExistingQuestionList
             exists_problem_list = QuerySet(Problem).filter(knowledge_id=self.knowledge_id,
                                                            content__in=problem_list).all()
         problem_content_dict = {}
@@ -262,7 +262,7 @@ def create_knowledge_index(knowledge_id=None, document_id=None):
         if len(result) == 0:
             return
         dims = result[0]['dims']
-        # 超过2000维度不创建索引，pgvector hnsw索引不支持超过2000维度
+        # 超过2000Dimension不CreationIndex，pgvector hnswIndex不支持超过2000Dimension
         if dims < 2000:
             sql = f"""CREATE INDEX "embedding_hnsw_idx_{k_id}" ON embedding USING hnsw ((embedding::vector({dims})) vector_cosine_ops) WHERE knowledge_id = '{k_id}'"""
             update_execute(sql, [])

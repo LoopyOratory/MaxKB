@@ -8,7 +8,7 @@
           require-asterisk-position="right"
           ref="DynamicsFormConstructorRef"
         ></DynamicsFormConstructor>
-        <el-button @click="add_field">添加</el-button>
+        <el-button @click="add_field">Add</el-button>
       </el-card></el-col
     >
     <el-col :span="12">
@@ -22,7 +22,7 @@
           ref="dynamicsFormRef"
         >
         </DynamicsForm>
-        <el-button @click="validate">校验</el-button>
+        <el-button @click="validate">Validate</el-button>
       </el-card></el-col
     >
   </el-row>

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat.py
+    @Author: Tiger
+    @file: chat.py
     @date：2025/6/9 11:23
     @desc:
 """
@@ -126,7 +126,7 @@ def get_post_handler(chat_info: ChatInfo):
                                      source=chat_info.source
                                      )
             chat_info.append_chat_record(chat_record)
-            # 重新设置缓存
+            # Re-SettingsCache
             chat_info.set_cache()
 
     return PostHandler()
@@ -345,10 +345,10 @@ class ChatSerializers(serializers.Serializer):
         form_data = instance.get("form_data")
         chat_record_id = instance.get('chat_record_id')
         pipeline_manage_builder = PipelineManage.builder()
-        # 如果开启了问题优化,则添加上问题优化步骤
+        # IfEnable了QuestionOptimization,则Add上QuestionOptimizationStep
         if chat_info.application.problem_optimization:
             pipeline_manage_builder.append_step(BaseResetProblemStep)
-        # 构建流水线管理器
+        # Build流水线Manage器
         pipeline_message = (pipeline_manage_builder.append_step(BaseSearchDatasetStep)
                             .append_step(BaseGenerateHumanMessageStep)
                             .append_step(BaseChatStep)
@@ -356,7 +356,7 @@ class ChatSerializers(serializers.Serializer):
                             .add_debug(self.data.get('debug', False))
                             .build())
         exclude_paragraph_id_list = []
-        # 相同问题是否需要排除已经查询到的段落
+        # SameQuestionWhetherNeedsExcludeAlreadyQuery toParagraph
         if re_chat:
             paragraph_id_list = flat_map(
                 [[paragraph.get('id') for paragraph in chat_record.details['search_step']['paragraph_list']] for
@@ -364,14 +364,14 @@ class ChatSerializers(serializers.Serializer):
                  chat_record.problem_text == message and 'search_step' in chat_record.details and 'paragraph_list' in
                  chat_record.details['search_step']])
             exclude_paragraph_id_list = list(set(paragraph_id_list))
-        # 构建运行参数
+        # BuildRunParameters
         params = chat_info.to_pipeline_manage_params(message, get_post_handler(chat_info), exclude_paragraph_id_list,
                                                      chat_user_id, chat_user_type, ip_address, source, stream,
                                                      form_data)
         if chat_record_id:
             params['chat_record_id'] = chat_record_id
         chat_info.set_chat(message)
-        # 运行流水线作业
+        # Run流水线作业
         pipeline_message.run(params)
         return pipeline_message.context['chat_result']
 
@@ -495,13 +495,13 @@ class ChatSerializers(serializers.Serializer):
             return self.re_open_chat_work_flow(chat_id, application)
 
     def re_open_chat_simple(self, chat_id, application):
-        # 数据集id列表
+        # DatasetidList
         knowledge_id_list = [str(row.target_id) for row in
                              QuerySet(ResourceMapping).filter(source_id=str(application.id),
                                                               source_type='APPLICATION',
                                                               target_type='KNOWLEDGE')]
 
-        # 需要排除的文档
+        # NeedsExcludedDocument
         exclude_document_id_list = [str(document.id) for document in
                                     QuerySet(Document).filter(
                                         knowledge_id__in=knowledge_id_list,

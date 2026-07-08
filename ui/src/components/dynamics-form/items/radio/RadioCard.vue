@@ -35,7 +35,7 @@ const props = defineProps<{
   otherParams: any
   formField: FormField
   view?: boolean
-  // 选中的值
+  // Selected in value
   modelValue?: any
   disabled?: boolean
 }>()

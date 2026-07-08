@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： mem_cache.py
+    @Author: Tiger
+    @file: mem_cache.py
     @date：2024/3/6 11:20
     @desc:
 """

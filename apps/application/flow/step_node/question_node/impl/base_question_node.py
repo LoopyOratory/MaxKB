@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_question_node.py
+    @Author: Tiger
+    @file: base_question_node.py
     @date：2024/6/4 14:30
     @desc:
 """
@@ -36,11 +36,11 @@ def _write_context(node_variable: Dict, workflow_variable: Dict, node: INode, wo
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     answer = ''
@@ -52,11 +52,11 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
 
 def write_context(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点实例对象
-    @param workflow:           工作流管理器
+    Write context data
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance object
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     answer = response.content
@@ -85,7 +85,7 @@ class BaseQuestionNode(IQuestionNode):
     def execute(self, model_id, system, prompt, dialogue_number, history_chat_record, stream, chat_id, chat_record_id,
                 model_params_setting=None, model_id_type=None, model_id_reference=None,
                 **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],

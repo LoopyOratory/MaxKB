@@ -4,14 +4,14 @@ import {type Ref} from 'vue'
 
 const prefix = '/auth'
 /**
- * 获取认证设置
+ * GetAuthenticationSettings
  */
 const getAuthSetting: (auth_type: string, loading?: Ref<boolean>) => Promise<Result<any>> = (auth_type, loading) => {
   return get(`${prefix}/${auth_type}/detail`, undefined, loading)
 }
 
 /**
- * ldap连接测试
+ * ldapConnection test
  */
 const postAuthSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -21,7 +21,7 @@ const postAuthSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any
 }
 
 /**
- * 修改邮箱设置
+ * ModificationEmailSettings
  */
 const putAuthSetting: (auth_type: string, data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   auth_type,
@@ -31,7 +31,7 @@ const putAuthSetting: (auth_type: string, data: any, loading?: Ref<boolean>) => 
   return put(`${prefix}/${auth_type}/info`, data, undefined, loading)
 }
 /**
- * 登录设置
+ * LoginSettings
  */
 const putLoginSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -40,7 +40,7 @@ const putLoginSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any
   return put(`${prefix}/setting`, data, undefined, loading)
 }
 /**
- * 获取登录设置
+ * GetLoginSettings
  */
 const getLoginSetting: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix}/setting`, undefined, loading)
@@ -51,7 +51,7 @@ const getLoginAuthSetting: (loading?: Ref<boolean>) => Promise<Result<any>> = (l
 }
 
 /**
- * 获取认证设置
+ * GetAuthenticationSettings
  */
 const getLoginViewAuthSetting: (auth_type: string, loading?: Ref<boolean>) => Promise<Result<any>> = (auth_type, loading) => {
   return get(`login${prefix}/${auth_type}/detail`, undefined, loading)

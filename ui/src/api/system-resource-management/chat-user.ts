@@ -7,7 +7,7 @@ import type { pageRequest, PageList } from '@/api/type/common'
 
 const prefix = '/system/resource/knowledge'
 /**
- * 获取共享知识库用户组列表
+ * GetSharedKnowledge baseUser group list
  */
 const getUserGroupList: (resource: any, loading?: Ref<boolean>) =>
     Promise<Result<ChatUserGroupItem[]>> = (resource, loading) => {
@@ -15,7 +15,7 @@ const getUserGroupList: (resource: any, loading?: Ref<boolean>) =>
     }
 
 /*
- * 修改共享知识库用户组列表授权
+ * ModificationSharedKnowledge baseUser group listAuthorization
  */
 const editUserGroupList: (resource: any, data: { user_group_id: string, is_auth: boolean }[], loading?: Ref<boolean>) =>
     Promise<Result<any>> = (resource, data, loading) => {
@@ -23,7 +23,7 @@ const editUserGroupList: (resource: any, data: { user_group_id: string, is_auth:
     }
 
 /**
- * 获取共享知识库用户组的用户列表
+ * Get shared knowledge base user group user list
  */
 const getUserGroupUserList: (
     resource: any,
@@ -40,7 +40,7 @@ const getUserGroupUserList: (
 }
 
 /**
- * 更新共享知识库用户组的用户列表
+ * UpdateSharedKnowledge baseUserGroupUserList
  */
 const putUserGroupUser: (
     resource: any,

@@ -36,7 +36,7 @@
       </div>
     </template>
   </el-dialog>
-  <!-- 先渲染，不然不能播放   -->
+  <!-- Render first, cannot play yet   -->
   <audio ref="audioPlayer" controls hidden="hidden"></audio>
 </template>
 
@@ -79,7 +79,7 @@ const open = (model_id: string, application_id?: string, model_setting_data?: an
           [item.field]: item.show_default_value !== false ? item.default_value : undefined,
         }))
         .reduce((x: any, y: any) => ({ ...x, ...y }), {})
-      // 删除不存在的字段
+      // DeletionNotExistingField
       if (model_setting_data) {
         Object.keys(model_setting_data).forEach((key) => {
           if (!(key in resp)) {
@@ -88,7 +88,7 @@ const open = (model_id: string, application_id?: string, model_setting_data?: an
         })
       }
       model_setting_data = { ...resp, ...model_setting_data }
-      // 渲染动态表单
+      // RenderDynamicForm
       dynamicsFormRef.value?.render(model_form_field.value, model_setting_data)
     })
   dialogVisible.value = true
@@ -130,16 +130,16 @@ const testPlay = () => {
         MsgError(text)
         return
       }
-      // 创建 Blob 对象
+      // Creation Blob Object
       const blob = new Blob([res], { type: 'audio/mp3' })
 
-      // 创建对象 URL
+      // CreationObject URL
       const url = URL.createObjectURL(blob)
 
-      // 检查 audioPlayer 是否已经引用了 DOM 元素
+      // Check audioPlayer WhetherAlreadyReference DOM Element
       if (audioPlayer.value instanceof HTMLAudioElement) {
         audioPlayer.value.src = url
-        audioPlayer.value.play() // 自动播放音频
+        audioPlayer.value.play() // AutomaticPlayAudio
       } else {
         console.error('audioPlayer.value is not an instance of HTMLAudioElement')
       }

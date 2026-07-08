@@ -32,7 +32,7 @@ import useStore from '@/stores'
 import { useRoute } from 'vue-router'
 const route = useRoute()
 const {
-  params: { folderId }, // id为knowledgeID
+  params: { folderId }, // idisknowledgeID
   query: { from },
 } = route as any
 const isShared = computed(() => {

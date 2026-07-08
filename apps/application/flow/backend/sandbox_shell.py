@@ -17,7 +17,7 @@ class SandboxShellBackend(LocalShellBackend):
             env = os.environ.copy()
             python_path = env.get("PYTHONPATH", "")
 
-            # 将 sandbox Python 包路径分解为列表，检查每个路径是否已存在
+            # 将 sandbox Python 包Path分解为List，CheckEachPathWhether已Exists
             existing_paths = set(python_path.split(os.pathsep))
             sandbox_paths = _sandbox_python_sys_path.split(os.pathsep) if _sandbox_python_sys_path else []
             new_paths = [p for p in sandbox_paths if p and p not in existing_paths]
@@ -63,8 +63,8 @@ class SandboxShellBackend(LocalShellBackend):
             command = self._translate_virtual_paths(command)
 
         if _enable_sandbox:
-            # 用 runuser 在子进程里切换用户，父进程凭据保持不变，
-            # 避免父进程 ruid/euid 不一致导致 execve 报 Permission denied
+            # 用 runuser 在子进程里切换User，父进程凭据保持不变，
+            # 避免父进程 ruid/euid 不Consistent导致 execve 报 Permission denied
             command = (
                 "env -i LD_PRELOAD=/opt/maxkb-app/sandbox/lib/sandbox.so "
                 f'PATH="${{PATH}}" PYTHONPATH="${{PYTHONPATH}}" gosu {_run_user} {command}'

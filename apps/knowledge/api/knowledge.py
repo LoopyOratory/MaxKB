@@ -20,14 +20,14 @@ class KnowledgeReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -45,7 +45,7 @@ class KnowledgeBaseCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -67,7 +67,7 @@ class KnowledgeWebCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -89,14 +89,14 @@ class KnowledgeEditAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -118,35 +118,35 @@ class KnowledgeTreeReadAPI(KnowledgeReadAPI):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
             ),
             OpenApiParameter(
                 name="user_id",
-                description="用户id",
+                description="Userid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="desc",
-                description="描述",
+                description="Description",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -160,42 +160,42 @@ class KnowledgePageAPI(KnowledgeReadAPI):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="current_page",
-                description="当前页码",
+                description="CurrentPage number",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="page_size",
-                description="每页条数",
+                description="Per page count",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
             ),
             OpenApiParameter(
                 name="name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
             ),
             OpenApiParameter(
                 name="desc",
-                description="描述",
+                description="Description",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,
@@ -209,21 +209,21 @@ class SyncWebAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="sync_type",
-                description="同步类型 (replace: 替换同步, complete: 完整同步)",
+                description="SyncType (replace: ReplaceSync, complete: CompleteSync)",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
@@ -257,7 +257,7 @@ class GetModelAPI(SyncWebAPI):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -274,21 +274,21 @@ class KnowledgeExportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="with_source_file",
-                description="是否导出原始文件",
+                description="WhetherExportOriginalFile",
                 type=OpenApiTypes.BOOL,
                 location='query',
                 required=False,
@@ -306,7 +306,7 @@ class KnowledgeBatchOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -328,7 +328,7 @@ class KnowledgeImportAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

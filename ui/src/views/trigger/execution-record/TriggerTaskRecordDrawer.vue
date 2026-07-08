@@ -254,7 +254,7 @@ const next_disable = computed(() => {
 })
 
 /**
- * 下一页
+ * Next page
  */
 const nextRecord = () => {
   const index = tableData.value.findIndex((item) => item.id === currentId.value) + 1
@@ -274,7 +274,7 @@ const nextRecord = () => {
   }
 }
 /**
- * 上一页
+ * Previous page
  */
 const preRecord = () => {
   const index = tableData.value.findIndex((item) => item.id === currentId.value) - 1

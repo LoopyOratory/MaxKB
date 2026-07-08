@@ -12,7 +12,7 @@
     >
       {{ disabled ? $t('aiChat.inputPlaceholder.chatting') : $t('aiChat.inputPlaceholder.holdToTalk') }}
     </el-button>
-    <!-- 使用 custom-class 自定义样式 -->
+    <!-- Use custom-class for custom styling -->
     <transition name="el-fade-in-linear">
       <el-card
         class="custom-speech-card white-bg"
@@ -59,7 +59,7 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['TouchStart', 'TouchEnd'])
-// 移动端语音
+// Mobile voice input
 const startY = ref(0)
 const isTouching = ref(false)
 const dialogVisible = ref(false)
@@ -98,7 +98,7 @@ watch(
 )
 
 function onTouchStart(event: any) {
-  // 阻止默认滚动行为
+  // Prevent default scroll behavior
   event.preventDefault()
   if (props.disabled) {
     return
@@ -108,13 +108,13 @@ function onTouchStart(event: any) {
 }
 function onTouchMove(event: any) {
   if (!isTouching.value) return
-  // 阻止默认滚动行为
+  // Prevent default scroll behavior
   event.preventDefault()
   const currentY = event.touches[0].clientY
   const deltaY = currentY - startY.value
-  // 判断是否上滑
+  // Detect if swiping up
   if (deltaY < -50) {
-    // -50 是一个阈值，可以根据需要调整
+    // -50 is a threshold, adjust as needed
     message.value = t('aiChat.inputPlaceholder.cancelTouchChat')
     isTouching.value = false
   }
@@ -128,7 +128,7 @@ function onTouchEnd() {
 .custom-speech-card {
   position: fixed;
   bottom: 10px;
-  left: 50%; /* 水平居中 */
+  left: 50%; /* Horizontal center */
   transform: translateX(-50%);
   width: 92%;
   border: 1px solid #ffffff;

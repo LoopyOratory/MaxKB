@@ -103,7 +103,7 @@ class BaseChatOpenAI(ChatOpenAI):
                 future = executor.submit(super().get_num_tokens_from_messages, messages, tools)
                 try:
                     response = future.result(timeout=timeout)
-                    maxkb_logger.info("请求成功（未超时）")
+                    maxkb_logger.info("RequestSuccess（未超时）")
                     return response
                 except Exception as e:
                     if isinstance(e, ReadTimeout):
@@ -229,7 +229,7 @@ class BaseChatOpenAI(ChatOpenAI):
         return chat_result
 
     def upload_file_and_get_url(self, file_stream, file_name):
-        """上传文件并获取文件URL"""
+        """UploadFile并GetFileURL"""
         base64_video = base64.b64encode(file_stream).decode("utf-8")
         video_format = get_video_format(file_name)
         return f'data:{video_format};base64,{base64_video}'

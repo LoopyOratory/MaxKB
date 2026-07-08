@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： xls_parse_qa_handle.py
+    @Author: Tiger
+    @file: xls_parse_qa_handle.py
     @date：2024/5/21 14:59
     @desc:
 """
@@ -75,25 +75,25 @@ class XlsSplitHandle(BaseSplitHandle):
             return [{'name': file.name, 'content': []}]
 
     def get_content(self, file, save_image):
-        # 打开 .xls 文件
+        # Open .xls File
         try:
             workbook = xlrd.open_workbook(file_contents=file.read(), formatting_info=True)
             sheets = workbook.sheets()
             md_tables = ''
             for sheet in sheets:
-                # 过滤空白的sheet
+                # FilterBlank的sheet
                 if sheet.nrows == 0 or sheet.ncols == 0:
                     continue
 
-                # 获取表头和内容
+                # GetHeader和Content
                 headers = sheet.row_values(0)
                 data = [sheet.row_values(row_idx) for row_idx in range(1, sheet.nrows)]
 
-                # 构建 Markdown 表格
+                # Build Markdown Table
                 md_table = '| ' + ' | '.join(headers) + ' |\n'
                 md_table += '| ' + ' | '.join(['---'] * len(headers)) + ' |\n'
                 for row in data:
-                    # 将每个单元格中的内容替换换行符为 <br> 以保留原始格式
+                    # 将EachCell in ContentReplaceNewline为 <br> 以RetainOriginalFormat
                     md_table += '| ' + ' | '.join(
                         [str(cell)
                          .replace('\r\n', '<br>')

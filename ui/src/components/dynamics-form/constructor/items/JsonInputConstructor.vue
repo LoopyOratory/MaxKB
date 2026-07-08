@@ -2,7 +2,7 @@
   <el-form-item v-if="getModel">
     <template #label>
       <div class="flex-between">
-        {{ $t('dynamicsForm.AssignmentMethod.label', '赋值方式') }}
+        {{ $t('dynamicsForm.AssignmentMethod.label', 'Assignment method') }}
       </div>
     </template>
 

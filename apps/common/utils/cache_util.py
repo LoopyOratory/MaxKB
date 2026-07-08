@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： cache_util.py
+    @Author: Tiger
+    @file: cache_util.py
     @date：2024/7/24 19:23
     @desc:
 """
@@ -11,12 +11,12 @@ from django.core.cache import cache
 
 def get_data_by_default_cache(key: str, get_data, cache_instance=cache, version=None, kwargs=None):
     """
-    获取数据, 先从缓存中获取,如果获取不到再调用get_data 获取数据
-    @param kwargs:          get_data所需参数
+    GetData, 先从Cache中Get,IfGet不到再Callget_data GetData
+    @param kwargs:          get_data所需Parameters
     @param key:             key
-    @param get_data:        获取数据函数
-    @param cache_instance:  cache实例
-    @param version:         版本用于隔离
+    @param get_data:        GetDataFunction
+    @param cache_instance:  cacheInstance
+    @param version:         VersionUsed for隔离
     @return:
     """
     if kwargs is None:

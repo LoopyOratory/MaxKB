@@ -49,7 +49,7 @@ class AzureOpenAITextToImage(MaxKBBaseModel, BaseTextToImage):
         chat = AzureOpenAI(api_key=self.api_key, azure_endpoint=self.api_base, api_version=self.api_version)
         response_list = chat.models.with_raw_response.list()
 
-        # self.generate_image('生成一个小猫图片')
+        # self.generate_image('GenerateOneCatImage')
 
     def generate_image(self, prompt: str, negative_prompt: str = None):
         chat = AzureOpenAI(api_key=self.api_key, azure_endpoint=self.api_base, api_version=self.api_version)

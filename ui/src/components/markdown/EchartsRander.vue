@@ -71,7 +71,7 @@ const evalInSandbox = (option_json: any): Promise<{ option: any; style: any }> =
 
     function handler(event: MessageEvent) {
       const { type, id: rid, result_str, error } = event.data || {}
-      if (rid !== id) return // 忽略其他实例或旧请求的消息
+      if (rid !== id) return // IgnoreOtherInstanceOr oldRequestMessage
       if (type !== 'EVAL_RESULT' && type !== 'EVAL_ERROR') return
       settled = true
       clearTimeout(timer)
@@ -132,7 +132,7 @@ const initChart = () => {
   }
 }
 
-// ── resize 防抖 ────────────────────────────────────────────────────────────
+// ── resize Debounce ────────────────────────────────────────────────────────────
 let resizeTimer: ReturnType<typeof setTimeout> | null = null
 const onResize = () => {
   if (resizeTimer) clearTimeout(resizeTimer)
@@ -141,7 +141,7 @@ const onResize = () => {
   }, 100)
 }
 
-// ── 生命周期 ───────────────────────────────────────────────────────────────
+// ── Lifecycle ───────────────────────────────────────────────────────────────
 watch(
   () => props.option,
   (val) => {

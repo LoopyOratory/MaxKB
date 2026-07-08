@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_search_dataset_step.py
+    @Author: Tiger
+    @file: base_search_dataset_step.py
     @date：2024/1/10 10:33
     @desc:
 """
@@ -114,13 +114,13 @@ class BaseSearchDatasetStep(ISearchDatasetStep):
                                            os.path.join(PROJECT_DIR, "apps", "application", 'sql',
                                                         'list_knowledge_paragraph_by_paragraph_id.sql')),
                                        with_table_name=True)
-        # 如果向量库中存在脏数据 直接删除
+        # IfVector库中Exists脏Data DirectDeletion
         if len(paragraph_list) != len(paragraph_id_list):
             exist_paragraph_list = [row.get('id') for row in paragraph_list]
             for paragraph_id in paragraph_id_list:
                 if not exist_paragraph_list.__contains__(paragraph_id):
                     vector.delete_by_paragraph_id(paragraph_id)
-        # 如果存在直接返回的则取直接返回段落
+        # IfExistsDirectReturn的则取DirectReturnParagraph
         hit_handling_method_paragraph = [paragraph for paragraph in paragraph_list if
                                          (paragraph.get(
                                              'hit_handling_method') == 'directly_return' and BaseSearchDatasetStep.get_similarity(

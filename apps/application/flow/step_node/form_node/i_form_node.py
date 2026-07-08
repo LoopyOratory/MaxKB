@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： i_form_node.py
+    @Author: Tiger
+    @file: i_form_node.py
     @date：2024/11/4 14:48
     @desc:
 """

@@ -50,7 +50,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         return True
 
     def _safe_call(self, method, url, **kwargs):
-        """带重试的请求封装"""
+        """带重试的Request封装"""
         headers = {"Authorization": f"Bearer {self.api_key}"}
 
         for attempt in range(self.max_retries):
@@ -67,98 +67,98 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
             except (requests.exceptions.ProxyError,
                     requests.exceptions.ConnectionError,
                     requests.exceptions.Timeout) as e:
-                maxkb_logger.error(f"⚠️ 网络错误: {e}，正在重试 {attempt + 1}/{self.max_retries}...")
+                maxkb_logger.error(f"⚠️ 网络Error: {e}，正在重试 {attempt + 1}/{self.max_retries}...")
                 time.sleep(self.retry_delay)
             except requests.exceptions.HTTPError as e:
-                maxkb_logger.error(f"HTTP 错误: {e}")
-                raise RuntimeError(f"HTTP 请求失败: {e.response.text if hasattr(e, 'response') else str(e)}")
+                maxkb_logger.error(f"HTTP Error: {e}")
+                raise RuntimeError(f"HTTP RequestFailure: {e.response.text if hasattr(e, 'response') else str(e)}")
 
-        raise RuntimeError("多次重试后仍无法连接到 MiniMax API，请检查代理或网络配置")
+        raise RuntimeError("多次重试后仍无法Connect到 MiniMax API, pleaseCheck代理或网络Configuration")
 
     def generate_video(self, prompt, negative_prompt=None, first_frame_url=None, last_frame_url=None, **kwargs):
         """
-        生成视频
-        prompt: 文本描述
-        negative_prompt: 反向文本描述（MiniMax 暂不支持，保留参数以兼容接口）
-        first_frame_url: 起始关键帧图片 URL (图生视频或首尾帧模式)
-        last_frame_url: 结束关键帧图片 URL (首尾帧模式)
+        GenerateVideo
+        prompt: TextDescription
+        negative_prompt: ReverseTextDescription（MiniMax 暂不支持，RetainParameters以CompatibleInterface）
+        first_frame_url: 起始关键帧Image URL (Image toVideo或Start/end framesMode)
+        last_frame_url: End关键帧Image URL (Start/end framesMode)
 
-        返回: 视频下载 URL
+        Return: VideoDownload URL
         """
         base_url = f"{self.api_base}/video_generation"
 
-        # 构建基础参数
+        # BuildBasicParameters
         payload = {
             "prompt": prompt,
             "model": self.model_name,
         }
 
-        # 根据提供的参数判断生成模式
+        # Based onProvide的ParametersDetermineGenerateMode
         if first_frame_url and last_frame_url:
-            # 模式三：首尾帧生成视频
+            # Mode三：Start/end framesGenerateVideo
             payload["first_frame_image"] = first_frame_url
             payload["last_frame_image"] = last_frame_url
-            maxkb_logger.info("使用首尾帧模式生成视频")
+            maxkb_logger.info("UseStart/end framesModeGenerateVideo")
         elif first_frame_url:
-            # 模式二：图生视频
+            # Mode二：Image toVideo
             payload["first_frame_image"] = first_frame_url
-            maxkb_logger.info("使用图生视频模式")
+            maxkb_logger.info("UseImage toVideoMode")
         else:
-            # 模式一：文生视频
-            maxkb_logger.info("使用文生视频模式")
+            # Mode一：文生Video
+            maxkb_logger.info("Use文生VideoMode")
 
-        # 合并额外参数（duration, resolution 等）
+        # MergeExtraParameters（duration, resolution 等）
         payload.update(self.params)
 
-        # --- 步骤 1: 提交任务 ---
-        maxkb_logger.info(f"提交视频生成任务，模型: {self.model_name}")
+        # --- Step 1: SubmitTask ---
+        maxkb_logger.info(f"SubmitVideoGenerateTask，Model: {self.model_name}")
         response_data = self._safe_call('POST', base_url, json=payload)
 
         task_id = response_data.get("task_id")
         if not task_id:
-            raise RuntimeError(f"提交任务失败，未获取到 task_id: {response_data}")
+            raise RuntimeError(f"SubmitTaskFailure，未Get到 task_id: {response_data}")
 
-        maxkb_logger.info(f"任务已提交，task_id: {task_id}")
+        maxkb_logger.info(f"Task已Submit，task_id: {task_id}")
 
-        # --- 步骤 2: 轮询查询任务状态 ---
+        # --- Step 2: PollQueryTaskStatus ---
         query_url = f"{self.api_base}/query/video_generation"
         file_id = self._poll_task_status(query_url, task_id)
 
-        # --- 步骤 3: 获取视频下载链接 ---
+        # --- Step 3: GetVideoDownloadLink ---
         video_url = self._get_video_download_url(file_id)
 
-        maxkb_logger.info(f"视频生成完成！视频 URL: {video_url}")
+        maxkb_logger.info(f"VideoGenerateComplete！Video URL: {video_url}")
         return video_url
 
     def _poll_task_status(self, query_url: str, task_id: str) -> str:
-        """轮询任务状态，直至成功或失败"""
+        """PollTaskStatus，直至Success或Failure"""
         params = {"task_id": task_id}
-        max_attempts = 60  # 最多轮询 60 次（约 10 分钟）
+        max_attempts = 60  # At mostPoll 60 次（约 10 Minutes）
 
         for attempt in range(max_attempts):
             response_data = self._safe_call('GET', query_url, params=params)
             status = response_data.get("status")
 
-            maxkb_logger.info(f"当前任务状态 (尝试 {attempt + 1}/{max_attempts}): {status}")
+            maxkb_logger.info(f"CurrentTaskStatus (尝试 {attempt + 1}/{max_attempts}): {status}")
 
             if status == "Success":
                 file_id = response_data.get("file_id")
                 if not file_id:
-                    raise RuntimeError(f"任务成功但未获取到 file_id: {response_data}")
-                maxkb_logger.info(f"任务处理成功，file_id: {file_id}")
+                    raise RuntimeError(f"TaskSuccess但未Get到 file_id: {response_data}")
+                maxkb_logger.info(f"TaskProcessSuccess，file_id: {file_id}")
                 return file_id
             elif status == "Fail":
-                error_msg = response_data.get("error_message", "未知错误")
-                maxkb_logger.error(f"视频生成失败: {error_msg}")
-                raise RuntimeError(f"视频生成失败: {error_msg}")
+                error_msg = response_data.get("error_message", "UnknownError")
+                maxkb_logger.error(f"VideoGenerateFailure: {error_msg}")
+                raise RuntimeError(f"VideoGenerateFailure: {error_msg}")
             else:
-                # 任务仍在处理中，等待后继续轮询
+                # Task仍在Process中，Wait后继续Poll
                 time.sleep(self.retry_delay)
 
-        raise RuntimeError(f"任务超时：经过 {max_attempts} 次轮询后仍未完成")
+        raise RuntimeError(f"Task超时：经过 {max_attempts} 次Poll后仍未Complete")
 
     def _get_video_download_url(self, file_id: str) -> str:
-        """根据 file_id 获取视频下载链接"""
+        """Based on file_id GetVideoDownloadLink"""
         retrieve_url = f"{self.api_base}/files/retrieve"
         params = {"file_id": file_id}
 
@@ -168,6 +168,6 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         download_url = file_info.get("download_url")
 
         if not download_url:
-            raise RuntimeError(f"获取下载链接失败: {response_data}")
+            raise RuntimeError(f"GetDownloadLinkFailure: {response_data}")
 
         return download_url

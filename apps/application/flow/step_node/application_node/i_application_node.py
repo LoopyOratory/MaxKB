@@ -50,7 +50,7 @@ class IApplicationNode(INode):
             kwargs[user_input_field['field']] = self.workflow_manage.get_reference_field(value,
                                                                                          user_input_field['value'][
                                                                                          1:]) if value != '' else ''
-        # 判断是否包含这个属性
+        # Check if this property exists
         app_document_list = self.node_params_serializer.data.get('document_list', [])
         if app_document_list and len(app_document_list) > 0:
             app_document_list = self.workflow_manage.get_reference_field(

@@ -12,8 +12,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 创建段落
- * @param 参数
+ * CreationParagraph
+ * @param Parameters
  * knowledge_id, document_id
  * {
       "content": "string",
@@ -41,8 +41,8 @@ const postParagraph: (
 }
 
 /**
- * 段落分页列表
- * @param 参数 knowledge_id document_id
+ * ParagraphPaginationList
+ * @param Parameters knowledge_id document_id
  * param {
           "title": "string",
           "content": "string",
@@ -63,8 +63,8 @@ const getParagraphPage: (
 }
 
 /**
- * 修改段落
- * @param 参数
+ * ModificationParagraph
+ * @param Parameters
  * knowledge_id, document_id, paragraph_id
  * {
     "content": "string",
@@ -93,8 +93,8 @@ const putParagraph: (
 }
 
 /**
- * 删除段落
- * @param 参数 knowledge_id, document_id, paragraph_id
+ * DeletionParagraph
+ * @param Parameters knowledge_id, document_id, paragraph_id
  */
 const delParagraph: (
   knowledge_id: string,
@@ -111,8 +111,8 @@ const delParagraph: (
 }
 
 /**
- * 某段落问题列表
- * @param 参数 knowledge_id，document_id，paragraph_id
+ * Paragraph question list
+ * @param Parameters knowledge_id，document_id，paragraph_id
  */
 const getParagraphProblem: (
   knowledge_id: string,
@@ -123,8 +123,8 @@ const getParagraphProblem: (
 }
 
 /**
- * 给某段落创建问题
- * @param 参数
+ * To aParagraphCreationQuestion
+ * @param Parameters
  * knowledge_id, document_id, paragraph_id
  * {
       content": "string"
@@ -147,12 +147,12 @@ const postParagraphProblem: (
 
 
 /**
- * 段落调整顺序
- * @param knowledge_id 数据集id
- * @param document_id 文档id
- * @param loading 加载器
+ * ParagraphReorder
+ * @param knowledge_id Datasetid
+ * @param document_id Documentid
+ * @param loading Loader
  * @query data {
- *              paragraph_id 段落id  new_position 新顺序
+ *              paragraph_id Paragraphid  new_position New order
  *             }
  */
 const putAdjustPosition: (
@@ -170,12 +170,12 @@ const putAdjustPosition: (
 }
 
 /**
- * 添加某段落关联问题
- * @param knowledge_id 数据集id
- * @param document_id 文档id
- * @param loading 加载器
+ * Add paragraph association question
+ * @param knowledge_id Datasetid
+ * @param document_id Documentid
+ * @param loading Loader
  * @query data {
- *              paragraph_id 段落id  problem_id 问题id
+ *              paragraph_id Paragraphid  problem_id Questionid
  *             }
  */
 const putAssociationProblem: (
@@ -193,8 +193,8 @@ const putAssociationProblem: (
 }
 
 /**
- * 批量删除段落
- * @param 参数 knowledge_id, document_id
+ * BatchDeletionParagraph
+ * @param Parameters knowledge_id, document_id
  */
 const putMulParagraph: (
   knowledge_id: string,
@@ -211,8 +211,8 @@ const putMulParagraph: (
 }
 
 /**
- * 批量关联问题
- * @param 参数 knowledge_id, document_id
+ * BatchAssociationQuestion
+ * @param Parameters knowledge_id, document_id
  * {
       "paragraph_id_list": [
         "3fa85f64-5717-4562-b3fc-2c963f66afa6"
@@ -237,8 +237,8 @@ const putBatchGenerateRelated: (
 }
 
 /**
- * 批量迁移段落
- * @param 参数 knowledge_id,target_knowledge_id,
+ * BatchMigrationParagraph
+ * @param Parameters knowledge_id,target_knowledge_id,
  * {
       "id_list": [
         "3fa85f64-5717-4562-b3fc-2c963f66afa6"
@@ -269,10 +269,10 @@ const putMigrateMulParagraph: (
 }
 
 /**
- * 解除某段落关联问题
- * @param 参数 knowledge_id, document_id,
+ * Remove from aParagraphAssociationQuestion
+ * @param Parameters knowledge_id, document_id,
  * @query data {
- *            paragraph_id 段落id  problem_id 问题id
+ *            paragraph_id Paragraphid  problem_id Questionid
  *         }
  */
 const putDisassociationProblem: (

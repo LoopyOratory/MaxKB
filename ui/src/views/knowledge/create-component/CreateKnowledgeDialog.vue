@@ -7,7 +7,7 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
   >
-    <!-- 基本信息 -->
+    <!-- BasicInfo -->
     <BaseForm ref="BaseFormRef" v-if="dialogVisible" :apiType="apiType" />
 
     <template #footer>

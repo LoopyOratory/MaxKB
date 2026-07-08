@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： login.py
+@Author: Tiger
+@file: login.py
 @date：2025/4/14 11:08
 @desc:
 """
@@ -42,21 +42,21 @@ system_version, system_get_key = Cache_Version.SYSTEM.value
 
 class LoginResponse(serializers.Serializer):
     """
-    登录响应对象
+    LoginResponseObject
     """
 
     token = serializers.CharField(required=True, label=_("token"))
 
 
 def record_login_fail(username: str, expire: int = 600):
-    """记录登录失败次数（原子）返回当前失败计数"""
+    """RecordLoginFailureCount（原子）ReturnCurrentFailure计数"""
     if not username:
         return 0
     fail_key = system_get_key(f"system_{username}")
     try:
         fail_count = cache.incr(fail_key, 1, version=system_version)
     except ValueError:
-        # key 不存在，初始化并设置过期
+        # key 不Exists，Initialize并Settings过期
         cache.set(fail_key, 1, timeout=expire, version=system_version)
         fail_count = 1
     return fail_count
@@ -64,8 +64,8 @@ def record_login_fail(username: str, expire: int = 600):
 
 def record_login_fail_lock(username: str, expire: int = 10):
     """
-    使用 cache.incr 保证原子递增，并在不存在时初始化计数器并返回当前值。
-    这里的计数器用于判断是否应当进入"锁定"分支，避免依赖非原子 get -> set 的组合。
+    Use cache.incr 保证原子递增, and在不Exists时Initialize计数器并ReturnCurrent值。
+    Here计数器Used forDetermineWhether应当进入"锁定"Branch，避免依赖非原子 get -> set 的Combine。
     """
     if not username:
         return 0
@@ -73,7 +73,7 @@ def record_login_fail_lock(username: str, expire: int = 10):
     try:
         fail_count = cache.incr(fail_key, 1, version=system_version)
     except ValueError:
-        # key 不存在，初始化并设置过期（分钟转秒）
+        # key 不Exists，Initialize并Settings过期（Minutes转秒）
         cache.set(fail_key, 1, timeout=expire * 60, version=system_version)
         fail_count = 1
     return fail_count
@@ -82,7 +82,7 @@ def record_login_fail_lock(username: str, expire: int = 10):
 class LoginSerializer(serializers.Serializer):
     @staticmethod
     def get_auth_setting():
-        """获取认证设置"""
+        """GetAuthenticationSettings"""
         auth_setting_model = DatabaseModelManage.get_model("auth_setting")
         auth_setting = {}
         if auth_setting_model:
@@ -96,14 +96,14 @@ class LoginSerializer(serializers.Serializer):
 
     @staticmethod
     def login(instance):
-        # 解密数据
+        # DecryptData
         username = instance.get("username", "")
         encrypted_data = instance.get("encryptedData", "")
 
         if encrypted_data:
             try:
                 decrypted_raw = decrypt(encrypted_data)
-                # decrypt 可能返回非 JSON 字符串，防护解析异常
+                # decrypt PossibleReturn非 JSON String，防护ParseException
                 decrypted_data = json.loads(decrypted_raw) if decrypted_raw else {}
                 if isinstance(decrypted_data, dict):
                     instance.update(decrypted_data)
@@ -121,28 +121,28 @@ class LoginSerializer(serializers.Serializer):
         password = instance.get("password")
         captcha = instance.get("captcha", "")
 
-        # 获取认证配置
+        # GetAuthenticationConfiguration
         auth_setting = LoginSerializer.get_auth_setting()
         max_attempts = auth_setting.get("max_attempts", 1)
         failed_attempts = auth_setting.get("failed_attempts", 5)
         lock_time = auth_setting.get("lock_time", 10)
 
-        # 检查许可证有效性
+        # Check许可证有效性
         license_validator = DatabaseModelManage.get_model("license_is_valid") or (lambda: False)
         is_license_valid = license_validator() if license_validator() is not None else False
 
         if is_license_valid:
-            # 检查账户是否被锁定
+            # Check账户Whether被锁定
             if LoginSerializer._is_account_locked(username, failed_attempts):
                 raise AppApiException(
                     1005, _("This account has been locked for %s minutes, please try again later") % lock_time
                 )
 
-            # 验证验证码
+            # VerifyVerify码
         if LoginSerializer._need_captcha(username, max_attempts):
             LoginSerializer._validate_captcha(username, captcha)
 
-        # 验证用户凭据：先按用户名查找，再用 password_verify 验证密码
+        # VerifyUser凭据：先按User名查找，再用 password_verify VerifyPassword
         user = User.objects.filter(username=username).first()
 
         if not user or not password_verify(password, user.password):
@@ -157,7 +157,7 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise AppApiException(1005, _("The user has been disabled, please contact the administrator!"))
 
-        # 清除失败计数并生成令牌
+        # ClearFailure计数并GenerateToken
         cache.delete(system_get_key(f"system_{username}"), version=system_version)
         cache.delete(system_get_key(f"system_{username}_lock"), version=system_version)
         token = signing.dumps(
@@ -177,7 +177,7 @@ class LoginSerializer(serializers.Serializer):
 
     @staticmethod
     def _is_account_locked(username: str, failed_attempts: int) -> bool:
-        """检查账户是否被锁定"""
+        """Check账户Whether被锁定"""
         if failed_attempts == -1:
             return False
         lock_cache = cache.get(system_get_key(f"system_{username}_lock"), version=system_version)
@@ -185,7 +185,7 @@ class LoginSerializer(serializers.Serializer):
 
     @staticmethod
     def _need_captcha(username: str, max_attempts: int) -> bool:
-        """判断是否需要验证码"""
+        """DetermineWhetherNeedsVerify码"""
         if max_attempts == -1:
             return False
         elif max_attempts > 0:
@@ -195,7 +195,7 @@ class LoginSerializer(serializers.Serializer):
 
     @staticmethod
     def _validate_captcha(username: str, captcha: str) -> None:
-        """验证验证码"""
+        """VerifyVerify码"""
         if not captcha:
             raise AppApiException(1005, _("Captcha is required"))
 
@@ -208,32 +208,32 @@ class LoginSerializer(serializers.Serializer):
 
     @staticmethod
     def _handle_failed_login(username: str, is_license_valid: bool, failed_attempts: int, lock_time: int) -> None:
-        """处理登录失败
+        """ProcessLoginFailure
 
         修复要点：
-        - 使用 record_login_fail / record_login_fail_lock 两个原子 incr 来记录失败；
-        - 不再依赖精确等于 0 的比较来触发锁，而是基于原子计数 >= 阈值来决定进入锁定分支；
-        - 使用 cache.add 原子创建锁键，cache.add 保证只有第一个成功创建者可写入该键；
-          其他并发到达的请求若发现计数已到达阈值也应当返回"已锁定"响应，避免出现绕过。
+        - Use record_login_fail / record_login_fail_lock 两个原子 incr 来RecordFailure；
+        - 不再依赖精确等于 0 的比较来Trigger锁，而是基于原子计数 >= Threshold来决定进入锁定Branch；
+        - Use cache.add 原子Creation锁键，cache.add 保证只有第OneSuccessCreation者可Write该键；
+          Other并发到达的Request若发现计数已到达Threshold也应当Return"已锁定"Response，避免出现Bypass。
         """
-        # 记录普通失败计数（供验证码触发使用）
+        # RecordNormalFailure计数（供Verify码TriggerUse）
         try:
             record_login_fail(username)
         except Exception:
             maxkb_logger.exception("Failed to record login fail for user %s", username)
 
-        # 记录用于锁定判断的失败计数（按 lock_time 作为初始化过期分钟）
+        # RecordUsed for锁定Determine的Failure计数（按 lock_time AsInitialize过期Minutes）
         lock_fail_count = 0
         try:
             lock_fail_count = record_login_fail_lock(username, lock_time)
         except Exception:
             maxkb_logger.exception("Failed to record lock fail count for user %s", username)
 
-        # 如果不是企业版或禁用锁定功能，直接返回（但计数已经记录）
+        # If不是Enterprise或Disable锁定功能，DirectReturn（但计数AlreadyRecord）
         if not is_license_valid or failed_attempts <= 0:
             return
 
-        # 当计数小于阈值，告知剩余尝试次数
+        # 当计数小于Threshold，告知剩余尝试Count
         if lock_fail_count < failed_attempts:
             remain_attempts = failed_attempts - lock_fail_count
             raise AppApiException(
@@ -242,8 +242,8 @@ class LoginSerializer(serializers.Serializer):
                 % (failed_attempts, remain_attempts),
             )
 
-        # 当计数达到或超过阈值时，尝试原子创建锁键；无论 cache.add 返回 True/False，都返回已锁定响应，
-        # 因为若为 False 说明其他并发请求已将账户标记为锁定，行为应一致。
+        # 当计数达到或超过Threshold时，尝试原子Creation锁键；无论 cache.add Return True/False，都Return已锁定Response，
+        # 因为若为 False 说明Other并发Request已将账户标记为锁定，行为应Consistent。
         try:
             locked = cache.add(
                 system_get_key(f"system_{username}_lock"), 1, timeout=lock_time * 60, version=system_version
@@ -262,7 +262,7 @@ class LoginSerializer(serializers.Serializer):
 
 class CaptchaResponse(serializers.Serializer):
     """
-    登录响应对象
+    LoginResponseObject
     """
 
     captcha = serializers.CharField(required=True, label=_("captcha"))
@@ -305,7 +305,7 @@ class CaptchaSerializer(serializers.Serializer):
     @staticmethod
     def _generate_captcha_if_needed(username: str, type: str, need_captcha: bool):
         """
-        提取的公共验证码生成方法
+        Extract的PublicVerify码GenerateMethod
         """
         if need_captcha:
             chars = get_random_chars()

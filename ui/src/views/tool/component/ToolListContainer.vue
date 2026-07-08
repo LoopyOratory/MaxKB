@@ -416,7 +416,7 @@
         </el-checkbox-group>
       </InfiniteScroll>
     </div>
-    <!-- 批量操作拦 -->
+    <!-- Batch actions bar -->
     <div class="mul-operation border-t w-full flex align-center" v-if="isBatch">
       <el-checkbox
         v-model="checkAll"
@@ -622,7 +622,7 @@ const McpToolDrawertitle = ref('')
 const SkillToolDrawertitle = ref('')
 const DataSourceToolDrawertitle = ref('')
 
-// 批量操作
+// BatchActions
 const isBatch = ref(false)
 const multipleSelection = ref<any[]>([])
 const checkAll = ref(false)
@@ -698,18 +698,18 @@ function openEditDialog(data?: any) {
   if (!permissionPrecise.value.edit(data?.id)) {
     return
   }
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
-  // 共享过来的工具不让编辑
+  // Shared tools prevent editing
   if (isShared.value) {
     return
   }
   if (data) {
     bus.emit('select_node', data.folder_id)
   }
-  // 有版本号的展示readme，是商店更新过来的
+  // Has version number displayed in readme, updated from store
   if (data?.version) {
     let readMe = ''
     storeTools.value
@@ -721,22 +721,22 @@ function openEditDialog(data?: any) {
     return
   }
 
-  // mcp工具
+  // mcpTools
   if (data?.tool_type === 'MCP') {
     openCreateMcpDialog(data)
     return
   }
-  // 数据源工具
+  // Data sourceTools
   if (data?.tool_type === 'DATA_SOURCE') {
     openCreateDataSourceDialog(data)
     return
   }
-  // 技能
+  // Skills
   if (data?.tool_type === 'SKILL') {
     openCreateSkillDialog(data)
     return
   }
-  // 工作流
+  // Workflow
   if (data?.tool_type === 'WORKFLOW') {
     toWorkflow(data)
     return
@@ -771,7 +771,7 @@ function openMoveToDialog(data?: any) {
 
 function refreshToolList(row: any) {
   if (row) {
-    // 不是根目录才会移除
+    // Not rootDirectoryOnly thenRemove
     if (folder.currentFolder?.parent_id) {
       const list = cloneDeep(tool.toolList)
       const index = list.findIndex((v) => v.id === row.id)
@@ -802,11 +802,11 @@ function openCreateDialog() {
 }
 
 function openCreateMcpDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
-  // 共享过来的工具不让编辑
+  // Shared tools prevent editing
   if (isShared.value) {
     return
   }
@@ -825,7 +825,7 @@ function openCreateMcpDialog(data?: any) {
 }
 
 function openCreateSkillDialog(data?: any) {
-  // 有版本号的展示readme，是商店更新过来的
+  // Has version number displayed in readme, updated from store
   if (data?.version) {
     let readMe = ''
     storeTools.value
@@ -836,11 +836,11 @@ function openCreateSkillDialog(data?: any) {
     toolStoreDescDrawerRef.value?.open(readMe, data)
     return
   }
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
-  // 共享过来的工具不让编辑
+  // Shared tools prevent editing
   if (isShared.value) {
     return
   }
@@ -866,11 +866,11 @@ function toWorkflow(data: any) {
 const workflowFormDialogRef = ref<InstanceType<typeof WorkflowFormDialog>>()
 const workflowFormDialogTitle = ref('')
 const openCreateWorkflowDialog = (data?: any) => {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
-  // 共享过来的工具不让编辑
+  // Shared tools prevent editing
   if (isShared.value) {
     return
   }
@@ -889,11 +889,11 @@ const openCreateWorkflowDialog = (data?: any) => {
 }
 
 function openCreateDataSourceDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
-  // 共享过来的工具不让编辑
+  // Shared tools prevent editing
   if (isShared.value) {
     return
   }
@@ -977,19 +977,19 @@ async function changeState(row: any) {
 }
 
 async function copyTool(row: any) {
-  // mcp工具
+  // mcpTools
   if (row?.tool_type === 'MCP') {
     bus.emit('select_node', row.folder_id)
     await copyMcpTool(row)
     return
   }
-  // 数据源工具
+  // Data sourceTools
   if (row?.tool_type === 'DATA_SOURCE') {
     bus.emit('select_node', row.folder_id)
     await copyDataSource(row)
     return
   }
-  // 技能
+  // Skills
   if (row?.tool_type === 'SKILL') {
     bus.emit('select_node', row.folder_id)
     await copySkillTool(row)
@@ -1226,7 +1226,7 @@ function refresh(data?: any) {
   }
 }
 
-// 文件夹相关
+// FolderRelated
 const CreateFolderDialogRef = ref()
 
 function openCreateFolder() {

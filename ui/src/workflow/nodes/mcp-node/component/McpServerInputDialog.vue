@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     width="600"
-    title="设置变量"
+    title="Set variables"
     v-model="dialogVisible"
     :close-on-click-modal="false"
     :close-on-press-escape="false"

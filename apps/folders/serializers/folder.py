@@ -81,11 +81,11 @@ def check_depth(source, parent_id, workspace_id, current_depth=0):
     Folder = get_folder_type(source)  # noqa
 
     if parent_id != workspace_id:
-        # 计算当前层级
-        depth = 1  # 当前要创建的节点算一层
+        # CalculateCurrent层级
+        depth = 1  # Current要Creation的Node算一层
         current_parent_id = parent_id
 
-        # 向上追溯父节点
+        # 向上追溯父Node
         while current_parent_id != workspace_id:
             depth += 1
             parent_node = QuerySet(Folder).filter(id=current_parent_id).first()
@@ -93,7 +93,7 @@ def check_depth(source, parent_id, workspace_id, current_depth=0):
                 break
             current_parent_id = parent_node.parent_id
 
-        # 验证层级深度
+        # Verify层级深度
         if depth + current_depth > FOLDER_DEPTH:
             raise serializers.ValidationError(_('Folder depth cannot exceed 10000 levels'))
 
@@ -102,13 +102,13 @@ def get_max_depth(current_node):
     if not current_node:
         return 0
 
-    # 获取所有后代节点
+    # GetAll后代Node
     descendants = current_node.get_descendants()
 
     if not descendants.exists():
         return 0
 
-    # 获取最大深度
+    # GetMaximum深度
     max_level = descendants.order_by('-level').first().level
     current_level = current_node.level
     max_depth = max_level - current_level
@@ -190,7 +190,7 @@ class FolderSerializer(serializers.Serializer):
             parent_id = instance.get('parent_id')
             if parent_id is None:
                 parent_id = current_node.parent_id
-            # 如果要修改文件夹名称，检查同级目录下是否存在同名文件夹
+            # If要ModificationFolderName，Check同级Directory下WhetherExists同名Folder
             new_name = instance.get('name')
             if new_name is not None and new_name != current_node.name:
                 if QuerySet(Folder).filter(
@@ -246,25 +246,25 @@ class FolderSerializer(serializers.Serializer):
             if folder.id == folder.workspace_id:
                 raise serializers.ValidationError(_('Cannot delete root folder'))
 
-            # 工作空间管理员可以删除
+            # WorkspaceAdminCanDeletion
             workspace_manage = is_workspace_manage(self.data.get('user_id'), self.data.get('workspace_id'))
             if workspace_manage:
                 nodes = Folder.objects.filter(id=self.data.get('id')).get_descendants(include_self=True)
                 for node in nodes:
                     # print(node)
-                    # 删除相关的资源
+                    # DeletionRelated的Resource
                     self.delete_source(node)
-                    # 删除节点
+                    # DeletionNode
                     node.delete()
-            # 普通用户删除的文件夹内全部都得是自己有权限的资源
+            # NormalUserDeletion的Folder内All都得是自己有Permission的Resource
             else:
                 nodes = Folder.objects.filter(id=self.data.get('id')).get_descendants(include_self=True)
                 for node in nodes:
-                    # 删除相关的资源
+                    # DeletionRelated的Resource
                     source_ids = (Source.objects.filter(folder_id=node.id)
                                   .annotate(id_str=Cast('id', TextField()))
                                   .values_list('id_str', flat=True))
-                    # 检查文件夹是否存在未授权当前用户的资源
+                    # CheckFolderWhetherExists未AuthorizationCurrentUser的Resource
                     auth_list = QuerySet(WorkspaceUserResourcePermission).filter(
                         Q(workspace_id=self.data.get('workspace_id')) &
                         Q(user_id=self.data.get('user_id')) &
@@ -308,12 +308,12 @@ class FolderTreeSerializer(serializers.Serializer):
 
     @staticmethod
     def _check_tree_integrity(queryset):
-        """检查树结构完整性"""
+        """Check树结构Complete性"""
         for folder in queryset:
             if folder.lft >= folder.rght:
-                return True  # 需要重建
+                return True  # Needs重建
             if folder.is_leaf_node() and folder.get_children().exists():
-                return True  # 需要重建
+                return True  # Needs重建
         return False
 
     @staticmethod
@@ -340,9 +340,9 @@ class FolderTreeSerializer(serializers.Serializer):
 
         Folder = get_folder_type(source)  # noqa
 
-        # 检查特定工作空间的树结构完整性
+        # Check特定Workspace的树结构Complete性
         workspace_folders = Folder.objects.filter(workspace_id=workspace_id)
-        # 如果发现数据不一致，重建整个表（这是 MPTT 的限制）
+        # If发现Data不Consistent，重建整个表（这是 MPTT 的Limit）
         if self._check_tree_integrity(workspace_folders):
             Folder.objects.rebuild()
 
@@ -374,4 +374,4 @@ class FolderTreeSerializer(serializers.Serializer):
         serializer = TreeSerializer(nodes, many=True)
 
         return [d for d in serializer.data if
-                d.get('id') == d.get('workspace_id')] if name is None else serializer.data  # 这是可序列化的字典
+                d.get('id') == d.get('workspace_id')] if name is None else serializer.data  # 这是可序列izationDict

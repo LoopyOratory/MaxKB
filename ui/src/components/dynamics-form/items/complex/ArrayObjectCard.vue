@@ -52,7 +52,7 @@ const deleteKnowledge = (item: any) => {
 }
 const emit = defineEmits(['update:modelValue', 'change'])
 
-// 校验实例对象
+// ValidateInstanceObject
 const dynamicsFormRef = ref<Array<InstanceType<typeof DynamicsForm>>>([])
 
 const _data = computed<Array<any>>({
@@ -73,17 +73,17 @@ const props_info = computed(() => {
   return props.formField.props_info ? props.formField.props_info : {}
 })
 const add_msg = computed(() => {
-  return props_info.value.add_msg ? props_info.value.add_msg : '添加'
+  return props_info.value.add_msg ? props_info.value.add_msg : 'Add'
 })
 /**
- * 添加一个card
+ * AddOnecard
  */
 const add_card = () => {
   _data.value = [..._data.value, {}]
 }
 
 /**
- * 组件样式
+ * ComponentStyle
  */
 const formStyle = computed(() => {
   return props_info.value.form_style ? props_info.value.form_style : {}
@@ -99,7 +99,7 @@ const attr = computed(() => {
 })
 
 /**
- * 校验方法
+ * ValidateMethod
  */
 function validate() {
   return Promise.all(dynamicsFormRef.value.map((item) => item.validate()))

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： i_loop_continue_node.py
+    @Author: Tiger
+    @file: i_loop_continue_node.py
     @date：2025/9/15 12:13
     @desc:
 """

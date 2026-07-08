@@ -30,7 +30,7 @@ class CustomEdge2 extends BezierEdge {
     }
   }
   /**
-   * 渲染vue组件
+   * Render Vue component
    * @param root
    */
   protected renderVueComponent(root: any) {
@@ -61,7 +61,7 @@ class CustomEdge2 extends BezierEdge {
     return `${this.props.graphModel.flowId}:${this.props.model.id}`
   }
   /**
-   * 组件即将卸载勾子
+   * Component about to unmount hook
    */
   componentWillUnmount() {
     if (super.componentWillUnmount) {
@@ -73,7 +73,7 @@ class CustomEdge2 extends BezierEdge {
     this.unmountVueComponent()
   }
   /**
-   * 卸载vue
+   * Unmount Vue
    * @returns
    */
   protected unmountVueComponent() {
@@ -180,14 +180,14 @@ class CustomEdgeModel2 extends BezierEdgeModel {
 
   getEdgeStyle() {
     const style = super.getEdgeStyle()
-    // svg属性
+    // SVG properties
     style.strokeWidth = 2
     style.stroke = '#BBBFC4'
     style.offset = 0
     return style
   }
   /**
-   * 重写此方法，使保存数据是能带上锚点数据。
+   * Override this method to include anchor data when saving.
    */
   getData() {
     const data: any = super.getData()
@@ -198,7 +198,7 @@ class CustomEdgeModel2 extends BezierEdgeModel {
     return data
   }
   /**
-   * 给边自定义方案，使其支持基于锚点的位置更新边的路径
+   * Custom edge scheme to support anchor-based position updates for edge paths
    */
   updatePathByAnchor() {
     const sourceNodeModel = this.graphModel.getNodeModelById(this.sourceNodeId)
@@ -224,7 +224,7 @@ class CustomEdgeModel2 extends BezierEdgeModel {
       this.updateEndPoint(endPoint)
     }
 
-    // 这里需要将原有的pointsList设置为空，才能触发bezier的自动计算control点。
+    // Need to set original pointsList to empty to trigger bezier auto-calculation of control points.
     this.pointsList = []
     this.initPoints()
   }

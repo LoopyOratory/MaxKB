@@ -74,13 +74,13 @@ export function getTeleport(): any {
         const children: Record<string, any>[] = []
         Object.keys(items).forEach((id) => {
           // https://github.com/didi/LogicFlow/issues/1768
-          // 多个不同的VueNodeView都会connect注册到items中，因此items存储了可能有多个flowId流程图的数据
-          // 当使用多个LogicFlow时，会创建多个flowId + 同时使用KeepAlive
-          // 每一次items改变，会触发不同flowId持有的setup()执行，由于每次setup()执行就是遍历items，因此存在多次重复渲染元素的问题
-          // 即items[0]会在Page1的setup()执行，items[0]也会在Page2的setup()执行，从而生成两个items[0]
+          // Multiple different VueNodeViews connect and register into items, so items may store data from multiple flowId diagrams
+          // When using multiple LogicFlows, multiple flowIds are created + KeepAlive is used simultaneously
+          // Each items change triggers setup() for different flowIds; since each setup() iteration traverses items, elements get rendered multiple times
+          // i.e., items[0] executes in both Page1 and Page2 setup(), producing two instances of items[0]
 
-          // 比对当前界面显示的flowId，只更新items[当前页面flowId:nodeId]的数据
-          // 比如items[0]属于Page1的数据，那么Page2无论active=true/false，都无法执行items[0]
+          // Compare with the current display flowId; only update items[current_page_flowId:nodeId] data
+          // For example, if items[0] belongs to Page1, Page2 cannot execute items[0] regardless of active=true/false
 
           children.push(items[id])
         })

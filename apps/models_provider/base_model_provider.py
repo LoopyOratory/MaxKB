@@ -121,14 +121,14 @@ class BaseModelCredential(ABC):
     @abstractmethod
     def encryption_dict(self, model_info: Dict[str, object]):
         """
-        :param model_info: 模型数据
-        :return: 加密后数据
+        :param model_info: ModelData
+        :return: Encrypt后Data
         """
         pass
 
     def get_model_params_setting_form(self, model_name):
         """
-               模型参数设置表单
+               ModelParametersSettingsForm
                :return:
         """
         pass
@@ -136,7 +136,7 @@ class BaseModelCredential(ABC):
     @staticmethod
     def encryption(message: str):
         """
-            加密敏感字段数据  加密方式是 如果密码是 1234567890  那么给前端则是 123******890
+            EncryptSensitiveFieldData  EncryptMethod是 IfPassword是 1234567890  那么给Frontend则是 123******890
         :param message:
         :return:
         """
@@ -151,7 +151,7 @@ class ModelTypeConst(Enum):
     IMAGE = {'code': 'IMAGE', 'message': _('Vision Model')}
     TTI = {'code': 'TTI', 'message': _('Image Generation')}
     RERANKER = {'code': 'RERANKER', 'message': _('Rerank')}
-    # 文生视频 图生视频
+    # 文生Video Image toVideo
     TTV = {'code': 'TTV', 'message': _('Text to Video')}
     ITV = {'code': 'ITV', 'message': _('Image to Video')}
 
@@ -171,15 +171,15 @@ class ModelInfo:
 
     def get_name(self):
         """
-        获取模型名称
-        :return: 模型名称
+        GetModelName
+        :return: ModelName
         """
         return self.name
 
     def get_desc(self):
         """
-        获取模型描述
-        :return: 模型描述
+        GetModelDescription
+        :return: ModelDescription
         """
         return self.desc
 

@@ -273,7 +273,7 @@ import { t } from '@/locales'
 
 const route = useRoute()
 const {
-  query: { id }, // id为knowledgeID，有id的是上传文档
+  query: { id }, // id is knowledgeID, hasid isUploadDocument
 } = route
 
 const apiType = computed(() => {
@@ -382,10 +382,10 @@ function deleteFile(item: any) {
   }
 }
 
-// 上传on-change事件
+// Uploadon-changeEvent
 const fileHandleChange = (file: any, fileList: UploadFiles) => {
-  // 按文件唯一标识精确定位并移除当前文件
-  // 注意：不能使用 splice(-1, 1) 盲删末尾元素，文件夹上传时会误删正常文件而放走超限文件
+  // Confirm position by file unique identifier and remove current file
+  // Note: cannotUse splice(-1, 1) Blind delete tailElement，FolderUploadwill mistakenly delete normalFilewhile letting over-limit ones throughFile
   const removeCurrentFile = () => {
     const index = fileList.findIndex((item: any) => item.uid === file.uid)
     if (index !== -1) {
@@ -411,13 +411,13 @@ const fileHandleChange = (file: any, fileList: UploadFiles) => {
     abort: null as null | (() => void),
     aborted: false,
   })
-  //1、判断文件大小是否合法，文件限制不能大于100M
+  //1、DetermineFileSizeWhetherValid, FileLimitCannot be greater than100M
   const isLimit = file?.size / 1024 / 1024 < file_size_limit.value
   if (!isLimit) {
     item.status = 'error'
     item.errMsg = t('dynamicsForm.UploadInput.errorTip.sizeError')
     // MsgError(t('views.document.tip.fileLimitSizeTip1') + file_size_limit.value + 'MB')
-    // fileList.splice(-1, 1) //移除当前超出大小的文件
+    // fileList.splice(-1, 1) //RemoveCurrentExceedSizeFile
     form.value.fileList?.push(item)
     removeCurrentFile()
     return false
@@ -492,7 +492,7 @@ const handlePreview = (bool: boolean) => {
 }
 
 /*
-  表单校验
+  FormValidate
 */
 function validate() {
   if (!FormRef.value) return

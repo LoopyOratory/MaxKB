@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎
-@file： aliyun_bai_lian_model_provider.py
+@Author: Tiger
+@file: aliyun_bai_lian_model_provider.py
 @date：2024/9/9 17:43
 @desc:
 """

@@ -32,11 +32,11 @@ def _write_context(node_variable: Dict, workflow_variable: Dict, node: INode, wo
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     answer = ''
@@ -52,7 +52,7 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
         if workflow.is_the_task_interrupted():
             break
 
-        # 处理 reasoning content
+        # Process reasoning content
         reasoning_chunk = reasoning.get_reasoning_content(chunk)
         content_chunk = reasoning_chunk.get('content')
         if 'reasoning_content' in chunk.additional_kwargs:
@@ -66,7 +66,7 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
             reasoning_content_chunk = ''
         reasoning_content += reasoning_content_chunk
 
-        # 处理 chunk.content 为 list 的情况
+        # Process chunk.content 为 list 的情况
         if isinstance(chunk.content, list):
             for chunk_item in chunk.content:
                 text = chunk_item.get("text", "")
@@ -93,11 +93,11 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
 
 def write_context(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点实例对象
-    @param workflow:           工作流管理器
+    Write context data
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance object
+    @param workflow: workflow manager
     """
     response = node_variable.get('result')
     model_setting = node.context.get('model_setting',
@@ -138,7 +138,7 @@ class BaseVideoUnderstandNode(IVideoUnderstandNode):
                 model_id_type=None, model_id_reference=None,
                 model_setting=None,
                 **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],
@@ -160,14 +160,14 @@ class BaseVideoUnderstandNode(IVideoUnderstandNode):
         self.context['model_setting'] = model_setting
         video_model = get_model_instance_by_model_workspace_id(model_id, workspace_id,
                                                                **(model_params_setting or {}))
-        # 执行详情中的历史消息不需要图片内容
+        # ExecuteDetails in HistoryMessage不NeedsImageContent
         history_message = self.get_history_message_for_details(history_chat_record, dialogue_number)
         self.context['history_message'] = history_message
         system = self.workflow_manage.generate_prompt(system)
         self.context['system'] = system
         question = self.generate_prompt_question(prompt)
         self.context['question'] = question.content
-        # 生成消息列表, 真实的history_message
+        # Generate message list, 真实的history_message
         message_list = self.generate_message_list(video_model, system, prompt,
                                                   self.get_history_message(history_chat_record, dialogue_number,
                                                                            video_model), video)
@@ -212,7 +212,7 @@ class BaseVideoUnderstandNode(IVideoUnderstandNode):
         for data in chat_record.details.values():
             if self.node.id == data['node_id'] and 'video_list' in data:
                 video_list = data['video_list'] or  []
-                # 增加对 None 和空列表的检查
+                # 增加对 None 和空List的Check
                 if not video_list or len(video_list) == 0 or data['dialogue_type'] == 'WORKFLOW':
                     return HumanMessage(content=chat_record.problem_text)
                 file_id_list = []

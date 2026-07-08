@@ -7,7 +7,7 @@
         </el-text>
       </div>
       <div>
-        <!-- 语音播放 -->
+        <!-- Voice playback -->
         <span v-if="tts">
           <el-tooltip
             effect="dark"
@@ -61,7 +61,7 @@
         </span>
         <EditContentDialog ref="EditContentDialogRef" @refresh="refreshContent" />
         <EditMarkDialog ref="EditMarkDialogRef" @refresh="refreshMark" />
-        <!-- 先渲染，不然不能播放   -->
+        <!-- Render first, cannot play yet   -->
         <audio
           ref="audioPlayer"
           v-for="item in audioList"
@@ -157,23 +157,23 @@ const audioPlayerStatus = ref(false)
 function markdownToPlainText(md: string) {
   return (
     md
-      // 移除图片 ![alt](url)
+      // RemoveImage ![alt](url)
       .replace(/!\[.*?\]\(.*?\)/g, '')
-      // 移除链接 [text](url)
+      // RemoveLink [text](url)
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      // 移除 Markdown 标题符号 (#, ##, ###)
+      // Remove Markdown TitleSymbol (#, ##, ###)
       .replace(/^#{1,6}\s+/gm, '')
-      // 移除加粗 **text** 或 __text__
+      // RemoveBold **text** or __text__
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/__(.*?)__/g, '$1')
-      // 移除斜体 *text* 或 _text_
+      // RemoveItalic *text* or _text_
       .replace(/\*(.*?)\*/g, '$1')
       .replace(/_(.*?)_/g, '$1')
-      // 移除行内代码 `code`
+      // RemoveInlineCode `code`
       .replace(/`(.*?)`/g, '$1')
-      // 移除代码块 ```code```
+      // Remove code block ```code```
       .replace(/```.*?```/gs, '')
-      // 移除多余的换行符
+      // RemoveExtraNewline
       .replace(/\n{2,}/g, '\n')
       .trim()
   )
@@ -187,13 +187,13 @@ const playAnswerText = (text: string) => {
   if (!text) {
     text = t('aiChat.tip.answerMessage')
   }
-  // 移除表单渲染器
+  // Remove form renderer
   text = removeFormRander(text)
-  // text 处理成纯文本
+  // text ProcessTo pureText
   text = markdownToPlainText(text)
   // console.log(text)
   audioPlayerStatus.value = true
-  // 分割成多份
+  // SplitInto multiple parts
   audioList.value = text.split(/(<audio[^>]*><\/audio>)/)
   playAnswerTextPart()
 }
@@ -209,7 +209,7 @@ const playAnswerTextPart = () => {
     if (audioPlayer.value) {
       audioPlayer.value[currentAudioIndex.value].src =
         audioList.value[currentAudioIndex.value].match(/src="([^"]*)"/)?.[1] || ''
-      audioPlayer.value[currentAudioIndex.value].play() // 自动播放音频
+      audioPlayer.value[currentAudioIndex.value].play() // AutomaticPlayAudio
       audioPlayer.value[currentAudioIndex.value].onended = () => {
         currentAudioIndex.value += 1
         playAnswerTextPart()
@@ -226,7 +226,7 @@ const playAnswerTextPart = () => {
       window.speechSynthesis.resume()
       return
     }
-    // 创建一个新的 SpeechSynthesisUtterance 实例
+    // CreationOneNew SpeechSynthesisUtterance Instance
     utterance.value = new SpeechSynthesisUtterance(audioList.value[currentAudioIndex.value])
     utterance.value.onend = () => {
       utterance.value = null
@@ -237,10 +237,10 @@ const playAnswerTextPart = () => {
       audioPlayerStatus.value = false
       utterance.value = null
     }
-    // 调用浏览器的朗读功能
+    // CallBrowserRead aloudFunction
     window.speechSynthesis.speak(utterance.value)
   } else if (props.tts_type === 'TTS') {
-    // 恢复上次暂停的播放
+    // RestoreLast timePausePlay
     if (audioPlayer.value && audioPlayer.value[currentAudioIndex.value]?.src) {
       audioPlayer.value[currentAudioIndex.value].play()
       return
@@ -257,23 +257,23 @@ const playAnswerTextPart = () => {
           MsgError(text)
           return
         }
-        // 假设我们有一个 MP3 文件的字节数组
-        // 创建 Blob 对象
+        // Suppose we haveOne MP3 File bytesArray
+        // Creation Blob Object
         const blob = new Blob([res], { type: 'audio/mp3' })
 
-        // 创建对象 URL
+        // CreationObject URL
         const url = URL.createObjectURL(blob)
 
-        // 测试blob是否能正常播放
+        // TestblobWhetherCan normallyPlay
         // const link = document.createElement('a')
         // link.href = window.URL.createObjectURL(blob)
         // link.download = "abc.mp3"
         // link.click()
 
-        // 检查 audioPlayer 是否已经引用了 DOM 元素
+        // Check audioPlayer WhetherAlreadyReference DOM Element
         if (audioPlayer.value) {
           audioPlayer.value[currentAudioIndex.value].src = url
-          audioPlayer.value[currentAudioIndex.value].play() // 自动播放音频
+          audioPlayer.value[currentAudioIndex.value].play() // AutomaticPlayAudio
           audioPlayer.value[currentAudioIndex.value].onended = () => {
             currentAudioIndex.value += 1
             playAnswerTextPart()

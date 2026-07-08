@@ -1,8 +1,8 @@
 /**
- * 拆分数组 每n个拆分为一个数组
- * @param sourceDataList 资源数据
- * @param splitNum       每多少个拆分为一个数组
- * @returns              拆分后数组
+ * Split array every n items into one array
+ * @param sourceDataList ResourceData
+ * @param splitNum       Split every N intoOneArray
+ * @returns              After splitArray
  */
 export function splitArray<T>(sourceDataList: Array<T>, splitNum: number) {
   const count =
@@ -23,7 +23,7 @@ export function splitArray<T>(sourceDataList: Array<T>, splitNum: number) {
   return arrayList
 }
 /*
-树形结构转平
+Tree structure flattened
 */
 export function TreeToFlatten(treeData: any[]) {
   return treeData.reduce((acc, node) => {
@@ -33,21 +33,21 @@ export function TreeToFlatten(treeData: any[]) {
 }
 
 /*
-  从指定数组中过滤出对应的对象
+  Filter out corresponding object from specified array
 */
 export function relatedObject(list: any, val: any, attr: string) {
   const filterData: any = list.find((item: any) => item[attr] === val)
   return filterData || null
 }
 
-// 排序
+// Sort
 export function arraySort(list: Array<any>, property: any, desc?: boolean) {
   return list.sort((a: any, b: any) => {
     return desc ? b[property] - a[property] : a[property] - b[property]
   })
 }
 
-// 判断对象里所有属性全部为空
+// Determine if all properties in object are empty
 export function isAllPropertiesEmpty(obj: object) {
   return Object.values(obj).every(
     (value) =>
@@ -55,19 +55,19 @@ export function isAllPropertiesEmpty(obj: object) {
   )
 }
 
-// 数组对象中某一属性值的集合
+// ArrayObjectA certain attribute inValueSet
 export function getAttrsArray(array: Array<any>, attr: string) {
   return array.map((item) => {
     return item[attr]
   })
 }
 
-// 求和
+// Sum
 export function getSum(array: Array<any>) {
   return array.reduce((total, item) => total + item, 0)
 }
 
-// 对象数组去重
+// ObjectArrayDeduplicate
 export function uniqueArray(array: Array<any>, key: string) {
   const map = new Map()
   return array.filter((item) => {

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： system_profile.py
+    @Author: Tiger
+    @file: system_profile.py
     @date：2025/6/4 15:59
     @desc:
 """

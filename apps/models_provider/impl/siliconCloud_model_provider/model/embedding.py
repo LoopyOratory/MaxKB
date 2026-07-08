@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： embedding.py
+    @Author: Tiger
+    @file: embedding.py
     @date：2024/10/16 16:34
     @desc:
 """
@@ -54,7 +54,7 @@ class SiliconCloudEmbeddingModel(MaxKBBaseModel):
         if isinstance(data, dict):
             if data['data'] is None or 'code' in data:
                 raise ValueError(f"Embedding API returned no data: {data}")
-            # 假设返回结构中有 'data[0].embedding'
+            # 假设Return结构中有 'data[0].embedding'
             return data["data"][0]["embedding"]
         else:
             maxkb_logger.error(f"Unexpected response from Embedding API: {data}")

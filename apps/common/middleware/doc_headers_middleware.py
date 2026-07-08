@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： static_headers_middleware.py
+    @Author: Tiger
+    @file: static_headers_middleware.py
     @date：2024/3/13 18:26
     @desc:
 """
@@ -23,10 +23,10 @@ content = """
     <title>Document</title>
   </head>
   <style>
-    /* 弹框内容样式 */
+    /* 弹框ContentStyle */
     .modal-content {
       background-color: #fefefe;
-      margin: 15% auto; /* 15% 从顶部和自动水平居中 */
+      margin: 15% auto; /* 15% 从顶部和Automatic水平居中 */
       padding: 20px;
       border: 1px solid #888;
       width: 80%; /* 宽度 */
@@ -35,8 +35,8 @@ content = """
   <body>
     <div class="modal-content">
       <input type="text" id="auth-input" />
-      <button id="auth">认证</button>
-      <button id="goLogin">去登录</button>
+      <button id="auth">Authentication</button>
+      <button id="goLogin">去Login</button>
     </div>
     <script>
       const setCookie = (name, value, days) => {
@@ -83,11 +83,11 @@ content = """
           })
           .catch((e) => {});
       };
-      // 获取元素
+      // GetElement
       const auth = document.getElementById("auth");
       const goLogin = document.getElementById("goLogin");
 
-      // 打开弹框函数
+      // Open弹框Function
       auth.onclick = ()=> {
         const authInput = document.getElementById("auth-input");
         const token = authInput.value
@@ -97,11 +97,11 @@ content = """
             window.location.href = window.location.pathname;
           })
           .catch((e) => {
-            alert("令牌错误");
+            alert("TokenError");
           });
       };
 
-      // 去系统的登录页面
+      // 去System的Login页面
       goLogin.onclick =  ()=> {
         window.location.href = "/admin/login";
       };

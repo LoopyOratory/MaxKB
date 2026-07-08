@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： homepage.py
+    @Author: Tiger
+    @file: homepage.py
     @date：2026/5/13 16:40
     @desc:
 """

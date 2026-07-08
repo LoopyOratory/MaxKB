@@ -328,7 +328,7 @@ const getModelForm = (model_name: string) => {
       model_name,
     ).then((ok) => {
       model_form_field.value = ok.data
-      // 渲染动态表单
+      // RenderDynamicForm
       dynamicsFormRef.value?.render(model_form_field.value, undefined)
     })
 

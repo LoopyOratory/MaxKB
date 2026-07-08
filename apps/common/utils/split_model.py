@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: qabot
-    @Author：虎
-    @file： split_model.py
+    @Author: Tiger
+    @file: split_model.py
     @date：2023/9/1 15:12
     @desc:
 """
@@ -15,12 +15,12 @@ import jieba
 
 def get_level_block(text, level_content_list, level_content_index, cursor):
     """
-    从文本中获取块数据
-    :param text: 文本
-    :param level_content_list: 拆分的title数组
-    :param level_content_index: 指定的下标
-    :param cursor: 开始的下标位置
-    :return: 拆分后的文本数据
+    从Text中Get块Data
+    :param text: Text
+    :param level_content_list: 拆分的titleArray
+    :param level_content_index: Specify的下标
+    :param cursor: Start的下标Position
+    :return: 拆分 afterTextData
     """
     start_content: str = level_content_list[level_content_index].get('content')
     next_content = level_content_list[level_content_index + 1].get("content") if level_content_index + 1 < len(
@@ -32,28 +32,28 @@ def get_level_block(text, level_content_list, level_content_index, cursor):
 
 def to_tree_obj(content, state='title'):
     """
-    转换为树形对象
-    :param content: 文本数据
-    :param state:   状态: title block
-    :return: 转换后的数据
+    Transform为树形Object
+    :param content: TextData
+    :param state:   Status: title block
+    :return: Transform afterData
     """
     return {'content': content, 'state': state}
 
 
 def remove_special_symbol(str_source: str):
     """
-    删除特殊字符
-    :param str_source: 需要删除的文本数据
-    :return: 删除后的数据
+    DeletionSpecial characters
+    :param str_source: NeedsDeletion的TextData
+    :return: Deletion afterData
     """
     return str_source
 
 
 def filter_special_symbol(content: dict):
     """
-    过滤文本中的特殊字符
-    :param content: 需要过滤的对象
-    :return: 过滤后返回
+    FilterText in Special characters
+    :param content: NeedsFilter的Object
+    :return: Filter后Return
     """
     content['content'] = remove_special_symbol(content['content'])
     return content
@@ -61,11 +61,11 @@ def filter_special_symbol(content: dict):
 
 def flat(tree_data_list: List[dict], parent_chain: List[dict], result: List[dict]):
     """
-    扁平化树形结构数据
-    :param tree_data_list: 树形接口数据
-    :param parent_chain:   父级数据 传[] 用于递归存储数据
-    :param result:         响应数据 传[] 用于递归存放数据
-    :return: result 扁平化后的数据
+    扁平化树形结构Data
+    :param tree_data_list: 树形InterfaceData
+    :param parent_chain:   父级Data 传[] Used forRecursiveStorageData
+    :param result:         ResponseData 传[] Used forRecursive存放Data
+    :return: result 扁平化 afterData
     """
     if parent_chain is None:
         parent_chain = []
@@ -83,9 +83,9 @@ def flat(tree_data_list: List[dict], parent_chain: List[dict], result: List[dict
 
 def to_paragraph(obj: dict):
     """
-    转换为段落
-    :param obj: 需要转换的对象
-    :return: 段落对象
+    Transform为Paragraph
+    :param obj: NeedsTransform的Object
+    :return: ParagraphObject
     """
     content = obj['content']
     return {"keywords": get_keyword(content),
@@ -95,9 +95,9 @@ def to_paragraph(obj: dict):
 
 def get_keyword(content: str):
     """
-    获取content中的关键词
-    :param content: 文本
-    :return: 关键词数组
+    Getcontent in 关键词
+    :param content: Text
+    :return: 关键词Array
     """
     stopwords = ['：', '“', '！', '”', '\n', '\\s']
     cutworms = jieba.lcut(content)
@@ -106,9 +106,9 @@ def get_keyword(content: str):
 
 def titles_to_paragraph(list_title: List[dict]):
     """
-    将同一父级的title转换为块段落
+    将同一父级的titleTransform为块Paragraph
     :param list_title: 同父级title
-    :return: 块段落
+    :return: 块Paragraph
     """
     if len(list_title) > 0:
         content = "\n,".join(
@@ -125,9 +125,9 @@ def titles_to_paragraph(list_title: List[dict]):
 
 def parse_group_key(level_list: List[dict]):
     """
-    将同级别同父级的title生成段落,加上本身的段落数据形成新的数据
-    :param level_list: title n 级数据
-    :return: 根据title生成的数据 + 段落数据
+    将同Level同父级的titleGenerateParagraph,加上本身的ParagraphData形成新的Data
+    :param level_list: title n 级Data
+    :return: Based ontitleGenerate的Data + ParagraphData
     """
     result = []
     group_data = group_by(list(filter(lambda f: f['state'] == 'title' and len(f['parent_chain']) > 0, level_list)),
@@ -139,9 +139,9 @@ def parse_group_key(level_list: List[dict]):
 
 def to_block_paragraph(tree_data_list: List[dict]):
     """
-    转换为块段落对象
-    :param tree_data_list: 树数据
-    :return: 块段落
+    Transform为块ParagraphObject
+    :param tree_data_list: 树Data
+    :return: 块Paragraph
     """
     flat_list = flat(tree_data_list, [], [])
     level_group_dict: dict = group_by(flat_list, key=lambda f: f['level'])
@@ -159,7 +159,7 @@ def parse_title_level(text, content_level_pattern: List, index):
 
 def mask_code_blocks(text: str) -> str:
     """
-    将代码块内容替换为等长空格,防止代码块内的#被识别为标题
+    将Code块ContentReplace为等长空格,防止Code块内的#被识别为Title
     """
     result = list(text)
     for match in re.finditer(r'```[^\n]*\n.*?```', text, re.DOTALL):
@@ -175,25 +175,25 @@ def mask_code_blocks(text: str) -> str:
 
 def parse_level(text, pattern: str):
     """
-    获取正则匹配到的文本
-    :param text: 需要匹配的文本
+    Get正则Match toText
+    :param text: NeedsMatch的Text
     :param pattern:  正则
-    :return: 符合正则的文本
+    :return: Matches正则的Text
     """
     masked_text = mask_code_blocks(text)
     level_content_list = list(map(to_tree_obj, [r[0:255] for r in re_findall(pattern, masked_text) if r is not None]))
-    # 过滤掉空标题或只包含#和空白字符的标题
+    # Filter掉空Title或只Contains#和Blank字符的Title
     filtered_list = [item for item in level_content_list
                      if item['content'].strip(' ') and item['content'].replace('#', '').strip(' ')]
     return list(map(filter_special_symbol, filtered_list))
 
 
 def re_findall(pattern, text):
-    # 检查 pattern 是否为空或无效
+    # Check pattern Is空或无效
     if pattern is None:
         return []
 
-    # 如果是字符串类型，检查是否为空字符串
+    # IfStringType，CheckIs空String
     if isinstance(pattern, str) and (not pattern or not pattern.strip()):
         return []
 
@@ -209,7 +209,7 @@ def re_findall(pattern, text):
 
 def to_flat_obj(parent_chain: List[dict], content: str, state: str):
     """
-    将树形属性转换为扁平对象
+    将树形属性Transform为扁平Object
     :param parent_chain:
     :param content:
     :param state:
@@ -220,9 +220,9 @@ def to_flat_obj(parent_chain: List[dict], content: str, state: str):
 
 def flat_map(array: List[List]):
     """
-    将二位数组转为一维数组
-    :param array: 二维数组
-    :return: 一维数组
+    将二位Array转为一维Array
+    :param array: 二维Array
+    :return: 一维Array
     """
     result = []
     for e in array:
@@ -233,7 +233,7 @@ def flat_map(array: List[List]):
 def group_by(list_source: List, key):
     """
     將數組分組
-    :param list_source: 需要分組的數組
+    :param list_source: Needs分組的數組
     :param key: 分組函數
     :return: key->[]
     """
@@ -248,11 +248,11 @@ def group_by(list_source: List, key):
 
 def result_tree_to_paragraph(result_tree: List[dict], result, parent_chain, with_filter: bool):
     """
-    转换为分段对象
-    :param result_tree: 解析文本的树
-    :param result:      传[]  用于递归
-    :param parent_chain: 传[] 用户递归存储数据
-    :param with_filter: 是否过滤block
+    Transform为SegmentObject
+    :param result_tree: ParseText的树
+    :param result:      传[]  Used forRecursive
+    :param parent_chain: 传[] UserRecursiveStorageData
+    :param with_filter: WhetherFilterblock
     :return: List[{'problem':'xx','content':'xx'}]
     """
     for item in result_tree:
@@ -268,10 +268,10 @@ def result_tree_to_paragraph(result_tree: List[dict], result, parent_chain, with
 
 def post_handler_paragraph(content: str, limit: int):
     """
-    根据文本的最大字符分段
-    :param content: 需要分段的文本字段
-    :param limit:   最大分段字符
-    :return: 分段后数据
+    Based onText的Maximum字符Segment
+    :param content: NeedsSegment的TextField
+    :param limit:   MaximumSegment字符
+    :return: Segment后Data
     """
     result = []
     temp_char, start = '', 0
@@ -290,16 +290,16 @@ def post_handler_paragraph(content: str, limit: int):
         result.append(temp_char)
 
     pattern = "[\\S\\s]{1," + str(limit) + '}'
-    # 如果\n 单段超过限制,则继续拆分
+    # If\n 单段超过Limit,则继续拆分
     return reduce(lambda x, y: [*x, *y], map(lambda row: re.findall(pattern, row), result), [])
 
 
 def smart_split_paragraph(content: str, limit: int):
     """
-    智能分段:在limit前找到合适的分割点(句号、回车等)
-    :param content: 需要分段的文本
-    :param limit: 最大字符限制
-    :return: 分段后的文本列表
+    智能Segment:在limit前找到合适的Split点(句号、回车等)
+    :param content: NeedsSegment的Text
+    :param limit: Maximum字符Limit
+    :return: Segment afterTextList
     """
     if len(content) <= limit:
         return [content]
@@ -311,11 +311,11 @@ def smart_split_paragraph(content: str, limit: int):
         end = start + limit
 
         if end >= len(content):
-            # 剩余文本不超过限制,直接添加
+            # 剩余Text不超过Limit,DirectAdd
             result.append(content[start:])
             break
 
-        # 在limit范围内寻找最佳分割点
+        # 在limitRange内寻找最佳Split点
         best_split = end
 
         # 优先级:句号 > 感叹号/问号 > 回车
@@ -325,16 +325,16 @@ def smart_split_paragraph(content: str, limit: int):
             ('?', 0), ('?', 0),  # 中英文问号
         ]
 
-        # 从后往前找分割点
-        for i in range(end - 1, start + limit // 2, -1):  # 至少保留一半内容
+        # 从后往前找Split点
+        for i in range(end - 1, start + limit // 2, -1):  # 至少Retain一半Content
             for char, offset in split_chars:
                 if content[i] == char:
-                    best_split = i + 1  # 包含分隔符在当前段
+                    best_split = i + 1  # Contains分隔符在Current段
                     break
             if best_split != end:
                 break
 
-        # 如果找不到合适分割点,使用原始limit
+        # If找不到合适Split点,UseOriginallimit
         if best_split == end and end < len(content):
             best_split = end
 
@@ -354,9 +354,9 @@ replace_map = {
 
 def filter_special_char(content: str):
     """
-    过滤特殊字段
-    :param content: 文本
-    :return: 过滤后字段
+    Filter特殊Field
+    :param content: Text
+    :return: Filter后Field
     """
     items = replace_map.items()
     for key, value in items:
@@ -379,10 +379,10 @@ class SplitModel:
 
     def parse_to_tree(self, text: str, index=0):
         """
-         解析文本
-        :param text: 需要解析的文本
-        :param index: 从那个正则开始解析
-        :return: 解析后的树形结果数据
+         ParseText
+        :param text: NeedsParse的Text
+        :param index: 从那个正则StartParse
+        :return: Parse after树形ResultData
         """
         level_content_list = parse_title_level(text, self.content_level_pattern, index)
         if len(level_content_list) == 0:
@@ -411,9 +411,9 @@ class SplitModel:
 
     def parse(self, text: str):
         """
-        解析文本
-        :param text: 文本数据
-        :return: 解析后数据 {content:段落数据,keywords:[‘段落关键词’],parent_chain:['段落父级链路']}
+        ParseText
+        :param text: TextData
+        :return: Parse后Data {content:ParagraphData,keywords:[‘Paragraph关键词’],parent_chain:['Paragraph父级链路']}
         """
         text = text.replace('\r\n', '\n')
         text = text.replace('\r', '\n')
@@ -477,11 +477,11 @@ default_split_pattern = {
 
 def get_split_model(filename: str, with_filter: bool = False, limit: int = 100000):
     """
-    根据文件名称获取分段模型
-    :param limit:        每段大小
-    :param with_filter: 是否过滤特殊字符
-    :param filename: 文件名称
-    :return: 分段模型
+    Based onFileNameGetSegmentModel
+    :param limit:        每段Size
+    :param with_filter: WhetherFilterSpecial characters
+    :param filename: FileName
+    :return: SegmentModel
     """
     if filename.endswith(".md"):
         pattern_list = default_split_pattern.get('md')

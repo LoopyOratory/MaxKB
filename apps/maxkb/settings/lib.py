@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： lib.py
+    @Author: Tiger
+    @file: lib.py
     @date：2024/8/16 17:12
     @desc:
 """
@@ -12,7 +12,7 @@ from redis.sentinel import Sentinel
 
 from maxkb.const import CONFIG, PROJECT_DIR, LOG_DIR
 
-# celery相关配置
+# celeryRelatedConfiguration
 celery_data_dir = os.path.join(PROJECT_DIR, 'data', 'celery_task')
 if not os.path.exists(celery_data_dir) or not os.path.isdir(celery_data_dir):
     os.makedirs(celery_data_dir, 0o700, exist_ok=True)
@@ -37,7 +37,7 @@ if CONFIG.get('REDIS_SENTINEL_MASTER') and CONFIG.get('REDIS_SENTINEL_SENTINELS'
     }
     CELERY_BROKER_TRANSPORT_OPTIONS = CELERY_RESULT_BACKEND_TRANSPORT_OPTIONS = SENTINEL_OPTIONS
 
-    # celery-once 哨兵模式配置
+    # celery-once 哨兵ModeConfiguration
     sentinel = Sentinel(
         sentinels,
         socket_timeout=5,
@@ -58,7 +58,7 @@ else:
         'port': CONFIG.get('REDIS_PORT'),
         'db': redis_celery_db
     }
-    # celery-once 常规模式配置
+    # celery-once 常规ModeConfiguration
     celery_once_settings = {
         'url': CELERY_BROKER_URL_FORMAT % {
             'protocol': 'redis',
@@ -82,8 +82,8 @@ CELERY_WORKER_REDIRECT_STDOUTS = True
 CELERY_WORKER_REDIRECT_STDOUTS_LEVEL = "INFO"
 CELERY_TASK_SOFT_TIME_LIMIT = 3600
 CELERY_WORKER_CANCEL_LONG_RUNNING_TASKS_ON_CONNECTION_LOSS = True
-# celery-once 配置
-celery_once_settings['default_timeout'] = 3600  # 锁的默认超时时间（秒）
+# celery-once Configuration
+celery_once_settings['default_timeout'] = 3600  # 锁的DefaultTimeout（秒）
 CELERY_ONCE = {
     'backend': 'celery_once.backends.Redis',
     'settings': celery_once_settings

@@ -72,7 +72,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <!-- 数据源 -->
+      <!-- Data source -->
       <el-tab-pane :label="$t('views.tool.dataSource.title')" name="DATA_SOURCE_TOOL">
         <LayoutContainer :showLeft="!route.path.includes('shared')">
           <template #left>
@@ -96,7 +96,7 @@
           </el-scrollbar>
         </LayoutContainer>
       </el-tab-pane>
-      <!-- 工具 -->
+      <!-- Tool -->
       <el-tab-pane :label="$t('views.tool.title')" name="CUSTOM_TOOL">
         <LayoutContainer :showLeft="!route.path.includes('shared')">
           <template #left>

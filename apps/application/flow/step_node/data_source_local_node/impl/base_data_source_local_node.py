@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： base_data_source_local_node.py
+    @Author: Tiger
+    @file: base_data_source_local_node.py
     @date：2025/11/11 10:30
     @desc:
 """

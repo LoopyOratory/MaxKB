@@ -16,9 +16,9 @@ class LoopBodyNodeView extends AppNode {
 }
 class LoopBodyModel extends AppNodeModel {
   refreshBranch() {
-    // 更新节点连接边的path
+    // Update the path of connected edges for the node
     this.incoming.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
     this.outgoing.edges.forEach((edge: any) => {
@@ -42,11 +42,11 @@ class LoopBodyModel extends AppNodeModel {
   setHeight(height: number) {
     this.properties['height'] = height
     this.outgoing.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
     this.incoming.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
   }

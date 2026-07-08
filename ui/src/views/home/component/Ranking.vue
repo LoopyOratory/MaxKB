@@ -237,9 +237,9 @@ const dayOptions = [
 
 const history_day = ref<number | string>(7)
 
-// 日期组件时间
+// Date component time
 const daterangeValue = ref('')
-// 提交日期时间
+// SubmitDateTime
 const daterange = ref({
   start_time: '',
   end_time: '',

@@ -23,8 +23,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 文档列表（无分页）
- * @param 参数  knowledge_id,
+ * DocumentList(NonePagination）
+ * @param Parameters  knowledge_id,
  * param {
  "   name": "string",
  }
@@ -38,8 +38,8 @@ const getDocumentList: (knowledge_id: string, loading?: Ref<boolean>) => Promise
 }
 
 /**
- * 文档分页列表
- * @param 参数  knowledge_id,
+ * DocumentPaginationList
+ * @param Parameters  knowledge_id,
  * param {
  "name": "string",
  folder_id: "string",
@@ -60,8 +60,8 @@ const getDocumentPage: (
 }
 
 /**
- * 文档详情
- * @param 参数 knowledge_id
+ * DocumentDetails
+ * @param Parameters knowledge_id
  */
 const getDocumentDetail: (
   knowledge_id: string,
@@ -74,8 +74,8 @@ const getDocumentDetail: (
 }
 
 /**
- * 修改文档
- * @param 参数
+ * ModificationDocument
+ * @param Parameters
  * knowledge_id, document_id,
  * {
  "name": "string",
@@ -93,8 +93,8 @@ const putDocument: (
 }
 
 /**
- * 删除文档
- * @param 参数 knowledge_id, document_id,
+ * DeletionDocument
+ * @param Parameters knowledge_id, document_id,
  */
 const delDocument: (
   knowledge_id: string,
@@ -105,8 +105,8 @@ const delDocument: (
 }
 
 /**
- * 批量取消文档任务
- * @param 参数 knowledge_id,
+ * BatchCancelDocumentTask
+ * @param Parameters knowledge_id,
  *{
  "id_list": [
  "3fa85f64-5717-4562-b3fc-2c963f66afa6"
@@ -124,8 +124,8 @@ const putBatchCancelTask: (
 }
 
 /**
- * 取消文档任务
- * @param 参数 knowledge_id, document_id,
+ * CancelDocumentTask
+ * @param Parameters knowledge_id, document_id,
  */
 const putCancelTask: (
   knowledge_id: string,
@@ -142,8 +142,8 @@ const putCancelTask: (
 }
 
 /**
- * 下载原文档
- * @param 参数 knowledge_id
+ * DownloadOriginal Document
+ * @param Parameters knowledge_id
  */
 const getDownloadSourceFile: (knowledge_id: string, document_id: string, document_name: string) => Promise<Result<any>> = (
   knowledge_id,
@@ -162,11 +162,11 @@ const postReplaceSourceFile: (knowledge_id: string, document_id: string, data: a
 }
 
 /**
- * 导出文档
- * @param document_name 文档名称
- * @param knowledge_id    数据集id
- * @param document_id   文档id
- * @param loading       加载器
+ * ExportDocument
+ * @param document_name DocumentName
+ * @param knowledge_id    Datasetid
+ * @param document_id   Documentid
+ * @param loading       Loader
  * @returns
  */
 const exportDocument: (
@@ -198,11 +198,11 @@ const exportMulDocument: (
   )
 }
 /**
- * 导出文档
- * @param document_name 文档名称
- * @param knowledge_id    数据集id
- * @param document_id   文档id
- * @param loading       加载器
+ * ExportDocument
+ * @param document_name DocumentName
+ * @param knowledge_id    Datasetid
+ * @param document_id   Documentid
+ * @param loading       Loader
  * @returns
  */
 const exportDocumentZip: (
@@ -235,8 +235,8 @@ const exportMulDocumentZip: (
 }
 
 /**
- * 刷新文档向量库
- * @param 参数
+ * Refresh document vector store
+ * @param Parameters
  * knowledge_id, document_id,
  * {
  "state_list": [
@@ -273,8 +273,8 @@ const putDocumentTokenize: (
 }
 
 /**
- * 同步web站点类型
- * @param 参数
+ * SyncwebSiteType
+ * @param Parameters
  * knowledge_id, document_id,
  */
 const putDocumentSync: (
@@ -291,8 +291,8 @@ const putDocumentSync: (
 }
 
 /**
- * 创建批量文档
- * @param 参数
+ * CreationBatchDocument
+ * @param Parameters
  {
  "name": "string",
  "paragraphs": [
@@ -326,8 +326,8 @@ const putMulDocument: (
 }
 
 /**
- * 批量删除文档
- * @param 参数 knowledge_id,
+ * BatchDeletionDocument
+ * @param Parameters knowledge_id,
  * {
  "id_list": [String]
  }
@@ -346,8 +346,8 @@ const delMulDocument: (
 }
 
 /**
- * 批量关联
- * @param 参数 knowledge_id,
+ * BatchAssociation
+ * @param Parameters knowledge_id,
  {
  "document_id_list": [
  "string"
@@ -373,8 +373,8 @@ const putBatchGenerateRelated: (
 }
 
 /**
- * 批量修改命中方式
- * @param knowledge_id 知识库id
+ * BatchModificationHitMethod
+ * @param knowledge_id Knowledge baseid
  * @param data
  * {id_list:[],hit_handling_method:'directly_return|optimization',directly_return_similarity}
  * @param loading
@@ -394,8 +394,8 @@ const putBatchEditHitHandling: (
 }
 
 /**
- * 批量刷新文档向量库
- * @param knowledge_id 知识库id
+ * BatchRefresh document vector store
+ * @param knowledge_id Knowledge baseid
  * @param data
  {
  "id_list": [
@@ -438,8 +438,8 @@ const putBatchTokenize: (
 
 
 /**
- * 批量同步文档
- * @param 参数 knowledge_id,
+ * BatchSyncDocument
+ * @param Parameters knowledge_id,
  */
 const putMulSyncDocument: (
   knowledge_id: string,
@@ -455,8 +455,8 @@ const putMulSyncDocument: (
 }
 
 /**
- * 批量迁移文档
- * @param 参数 knowledge_id,target_knowledge_id,
+ * BatchMigrationDocument
+ * @param Parameters knowledge_id,target_knowledge_id,
 
  */
 const putMigrateMulDocument: (
@@ -474,8 +474,8 @@ const putMigrateMulDocument: (
 }
 
 /**
- * 导入QA文档
- * @param 参数
+ * ImportQADocument
+ * @param Parameters
  * file
  }
  */
@@ -488,8 +488,8 @@ const postQADocument: (
 }
 
 /**
- * 分段预览（上传文档）
- * @param 参数  file:file,limit:number,patterns:array,with_filter:boolean
+ * SegmentPreview (UploadDocument）
+ * @param Parameters  file:file,limit:number,patterns:array,with_filter:boolean
  */
 const postSplitDocument: (knowledge_id: string, data: any) => Promise<Result<any>> = (
   knowledge_id,
@@ -505,9 +505,9 @@ const postSplitDocument: (knowledge_id: string, data: any) => Promise<Result<any
 }
 
 /**
- * 分段标识列表
- * @param loading 加载器
- * @returns 分段标识列表
+ * Segment identifierList
+ * @param loading Loader
+ * @returns Segment identifierList
  */
 const listSplitPattern: (
   knowledge_id: string,
@@ -517,8 +517,8 @@ const listSplitPattern: (
 }
 
 /**
- * 导入表格
- * @param 参数
+ * ImportTable
+ * @param Parameters
  * file
  */
 const postTableDocument: (
@@ -530,8 +530,8 @@ const postTableDocument: (
 }
 
 /**
- * 获得QA模板
- * @param 参数 fileName,type,
+ * GetQATemplate
+ * @param Parameters fileName,type,
  */
 const exportQATemplate: (fileName: string, type: string, loading?: Ref<boolean>) => void = (
   fileName,
@@ -542,8 +542,8 @@ const exportQATemplate: (fileName: string, type: string, loading?: Ref<boolean>)
 }
 
 /**
- * 获得table模板
- * @param 参数 fileName,type,
+ * GettableTemplate
+ * @param Parameters fileName,type,
  */
 const exportTableTemplate: (fileName: string, type: string, loading?: Ref<boolean>) => void = (
   fileName,
@@ -559,8 +559,8 @@ const exportTableTemplate: (fileName: string, type: string, loading?: Ref<boolea
 }
 
 /**
- * 创建Web站点文档
- * @param 参数
+ * CreationWebSiteDocument
+ * @param Parameters
  * {
  "source_url_list": [
  "string"
@@ -578,8 +578,8 @@ const postWebDocument: (
 }
 
 /**
- * 飞书导入获得相关文档
- * @param 参数
+ * FeishuImportGetRelatedDocument
+ * @param Parameters
  * {
  "source_url_list": [
  "string"
@@ -603,7 +603,7 @@ const getLarkDocumentList: (
 }
 
 /**
- * 同步飞书文档
+ * SyncFeishuDocument
  */
 const putLarkDocumentSync: (
   knowledge_id: string,
@@ -619,7 +619,7 @@ const putLarkDocumentSync: (
 }
 
 /**
- * 批量同步飞书文档
+ * BatchSyncFeishuDocument
  */
 const putMulLarkSyncDocument: (
   knowledge_id: string,
@@ -630,7 +630,7 @@ const putMulLarkSyncDocument: (
 }
 
 /**
- * 导入飞书文档
+ * ImportFeishuDocument
  */
 const importLarkDocument: (
   knowledge_id: string,

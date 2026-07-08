@@ -87,7 +87,7 @@
         {{ $t('aiChat.executionDetails.title') }}</el-button
       >
     </div>
-    <!-- 知识库引用/执行详情 dialog -->
+    <!-- KnowledgeDatabaseReference/ExecuteDetails dialog -->
     <el-dialog
       class="scrollbar-dialog"
       :title="dialogTitle"
@@ -237,7 +237,7 @@ const uniqueParagraphList = computed(() => {
         return false
       }
       seen.add(key)
-      // 判断如果 meta 属性不是 {} 需要json解析 转对象
+      // Determine if meta property is not {}, needs JSON parse to object
       if (paragraph.meta && typeof paragraph.meta === 'string') {
         paragraph.meta = JSON.parse(paragraph.meta)
         paragraph.source_url = paragraph.meta.source_url

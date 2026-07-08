@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： text_split_handle.py
+@Author: Tiger
+@file: text_split_handle.py
 @date：2024/3/27 18:19
 @desc:
 """
@@ -57,10 +57,10 @@ class PdfSplitHandle(BaseSplitHandle):
         save_image,
     ):
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            # 将上传的文件保存到临时文件中
+            # 将Upload的FileSave到TemporaryFile中
             for chunk in file.chunks():
                 temp_file.write(chunk)
-            # 获取临时文件的路径
+            # GetTemporaryFile的Path
             temp_file_path = temp_file.name
 
         try:
@@ -70,17 +70,17 @@ class PdfSplitHandle(BaseSplitHandle):
                     limit = int(limit)
                 if type(with_filter) is str:
                     with_filter = with_filter.lower() == "true"
-                # 处理有目录的pdf
+                # Process有Directory的pdf
                 result = self.handle_toc(pdf_document, limit)
                 if result is not None:
                     return {"name": file.name, "content": result}
 
-                # 没目录但是有链接的pdf
+                # 没Directory但是有Link的pdf
                 result = self.handle_links(pdf_document, pattern_list, with_filter, limit)
                 if result is not None and len(result) > 0:
                     return {"name": file.name, "content": result}
 
-                # 没有目录的pdf
+                # NoneDirectory的pdf
                 content = self.handle_pdf_content(file, pdf_document)
 
                 if pattern_list is not None and len(pattern_list) > 0:
@@ -91,14 +91,14 @@ class PdfSplitHandle(BaseSplitHandle):
             maxkb_logger.error(f"File: {file.name}, error: {e}, {traceback.format_exc()}")
             return {"name": file.name, "content": []}
         finally:
-            # 处理完后可以删除临时文件
+            # Process完后CanDeletionTemporaryFile
             os.remove(temp_file_path)
 
         return {"name": file.name, "content": split_model.parse(content)}
 
     @staticmethod
     def handle_pdf_content(file, pdf_document):
-        # 第一步:收集所有字体大小
+        # 第一步:CollectAll字体Size
         font_sizes = []
         page_lines = []
         for page in pdf_document.pages:
@@ -108,7 +108,7 @@ class PdfSplitHandle(BaseSplitHandle):
                 if line_text and font_size > 0:
                     font_sizes.append(font_size)
 
-        # 计算正文字体大小(众数)
+        # Calculate正文字体Size(众数)
         if not font_sizes:
             body_font_size = 12
         else:
@@ -116,7 +116,7 @@ class PdfSplitHandle(BaseSplitHandle):
 
             body_font_size = Counter(font_sizes).most_common(1)[0][0]
 
-        # 第二步:提取内容
+        # 第二步:ExtractContent
         content = ""
         for page_num, page in enumerate(pdf_document.pages):
             start_time = time.time()
@@ -125,7 +125,7 @@ class PdfSplitHandle(BaseSplitHandle):
                 if not text:
                     continue
 
-                # 根据与正文字体的差值判断
+                # Based on与正文字体的差值Determine
                 size_diff = font_size - body_font_size
 
                 if size_diff > 2:  # 明显大于正文
@@ -224,29 +224,29 @@ class PdfSplitHandle(BaseSplitHandle):
 
     @staticmethod
     def handle_toc(doc, limit):
-        # 找到目录
+        # 找到Directory
         toc = PdfSplitHandle.get_toc(doc)
         if toc is None or len(toc) == 0:
             return None
 
-        # 创建存储章节内容的数组
+        # CreationStorageChapterContent的Array
         chapters = []
 
-        # 遍历目录并按章节提取文本
+        # TraverseDirectory并按ChapterExtractText
         for i, entry in enumerate(toc):
             level, title, start_page = entry
             chapter_title = title
-            # 确定结束页码，如果是最后一个章节则到文档末尾
+            # ConfirmEndPage number，IfLastOneChapter则到Document末尾
             if i + 1 < len(toc):
                 end_page = toc[i + 1][2] - 1
             else:
                 end_page = len(doc.pages) - 1
             end_page = max(start_page, end_page)
 
-            # 去掉标题中的符号
+            # RemoveTitle in Symbol
             title = PdfSplitHandle.handle_chapter_title(title)
 
-            # 提取该章节的文本内容
+            # Extract该Chapter的TextContent
             chapter_text = ""
             for page_num in range(start_page, end_page + 1):
                 text = PdfSplitHandle.extract_page_text(doc.pages[page_num])
@@ -266,13 +266,13 @@ class PdfSplitHandle(BaseSplitHandle):
                     if idx > -1:
                         text = text[:idx]
 
-                chapter_text += text  # 提取文本
+                chapter_text += text  # ExtractText
 
             # Null characters are not allowed.
             chapter_text = chapter_text.replace("\0", "")
-            # 限制标题长度
+            # LimitTitleLength
             real_chapter_title = chapter_title[:256]
-            # 限制章节内容长度
+            # LimitChapterContentLength
             if 0 < limit < len(chapter_text):
                 split_text = smart_split_paragraph(chapter_text, limit)
                 for text in split_text:
@@ -288,45 +288,45 @@ class PdfSplitHandle(BaseSplitHandle):
                         .decode("utf-8"),
                     }
                 )
-            # 保存章节内容和章节标题
+            # SaveChapterContent和ChapterTitle
         return chapters
 
     @staticmethod
     def handle_links(doc, pattern_list, with_filter, limit):
-        # 检查文档是否包含内部链接
+        # CheckDocumentWhetherContainsInternalLink
         if not check_links_in_pdf(doc):
             return
-        # 创建存储章节内容的数组
+        # CreationStorageChapterContent的Array
         chapters = []
         toc_start_page = -1
         page_content = ""
         handle_pre_toc = True
-        # 遍历 PDF 的每一页，查找带有目录链接的页
+        # Traverse PDF 的每一页，查找带有DirectoryLink的页
         for page_num, page in enumerate(doc.pages):
             links = PdfSplitHandle.get_internal_links(doc, page)
-            # 如果目录开始页码未设置，则设置为当前页码
+            # IfDirectoryStartPage number未Settings, thenSettings为CurrentPage number
             if len(links) > 0 and toc_start_page < 0:
                 toc_start_page = page_num
             if toc_start_page < 0:
                 page_content += PdfSplitHandle.extract_page_text(page)
-            # 检查该页是否包含内部链接（即指向文档内部的页面）
+            # Check该页WhetherContainsInternalLink（即指向DocumentInternal的页面）
             for num in range(len(links)):
                 link = links[num]
-                # 获取链接目标的页面
+                # GetLinkTarget的页面
                 dest_page = link["page"]
-                rect = link["from"]  # 获取链接的矩形区域
-                # 如果目录开始页码包括前言部分，则不处理前言部分
+                rect = link["from"]  # GetLink的矩形区域
+                # IfDirectoryStartPage number包括前言Part, then不Process前言Part
                 if dest_page < toc_start_page:
                     handle_pre_toc = False
 
-                # 提取链接区域的文本作为标题
+                # ExtractLink区域的TextAsTitle
                 link_title = PdfSplitHandle.extract_link_title(page, rect)
                 if not link_title:
                     link_title = PdfSplitHandle.extract_first_line(doc.pages[dest_page])
-                # 提取目标页面内容作为章节开始
+                # ExtractTarget页面ContentAsChapterStart
                 start_page = dest_page
                 end_page = dest_page
-                # 下一个link
+                # 下Onelink
                 next_link = links[num + 1] if num + 1 < len(links) else None
                 next_link_title = None
                 if next_link is not None:
@@ -335,7 +335,7 @@ class PdfSplitHandle(BaseSplitHandle):
                         next_link_title = PdfSplitHandle.extract_first_line(doc.pages[next_link["page"]])
                     end_page = next_link["page"]
 
-                # 提取章节内容
+                # ExtractChapterContent
                 chapter_text = ""
                 for p_num in range(start_page, min(end_page, len(doc.pages) - 1) + 1):
                     text = PdfSplitHandle.extract_page_text(doc.pages[p_num])
@@ -355,16 +355,16 @@ class PdfSplitHandle(BaseSplitHandle):
                 # Null characters are not allowed.
                 chapter_text = chapter_text.replace("\0", "")
 
-                # 限制章节内容长度
+                # LimitChapterContentLength
                 if 0 < limit < len(chapter_text):
                     split_text = smart_split_paragraph(chapter_text, limit)
                     for text in split_text:
                         chapters.append({"title": link_title, "content": text})
                 else:
-                    # 保存章节信息
+                    # SaveChapterInfo
                     chapters.append({"title": link_title, "content": chapter_text})
 
-        # 目录中没有前言部分，手动处理
+        # Directory中None前言Part，ManualProcess
         if handle_pre_toc:
             pre_toc = []
             lines = page_content.strip().split("\n")
@@ -383,7 +383,7 @@ class PdfSplitHandle(BaseSplitHandle):
                     split_model = SplitModel(pattern_list, with_filter, limit)
                 else:
                     split_model = SplitModel(default_pattern_list, with_filter=with_filter, limit=limit)
-                # 插入目录前的部分
+                # InsertDirectory前的Part
                 page_content = re.sub(r"(?<!。)\n+", "", page_content)
                 page_content = re.sub(r"(?<!.)\n+", "", page_content)
                 page_content = page_content.strip()
@@ -519,9 +519,9 @@ class PdfSplitHandle(BaseSplitHandle):
 
     def get_content(self, file, save_image):
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            # 将上传的文件保存到临时文件中
+            # 将Upload的FileSave到TemporaryFile中
             temp_file.write(file.read())
-            # 获取临时文件的路径
+            # GetTemporaryFile的Path
             temp_file_path = temp_file.name
 
         try:

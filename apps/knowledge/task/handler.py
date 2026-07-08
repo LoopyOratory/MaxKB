@@ -57,10 +57,10 @@ def get_sync_handler(knowledge_id, user_id):
                 paragraphs = get_split_model("web.md").parse(response.content)
                 first = QuerySet(Document).filter(meta__source_url=child_link.url.strip(), knowledge=knowledge).first()
                 if first is not None:
-                    # 如果存在,使用文档同步
+                    # IfExists,UseDocumentSync
                     DocumentSerializers.Sync(data={"document_id": first.id}).sync()
                 else:
-                    # 插入
+                    # Insert
                     DocumentSerializers.Create(data={"knowledge_id": knowledge.id, "user_id": user_id}).save(
                         {
                             "name": document_name,
@@ -83,7 +83,7 @@ def get_sync_web_document_handler(knowledge_id, user_id):
         if response.status == 200:
             try:
                 paragraphs = get_split_model("web.md").parse(response.content)
-                # 插入
+                # Insert
                 DocumentSerializers.Create(data={"knowledge_id": knowledge_id, "user_id": user_id}).save(
                     {
                         "name": source_url[0:128],

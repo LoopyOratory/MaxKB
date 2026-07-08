@@ -25,7 +25,7 @@ class ShareChatRecordModelSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_execution_details(chat_record):
         details = chat_record.details or {}
-        # 分享是公开链接，只挑 start-node 的上传文件列表，避免泄露其它执行详情
+        # 分享是公开Link，只挑 start-node 的UploadFileList，避免泄露其它ExecuteDetails
         return [
             {
                 'type': 'start-node',

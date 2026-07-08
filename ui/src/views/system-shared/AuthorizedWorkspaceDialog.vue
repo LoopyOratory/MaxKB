@@ -61,7 +61,7 @@
       <div class="w-full">
         <div class="flex-between p-16">
           <span class="lighter">
-            {{ $t('common.selected') }}: {{ checkedWorkspace.length }} 个
+            {{ $t('common.selected') }}: {{ checkedWorkspace.length }} 
           </span>
 
           <el-button @click="clearWorkspaceAll" link type="primary">

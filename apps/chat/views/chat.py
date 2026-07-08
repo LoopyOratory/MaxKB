@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat.py
+    @Author: Tiger
+    @file: chat.py
     @date：2025/6/6 11:18
     @desc:
 """
@@ -34,9 +34,9 @@ from users.serializers.login import CaptchaSerializer
 
 
 def stream_image(response):
-    """生成器函数，用于流式传输图片数据"""
+    """Generate器Function，Used forStreaming传输ImageData"""
     for chunk in response.iter_content(chunk_size=4096):
-        if chunk:  # 过滤掉保持连接的空块
+        if chunk:  # Filter掉保持Connect的空块
             yield chunk
 
 
@@ -47,17 +47,17 @@ class ResourceProxy(APIView):
             return result.error("Missing 'url' parameter")
         try:
 
-            # 发送GET请求，流式获取图片内容
+            # SendGETRequest，StreamingGetImageContent
             response = requests.get(
                 image_url,
-                stream=True,  # 启用流式响应
+                stream=True,  # EnableStreamingResponse
                 allow_redirects=True,
                 timeout=10
             )
             content_type = response.headers.get('Content-Type', '').split(';')[0]
-            # 创建Django流式响应
+            # CreationDjangoStreamingResponse
             django_response = StreamingHttpResponse(
-                stream_image(response),  # 使用生成器
+                stream_image(response),  # UseGenerate器
                 content_type=content_type
             )
 
@@ -131,7 +131,7 @@ class ApplicationProfile(APIView):
         if isinstance(request.auth, ChatAuth):
             return result.success(ApplicationProfileSerializer(
                 data={'application_id': request.auth.application_id}).profile())
-        raise AppAuthenticationFailed(401, "身份异常")
+        raise AppAuthenticationFailed(401, "身份Exception")
 
 
 class AuthProfile(APIView):

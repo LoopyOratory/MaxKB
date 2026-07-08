@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat_record.py
+    @Author: Tiger
+    @file: chat_record.py
     @date：2025/6/23 11:16
     @desc:
 """
@@ -64,28 +64,28 @@ class VoteSerializer(serializers.Serializer):
                 raise AppApiException(500, gettext("Non-existent conversation chat_record_id"))
             vote_status = instance.get("vote_status")
 
-            # 未投票状态，可以进行投票
+            # Not votedStatus，CanPerform投票
             if chat_record_details_model.vote_status == VoteChoices.UN_VOTE:
-                # 投票时获取字段
+                # 投票时GetField
                 vote_reason = instance.get("vote_reason")
                 vote_other_content = instance.get("vote_other_content") or ''
 
                 if vote_status == VoteChoices.STAR:
-                    # 点赞
+                    # Like
                     chat_record_details_model.vote_status = VoteChoices.STAR
                     chat_record_details_model.vote_reason = vote_reason
                     chat_record_details_model.vote_other_content = vote_other_content
                 elif vote_status == VoteChoices.TRAMPLE:
-                    # 点踩
+                    # Dislike
                     chat_record_details_model.vote_status = VoteChoices.TRAMPLE
                     chat_record_details_model.vote_reason = vote_reason
                     chat_record_details_model.vote_other_content = vote_other_content
 
                 chat_record_details_model.save()
-            # 已投票状态
+            # 已投票Status
             else:
                 if vote_status == VoteChoices.UN_VOTE:
-                    # 取消点赞
+                    # CancelLike
                     chat_record_details_model.vote_status = VoteChoices.UN_VOTE
                     chat_record_details_model.vote_reason = None
                     chat_record_details_model.vote_other_content = ''

@@ -5,7 +5,7 @@
     </el-text>
 
     <div>
-      <!-- 语音播放 -->
+      <!-- Voice playback -->
       <span v-if="tts">
         <el-tooltip
           v-if="audioManage?.isPlaying()"
@@ -252,27 +252,27 @@ function cancelVoteHandle(val: string) {
 function markdownToPlainText(md: string) {
   return (
     md
-      // 移除图片 ![alt](url)
+      // RemoveImage ![alt](url)
       .replace(/!\[.*?\]\(.*?\)/g, '')
-      // 移除链接 [text](url)
+      // RemoveLink [text](url)
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
-      // 移除 Markdown 标题符号 (#, ##, ###)
+      // Remove Markdown TitleSymbol (#, ##, ###)
       .replace(/^#{1,6}\s+/gm, '')
-      // 移除加粗 **text** 或 __text__
+      // RemoveBold **text** or __text__
       .replace(/\*\*(.*?)\*\*/g, '$1')
       .replace(/__(.*?)__/g, '$1')
-      // 移除斜体 *text* 或 _text_
+      // RemoveItalic *text* or _text_
       .replace(/\*(.*?)\*/g, '$1')
       .replace(/_(.*?)_/g, '$1')
-      // 移除行内代码 `code`
+      // RemoveInlineCode `code`
       .replace(/`(.*?)`/g, '$1')
-      // 移除代码块 ```code```
+      // Remove code block ```code```
       .replace(/```.*?```/gs, '')
-      // 移除video标签
+      // RemovevideoTag
       .replace(/<video>.*?<\/video>/gs, '')
-      // 移除html标签
+      // RemovehtmlTag
       .replace(/<[^>]+>/g, '')
-      // 移除多余的换行符
+      // RemoveExtraNewline
       .replace(/\n{2,}/g, '\n')
       .trim()
   )
@@ -282,7 +282,7 @@ function removeFormRander(text: string) {
   return text.replace(/<form_rander>.*?<\/form_rander>/gs, '').trim()
 }
 function getKey(keys: Array<number>, index: number) {
-  // 从后往前查找第一个小于等于index的键
+  // Search from back to front forOneLess than or equal toindexKey of
   for (let i = keys.length - 1; i >= 0; i--) {
     if (keys[i] <= index) {
       return keys[i]
@@ -300,9 +300,9 @@ function smartSplit(
   },
   is_end = false,
 ) {
-  // 匹配中文逗号/句号，且后面至少还有20个字符（含任何字符，包括换行）
-  const regex = /([。？\n])|(<audio[^>]*><\/audio>)/g
-  // 拆分并保留分隔符
+  // MatchChinese comma/Period, and at least 20 characters (including any character, includingNewline)
+  const regex = /([.?\n])|(<audio[^>]*><\/audio>)/g
+  // Split andRetainSeparator
   const parts = str.split(regex)
   const result = []
   const keys = Object.keys(minLengthConfig).map(Number)
@@ -322,7 +322,7 @@ function smartSplit(
       continue
     }
     temp_str += parts[i]
-    if (temp_str.length > minLength && /[。？\n]$/.test(temp_str)) {
+    if (temp_str.length > minLength && /[.?\n]$/.test(temp_str)) {
       minLength = minLengthConfig[getKey(keys, i)]
       result.push(temp_str)
       temp_str = ''
@@ -336,23 +336,23 @@ function smartSplit(
 
 enum AudioStatus {
   /**
-   * 结束
+   * End
    */
   END = 'END',
   /**
-   * 播放中
+   * Play in 
    */
   PLAY_INT = 'PLAY_INT',
   /**
-   * 刚挂载
+   * Just mounted
    */
   MOUNTED = 'MOUNTED',
   /**
-   * 就绪
+   * Ready
    */
   READY = 'READY',
   /**
-   * 错误
+   * Error
    */
   ERROR = 'ERROR',
 }
@@ -385,7 +385,7 @@ class AudioManage {
   }
   appendTextList(textList: Array<string>) {
     const newTextList = textList.slice(this.textList.length)
-    // 没有新增段落
+    // NoneAddParagraph
     if (newTextList.length <= 0) {
       return 0
     }
@@ -399,11 +399,11 @@ class AudioManage {
         audioElement.controls = false
         audioElement.hidden = true
         /**
-         * 播放结束事件
+         * PlayEndEvent
          */
         audioElement.onended = () => {
           this.statusList[index] = AudioStatus.END
-          // 如果所有的节点都播放结束
+          // If all nodes have finished playing
           if (this.statusList.every((item) => item === AudioStatus.END) && this.is_end) {
             this.statusList = this.statusList.map((item) => AudioStatus.READY)
             this.is_end = false
@@ -431,10 +431,10 @@ class AudioManage {
                 this.statusList[index] = AudioStatus.ERROR
                 throw ''
               }
-              // 假设我们有一个 MP3 文件的字节数组
-              // 创建 Blob 对象
+              // Suppose we haveOne MP3 File bytesArray
+              // Creation Blob Object
               const blob = new Blob([res], { type: 'audio/mp3' })
-              // 创建对象 URL
+              // CreationObject URL
               const url = URL.createObjectURL(blob)
               audioElement.src = url
               this.statusList[index] = AudioStatus.READY
@@ -453,7 +453,7 @@ class AudioManage {
         )
         speechSynthesisUtterance.onend = () => {
           this.statusList[index] = AudioStatus.END
-          // 如果所有的节点都播放结束
+          // If all nodes have finished playing
           if (this.statusList.every((item) => item === AudioStatus.END)) {
             this.statusList = this.statusList.map((item) => AudioStatus.READY)
           } else {
@@ -492,11 +492,11 @@ class AudioManage {
                 }
                 throw ''
               }
-              // 假设我们有一个 MP3 文件的字节数组
-              // 创建 Blob 对象
+              // Suppose we haveOne MP3 File bytesArray
+              // Creation Blob Object
               const blob = new Blob([res], { type: 'audio/mp3' })
 
-              // 创建对象 URL
+              // CreationObject URL
               const url = URL.createObjectURL(blob)
               audioElement.src = url
               this.statusList[index] = AudioStatus.READY
@@ -524,17 +524,17 @@ class AudioManage {
     if (text) {
       const textList = this.getTextList(text, is_end ? true : false)
       if (this.appendTextList(textList) !== 0) {
-        // 没有新增段落
+        // NoneAddParagraph
         return
       }
     }
-    // 如果存在在阅读的元素则直接返回
+    // If there is a currently reading element, return directly
     if (this.statusList.some((item) => [AudioStatus.PLAY_INT].includes(item))) {
       return
     }
     this.reTryError()
 
-    // 需要播放的内容
+    // NeedsPlayContent
     const index = this.statusList.findIndex((status) =>
       [AudioStatus.MOUNTED, AudioStatus.READY].includes(status),
     )
@@ -545,7 +545,7 @@ class AudioManage {
     const audioElement = this.audioList[index]
 
     if (audioElement instanceof HTMLAudioElement) {
-      // 标签朗读
+      // TagRead aloud
       try {
         this.statusList[index] = AudioStatus.PLAY_INT
         const play = audioElement.play()
@@ -562,11 +562,11 @@ class AudioManage {
         window.speechSynthesis.resume()
         this.statusList[index] = AudioStatus.PLAY_INT
       } else {
-        // 如果不是暂停状态，取消当前播放并重新开始
+        // If not in pause state, cancel current play and restart
         if (window.speechSynthesis.speaking) {
           window.speechSynthesis.cancel()
         }
-        // 等待取消完成后重新播放
+        // Wait for cancel to complete then replay
         setTimeout(() => {
           if (speechSynthesis.speaking) {
             return
@@ -586,7 +586,7 @@ class AudioManage {
 
     if (audioElement instanceof HTMLAudioElement) {
       if (this.statusList[index] === AudioStatus.PLAY_INT) {
-        // 标签朗读
+        // TagRead aloud
         this.statusList[index] = AudioStatus.READY
         audioElement.pause()
       }
@@ -600,9 +600,9 @@ class AudioManage {
     }
   }
   getTextList(text: string, is_end: boolean) {
-    // 移除表单渲染器
+    // Remove form renderer
     text = removeFormRander(text)
-    // text 处理成纯文本
+    // text ProcessTo pureText
     text = markdownToPlainText(text)
     const split = smartSplit(
       text,

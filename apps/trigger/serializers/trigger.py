@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： trigger.py
+    @Author: Niu
+    @file: trigger.py
     @date：2026/1/14 11:48
     @desc:
 """
@@ -104,7 +104,7 @@ class ToolTaskParameterSerializer(serializers.Serializer):
 class TriggerValidationMixin:
 
     def validate(self, attrs):
-        # trigger_setting 校验
+        # trigger_setting Validate
         trigger_type = attrs.get('trigger_type')
         trigger_setting = attrs.get('trigger_setting')
 
@@ -401,8 +401,8 @@ class TriggerSerializer(serializers.Serializer):
     @staticmethod
     def batch_get_source_active_status(trigger_tasks: list) -> Dict[tuple, bool]:
         """
-        批量查询所有 source 的 is_active 状态
-        返回: {(source_type, source_id): is_active}
+        BatchQueryAll source 的 is_active Status
+        Return: {(source_type, source_id): is_active}
         """
         config = {
             TriggerTaskTypeChoices.APPLICATION: (Application, 'is_publish'),
@@ -533,11 +533,11 @@ class TriggerOperateSerializer(serializers.Serializer):
             if field in instance:
                 trigger.__setattr__(field, instance.get(field))
         trigger.save()
-        # 处理trigger task
+        # Processtrigger task
         trigger_tasks = instance.get('trigger_task')
 
         if trigger_tasks is not None:
-            # 检查是否为空列表
+            # CheckIs空List
             if not trigger_tasks:
                 raise serializers.ValidationError(_('Trigger must have at least one task'))
 
@@ -557,11 +557,11 @@ class TriggerOperateSerializer(serializers.Serializer):
 
             TriggerTask.objects.bulk_create(trigger_task_model_list)
         else:
-            # 用户没提交 trigger_task 字段，确保数据库中有 task
+            # User没Submit trigger_task Field，EnsureData库中有 task
             if not TriggerTask.objects.filter(trigger_id=trigger_id).exists():
                 raise serializers.ValidationError(_('Trigger must have at least one task'))
 
-        # 重新部署触发器任务
+        # Re-DeploymentTriggerTask
         if need_redeploy:
             if trigger.is_active and trigger.trigger_type == 'SCHEDULED':
                 deploy(TriggerModelSerializer(trigger).data, **{})
@@ -623,7 +623,7 @@ class TriggerOperateSerializer(serializers.Serializer):
                     'icon': tool.icon,
                     'tool_type': tool.tool_type
                 }
-                # 如果是工作流类型，添加 work_flow 字段
+                # IfWorkflowType，Add work_flow Field
                 if tool.tool_type == 'WORKFLOW':
                     tool_data['work_flow'] = workflow_dict.get(tool.id)
                 tool_task_list.append(tool_data)

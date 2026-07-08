@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： sql_execute.py
+    @Author: Tiger
+    @file: sql_execute.py
     @date：2023/9/25 20:05
     @desc:
 """
@@ -13,10 +13,10 @@ from django.db import connection
 
 def sql_execute(sql: str, params):
     """
-    执行一条sql
-    :param sql:     需要执行的sql
-    :param params:  sql参数
-    :return:        执行结果
+    ExecuteOnesql
+    :param sql:     NeedsExecute的sql
+    :param params:  sqlParameters
+    :return:        ExecuteResult
     """
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
@@ -29,10 +29,10 @@ def sql_execute(sql: str, params):
 
 def update_execute(sql: str, params):
     """
-      执行一条sql
-      :param sql:     需要执行的sql
-      :param params:  sql参数
-      :return:        执行结果
+      ExecuteOnesql
+      :param sql:     NeedsExecute的sql
+      :param params:  sqlParameters
+      :return:        ExecuteResult
       """
     with connection.cursor() as cursor:
         cursor.execute(sql, params)
@@ -43,10 +43,10 @@ def update_execute(sql: str, params):
 
 def select_list(sql: str, params: List):
     """
-    执行sql 查询列表数据
-    :param sql:     需要执行的sql
-    :param params:  sql的参数
-    :return: 查询结果
+    Executesql QueryListData
+    :param sql:     NeedsExecute的sql
+    :param params:  sql的Parameters
+    :return: QueryResult
     """
     result_list = sql_execute(sql, params)
     if result_list is None:
@@ -56,10 +56,10 @@ def select_list(sql: str, params: List):
 
 def select_one(sql: str, params: List):
     """
-    执行sql 查询一条数据
-    :param sql:     需要执行的sql
-    :param params:  参数
-    :return: 查询结果
+    Executesql QueryOneData
+    :param sql:     NeedsExecute的sql
+    :param params:  Parameters
+    :return: QueryResult
     """
     result_list = sql_execute(sql, params)
     if result_list is None or len(result_list) == 0:

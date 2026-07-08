@@ -1,15 +1,15 @@
 interface ChatProfile {
-  // 是否开启认证
+  // WhetherEnableAuthentication
   authentication: boolean
   // icon
   icon?: string
-  // 应用名称
+  // ApplicationName
   application_name?: string
-  // 背景图
+  // Background image
   bg_icon?: string
-  // 认证类型
+  // AuthenticationType
   authentication_type?: 'password' | 'login'
-  // 登录类型
+  // LoginType
   login_value?: Array<string>
   max_attempts?: number
   rsaKey?: string

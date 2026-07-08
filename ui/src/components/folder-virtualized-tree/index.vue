@@ -288,7 +288,7 @@ const handleDrop = (draggingNode: any, dropNode: any, dropType: string) => {
         emit('refreshTree')
       })
   } else {
-    // 同级拖拽，直接放置
+    // SiblingDrag，DirectPlace
     sortAfterDrop(dragData, dropData, dropType, newParentId)
   }
 }
@@ -314,7 +314,7 @@ function sortAfterDrop(
         savePositions(newParentId, positions)
         return
       }
-      // 放到最后
+      // Put inLast
       const maxPos = Math.max(...childrenPositions)
       positions[draggingNodeData.id] = maxPos + encode(1, 0)
       savePositions(newParentId, positions)
@@ -425,7 +425,7 @@ const handleNodeClick = (node: any) => {
   emit('handleNodeClick', node)
 }
 
-// 删除文件夹
+// DeletionFolder
 function deleteFolder(row: any) {
   MsgConfirm(
     `${t('common.deleteConfirm')}：${row.name}`,
@@ -454,7 +454,7 @@ function deleteFolder(row: any) {
     })
     .catch(() => {})
 }
-// 创建文件夹
+// CreationFolder
 const CreateFolderDialogRef = ref()
 function openCreateFolder(row: any) {
   title.value = t('components.folder.addChildFolder')
@@ -465,14 +465,14 @@ function openEditFolder(row: any) {
   CreateFolderDialogRef.value.open(props.source, row.id, row)
 }
 
-// 授权
+// Authorization
 const currentNode = ref<any>(null)
 const ResourceAuthorizationDrawerRef = ref()
 function openAuthorization(data: any) {
   currentNode.value = data
   ResourceAuthorizationDrawerRef.value.open(data.id, data)
 }
-// 移动到
+// Move to
 const MoveToDialogRef = ref()
 function openMoveToDialog(data: any) {
   const obj = {
@@ -482,7 +482,7 @@ function openMoveToDialog(data: any) {
   MoveToDialogRef.value.open(obj, true)
 }
 
-// 排序
+// Sort
 
 const sortIconName = computed(() => {
   const sort = currentSort.value
@@ -535,7 +535,7 @@ const sortedData = computed(() => {
   return sortTreeData(treeData, compareFn)
 })
 
-// 对原始数据递归排序
+// Recursively sort original data
 function sortTreeData(nodes: any[], compareFn: (a: any, b: any) => number): any[] {
   if (!compareFn || nodes.length === 0 || !nodes) {
     return nodes
@@ -622,7 +622,7 @@ function addOrderToTree(nodes: any, parentId: string): Node[] {
   }))
 }
 
-// 获取指定父节点的位置数据
+// Get specified parent node position data
 function getPositions(parentId: string) {
   try {
     const data = localStorage.getItem(CUSTOM_STORAGE_KEY)

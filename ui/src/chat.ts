@@ -74,10 +74,10 @@ config({
               }),
               onTagAttr: (tag: string, name: any, value: any) => {
                 if (tag === 'video') {
-                  // 禁止自动播放
+                  // ForbiddenAutomaticPlay
                   if (name === 'autoplay') return ''
 
-                  // 限制 preload
+                  // Limit preload
                   if (name === 'preload' && !['none', 'metadata'].includes(value)) {
                     return 'preload="metadata"'
                   }
@@ -98,7 +98,7 @@ for (const [key, component] of Object.entries(ElementPlusIcons)) {
   app.component(key, component)
 }
 const locale_map: any = {
-  'zh-CN': zhCn,
+  'en-US': zhCn,
   'zh-Hant': zhTW,
   'en-US': enUs,
 }
@@ -109,7 +109,7 @@ app.use(directives)
 app.use(router)
 app.use(i18n)
 app.use(Components)
-// 初始化外置语言包后挂载应用
+// InitializeExternalLanguageMount after packagingApplication
 initExternalLocales().finally(() => {
 })
 app.mount('#app')

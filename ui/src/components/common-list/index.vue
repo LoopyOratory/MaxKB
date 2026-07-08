@@ -34,7 +34,7 @@ const props = withDefaults(
   defineProps<{
     data: Array<any>
     defaultActive?: string
-    valueKey?: string // 唯一标识的键名
+    valueKey?: string // UniqueIdentifier key name
   }>(),
   {
     data: () => [],
@@ -61,12 +61,12 @@ const paginationConfig = reactive({
   total: 0,
 })
 
-// 前端分页滚动加载：data 为全量数据，仅渲染前 current_page * page_size 条，滚动到底再追加
+// Frontend pagination scroll load: data is full data, only render first current_page * page_size items, append on scroll to bottom
 const renderList = computed(() =>
   props.data.slice(0, paginationConfig.current_page * paginationConfig.page_size),
 )
 
-// 数据源变化时重置到第一页，避免切换数据后仍停留在很大的页码
+// Data sourceOn changeResetTo the first page, avoidSwitchDataStill stays at a very largePage number
 watch(
   () => props.data,
   () => {
@@ -94,7 +94,7 @@ defineExpose({
 })
 </script>
 <style lang="scss" scoped>
-/* 通用 ui li样式 */
+/* General ui liStyle */
 .common-list {
   li {
     padding: 8px;

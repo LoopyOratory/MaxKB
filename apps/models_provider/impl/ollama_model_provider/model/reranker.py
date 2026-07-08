@@ -32,17 +32,17 @@ class OllamaReranker(MaxKBBaseModel, OllamaEmbeddings, BaseModel):
               Returns:
                   List of documents sorted by relevance to the query.
               """
-        # 获取查询和文档的嵌入
+        # GetQuery和Document的Embedding
         query_embedding = self.embed_query(query)
         documents = [doc.page_content for doc in documents]
         document_embeddings = self.embed_documents(documents)
-        # 计算相似度
+        # CalculateSimilarity
         similarities = cosine_similarity([query_embedding], document_embeddings)[0]
         ranked_docs = [(doc, _) for _, doc in sorted(zip(similarities, documents), reverse=True)][:self.top_n]
         return [
             Document(
-                page_content=doc,  # 第一个值是文档内容
-                metadata={'relevance_score': score}  # 第二个值是相似度分数
+                page_content=doc,  # 第One值是DocumentContent
+                metadata={'relevance_score': score}  # 第二个值是Similarity分数
             )
             for doc, score in ranked_docs
         ]

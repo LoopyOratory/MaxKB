@@ -10,7 +10,7 @@
           <el-scrollbar>
             <template v-if="active === 0">
               <div class="upload-component p-24">
-                <!-- 上传文档 -->
+                <!-- UploadDocument -->
                 <UploadComponent ref="UploadComponentRef" />
               </div>
             </template>
@@ -72,8 +72,8 @@ const {
   params: { folderId, type },
   query: { id },
   /*
-  id为knowledgeID，有id的是上传文档; type为知识库类型的类型
-  folderId 可以区分 resource-management shared还是 workspace
+  id is knowledgeID, hasid isUploadDocument; typeisKnowledgeDatabaseTypeType
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route
 
@@ -111,7 +111,7 @@ async function next() {
         }
       })
       if (id) {
-        // QA文档上传
+        // QADocumentUpload
         loadSharedApi({ type: 'document', systemType: apiType.value })
           .postQADocument(id as string, fd, loading)
           .then(() => {
@@ -130,7 +130,7 @@ async function next() {
         }
       })
       if (id) {
-        // table文档上传
+        // tableDocumentUpload
         loadSharedApi({ type: 'document', systemType: apiType.value })
           .postTableDocument(id as string, fd, loading)
           .then(() => {
@@ -173,7 +173,7 @@ function submit() {
   })
 
   if (id) {
-    // 上传文档
+    // UploadDocument
     loadSharedApi({ type: 'document', systemType: apiType.value })
       .putMulDocument(id as string, documents)
       .then(() => {

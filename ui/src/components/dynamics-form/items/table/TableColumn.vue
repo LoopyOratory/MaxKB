@@ -6,11 +6,11 @@ import { computed, ref } from 'vue'
 import _ from 'lodash'
 const props = defineProps<{
   /**
-   *表单渲染Item column
+   *FormRenderItem column
    */
   column: any
   /**
-   * 这一行数据
+   * This rowData
    */
   row: any
 }>()

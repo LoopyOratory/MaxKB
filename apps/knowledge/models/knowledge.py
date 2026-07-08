@@ -19,49 +19,49 @@ from users.models import User
 
 
 class KnowledgeType(models.IntegerChoices):
-    BASE = 0, "通用类型"
-    WEB = 1, "web站点类型"
-    LARK = 2, "飞书类型"
-    YUQUE = 3, "语雀类型"
-    WORKFLOW = 4, "工作流类型"
+    BASE = 0, "GeneralType"
+    WEB = 1, "webSiteType"
+    LARK = 2, "FeishuType"
+    YUQUE = 3, "语雀Type"
+    WORKFLOW = 4, "WorkflowType"
 
 
 class TaskType(Enum):
-    # 向量
+    # Vector
     EMBEDDING = 1
-    # 生成问题
+    # GenerateQuestion
     GENERATE_PROBLEM = 2
-    # 同步
+    # Sync
     SYNC = 3
-    # 分词索引
+    # TokenizationIndex
     TOKENIZE = 4
 
 
 class State(Enum):
-    # 等待
+    # Wait
     PENDING = "0"
-    # 执行中
+    # Execute中
     STARTED = "1"
-    # 成功
+    # Success
     SUCCESS = "2"
-    # 失败
+    # Failure
     FAILURE = "3"
-    # 取消任务
+    # CancelTask
     REVOKE = "4"
-    # 取消成功
+    # CancelSuccess
     REVOKED = "5"
     # 忽略
     IGNORED = "n"
 
 
 class KnowledgeScope(models.TextChoices):
-    SHARED = "SHARED", "共享"
-    WORKSPACE = "WORKSPACE", "工作空间可用"
+    SHARED = "SHARED", "Shared"
+    WORKSPACE = "WORKSPACE", "WorkspaceAvailable"
 
 
 class HitHandlingMethod(models.TextChoices):
-    optimization = "optimization", "模型优化"
-    directly_return = "directly_return", "直接返回"
+    optimization = "optimization", "ModelOptimization"
+    directly_return = "directly_return", "DirectReturn"
 
 
 class Status:
@@ -101,11 +101,11 @@ def default_status_meta():
 
 
 class KnowledgeFolder(MPTTModel, AppModelMixin):
-    id = models.CharField(primary_key=True, max_length=64, editable=False, verbose_name="主键id")
-    name = models.CharField(max_length=64, verbose_name="文件夹名称", db_index=True)
-    desc = models.CharField(max_length=200, null=True, blank=True, verbose_name="描述")
+    id = models.CharField(primary_key=True, max_length=64, editable=False, verbose_name="Primary keyid")
+    name = models.CharField(max_length=64, verbose_name="FolderName", db_index=True)
+    desc = models.CharField(max_length=200, null=True, blank=True, verbose_name="Description")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
     parent = TreeForeignKey("self", on_delete=models.DO_NOTHING, null=True, blank=True, related_name="children")
 
     class Meta:
@@ -117,29 +117,29 @@ class KnowledgeFolder(MPTTModel, AppModelMixin):
 
 class Knowledge(AppModelMixin):
     """
-    知识库表
+    Knowledge base表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    name = models.CharField(max_length=150, verbose_name="知识库名称", db_index=True)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
-    desc = models.CharField(max_length=256, verbose_name="描述")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    name = models.CharField(max_length=150, verbose_name="Knowledge baseName", db_index=True)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
+    desc = models.CharField(max_length=256, verbose_name="Description")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
     type = models.IntegerField(
-        verbose_name="类型", choices=KnowledgeType.choices, default=KnowledgeType.BASE, db_index=True
+        verbose_name="Type", choices=KnowledgeType.choices, default=KnowledgeType.BASE, db_index=True
     )
     scope = models.CharField(
         max_length=20,
-        verbose_name="可用范围",
+        verbose_name="AvailableRange",
         choices=KnowledgeScope.choices,
         default=KnowledgeScope.WORKSPACE,
         db_index=True,
     )
-    folder = models.ForeignKey(KnowledgeFolder, on_delete=models.DO_NOTHING, verbose_name="文件夹id", default="default")
+    folder = models.ForeignKey(KnowledgeFolder, on_delete=models.DO_NOTHING, verbose_name="Folderid", default="default")
     embedding_model = models.ForeignKey(Model, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
-    file_size_limit = models.IntegerField(verbose_name="文件大小限制", default=100)
-    file_count_limit = models.IntegerField(verbose_name="文件数量限制", default=50)
-    meta = models.JSONField(verbose_name="元数据", default=dict)
+    file_size_limit = models.IntegerField(verbose_name="FileSizeLimit", default=100)
+    file_count_limit = models.IntegerField(verbose_name="FileCountLimit", default=50)
+    meta = models.JSONField(verbose_name="元Data", default=dict)
 
     class Meta:
         db_table = "knowledge"
@@ -147,17 +147,17 @@ class Knowledge(AppModelMixin):
 
 class KnowledgeWorkflow(AppModelMixin):
     """
-    知识库工作流表
+    Knowledge base workflow表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     knowledge = models.OneToOneField(
-        Knowledge, on_delete=models.CASCADE, verbose_name="知识库", db_constraint=False, related_name="workflow"
+        Knowledge, on_delete=models.CASCADE, verbose_name="Knowledge base", db_constraint=False, related_name="workflow"
     )
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
-    work_flow = models.JSONField(verbose_name="工作流数据", default=dict)
-    is_publish = models.BooleanField(verbose_name="是否发布", default=False, db_index=True)
-    publish_time = models.DateTimeField(verbose_name="发布时间", null=True, blank=True)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
+    work_flow = models.JSONField(verbose_name="WorkflowData", default=dict)
+    is_publish = models.BooleanField(verbose_name="WhetherPublish", default=False, db_index=True)
+    publish_time = models.DateTimeField(verbose_name="PublishTime", null=True, blank=True)
 
     class Meta:
         db_table = "knowledge_workflow"
@@ -165,16 +165,16 @@ class KnowledgeWorkflow(AppModelMixin):
 
 class KnowledgeWorkflowVersion(AppModelMixin):
     """
-    知识库工作流版本表 - 记录工作流历史版本
+    Knowledge base workflowVersion表 - RecordWorkflowHistoryVersion
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, verbose_name="知识库", db_constraint=False)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
-    name = models.CharField(verbose_name="版本名称", max_length=128, default="")
-    work_flow = models.JSONField(verbose_name="工作流数据", default=dict)
-    publish_user_id = models.UUIDField(verbose_name="发布者id", max_length=128, default=None, null=True)
-    publish_user_name = models.CharField(verbose_name="发布者名称", max_length=128, default="")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.CASCADE, verbose_name="Knowledge base", db_constraint=False)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
+    name = models.CharField(verbose_name="VersionName", max_length=128, default="")
+    work_flow = models.JSONField(verbose_name="WorkflowData", default=dict)
+    publish_user_id = models.UUIDField(verbose_name="Publish者id", max_length=128, default=None, null=True)
+    publish_user_name = models.CharField(verbose_name="Publish者Name", max_length=128, default="")
 
     class Meta:
         db_table = "knowledge_workflow_version"
@@ -186,29 +186,29 @@ def get_default_status():
 
 class Document(AppModelMixin):
     """
-    文档表
+    Document表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="知识库id")
-    name = models.CharField(max_length=150, verbose_name="文档名称", db_index=True)
-    char_length = models.IntegerField(verbose_name="文档字符数 冗余字段")
-    status = models.CharField(verbose_name="状态", max_length=20, default=get_default_status, db_index=True)
-    status_meta = models.JSONField(verbose_name="状态统计数据", default=default_status_meta)
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="Knowledge baseid")
+    name = models.CharField(max_length=150, verbose_name="DocumentName", db_index=True)
+    char_length = models.IntegerField(verbose_name="Document字符数 冗余Field")
+    status = models.CharField(verbose_name="Status", max_length=20, default=get_default_status, db_index=True)
+    status_meta = models.JSONField(verbose_name="StatusStatisticsData", default=default_status_meta)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
     is_active = models.BooleanField(default=True, db_index=True)
     type = models.IntegerField(
-        verbose_name="类型", choices=KnowledgeType.choices, default=KnowledgeType.BASE, db_index=True
+        verbose_name="Type", choices=KnowledgeType.choices, default=KnowledgeType.BASE, db_index=True
     )
     hit_handling_method = models.CharField(
-        verbose_name="命中处理方式",
+        verbose_name="HitProcessMethod",
         max_length=20,
         choices=HitHandlingMethod.choices,
         default=HitHandlingMethod.optimization,
     )
-    directly_return_similarity = models.FloatField(verbose_name="直接回答相似度", default=0.9)
+    directly_return_similarity = models.FloatField(verbose_name="DirectAnswerSimilarity", default=0.9)
 
-    meta = models.JSONField(verbose_name="元数据", default=dict)
+    meta = models.JSONField(verbose_name="元Data", default=dict)
 
     class Meta:
         db_table = "document"
@@ -216,17 +216,17 @@ class Document(AppModelMixin):
 
 class Tag(AppModelMixin):
     """
-    标签表 - 存储标签的key-value定义
+    Tag表 - StorageTag的key-valueDefinition
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="知识库", db_constraint=False)
-    key = models.CharField(max_length=64, verbose_name="标签键", db_index=True)
-    value = models.CharField(max_length=128, verbose_name="标签值", db_index=True)
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="Knowledge base", db_constraint=False)
+    key = models.CharField(max_length=64, verbose_name="Tag键", db_index=True)
+    value = models.CharField(max_length=128, verbose_name="Tag值", db_index=True)
 
     class Meta:
         db_table = "tag"
-        unique_together = [["knowledge", "key", "value"]]  # 在同一知识库内key-value组合唯一
+        unique_together = [["knowledge", "key", "value"]]  # 在同一Knowledge base内key-valueCombineUnique
         indexes = [
             models.Index(fields=["knowledge", "key"]),
         ]
@@ -234,33 +234,33 @@ class Tag(AppModelMixin):
 
 class DocumentTag(AppModelMixin):
     """
-    文档标签关联表
+    DocumentTagAssociation表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, verbose_name="文档", db_constraint=False)
-    tag = models.ForeignKey(Tag, on_delete=models.DO_NOTHING, verbose_name="标签", db_constraint=False)
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, verbose_name="Document", db_constraint=False)
+    tag = models.ForeignKey(Tag, on_delete=models.DO_NOTHING, verbose_name="Tag", db_constraint=False)
 
     class Meta:
         db_table = "document_tag"
-        unique_together = [["document", "tag"]]  # 文档和标签的组合唯一
+        unique_together = [["document", "tag"]]  # Document和Tag的CombineUnique
 
 
 class Paragraph(AppModelMixin):
     """
-    段落表
+    Paragraph表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, db_constraint=False)
     knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING)
-    content = models.CharField(max_length=102400, verbose_name="段落内容")
-    title = models.CharField(max_length=256, verbose_name="标题", default="", db_index=True)
-    status = models.CharField(verbose_name="状态", max_length=20, default=get_default_status, db_index=True)
-    status_meta = models.JSONField(verbose_name="状态数据", default=default_status_meta)
-    hit_num = models.IntegerField(verbose_name="命中次数", default=0)
+    content = models.CharField(max_length=102400, verbose_name="ParagraphContent")
+    title = models.CharField(max_length=256, verbose_name="Title", default="", db_index=True)
+    status = models.CharField(verbose_name="Status", max_length=20, default=get_default_status, db_index=True)
+    status_meta = models.JSONField(verbose_name="StatusData", default=default_status_meta)
+    hit_num = models.IntegerField(verbose_name="HitCount", default=0)
     is_active = models.BooleanField(default=True, db_index=True)
-    position = models.IntegerField(verbose_name="段落顺序", default=0, db_index=True)
+    position = models.IntegerField(verbose_name="Paragraph顺序", default=0, db_index=True)
     chunks = ArrayField(verbose_name="块", base_field=models.CharField(), default=list)
 
     class Meta:
@@ -269,20 +269,20 @@ class Paragraph(AppModelMixin):
 
 class Problem(AppModelMixin):
     """
-    问题表
+    Question表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, db_constraint=False)
-    content = models.CharField(max_length=256, verbose_name="问题内容", db_index=True)
-    hit_num = models.IntegerField(verbose_name="命中次数", default=0)
+    content = models.CharField(max_length=256, verbose_name="QuestionContent", db_index=True)
+    hit_num = models.IntegerField(verbose_name="HitCount", default=0)
 
     class Meta:
         db_table = "problem"
 
 
 class ProblemParagraphMapping(AppModelMixin):
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, db_constraint=False)
     document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, db_constraint=False)
     problem = models.ForeignKey(Problem, on_delete=models.DO_NOTHING, db_constraint=False)
@@ -297,20 +297,20 @@ class Termbase(AppModelMixin):
     术语表
     """
 
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, db_constraint=False)
-    content = models.CharField(max_length=256, verbose_name="术语内容", db_index=True)
+    content = models.CharField(max_length=256, verbose_name="术语Content", db_index=True)
 
     class Meta:
         db_table = "termbase"
 
 
 class SourceType(models.IntegerChoices):
-    """订单类型"""
+    """OrderType"""
 
-    PROBLEM = 0, "问题"
-    PARAGRAPH = 1, "段落"
-    TITLE = 2, "标题"
+    PROBLEM = 0, "Question"
+    PARAGRAPH = 1, "Paragraph"
+    TITLE = 2, "Title"
 
 
 class SearchMode(models.TextChoices):
@@ -320,22 +320,22 @@ class SearchMode(models.TextChoices):
 
 
 class FileSourceType(models.TextChoices):
-    # 知识库  跟随知识库被删除而被删除 source_id 为知识库id
+    # Knowledge base  FollowKnowledge base被DeletionDue toDeletion source_id 为Knowledge baseid
     KNOWLEDGE = "KNOWLEDGE"
-    # 应用  跟随应用被删除而被删除 source_id 为应用id
+    # Application  FollowApplication被DeletionDue toDeletion source_id 为Applicationid
     APPLICATION = "APPLICATION"
-    # 工具  跟随工具被删除而被删除 source_id 为应用id
+    # Tool  FollowTool被DeletionDue toDeletion source_id 为Applicationid
     TOOL = "TOOL"
-    # 文档
+    # Document
     DOCUMENT = "DOCUMENT"
-    # 对话
+    # Conversation
     CHAT = "CHAT"
     SYSTEM = "SYSTEM"
-    # 临时30分钟 数据30分钟后被清理 source_id 为TEMPORARY_30_MINUTE
+    # Temporary30Minutes Data30Minutes后被Cleanup source_id 为TEMPORARY_30_MINUTE
     TEMPORARY_30_MINUTE = "TEMPORARY_30_MINUTE"
-    # 临时120分钟 数据120分钟后被清理 source_id为TEMPORARY_100_MINUTE
+    # Temporary120Minutes Data120Minutes后被Cleanup source_id为TEMPORARY_100_MINUTE
     TEMPORARY_120_MINUTE = "TEMPORARY_120_MINUTE"
-    # 临时1天 数据1天后被清理 source_id为TEMPORARY_1_DAY
+    # Temporary1天 Data1天后被Cleanup source_id为TEMPORARY_1_DAY
     TEMPORARY_1_DAY = "TEMPORARY_1_DAY"
 
 
@@ -345,46 +345,46 @@ class VectorField(models.Field):
 
 
 class Embedding(models.Model):
-    id = models.CharField(max_length=128, primary_key=True, verbose_name="主键id")
-    source_id = models.CharField(max_length=128, verbose_name="资源id", db_index=True)
+    id = models.CharField(max_length=128, primary_key=True, verbose_name="Primary keyid")
+    source_id = models.CharField(max_length=128, verbose_name="Resourceid", db_index=True)
     source_type = models.CharField(
-        verbose_name="资源类型", max_length=5, choices=SourceType.choices, default=SourceType.PROBLEM, db_index=True
+        verbose_name="Resource type", max_length=5, choices=SourceType.choices, default=SourceType.PROBLEM, db_index=True
     )
-    is_active = models.BooleanField(verbose_name="是否可用", max_length=1, default=True)
-    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="文档关联", db_constraint=False)
-    document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, verbose_name="文档关联", db_constraint=False)
-    paragraph = models.ForeignKey(Paragraph, on_delete=models.DO_NOTHING, verbose_name="段落关联", db_constraint=False)
-    embedding = VectorField(verbose_name="向量")
-    search_vector = SearchVectorField(verbose_name="分词", default="")
-    meta = models.JSONField(verbose_name="元数据", default=dict)
+    is_active = models.BooleanField(verbose_name="WhetherAvailable", max_length=1, default=True)
+    knowledge = models.ForeignKey(Knowledge, on_delete=models.DO_NOTHING, verbose_name="DocumentAssociation", db_constraint=False)
+    document = models.ForeignKey(Document, on_delete=models.DO_NOTHING, verbose_name="DocumentAssociation", db_constraint=False)
+    paragraph = models.ForeignKey(Paragraph, on_delete=models.DO_NOTHING, verbose_name="ParagraphAssociation", db_constraint=False)
+    embedding = VectorField(verbose_name="Vector")
+    search_vector = SearchVectorField(verbose_name="Tokenization", default="")
+    meta = models.JSONField(verbose_name="元Data", default=dict)
 
     class Meta:
         db_table = "embedding"
 
 
 class File(AppModelMixin):
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
-    file_name = models.CharField(max_length=256, verbose_name="文件名称", default="")
-    file_size = models.IntegerField(verbose_name="文件大小", default=0)
-    sha256_hash = models.CharField(verbose_name="文件sha256_hash标识", default="")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
+    file_name = models.CharField(max_length=256, verbose_name="FileName", default="")
+    file_size = models.IntegerField(verbose_name="FileSize", default=0)
+    sha256_hash = models.CharField(verbose_name="Filesha256_hash标识", default="")
     source_type = models.CharField(
-        verbose_name="资源类型",
+        verbose_name="Resource type",
         choices=FileSourceType,
         default=FileSourceType.TEMPORARY_120_MINUTE.value,
         db_index=True,
     )
     source_id = models.CharField(
-        verbose_name="资源id", default=FileSourceType.TEMPORARY_120_MINUTE.value, db_index=True
+        verbose_name="Resourceid", default=FileSourceType.TEMPORARY_120_MINUTE.value, db_index=True
     )
     loid = models.IntegerField(verbose_name="loid")
-    meta = models.JSONField(verbose_name="文件关联数据", default=dict)
+    meta = models.JSONField(verbose_name="FileAssociationData", default=dict)
 
     class Meta:
         db_table = "file"
 
     def save(self, bytea=None, force_insert=False, force_update=False, using=None, update_fields=None):
         if bytea is None:
-            raise ValueError("bytea参数不能为空")
+            raise ValueError("byteaParameters不能为空")
 
         sha256_hash = get_sha256_hash(bytea)
         self.sha256_hash = sha256_hash
@@ -400,11 +400,11 @@ class File(AppModelMixin):
         self.loid = self._create_large_object()
 
         self._write_compressed_data(compressed_data)
-        # 调用父类保存
+        # Call父类Save
         return super().save()
 
     def _compress_data(self, data, compression_level=9):
-        """压缩数据到内存"""
+        """压缩Data到Memory"""
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
             zipinfo = zipfile.ZipInfo(self.file_name)
@@ -437,16 +437,16 @@ class File(AppModelMixin):
             buffer.write(chunk)
         data = buffer.getvalue()
         try:
-            # 解压数据
+            # DecompressData
             with zipfile.ZipFile(buffer) as zip_file:
                 names = [name for name in zip_file.namelist() if not name.endswith("/")]
                 if len(names) != 1:
                     return data
-                # 用 zip 内实际存储的条目名，避免文件名不匹配
+                # 用 zip 内ActualStorage的条目名，避免File名不Match
                 name = names[0]
                 return zip_file.read(name)
         except zipfile.BadZipFile:
-            # 如果数据不是zip格式，直接返回原始数据
+            # IfData不是zipFormat，DirectReturnOriginalData
             return data
 
     def get_bytes_stream(self, start=0, end=None, chunk_size=64 * 1024):

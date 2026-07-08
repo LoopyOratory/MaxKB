@@ -405,13 +405,13 @@ class DocumentSerializers(serializers.Serializer):
             create_problem_list = [
                 problem for problem, is_create in target_handle_problem_list if is_create is not None and is_create
             ]
-            # 插入问题
+            # InsertQuestion
             QuerySet(Problem).bulk_create(create_problem_list)
-            # 修改mapping
+            # Modificationmapping
             QuerySet(ProblemParagraphMapping).bulk_update(
                 problem_paragraph_mapping_list, ["problem_id", "knowledge_id"]
             )
-            # 修改文档
+            # ModificationDocument
             if knowledge.type == KnowledgeType.BASE.value and target_knowledge.type == KnowledgeType.WEB.value:
                 document_list.update(
                     knowledge_id=target_knowledge_id, type=KnowledgeType.WEB, meta={"source_url": "", "selector": ""}
@@ -425,9 +425,9 @@ class DocumentSerializers(serializers.Serializer):
                 model_id = get_embedding_model_id_by_knowledge_id(target_knowledge_id)
 
             pid_list = [paragraph.id for paragraph in paragraph_list]
-            # 修改段落信息
+            # ModificationParagraphInfo
             paragraph_list.update(knowledge_id=target_knowledge_id)
-            # 修改向量信息
+            # ModificationVectorInfo
             if model_id:
                 delete_embedding_by_paragraph_ids(pid_list)
                 ListenerManagement.update_status(
@@ -468,7 +468,7 @@ class DocumentSerializers(serializers.Serializer):
             return None
 
     class Query(serializers.Serializer):
-        # 知识库id
+        # Knowledge baseid
         workspace_id = serializers.CharField(required=True, label=_("workspace id"))
         knowledge_id = serializers.UUIDField(required=True, label=_("knowledge id"))
         name = serializers.CharField(
@@ -624,12 +624,12 @@ class DocumentSerializers(serializers.Serializer):
                 )
                 result = Fork(source_url, selector_list).fork()
                 if result.status == 200:
-                    # 删除段落
+                    # DeletionParagraph
                     QuerySet(model=Paragraph).filter(document_id=document_id).delete()
-                    # 删除问题
+                    # DeletionQuestion
                     QuerySet(model=ProblemParagraphMapping).filter(document_id=document_id).delete()
                     delete_problems_and_mappings([document_id])
-                    # 删除向量库
+                    # DeletionVector库
                     delete_embedding_by_document(document_id)
                     paragraphs = get_split_model("web.md").parse(result.content)
                     char_length = reduce(lambda x, y: x + y, [len(p.get("content")) for p in paragraphs], 0)
@@ -641,7 +641,7 @@ class DocumentSerializers(serializers.Serializer):
                     problem_model_list, problem_paragraph_mapping_list = ProblemParagraphManage(
                         problem_paragraph_object_list, document.knowledge_id
                     ).to_problem_model_list()
-                    # 批量插入段落
+                    # BatchInsertParagraph
                     if len(paragraph_model_list) > 0:
                         max_position = (
                             Paragraph.objects.filter(document_id=document_id).aggregate(max_position=Max("position"))[
@@ -652,13 +652,13 @@ class DocumentSerializers(serializers.Serializer):
                         for i, paragraph in enumerate(paragraph_model_list):
                             paragraph.position = max_position + i + 1
                         QuerySet(Paragraph).bulk_create(paragraph_model_list)
-                    # 批量插入问题
+                    # BatchInsertQuestion
                     QuerySet(Problem).bulk_create(problem_model_list) if len(problem_model_list) > 0 else None
-                    # 插入关联问题
+                    # InsertAssociationQuestion
                     QuerySet(ProblemParagraphMapping).bulk_create(problem_paragraph_mapping_list) if len(
                         problem_paragraph_mapping_list
                     ) > 0 else None
-                    # 向量化
+                    # Vectorization
                     if with_embedding:
                         embedding_model_id = get_embedding_model_id_by_knowledge_id(document.knowledge_id)
                         ListenerManagement.update_status(
@@ -830,11 +830,11 @@ class DocumentSerializers(serializers.Serializer):
             QuerySet(File).filter(id__in=source_file_ids).delete()
             QuerySet(File).filter(source_id=document_id, source_type=FileSourceType.DOCUMENT).delete()
             paragraph_ids = QuerySet(model=Paragraph).filter(document_id=document_id).values_list("id", flat=True)
-            # 删除问题
+            # DeletionQuestion
             delete_problems_and_mappings(paragraph_ids)
-            # 删除段落
+            # DeletionParagraph
             QuerySet(model=Paragraph).filter(document_id=document_id).delete()
-            # 删除向量库
+            # DeletionVector库
             delete_embedding_by_document(document_id)
             QuerySet(model=DocumentTag).filter(document_id=document_id).delete()
             QuerySet(model=Document).filter(id=document_id).delete()
@@ -921,13 +921,13 @@ class DocumentSerializers(serializers.Serializer):
 
         @staticmethod
         def get_workbook(data_dict, document_dict):
-            # 创建工作簿对象
+            # CreationWork簿Object
             workbook = openpyxl.Workbook()
             workbook.remove(workbook.active)
             if len(data_dict.keys()) == 0:
                 data_dict["sheet"] = []
             for sheet_id in data_dict:
-                # 添加工作表
+                # AddWork表
                 worksheet = workbook.create_sheet(document_dict.get(sheet_id))
                 data = [
                     [
@@ -937,7 +937,7 @@ class DocumentSerializers(serializers.Serializer):
                     ],
                     *data_dict.get(sheet_id, []),
                 ]
-                # 写入数据到工作表
+                # WriteData到Work表
                 for row_idx, row in enumerate(data):
                     for col_idx, col in enumerate(row):
                         cell = worksheet.cell(row=row_idx + 1, column=col_idx + 1)
@@ -946,7 +946,7 @@ class DocumentSerializers(serializers.Serializer):
                             if col.startswith(("=", "+", "-", "@")):
                                 col = "\ufeff" + col
                         cell.value = col
-                    # 创建HttpResponse对象返回Excel文件
+                    # CreationHttpResponseObjectReturnExcelFile
             return workbook
 
         @staticmethod
@@ -1029,9 +1029,9 @@ class DocumentSerializers(serializers.Serializer):
             problem_model_list, problem_paragraph_mapping_list = ProblemParagraphManage(
                 problem_paragraph_object_list, knowledge_id
             ).to_problem_model_list()
-            # 插入文档
+            # InsertDocument
             document_model.save()
-            # 批量插入段落
+            # BatchInsertParagraph
             if len(paragraph_model_list) > 0:
                 max_position = (
                     Paragraph.objects.filter(document_id=document_model.id).aggregate(max_position=Max("position"))[
@@ -1042,9 +1042,9 @@ class DocumentSerializers(serializers.Serializer):
                 for i, paragraph in enumerate(paragraph_model_list):
                     paragraph.position = max_position + i + 1
                 QuerySet(Paragraph).bulk_create(paragraph_model_list)
-            # 批量插入问题
+            # BatchInsertQuestion
             QuerySet(Problem).bulk_create(problem_model_list) if len(problem_model_list) > 0 else None
-            # 批量插入关联问题
+            # BatchInsertAssociationQuestion
             QuerySet(ProblemParagraphMapping).bulk_create(problem_paragraph_mapping_list) if len(
                 problem_paragraph_mapping_list
             ) > 0 else None
@@ -1144,7 +1144,7 @@ class DocumentSerializers(serializers.Serializer):
             ).batch_save(document_list)
 
         def parse_qa_file(self, file):
-            #  保存源文件
+            #  Save源File
             source_file_id = uuid.uuid7()
             source_file = File(
                 id=source_file_id,
@@ -1166,7 +1166,7 @@ class DocumentSerializers(serializers.Serializer):
             raise AppApiException(500, _("Unsupported file format"))
 
         def parse_table_file(self, file):
-            #  保存源文件
+            #  Save源File
             source_file_id = uuid.uuid7()
             source_file = File(
                 id=source_file_id,
@@ -1258,7 +1258,7 @@ class DocumentSerializers(serializers.Serializer):
                     file.save(file_bytes)
 
         def file_to_paragraph(self, file, pattern_list: List, with_filter: bool, limit: int):
-            # 保存源文件
+            # Save源File
             file_id = uuid.uuid7()
             raw_file = File(
                 id=file_id,
@@ -1330,20 +1330,20 @@ class DocumentSerializers(serializers.Serializer):
                 return
             source_file = QuerySet(File).filter(id=source_file_id).first()
             if source_file:
-                # 获取原始文件内容
+                # GetOriginalFileContent
                 file_content = source_file.get_bytes()
 
-                # 创建新文件对象，复制原始文件的重要属性
+                # Creation新FileObject，CopyOriginalFile的重要属性
                 new_file = File(
                     id=uuid.uuid7(),
                     file_name=source_file.file_name,
                     file_size=source_file.file_size,
                     source_type=FileSourceType.DOCUMENT,
-                    source_id=document_id,  # 更新为当前知识库ID
+                    source_id=document_id,  # Update为CurrentKnowledge baseID
                     meta=source_file.meta.copy() if source_file.meta else {},
                 )
 
-                # 保存文件内容和元数据
+                # SaveFileContent和元Data
                 new_file.save(file_content)
 
         @staticmethod
@@ -1369,12 +1369,12 @@ class DocumentSerializers(serializers.Serializer):
             document_model_list = []
             paragraph_model_list = []
             problem_paragraph_object_list = []
-            # 插入文档
+            # InsertDocument
             for document in instance_list:
                 document_paragraph_dict_model = DocumentSerializers.Create.get_document_paragraph_model(
                     knowledge_id, self.data.get("user_id"), document
                 )
-                # 保存文档和文件的关系
+                # SaveDocument和File的Relation
                 document_instance = document_paragraph_dict_model.get("document")
                 self.link_file(document.get("source_file_id"), document_instance.id)
                 document_model_list.append(document_instance)
@@ -1386,9 +1386,9 @@ class DocumentSerializers(serializers.Serializer):
             problem_model_list, problem_paragraph_mapping_list = ProblemParagraphManage(
                 problem_paragraph_object_list, knowledge_id
             ).to_problem_model_list()
-            # 插入文档
+            # InsertDocument
             QuerySet(Document).bulk_create(document_model_list) if len(document_model_list) > 0 else None
-            # 批量插入段落
+            # BatchInsertParagraph
             if len(paragraph_model_list) > 0:
                 for document in document_model_list:
                     max_position = (
@@ -1401,11 +1401,11 @@ class DocumentSerializers(serializers.Serializer):
                     for i, paragraph in enumerate(sub_list):
                         paragraph.position = max_position + i + 1
                     QuerySet(Paragraph).bulk_create(sub_list if len(sub_list) > 0 else [])
-            # 批量插入问题
+            # BatchInsertQuestion
             bulk_create_in_batches(Problem, problem_model_list, batch_size=1000)
-            # 批量插入关联问题
+            # BatchInsertAssociationQuestion
             bulk_create_in_batches(ProblemParagraphMapping, problem_paragraph_mapping_list, batch_size=1000)
-            # 查询文档
+            # QueryDocument
             query_set = QuerySet(model=Document)
             if len(document_model_list) == 0:
                 return [], knowledge_id, workspace_id
@@ -1429,7 +1429,7 @@ class DocumentSerializers(serializers.Serializer):
             if with_valid:
                 BatchSerializer(data=instance).is_valid(model=Document, raise_exception=True)
                 self.is_valid(raise_exception=True)
-            # 异步同步
+            # AsyncSync
             work_thread_pool.submit(
                 lambda doc_ids: [
                     DocumentSerializers.Sync(
@@ -1459,11 +1459,11 @@ class DocumentSerializers(serializers.Serializer):
             QuerySet(Document).filter(id__in=document_id_list).delete()
             QuerySet(DocumentTag).filter(document_id__in=document_id_list).delete()
             paragraph_ids = QuerySet(Paragraph).filter(document_id__in=document_id_list).values_list("id", flat=True)
-            # 删除问题关系
+            # DeletionQuestionRelation
             delete_problems_and_mappings(paragraph_ids)
-            # 删除段落
+            # DeletionParagraph
             QuerySet(Paragraph).filter(document_id__in=document_id_list).delete()
-            # 删除向量库
+            # DeletionVector库
             delete_embedding_by_document_list(document_id_list)
             return True
 
@@ -1515,12 +1515,12 @@ class DocumentSerializers(serializers.Serializer):
             QuerySet(Document).filter(id__in=document_id_list).update(**update_dict)
             allow_download = instance.get("allow_download")
             if allow_download is not None:
-                # 我需要修改meta meta是存在Document的字段 是一个json字段 但是allow_download可能不存在
+                # 我NeedsModificationmeta meta是ExistsDocument的Field 是OnejsonField 但是allow_downloadPossible不Exists
                 Document.objects.filter(id__in=document_id_list).update(
                     meta=Func(
                         F("meta"),
                         Value(["allow_download"]),
-                        Value(json.dumps(allow_download)),  # 转成 "true"/"false"
+                        Value(json.dumps(allow_download)),  # Convert to "true"/"false"
                         Value(True),  # create_missing = true
                         function="jsonb_set",
                         output_field=JSONField(),
@@ -1560,7 +1560,7 @@ class DocumentSerializers(serializers.Serializer):
                 self.is_valid(raise_exception=True)
             document_id_list = instance.get("document_ids")
             tag_id_list = instance.get("tag_ids")
-            # 批量查询已存在的标签关联关系
+            # BatchQuery已ExistingTagAssociationRelation
             existing_relations = {
                 (str(doc_id), str(tag_id))
                 for doc_id, tag_id in QuerySet(DocumentTag)
@@ -1573,7 +1573,7 @@ class DocumentSerializers(serializers.Serializer):
                 for tag_id in tag_id_list:
                     relation_key = (str(doc_id), str(tag_id))
 
-                    # 既检查数据库中已存在的，也检查本次即将创建的
+                    # 既CheckData库中已Existing，也Check本次即将Creation的
                     if relation_key not in existing_relations:
                         new_relations.append(
                             DocumentTag(
@@ -1732,7 +1732,7 @@ class DocumentSerializers(serializers.Serializer):
                     .values_list("id", flat=True)
                 )
 
-            # 获取所有标签，按创建时间排序保持稳定顺序
+            # GetAllTag, byCreation timeSortMaintain stable order
             tags = (
                 QuerySet(Tag)
                 .filter(knowledge_id=self.data.get("knowledge_id"), id__in=tag_ids)
@@ -1740,7 +1740,7 @@ class DocumentSerializers(serializers.Serializer):
                 .order_by("create_time", "key", "value")
             )
 
-            # 按key分组
+            # 按keyGroup
             grouped_tags = defaultdict(list)
             for tag in tags:
                 grouped_tags[tag["key"]].append(
@@ -1752,12 +1752,12 @@ class DocumentSerializers(serializers.Serializer):
                     }
                 )
 
-            # 转换为期望的格式，保持key的顺序
+            # Transform为期望的Format，保持key order
             result = []
-            # 按key排序以确保结果顺序一致
+            # 按keySort以EnsureResultConsistent order
             for key in sorted(grouped_tags.keys()):
                 values = grouped_tags[key]
-                # 按创建时间对values进行排序
+                # 按Creation time对valuesPerformSort
                 values.sort(key=lambda x: x["create_time"])
                 result.append(
                     {
@@ -1902,7 +1902,7 @@ class DocumentSerializers(serializers.Serializer):
             source_file = QuerySet(File).filter(source_id=self.data.get("document_id")).first()
 
             if not source_file:
-                # 不存在手动关联一个文档
+                # 不ExistsManualAssociationOneDocument
                 new_source_file_id = uuid.uuid7()
                 new_source_file = File(
                     id=new_source_file_id,
@@ -1911,7 +1911,7 @@ class DocumentSerializers(serializers.Serializer):
                     source_id=self.data.get("document_id"),
                 )
                 new_source_file.save(file.read())
-                # 更新Document的meta字段
+                # UpdateDocument的metaField
                 QuerySet(Document).filter(id=self.data.get("document_id")).update(
                     meta=Func(
                         F("meta"),
@@ -1923,10 +1923,10 @@ class DocumentSerializers(serializers.Serializer):
                     )
                 )
             else:
-                # 获取原文件的sha256_hash
+                # Get原File的sha256_hash
                 original_hash = source_file.sha256_hash
 
-                # 读取新文件内容
+                # Read新FileContent
                 file_content = file.read()
 
                 QuerySet(File).filter(
@@ -1934,13 +1934,13 @@ class DocumentSerializers(serializers.Serializer):
                     source_id__in=[self.data.get("knowledge_id"), self.data.get("document_id")],
                 ).update(file_name=file.name)
 
-                # 查找所有具有相同sha256_hash的文件
+                # 查找All具有Samesha256_hash的File
                 files_to_update = QuerySet(File).filter(
                     sha256_hash=original_hash,
                     source_id__in=[self.data.get("knowledge_id"), self.data.get("document_id")],
                 )
 
-                # 更新所有相同hash的文件
+                # UpdateAllSamehash的File
                 for file_obj in files_to_update:
                     file_obj.save(file_content)
 

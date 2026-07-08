@@ -88,7 +88,7 @@ def generate_related_by_document_id(document_id, model_id, model_params_setting,
                                          State.STARTED)
         llm_model = get_llm_model(model_id, model_params_setting)
 
-        # 生成问题函数
+        # GenerateQuestionFunction
         generate_problem = get_generate_problem(llm_model, prompt,
                                                 ListenerManagement.get_aggregation_document_status(
                                                     document_id), is_the_task_interrupted)
@@ -99,7 +99,7 @@ def generate_related_by_document_id(document_id, model_id, model_params_setting,
         ).filter(task_type_status__in=state_list, document_id=document_id)
         page_desc(query_set, 10, generate_problem, is_the_task_interrupted)
     except Exception as e:
-        maxkb_logger.error(f'根据文档生成问题:{document_id}出现错误{str(e)}{traceback.format_exc()}')
+        maxkb_logger.error(f'Based onDocumentGenerateQuestion:{document_id}出现Error{str(e)}{traceback.format_exc()}')
         maxkb_logger.error(_('Generate issue based on document: {document_id} error {error}{traceback}').format(
             document_id=document_id, error=str(e), traceback=traceback.format_exc()))
     finally:
@@ -121,7 +121,7 @@ def generate_related_by_paragraph_id_list(document_id, paragraph_id_list, model_
                                          TaskType.GENERATE_PROBLEM,
                                          State.STARTED)
         llm_model = get_llm_model(model_id, model_params_setting)
-        # 生成问题函数
+        # GenerateQuestionFunction
         generate_problem = get_generate_problem(llm_model, prompt, ListenerManagement.get_aggregation_document_status(
             document_id))
 

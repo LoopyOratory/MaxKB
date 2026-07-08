@@ -10,11 +10,11 @@ from users.models import User
 
 
 class ToolFolder(MPTTModel, AppModelMixin):
-    id = models.CharField(primary_key=True, max_length=64, editable=False, verbose_name="主键id")
-    name = models.CharField(max_length=64, verbose_name="文件夹名称", db_index=True)
-    desc = models.CharField(max_length=200, null=True, blank=True, verbose_name="描述")
+    id = models.CharField(primary_key=True, max_length=64, editable=False, verbose_name="Primary keyid")
+    name = models.CharField(max_length=64, verbose_name="FolderName", db_index=True)
+    desc = models.CharField(max_length=200, null=True, blank=True, verbose_name="Description")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
     parent = TreeForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True, related_name='children')
 
     class Meta:
@@ -25,18 +25,18 @@ class ToolFolder(MPTTModel, AppModelMixin):
 
 
 class ToolScope(models.TextChoices):
-    SHARED = "SHARED", '共享'
-    WORKSPACE = "WORKSPACE", "工作空间可用"
-    INTERNAL = "INTERNAL", '内置'
+    SHARED = "SHARED", 'Shared'
+    WORKSPACE = "WORKSPACE", "WorkspaceAvailable"
+    INTERNAL = "INTERNAL", 'Built-in'
 
 
 class ToolType(models.TextChoices):
-    INTERNAL = "INTERNAL", '内置'
-    CUSTOM = "CUSTOM", "自定义"
-    SKILL = "SKILL", "技能"
-    MCP = "MCP", "MCP工具"
-    DATA_SOURCE = "DATA_SOURCE", "数据源"
-    WORKFLOW = "WORKFLOW", "工作流"
+    INTERNAL = "INTERNAL", 'Built-in'
+    CUSTOM = "CUSTOM", "Custom"
+    SKILL = "SKILL", "Skills"
+    MCP = "MCP", "MCPTool"
+    DATA_SOURCE = "DATA_SOURCE", "Data source"
+    WORKFLOW = "WORKFLOW", "Workflow"
 
 
 class ToolTaskTypeChoices(models.TextChoices):
@@ -47,40 +47,40 @@ class ToolTaskTypeChoices(models.TextChoices):
 
 
 class Tool(AppModelMixin):
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
-    name = models.CharField(max_length=64, verbose_name="工具名称", db_index=True)
-    desc = models.CharField(max_length=128, verbose_name="描述")
-    code = models.CharField(max_length=102400, verbose_name="python代码")
-    input_field_list = models.JSONField(verbose_name="输入字段列表", default=list)
-    init_field_list = models.JSONField(verbose_name="启动字段列表", default=list)
-    icon = models.CharField(max_length=256, verbose_name="工具库icon", default="")
+    name = models.CharField(max_length=64, verbose_name="ToolName", db_index=True)
+    desc = models.CharField(max_length=128, verbose_name="Description")
+    code = models.CharField(max_length=102400, verbose_name="pythonCode")
+    input_field_list = models.JSONField(verbose_name="InputFieldList", default=list)
+    init_field_list = models.JSONField(verbose_name="StartFieldList", default=list)
+    icon = models.CharField(max_length=256, verbose_name="Tool库icon", default="")
     is_active = models.BooleanField(default=True, db_index=True)
-    scope = models.CharField(max_length=20, verbose_name='可用范围', choices=ToolScope.choices,
+    scope = models.CharField(max_length=20, verbose_name='AvailableRange', choices=ToolScope.choices,
                              default=ToolScope.WORKSPACE, db_index=True)
-    tool_type = models.CharField(max_length=20, verbose_name='工具类型', choices=ToolType.choices,
+    tool_type = models.CharField(max_length=20, verbose_name='ToolType', choices=ToolType.choices,
                                  default=ToolType.CUSTOM, db_index=True)
     template_id = models.CharField(max_length=128, verbose_name="模版id", null=True, default=None, db_index=True)
-    folder = models.ForeignKey(ToolFolder, on_delete=models.DO_NOTHING, verbose_name="文件夹id", default='default')
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
-    init_params = models.CharField(max_length=102400, verbose_name="初始化参数", null=True)
-    label = models.CharField(max_length=128, verbose_name="标签", null=True, db_index=True)
-    version = models.CharField(max_length=64, verbose_name="版本号", null=True, default=None)
+    folder = models.ForeignKey(ToolFolder, on_delete=models.DO_NOTHING, verbose_name="Folderid", default='default')
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
+    init_params = models.CharField(max_length=102400, verbose_name="InitializeParameters", null=True)
+    label = models.CharField(max_length=128, verbose_name="Tag", null=True, db_index=True)
+    version = models.CharField(max_length=64, verbose_name="Version号", null=True, default=None)
 
     class Meta:
         db_table = "tool"
 
 
 class ToolRecord(AppModelMixin):
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
     tool = models.ForeignKey(Tool, on_delete=models.SET_NULL, null=True)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
-    source_type = models.CharField(verbose_name="触发器任务类型", choices=ToolTaskTypeChoices.choices,
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
+    source_type = models.CharField(verbose_name="TriggerTaskType", choices=ToolTaskTypeChoices.choices,
                                    default=ToolTaskTypeChoices.APPLICATION, max_length=256)
-    source_id = models.UUIDField(verbose_name="资源id")
+    source_id = models.UUIDField(verbose_name="Resourceid")
     meta = models.JSONField(default=dict, encoder=SystemEncoder)
-    state = models.CharField(verbose_name='状态', max_length=20, choices=State.choices, default=State.STARTED)
-    run_time = models.FloatField(verbose_name="运行时长", default=0)
+    state = models.CharField(verbose_name='Status', max_length=20, choices=State.choices, default=State.STARTED)
+    run_time = models.FloatField(verbose_name="Runtime duration", default=0)
 
     class Meta:
         db_table = "tool_record"

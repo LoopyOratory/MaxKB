@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- 搜索 -->
+    <!-- Search -->
     <el-card
       class="workflow-search"
       v-if="showSearch"
@@ -45,7 +45,7 @@
         </span>
       </div>
     </el-card>
-    <!-- 开启搜索按钮 -->
+    <!-- Open search button -->
     <el-button v-else @click="openSearch()" circle class="workflow-search-button" size="large">
       <el-icon :size="20"><Search /></el-icon>
     </el-button>
@@ -54,26 +54,26 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, nextTick, computed } from 'vue'
-// Props定义
+// Props definition
 interface Props {
   lf?: any
 }
 const props = withDefaults(defineProps<Props>(), {})
 
-// 状态
+// State
 const showSearch = ref(false)
 const searchText = ref('')
 const searchInputRef = ref<any>(null)
 
-// 快捷键处理
+// Keyboard shortcut handling
 const handleKeyDown = (e: KeyboardEvent) => {
-  // Ctrl+F 或 Cmd+F (Mac)
+  // Ctrl+F or Cmd+F (Mac)
   if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
-    e.preventDefault() // 阻止浏览器默认搜索
+    e.preventDefault() // Prevent browser default search
     openSearch()
   }
 
-  // 按ESC关闭
+  // Close on ESC
   if (e.key === 'Escape' && showSearch.value) {
     closeSearch()
   }
@@ -175,7 +175,7 @@ const onSearch = (kw: string) => {
     }
   }
 }
-// 打开搜索
+// Open search
 const openSearch = () => {
   showSearch.value = true
   searchText.value = ''
@@ -185,7 +185,7 @@ const openSearch = () => {
   })
 }
 
-// 关闭搜索
+// Close search
 const closeSearch = () => {
   clearSelect()
   showSearch.value = false
@@ -207,7 +207,7 @@ const clearSelect = () => {
     }
   })
 }
-// 执行搜索
+// Execute search
 const handleSearch = (kw: string) => {
   searchText.value = kw
   clearSelect()
@@ -219,7 +219,7 @@ const handleSearch = (kw: string) => {
 const reSearch = () => {
   handleSearch(searchText.value)
 }
-// 生命周期
+// Lifecycle
 onMounted(() => {
   window.addEventListener('keydown', handleKeyDown)
 })

@@ -20,7 +20,7 @@ const getResourceMapping: (
   )
 }
 /**
- * 依赖项
+ * Dependencies
  * @param workspace_id
  * @param resource
  * @param resource_id

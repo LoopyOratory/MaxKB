@@ -1,27 +1,27 @@
 import { Permission, Role, Edition } from '@/utils/permission/type'
 // class Operate(Enum):
 //     """
-//      一个权限组的操作权限
+//      OnePermission groupActionsPermission
 //     """
 //     READ = 'READ'
 //     EDIT = "READ+EDIT"
 //     CREATE = "READ+CREATE"
 //     DELETE = "READ+DELETE"
 //     """
-//     使用权限
+//     UsePermission
 //     """
 //     USE = "USE"
 //     IMPORT = "READ+IMPORT"
-//     EXPORT = "READ+EXPORT"  # 导入导出
-//     SYNC = "READ+SYNC"  # 同步
-//     GENERATE = "READ+GENERATE"  # 生成
-//     ADD_MEMBER = "READ+ADD_MEMBER"  # 添加成员
-//     REMOVE_MEMBER = "READ+REMOVE_MEMBER"  # 添加成员
-//     VECTOR = "READ+VECTOR"  # 向量化
-//     MIGRATE = "READ+MIGRATE"  # 迁移
-//     RELATE = "READ+RELATE"  # 关联
-//     USER_GROUP = "READ+USER_GROUP"  # 用户组
-//     ANNOTATION = "READ+ANNOTATION"  # 标注
+//     EXPORT = "READ+EXPORT"  # ImportExport
+//     SYNC = "READ+SYNC"  # Sync
+//     GENERATE = "READ+GENERATE"  # Generate
+//     ADD_MEMBER = "READ+ADD_MEMBER"  # AddMember
+//     REMOVE_MEMBER = "READ+REMOVE_MEMBER"  # AddMember
+//     VECTOR = "READ+VECTOR"  # Vectorization
+//     MIGRATE = "READ+MIGRATE"  # Migration
+//     RELATE = "READ+RELATE"  # Association
+//     USER_GROUP = "READ+USER_GROUP"  # UserGroup
+//     ANNOTATION = "READ+ANNOTATION"  # Annotation
 //     CLEAR_POLICY = "READ+CLEAR_POLICY"
 const PermissionConst = {
   HOMEPAGE_READ: new Permission('HOMEPAGE:READ'),

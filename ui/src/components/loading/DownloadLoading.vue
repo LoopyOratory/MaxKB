@@ -15,7 +15,7 @@
 <script setup lang="ts"></script>
 <style lang="scss" scoped>
 .loading-container {
-  display: -webkit-flex; /*safari弹性布局*/
+  display: -webkit-flex; /*safariFlex layout*/
   justify-content: center;
   display: flex;
   align-items: center;

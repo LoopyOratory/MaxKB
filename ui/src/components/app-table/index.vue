@@ -151,7 +151,7 @@ function clearSelection() {
   appTableRef.value?.clearSelection()
 }
 
-/* ----------------- 列宽拖拽持久化 ----------------- */
+/* ----------------- Column widthDragPersistence ----------------- */
 const COLUMN_WIDTH_PREFIX = 'app-table-column-width:'
 
 function widthStorageKey() {
@@ -175,14 +175,14 @@ function saveWidthMap(map: Record<string, number>) {
 }
 
 /**
- * 列的稳定标识：优先用 prop / column-key，其次回退到渲染顺序下标。
+ * Stable column identifier: prefer using prop / column-key, then fall back toRenderOrder index.
  */
 function getColumnKey(column: any, index: number) {
   return column?.property || column?.columnKey || `__col_${index}__`
 }
 
 /**
- * 拖拽结束后，记录该列的最新宽度
+ * DragEndAfter, RecordLatest of this columnWidth
  */
 function handleHeaderDragend(newWidth: number, _oldWidth: number, column: any) {
   if (!props.storeKey || !column || !newWidth) {
@@ -197,7 +197,7 @@ function handleHeaderDragend(newWidth: number, _oldWidth: number, column: any) {
 }
 
 /**
- * 表格渲染后，把缓存的列宽应用回去
+ * After table render, apply cached column widths back
  */
 function restoreColumnWidths() {
   if (!props.storeKey) {
@@ -245,11 +245,11 @@ onMounted(() => {
     })()
   }
 
-  // 首次渲染后恢复缓存的列宽
+  // FirstRenderAfterRestoreCacheColumn width
   nextTick(restoreColumnWidths)
 })
 
-// 数据变化（翻页 / 筛选 / 轮询刷新）会重建列，重新应用缓存列宽
+// DataChange (pagination / Filter / PollRefresh) will rebuild columns,Re-ApplicationCacheColumn width
 watch(
   () => attrs.data,
   () => {

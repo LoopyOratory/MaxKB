@@ -48,7 +48,7 @@ const loading = ref<boolean>(false)
 const svgContainerRef = ref()
 const dialogVisible = ref<boolean>(false)
 
-// 保存原始元素引用，用于导出
+// SaveOriginalElementReference，Used forExport
 const originalElement = ref<HTMLElement | null>(null)
 
 const open = (element: HTMLElement | null) => {
@@ -59,7 +59,7 @@ const open = (element: HTMLElement | null) => {
     return
   }
 
-  // 保存原始元素引用
+  // SaveOriginalElementReference
   originalElement.value = element
 
   nextTick(() => {
@@ -71,7 +71,7 @@ const open = (element: HTMLElement | null) => {
         backgroundColor: '#ffffff',
       })
       .then((canvas) => {
-        // 清空之前的内容
+        // Clear previousContent
         svgContainerRef.value.innerHTML = ''
         canvas.style.width = '100%'
         canvas.style.height = 'auto'
@@ -128,7 +128,7 @@ const generatePDF = (canvas: HTMLCanvasElement) => {
     heightLeft -= pageHeight
   }
 
-  doc.save('导出文档.pdf')
+  doc.save('ExportDocument.pdf')
 }
 
 const exportJepg = () => {
@@ -175,7 +175,7 @@ const downloadJpeg = (canvas: HTMLCanvasElement) => {
 const close = () => {
   dialogVisible.value = false
   originalElement.value = null
-  // 清空预览内容
+  // ClearPreviewContent
   if (svgContainerRef.value) {
     svgContainerRef.value.innerHTML = ''
   }

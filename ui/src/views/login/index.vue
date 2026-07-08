@@ -200,7 +200,7 @@ const loginHandle = () => {
             loading.value = false
           })
       } else {
-        // JSEncrypt 在有些打包环境可能作为 default export 或直接导出，兼容两种情况
+        // JSEncrypt In some packagingEnvironmentPossibleAs default export orDirectExport，CompatibleTwo cases
         const JSEncryptCtor = (JSEncrypt as any)?.default ? (JSEncrypt as any).default : JSEncrypt
         const js = new (JSEncryptCtor as any)()
         js.setPublicKey(user.rsaKey)
@@ -244,7 +244,7 @@ function handleUsernameBlur(username: string) {
 onBeforeMount(() => {
   loading.value = true
   user.asyncGetProfile().then((res) => {
-    // 企业版和专业版：第三方登录
+    // EnterpriseAnd Professional: Third-partyLogin
     if (user.isPE() || user.isEE()) {
       authApi.getLoginAuthSetting().then((res) => {
         if (Object.keys(res.data).length > 0) {
@@ -274,12 +274,12 @@ onBeforeMount(() => {
             ) {
               redirectAuth(modeList.value[0])
             }
-            // 这里的modeList 是oauth2 cas ldap oidc 这四个 还会有 lark wecom dingtalk
-            // 获取到的 modeList中除'CAS', 'OIDC', 'OAuth2' LOCAL之外的登录方式
+            // HeremodeList Isoauth2 cas ldap oidc These four There will also be lark wecom dingtalk
+            // Get to modeListExcept in'CAS', 'OIDC', 'OAuth2' LOCALOutside ofLoginMethod
             QrList.value = modeList.value.filter(
               (item) => !['CAS', 'OIDC', 'OAuth2', 'LOCAL', 'LDAP', 'SAML2'].includes(item),
             )
-            // modeList需要去掉lark wecom dingtalk
+            // modeListNeedsRemovelark wecom dingtalk
             modeList.value = modeList.value.filter(
               (item) => !['lark', 'wecom', 'dingtalk'].includes(item),
             )
@@ -341,7 +341,7 @@ function uuidv4() {
 }
 
 const newDefaultSlogan = computed(() => {
-  const default_login = '强大易用的企业级智能体平台'
+  const default_login = 'Powerful and easy-to-use enterprise-gradeAgentPlatform'
   if (!theme.themeInfo?.slogan || default_login == theme.themeInfo?.slogan) {
     return t('theme.defaultSlogan')
   } else {
@@ -359,7 +359,7 @@ function redirectAuth(authType: string, needMessage: boolean = true) {
     }
 
     const config = res.data.config
-    // 构造带查询参数的redirectUrl
+    // Construct withQueryParametersredirectUrl
     const redirectUrl = `${config.redirectUrl}`
     let url
     if (authType === 'CAS') {
@@ -424,12 +424,12 @@ function changeMode(val: string, needMessage: boolean = true) {
 // onBeforeMount(() => {
 //   loading.value = true
 //   user.asyncGetProfile().then((res) => {
-//     // 企业版和专业版：第三方登录
+//     // EnterpriseAnd Professional: Third-partyLogin
 //     if (user.isPE() || user.isEE()) {
 //       login
 //         .getAuthType()
 //         .then((res) => {
-//           //如果结果包含LDAP，把LDAP放在第一个
+//           //IfResultContainsLDAP, putLDAPPlaced atOne
 //           const ldapIndex = res.indexOf('LDAP')
 //           if (ldapIndex !== -1) {
 //             const [ldap] = res.splice(ldapIndex, 1)
@@ -525,7 +525,7 @@ onMounted(() => {
         }
       })
       .catch((error) => {
-        console.error('SDK 加载失败:', error)
+        console.error('SDK LoadFailure:', error)
       })
   }
 

@@ -1,10 +1,10 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： base_chat_step.py
+@Author: Tiger
+@file: base_chat_step.py
 @date：2024/1/9 18:25
-@desc: 对话step Base实现
+@desc: Conversationstep BaseImplementation
 """
 
 import json
@@ -148,7 +148,7 @@ def event_content(
                 "reasoning_content": reasoning_content_chunk if reasoning_content_enable else "",
             },
         )
-        # 获取token
+        # Gettoken
         if is_ai_chat:
             try:
                 request_token = chat_model.get_num_tokens_from_messages(message_list)
@@ -303,7 +303,7 @@ class BaseChatStep(IChatStep):
             )
 
     def get_details(self, manage, **kwargs):
-        # 提取长期记忆
+        # ExtractLong-term memory
         extract_long_term_memory.apply_async(
             args=(
                 manage.context.get("workspace_id"),
@@ -360,10 +360,10 @@ class BaseChatStep(IChatStep):
 
         mcp_servers_config = {}
 
-        # 迁移过来mcp_source是None
+        # Migration过来mcp_source是None
         if mcp_source is None:
             mcp_source = "custom"
-        # 兼容老数据
+        # Compatible老Data
         if not mcp_tool_ids:
             mcp_tool_ids = []
         if mcp_source == "custom" and mcp_servers:
@@ -373,12 +373,12 @@ class BaseChatStep(IChatStep):
             for mcp_tool in mcp_tools:
                 if mcp_tool and mcp_tool["is_active"]:
                     mcp_servers_config = {**mcp_servers_config, **json.loads(mcp_tool["code"])}
-        # 校验代码是否包括禁止的关键字
+        # ValidateCodeWhetherIncluding forbiddenKeyword
         ToolExecutor().validate_mcp_transport(json.dumps(mcp_servers_config))
 
         tool_init_params = {}
         tools = get_tools("APPLICATION", agent_id, tool_ids, workspace_id, runtime_user_id)
-        if tool_ids and len(tool_ids) > 0:  # 如果有工具ID，则将其转换为MCP
+        if tool_ids and len(tool_ids) > 0:  # If有ToolID, then将其Transform为MCP
             self.context["tool_ids"] = tool_ids
             for tool_id in tool_ids:
                 tool = QuerySet(Tool).filter(id=tool_id, tool_type=ToolType.CUSTOM).first()
@@ -528,14 +528,14 @@ class BaseChatStep(IChatStep):
                 else:
                     filtered_message_list.append(msg)
             runtime_user_id = get_runtime_user_id(chat_user_id=chat_user_id, chat_user_type=chat_user_type)
-            # 过滤tool_id
+            # Filtertool_id
             all_tool_ids = list(set((mcp_tool_ids or []) + (tool_ids or []) + (skill_tool_ids or [])))
             authorized_set = set(filter_authorized_ids("tool", all_tool_ids, workspace_id, user_id=runtime_user_id))
 
             mcp_tool_ids = [i for i in (mcp_tool_ids or []) if i in authorized_set]
             tool_ids = [i for i in (tool_ids or []) if i in authorized_set]
             skill_tool_ids = [i for i in (skill_tool_ids or []) if i in authorized_set]
-            # 处理 MCP 请求
+            # Process MCP Request
             mcp_result = self._handle_mcp_request(
                 mcp_source,
                 mcp_servers,
@@ -667,14 +667,14 @@ class BaseChatStep(IChatStep):
             ), False
         else:
             runtime_user_id = get_runtime_user_id(chat_user_id=chat_user_id, chat_user_type=chat_user_type)
-            # 过滤tool_id
+            # Filtertool_id
             all_tool_ids = list(set((mcp_tool_ids or []) + (tool_ids or []) + (skill_tool_ids or [])))
             authorized_set = set(filter_authorized_ids("tool", all_tool_ids, workspace_id, user_id=runtime_user_id))
 
             mcp_tool_ids = [i for i in (mcp_tool_ids or []) if i in authorized_set]
             tool_ids = [i for i in (tool_ids or []) if i in authorized_set]
             skill_tool_ids = [i for i in (skill_tool_ids or []) if i in authorized_set]
-            # 处理 MCP 请求
+            # Process MCP Request
             mcp_result = self._handle_mcp_request(
                 mcp_source,
                 mcp_servers,
@@ -723,7 +723,7 @@ class BaseChatStep(IChatStep):
         reasoning_content_end = model_setting.get("reasoning_content_end", "</think>")
         reasoning = Reasoning(reasoning_content_start, reasoning_content_end)
         chat_record_id = uuid.uuid7()
-        # 调用模型
+        # CallModel
         try:
             chat_result, is_ai_chat = self.get_block_result(
                 message_list,

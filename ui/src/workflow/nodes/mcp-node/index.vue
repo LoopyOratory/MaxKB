@@ -371,7 +371,7 @@ function getTools() {
     MsgError(t('workflow.nodes.mcpNode.mcpServerTip'))
     return
   }
-  // 一切正常，获取tool
+  // Everything OK, fetching tool
   _getTools(form_data.value.mcp_servers)
 }
 
@@ -398,7 +398,7 @@ function _getTools(mcp_servers: any) {
     .then((res: any) => {
       form_data.value.mcp_tools = res.data
       MsgSuccess(t('workflow.nodes.mcpNode.getToolsSuccess'))
-      // 修改了json，刷新mcp_server
+      // JSON modified, refreshing mcp_server
       form_data.value.mcp_server = form_data.value.mcp_tools.find(
         (item: any) => item.name === form_data.value.mcp_tool,
       )?.server
@@ -406,9 +406,9 @@ function _getTools(mcp_servers: any) {
 }
 
 const mcpServerInputDialogRef = ref()
-// 提取 JSON 中所有占位符（{{...}}）的变量路径
+// Extract all placeholder ({{...}}) variable paths from JSON
 function extractPlaceholders(input: unknown): string[] {
-  const re = /\{\{\s*([a-zA-Z_][\w.]*)\s*\}\}/g // 捕获 {{ path.like.this }}
+  const re = /\{\{\s*([a-zA-Z_][\w.]*)\s*\}\}/g // capture {{ path.like.this }}
   const found = new Set<string>()
 
   const visit = (v: unknown) => {
@@ -422,7 +422,7 @@ function extractPlaceholders(input: unknown): string[] {
     }
   }
 
-  // 如果传入的是 JSON 字符串，尝试解析，否则按字符串/对象处理
+  // If input is a JSON string, try to parse it; otherwise treat as string/object
   if (typeof input === 'string') {
     try {
       visit(JSON.parse(input))
@@ -442,7 +442,7 @@ function handleMcpVariables(vars: any) {
     mcp_servers = mcp_servers.replace(`{{${item}}}`, vars[item])
   }
 
-  // 一切正常，获取tool
+  // Everything OK, fetching tool
   _getTools(mcp_servers)
 }
 
@@ -556,7 +556,7 @@ const form_data = computed({
 const replyNodeFormRef = ref()
 
 const validate = async () => {
-  // 对动态表单，只验证必填字段
+  // For dynamic forms, only validate required fields
   if (dynamicsFormRef.value) {
     const requiredFields = form_data.value.tool_form_field
       .filter((item: any) => item.required)
@@ -572,7 +572,7 @@ const validate = async () => {
             })
           }
         } else {
-          // 这里是没有嵌套的情况
+          // This is the no-nesting case
           if (!form_data.value.tool_params[item]) {
             return Promise.reject({
               node: props.nodeModel,

@@ -19,14 +19,14 @@ class FolderCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source",
-                description="菜单",
+                description="Menu",
                 type=OpenApiTypes.STR,
                 enum=["APPLICATION", "KNOWLEDGE", "TOOL"],
                 location='path',
@@ -49,14 +49,14 @@ class FolderReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source",
-                description="菜单",
+                description="Menu",
                 type=OpenApiTypes.STR,
                 enum=["APPLICATION", "KNOWLEDGE", "TOOL"],
                 location='path',
@@ -64,7 +64,7 @@ class FolderReadAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="folder_id",
-                description="文件夹id",
+                description="Folderid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -95,14 +95,14 @@ class FolderTreeReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source",
-                description="菜单",
+                description="Menu",
                 type=OpenApiTypes.STR,
                 enum=["APPLICATION", "KNOWLEDGE", "TOOL"],
                 location='path',
@@ -110,7 +110,7 @@ class FolderTreeReadAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False,

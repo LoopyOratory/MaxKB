@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： pg_vector.py
+@Author: Tiger
+@file: pg_vector.py
 @date：2023/10/19 15:28
 @desc:
 """
@@ -36,7 +36,7 @@ class PGVector(BaseVectorStore):
         QuerySet(Embedding).filter(source_id__in=source_ids).update(**instance)
 
     def vector_is_create(self) -> bool:
-        # 项目启动默认是创建好的 不需要再创建
+        # 项目StartDefault是Creation好的 不Needs再Creation
         return True
 
     def vector_create(self):

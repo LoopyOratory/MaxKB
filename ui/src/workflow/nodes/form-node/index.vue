@@ -290,12 +290,12 @@ const validate = () => {
     for (const cond of field.visibility_rules?.conditions || []) {
       if (!cond.field || cond.field.length < 2 || !cond.field[0] || !cond.field[1]) continue
       if (cond.field[0] === props.nodeModel.id) {
-        // 同节点：查 form_field_list
+        // Same node: check form_field_list
         if (!form_data.value.form_field_list.some((f: any) => f.field === cond.field[1])) {
           v_list.push(Promise.reject(t('workflow.variable.NoReferencing')))
         }
       } else {
-        // 跨节点：查上游（含循环外层 graph 的节点）
+        // Cross-node: check upstream (including loop outer graph nodes)
         const nodeEntry = upstreamNodes.find((n: any) => n.value === cond.field[0])
         if (!nodeEntry || !nodeEntry.children?.some((c: any) => c.value === cond.field[1])) {
           v_list.push(Promise.reject(t('workflow.variable.NoReferencing')))
@@ -312,21 +312,21 @@ function submitDialog(val: string) {
   set(props.nodeModel.properties.node_data, 'form_content_format', val)
 }
 
-// 表格排序拖拽
+// Table sort drag
 function onDragHandle() {
   if (!tableRef.value) return
 
-  // 获取表格的 tbody DOM 元素
+  // Get table tbody DOM element
   const wrapper = tableRef.value.$el as HTMLElement
   const tbody = wrapper.querySelector('.el-table__body-wrapper tbody')
   if (!tbody) return
-  // 初始化 Sortable
+  // Initialize Sortable
   Sortable.create(tbody as HTMLElement, {
     animation: 150,
     ghostClass: 'ghost-row',
     onEnd: (evt) => {
       if (evt.oldIndex === undefined || evt.newIndex === undefined) return
-      // 更新数据顺序
+      // Update data order
       const items = cloneDeep([...form_data.value.form_field_list])
       const [movedItem] = items.splice(evt.oldIndex, 1)
       items.splice(evt.newIndex, 0, movedItem)

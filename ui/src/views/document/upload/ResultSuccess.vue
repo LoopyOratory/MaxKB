@@ -97,7 +97,7 @@ const props = defineProps({
 const router = useRouter()
 const route = useRoute()
 const {
-  params: { id, folderId, type }, // id为knowledgeID
+  params: { id, folderId, type }, // id is knowledgeID
 } = route as any
 
 const apiType = computed(() => {

@@ -91,7 +91,7 @@
       style="width: 100%"
     />
   </el-form-item>
-  <!-- 添加弹窗 -->
+  <!-- AddDialog -->
   <el-dialog
     v-model="addDialog.visible"
     :title="
@@ -158,7 +158,7 @@
     </template>
   </el-dialog>
 
-  <!-- 编辑弹窗 -->
+  <!-- EditDialog -->
   <el-dialog
     v-model="editDialog.visible"
     :title="$t('common.edit')"
@@ -306,7 +306,7 @@ function createEmptyRow(): AddFormItem {
   }
 }
 
-/* -------------------- 添加 -------------------- */
+/* -------------------- Add -------------------- */
 
 function openAddRootDialog() {
   addDialog.visible = true
@@ -376,7 +376,7 @@ function submitAdd() {
   closeAddDialog()
 }
 
-/* -------------------- 编辑 -------------------- */
+/* -------------------- Edit -------------------- */
 
 function openEditDialog(node: TreeNode) {
   editDialog.visible = true
@@ -413,7 +413,7 @@ function submitEdit() {
   closeEditDialog()
 }
 
-/* -------------------- 删除 -------------------- */
+/* -------------------- Deletion -------------------- */
 
 function handleDelete(node: TreeNode) {
   ElMessageBox.confirm(`${t('common.deleteConfirm')}「${node.label}」`, t('common.tip'), {

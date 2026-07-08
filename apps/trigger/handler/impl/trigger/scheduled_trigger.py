@@ -231,7 +231,7 @@ def deploy_scheduled_trigger(trigger: dict, trigger_tasks: list[dict], setting: 
 
 class ScheduledTrigger(BaseTrigger):
     """
-    定时任务触发器
+    ScheduledTaskTrigger
     """
 
     @staticmethod

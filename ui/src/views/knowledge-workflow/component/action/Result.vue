@@ -4,7 +4,7 @@
       {{ $t('aiChat.executionDetails.title') }}
     </h4>
     <div class="mb-16" v-if="!isRecord">
-      <!-- 执行结果 -->
+      <!-- ExecuteResult -->
       <el-alert
         v-if="state == 'SUCCESS'"
         :title="$t('common.status.success')"
@@ -71,7 +71,7 @@ const getKnowledgeWorkflowAction = () => {
       if (['SUCCESS', 'FAILURE', 'REVOKED'].includes(state.value)) {
         stopPolling()
       } else {
-        // 请求完成后再设置下次轮询
+        // RequestCompleteThen afterSettingsNext timePoll
         pollingTimer = setTimeout(getKnowledgeWorkflowAction, 2000)
       }
     })
@@ -84,7 +84,7 @@ const stopPolling = () => {
   }
 }
 
-// 启动轮询
+// StartPoll
 pollingTimer = setTimeout(getKnowledgeWorkflowAction, 0)
 
 watch(

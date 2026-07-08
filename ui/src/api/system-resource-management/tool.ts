@@ -7,8 +7,8 @@ import type { toolData } from '@/api/type/tool'
 const prefix = '/system/resource/tool'
 
 /**
- * 工具列表带分页（无分页）
- * @params 参数
+ * Tool list with pagination (no pagination)
+ * @params Parameters
  *  param  {
         "name": "string",
         "tool_type": "string",
@@ -22,8 +22,8 @@ const getToolList: (data?: any, loading?: Ref<boolean>) => Promise<Result<Array<
 }
 
 /**
- * 工具列表带分页（无分页）
- * @params 参数
+ * Tool list with pagination (no pagination)
+ * @params Parameters
  *  param  {
         "name": "string",
         "tool_type": "string",
@@ -37,8 +37,8 @@ const getAllToolList: (data?: any, loading?: Ref<boolean>) => Promise<Result<Arr
 }
 
 /**
- * 工具列表带分页
- * @param 参数
+ * Tool list with pagination
+ * @param Parameters
  * param  {
  "name": "string",
  "tool_type": "string",
@@ -53,10 +53,10 @@ const getToolListPage: (
 }
 
 /**
- * 获取工具详情
- * @param tool_id 工具id
- * @param loading 加载器
- * @returns 工具详情
+ * GetToolDetails
+ * @param tool_id Toolid
+ * @param loading Loader
+ * @returns ToolDetails
  */
 const getToolById: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   tool_id,
@@ -66,8 +66,8 @@ const getToolById: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<a
 }
 
 /**
- * 修改工具
- * @param 参数
+ * ModificationTool
+ * @param Parameters
 
  */
 const putTool: (tool_id: string, data: toolData, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -86,8 +86,8 @@ const postToolTestConnection: (data: toolData, loading?: Ref<boolean>) => Promis
 }
 
 /**
- * 删除工具
- * @param 参数 tool_id
+ * DeletionTool
+ * @param Parameters tool_id
  */
 const delTool: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   tool_id,
@@ -109,8 +109,8 @@ const exportTool = (id: string, name: string, loading?: Ref<boolean>) => {
 }
 
 /**
- * 调试工具
- * @param 参数
+ * DebugTool
+ * @param Parameters
 
  */
 const postToolDebug: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -159,7 +159,7 @@ const generateCode: (data: any) => Promise<Result<any>> = (data: any) => {
 }
 
 /**
- * 获取工具工作流版本列表
+ * GetToolWorkflowVersionList
  * @param tool_id
  * @param loading
  * @returns
@@ -172,9 +172,9 @@ const listToolWorkflowVersion: (tool_id: string, loading?: Ref<boolean>) => Prom
 }
 /**
  *
- * @param tool_id 工具id
- * @param tool_version_id 工具版本id
- * @param data 数据
+ * @param tool_id Toolid
+ * @param tool_version_id ToolVersionid
+ * @param data Data
  * @param loading
  * @returns
  */
@@ -194,8 +194,8 @@ const publish: (tool_id: string, loading?: Ref<boolean>) => Promise<Result<any>>
 }
 
 /**
- * 调试工作流
- * @param 参数
+ * DebugWorkflow
+ * @param Parameters
  * chat_id: string
  * data
  */
@@ -205,7 +205,7 @@ const debugToolWorkflow: (tool_id: string, data: any) => Promise<any> = (tool_id
 }
 
 /**
- * 保存工具工作流
+ * SaveToolWorkflow
  * @param tool_id
  * @param data
  * @param loading

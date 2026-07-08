@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： Knowledge_workflow_manage.py
+    @Author: Tiger
+    @file: Knowledge_workflow_manage.py
     @date：2025/11/13 19:02
     @desc:
 """
@@ -87,7 +87,7 @@ class KnowledgeWorkflowManage(WorkflowManage):
             current_result = node_result_future.result()
             result = current_result.write_context(current_node, self)
             if result is not None:
-                # 阻塞获取结果
+                # Block and get result
                 list(result)
             if current_node.status == 500:
                 enableException = current_node.node.properties.get('enableException')

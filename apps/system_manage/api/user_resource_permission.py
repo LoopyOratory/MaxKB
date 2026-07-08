@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： workspace_user_resource_permission.py
+    @Author: Tiger
+    @file: workspace_user_resource_permission.py
     @date：2025/4/28 18:13
     @desc:
 """
@@ -17,12 +17,12 @@ from system_manage.serializers.user_resource_permission import ResourceUserPermi
 
 
 class UserResourcePermissionResponse0(serializers.Serializer):
-    id = serializers.UUIDField(required=True, label="主键id")
-    name = serializers.CharField(required=True, label="资源名称")
-    auth_target_type = serializers.CharField(required=True, label="授权资源")
-    user_id = serializers.UUIDField(required=True, label="用户id")
-    icon = serializers.CharField(required=True, label="资源图标")
-    auth_type = serializers.CharField(required=True, label="授权类型")
+    id = serializers.UUIDField(required=True, label="Primary keyid")
+    name = serializers.CharField(required=True, label="ResourceName")
+    auth_target_type = serializers.CharField(required=True, label="AuthorizationResource")
+    user_id = serializers.UUIDField(required=True, label="Userid")
+    icon = serializers.CharField(required=True, label="ResourceIcon")
+    auth_type = serializers.CharField(required=True, label="AuthorizationType")
     permission = serializers.ChoiceField(required=False, allow_null=True, allow_blank=True,
                                          choices=['NOT_AUTH', 'MANAGE', 'VIEW', 'ROLE'],
                                          label=_('permission'))
@@ -42,28 +42,28 @@ class UserResourcePermissionAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="user_id",
-                description="用户id",
+                description="Userid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="name",
-                description="名称",
+                description="Name",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False
             ),
             OpenApiParameter(
                 name="permission",
-                description="权限",
+                description="Permission",
                 type=OpenApiTypes.STR,
                 location='query',
                 many=True,
@@ -82,21 +82,21 @@ class EditUserResourcePermissionAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="user_id",
-                description="用户id",
+                description="Userid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="resource",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
@@ -130,28 +130,28 @@ class ResourceUserPermissionAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="target",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="resource",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="username",
-                description="用户名",
+                description="User名",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False
@@ -165,7 +165,7 @@ class ResourceUserPermissionAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="permission",
-                description="权限",
+                description="Permission",
                 type=OpenApiTypes.STR,
                 location='query',
                 many=True,
@@ -183,21 +183,21 @@ class UserResourcePermissionPageAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="user_id",
-                description="用户id",
+                description="Userid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="resource",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
@@ -218,14 +218,14 @@ class UserResourcePermissionPageAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="name",
-                description="资源名称",
+                description="ResourceName",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False
             ),
             OpenApiParameter(
                 name="permission[]",
-                description="权限",
+                description="Permission",
                 type=OpenApiTypes.STR,
                 location='query',
                 many=True,
@@ -249,21 +249,21 @@ class ResourceUserPermissionPageAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="target",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="resource",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
@@ -284,7 +284,7 @@ class ResourceUserPermissionPageAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="username",
-                description="用户名",
+                description="User名",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=False
@@ -298,7 +298,7 @@ class ResourceUserPermissionPageAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="permission[]",
-                description="权限",
+                description="Permission",
                 type=OpenApiTypes.STR,
                 location='query',
                 many=True,
@@ -318,21 +318,21 @@ class ResourceUserPermissionEditAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="target",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True
             ),
             OpenApiParameter(
                 name="resource",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True

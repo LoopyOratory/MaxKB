@@ -30,7 +30,7 @@ const props = defineProps<{
 const initActive = async () => {
   const scriptLoaded = await load(true)
   if (!scriptLoaded) {
-    console.error('飞书二维码 SDK 加载失败')
+    console.error('FeishuQR code SDK LoadFailure')
     return
   }
 

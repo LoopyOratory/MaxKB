@@ -10,21 +10,21 @@ export default class Dagre {
 
   /**
    * option: {
-   *   rankdir: "TB", // layout 方向, 可选 TB, BT, LR, RL
-   *   align: undefined, // 节点对齐方式，可选 UL, UR, DL, DR
-   *   nodeSize: undefined, // 节点大小
-   *   nodesepFunc: undefined, // 节点水平间距(px)
-   *   ranksepFunc: undefined, // 每一层节点之间间距
-   *   nodesep: 40, // 节点水平间距(px) 注意：如果有grid，需要保证nodesep为grid的偶数倍
-   *   ranksep: 40, // 每一层节点之间间距 注意：如果有grid，需要保证ranksep为grid的偶数倍
-   *   controlPoints: false, // 是否保留布局连线的控制点
-   *   radial: false, // 是否基于 dagre 进行辐射布局
-   *   focusNode: null, // radial 为 true 时生效，关注的节点
+   *   rankdir: "TB", // layout direction, options: TB, BT, LR, RL
+   *   align: undefined, // node alignment, options: UL, UR, DL, DR
+   *   nodeSize: undefined, // node size
+   *   nodesepFunc: undefined, // horizontal node spacing (px)
+   *   ranksepFunc: undefined, // spacing between each layer of nodes
+   *   nodesep: 40, // horizontal node spacing (px) - Note: if using grid, nodesep must be a multiple of grid
+   *   ranksep: 40, // spacing between each layer - Note: if using grid, ranksep must be a multiple of grid
+   *   controlPoints: false, // whether to preserve control points of layout edges
+   *   radial: false, // whether to use radial layout based on dagre
+   *   focusNode: null, // effective when radial is true, the focused node
    * };
    */
   layout(option = {}) {
     const { nodes, edges, gridSize } = this.lf.graphModel
-    // 为了保证生成的节点在girdSize上，需要处理一下。
+    // To ensure generated nodes align to gridSize, some processing is needed.
     let nodesep = 40
     let ranksep = 40
     if (gridSize > 20) {

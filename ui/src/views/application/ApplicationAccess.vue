@@ -67,7 +67,7 @@ const permissionPrecise = computed(() => {
   return permissionMap['application'][apiType.value]
 })
 
-// 平台数据
+// PlatformData
 const platforms = reactive([
   {
     key: 'wecomBot',

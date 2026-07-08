@@ -58,9 +58,9 @@ class AliyunBaiLianSpeechToText(MaxKBBaseModel, BaseSpeechToText):
 
 
         with tempfile.NamedTemporaryFile(delete=False) as temp_file:
-            # 将上传的文件保存到临时文件中
+            # 将Upload的FileSave到TemporaryFile中
             temp_file.write(audio_file.read())
-            # 获取临时文件的路径
+            # GetTemporaryFile的Path
             temp_file_path = temp_file.name
 
         try:
@@ -69,9 +69,9 @@ class AliyunBaiLianSpeechToText(MaxKBBaseModel, BaseSpeechToText):
                 audio = audio.set_channels(1)
             audio = audio.set_frame_rate(16000)
 
-            # 将转换后的音频文件保存到临时文件中
+            # 将Transform afterAudioFileSave到TemporaryFile中
             audio.export(temp_file_path, format='mp3')
-            # 识别临时文件
+            # 识别TemporaryFile
             result = recognition.call(temp_file_path)
             text = ''
             if result.status_code == 200:
@@ -83,5 +83,5 @@ class AliyunBaiLianSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             else:
                 raise Exception('Error: ', result.message)
         finally:
-            # 删除临时文件
+            # DeletionTemporaryFile
             os.remove(temp_file_path)

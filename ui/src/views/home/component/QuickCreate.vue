@@ -362,12 +362,12 @@
       </el-card>
     </el-col>
   </el-row>
-  <!-- 智能体dialog -->
+  <!-- Agentdialog -->
   <CreateApplicationDialog ref="CreateApplicationDialogRef" />
 
-  <!-- 知识库dialog -->
+  <!-- KnowledgeDatabasedialog -->
   <component :is="currentCreateDialog" ref="CreateKnowledgeDialogRef" />
-  <!-- 工具Drawer-->
+  <!-- ToolsDrawer-->
   <ToolFormDrawer ref="ToolFormDrawerRef" @refresh="toolRefresh" :title="ToolDrawertitle" />
   <WorkflowFormDialog
     ref="workflowFormDialogRef"
@@ -388,7 +388,7 @@
     @refresh="toolRefresh"
     :title="DataSourceToolDrawertitle"
   />
-  <!-- 模型dialog-->
+  <!-- Modeldialog-->
   <CreateModelDialog
     ref="createModelRef"
     @submit="modelRefresh"
@@ -447,7 +447,7 @@ const permissionPrecise = computed(() => {
 
 const importLoading = ref(false)
 
-// 智能体快捷方式
+// AgentQuickMethod
 
 const isDropdownVisible = ref('')
 
@@ -483,7 +483,7 @@ const importApplication = (file: any) => {
     })
 }
 
-// 知识库快捷方式
+// KnowledgeDatabaseQuickMethod
 const CreateKnowledgeDialogRef = ref()
 const currentCreateDialog = shallowRef<any>(null)
 
@@ -529,7 +529,7 @@ function importKnowledgeBundle(file: any) {
     })
 }
 
-// 工具快捷方式
+// ToolsQuickMethod
 const ToolUploadRef = ref()
 
 function importTool(file: any) {
@@ -593,7 +593,7 @@ function openCreateDataSourceDialog() {
   DataSourceToolFormDrawerRef.value.open()
 }
 
-// 模型快捷方式
+// ModelQuickMethod
 const createModelRef = ref<InstanceType<typeof CreateModelDialog>>()
 const selectProviderRef = ref<InstanceType<typeof SelectProviderDialog>>()
 const openCreateModel = (provider?: Provider, model_type?: string) => {

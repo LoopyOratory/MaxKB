@@ -160,7 +160,7 @@ const form = {
 const form_data = computed({
   get: () => {
     if (props.nodeModel.properties.node_data) {
-      // 向下兼容
+      // Backward compatibility
       if (props.nodeModel.properties.node_data.strategy === 'variable_to_json') {
         props.nodeModel.properties.node_data.strategy = 'variable_to_array'
       }

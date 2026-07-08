@@ -72,7 +72,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <!-- 工具 -->
+      <!-- Tool -->
       <el-tab-pane :label="$t('views.tool.title')" name="CUSTOM_TOOL">
         <LayoutContainer :showLeft="!route.path.includes('shared')">
           <template #left>

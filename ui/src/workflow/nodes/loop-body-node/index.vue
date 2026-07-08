@@ -148,11 +148,11 @@ const renderGraphData = (data?: any) => {
       })
     })
     lf.value.graphModel.eventCenter.on('anchor:drop', (data: any) => {
-      // 清除当前节点下面的子节点的所有缓存
+      // Clear all caches of child nodes under the current node
       data.nodeModel.clear_next_node_field(false)
     })
     lf.value.graphModel.eventCenter.on('anchor:drop', (data: any) => {
-      // 清除当前节点下面的子节点的所有缓存
+      // Clear all caches of child nodes under the current node
       data.nodeModel.clear_next_node_field(false)
     })
 

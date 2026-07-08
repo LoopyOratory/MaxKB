@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： workspace_user_resource_permission.py
+    @Author: Tiger
+    @file: workspace_user_resource_permission.py
     @date：2025/4/28 17:17
     @desc:
 """
@@ -37,17 +37,17 @@ from users.serializers.user import is_workspace_manage
 
 class PermissionSerializer(serializers.Serializer):
     VIEW = serializers.BooleanField(required=True, label="可读")
-    MANAGE = serializers.BooleanField(required=True, label="管理")
-    ROLE = serializers.BooleanField(required=True, label="跟随角色")
+    MANAGE = serializers.BooleanField(required=True, label="Manage")
+    ROLE = serializers.BooleanField(required=True, label="FollowRole")
 
 
 class UserResourcePermissionItemResponse(serializers.Serializer):
-    id = serializers.UUIDField(required=True, label="主键id")
-    name = serializers.CharField(required=True, label="资源名称")
-    auth_target_type = serializers.CharField(required=True, label="授权资源")
-    user_id = serializers.UUIDField(required=True, label="用户id")
-    icon = serializers.CharField(required=True, label="资源图标")
-    auth_type = serializers.CharField(required=True, label="授权类型")
+    id = serializers.UUIDField(required=True, label="Primary keyid")
+    name = serializers.CharField(required=True, label="ResourceName")
+    auth_target_type = serializers.CharField(required=True, label="AuthorizationResource")
+    user_id = serializers.UUIDField(required=True, label="Userid")
+    icon = serializers.CharField(required=True, label="ResourceIcon")
+    auth_type = serializers.CharField(required=True, label="AuthorizationType")
     permission = serializers.ChoiceField(required=False, allow_null=True, allow_blank=True,
                                          choices=['NOT_AUTH', 'MANAGE', 'VIEW', 'ROLE'],
                                          label=_('permission'))
@@ -189,7 +189,7 @@ class UserResourcePermissionSerializer(serializers.Serializer):
             auth_type=auth_type
         ) for resource_id in resource_id_list]
         QuerySet(WorkspaceUserResourcePermission).bulk_create(workspace_user_resource_permission)
-        # 刷新缓存
+        # RefreshCache
         version = Cache_Version.PERMISSION_LIST.get_version()
         key = Cache_Version.PERMISSION_LIST.get_key(user_id=user_id)
         cache.delete(key, version=version)
@@ -210,7 +210,7 @@ class UserResourcePermissionSerializer(serializers.Serializer):
             user_id=user_id,
             auth_type=ResourceAuthType.RESOURCE_PERMISSION_GROUP
         ).save()
-        # 刷新缓存
+        # RefreshCache
         version = Cache_Version.PERMISSION_LIST.get_version()
         key = Cache_Version.PERMISSION_LIST.get_key(user_id=user_id)
         cache.delete(key, version=version)
@@ -222,7 +222,7 @@ class UserResourcePermissionSerializer(serializers.Serializer):
             UserResourcePermissionUserListRequest(data=instance).is_valid(raise_exception=True)
         workspace_id = self.data.get("workspace_id")
         user_id = self.data.get("user_id")
-        # 用户权限列表
+        # UserPermissionList
         user_resource_permission_list = native_search(self.get_queryset(instance), get_file_content(
             os.path.join(PROJECT_DIR, "apps", "system_manage", 'sql', sql_map.get(self.data.get('auth_target_type')))))
 
@@ -235,7 +235,7 @@ class UserResourcePermissionSerializer(serializers.Serializer):
             UserResourcePermissionUserListRequest(data=instance).is_valid(raise_exception=True)
         workspace_id = self.data.get("workspace_id")
         user_id = self.data.get("user_id")
-        # 用户对应的资源权限分页列表
+        # UserCorrespondingResourcePermissionPaginationList
         user_resource_permission_page_list = native_page_search(current_page, page_size, self.get_queryset(instance),
                                                                 get_file_content(
                                                                     os.path.join(PROJECT_DIR, "apps", "system_manage",
@@ -283,10 +283,10 @@ class UserResourcePermissionSerializer(serializers.Serializer):
                                                                  workspace_id=workspace_id,
                                                                  user_id=user_id,
                                                                  auth_type=auth_type))
-        # 批量更新
+        # BatchUpdate
         QuerySet(WorkspaceUserResourcePermission).bulk_update(update_list, ['permission_list', 'auth_type']) if len(
             update_list) > 0 else None
-        # 批量插入
+        # BatchInsert
         QuerySet(WorkspaceUserResourcePermission).bulk_create(save_list) if len(save_list) > 0 else None
         version = Cache_Version.PERMISSION_LIST.get_version()
         key = Cache_Version.PERMISSION_LIST.get_key(user_id=user_id)
@@ -406,7 +406,7 @@ class ResourceUserPermissionSerializer(serializers.Serializer):
             self.is_valid(raise_exception=True)
             ResourceUserPermissionUserListRequest(data=instance).is_valid(raise_exception=True)
         is_x_pack_ee = self.is_x_pack_ee()
-        # 资源的用户授权列表
+        # Resource的UserAuthorizationList
         resource_user_permission_list = native_search(self.get_queryset(instance, is_x_pack_ee), get_file_content(
             os.path.join(PROJECT_DIR, "apps", "system_manage",
                          'sql',
@@ -426,7 +426,7 @@ class ResourceUserPermissionSerializer(serializers.Serializer):
         if with_valid:
             self.is_valid(raise_exception=True)
             ResourceUserPermissionUserListRequest(data=instance).is_valid(raise_exception=True)
-        # 分页列表
+        # PaginationList
         is_x_pack_ee = self.is_x_pack_ee()
         resource_user_permission_page_list = native_page_search(current_page, page_size,
                                                                 self.get_queryset(instance, is_x_pack_ee),
@@ -491,7 +491,7 @@ class ResourceUserPermissionSerializer(serializers.Serializer):
         users_id = [item["user_id"] for item in users_permission]
         include_children = users_permission[0].get('include_children')
         folder_ids = users_permission[0].get('folder_ids')
-        # 删除已存在的对应的用户在该资源下的权限
+        # Deletion已ExistingCorrespondingUser在该Resource underPermission
 
         if include_children:
             managed_resource_ids = list(

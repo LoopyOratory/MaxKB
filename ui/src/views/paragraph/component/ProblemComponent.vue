@@ -71,7 +71,7 @@ const props = defineProps<{
 
 const route = useRoute()
 const {
-  params: { id, documentId }, // id为knowledgeId
+  params: { id, documentId }, // idisknowledgeId
 } = route as any
 
 const permissionPrecise = computed(() => {

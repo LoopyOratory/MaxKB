@@ -62,7 +62,7 @@ class QfBgeReranker(MaxKBBaseModel, BaseDocumentCompressor):
         response = requests.post(f"{self.api_url}/rerank", json=payload, headers=headers)
 
         if response.status_code != 200:
-            raise RuntimeError(f"千帆 API 请求失败：{response.text}")
+            raise RuntimeError(f"千帆 API RequestFailure：{response.text}")
 
         res = response.json()
 

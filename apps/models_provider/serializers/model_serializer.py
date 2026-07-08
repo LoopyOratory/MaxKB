@@ -184,23 +184,23 @@ class ModelSerializer(serializers.Serializer):
             if model is None:
                 return True
             QuerySet(WorkspaceUserResourcePermission).filter(target=model_id).delete()
-            # TODO : 这里可以添加模型删除的逻辑,需要注意删除模型时的权限和关联关系
+            # TODO : 这里CanAddModelDeletion的Logic,Needs注意DeletionModel at Permission和AssociationRelation
             # if model.model_type == 'LLM':
             #     application_count = Application.objects.filter(model_id=model_id).count()
             #     if application_count > 0:
-            #         raise AppApiException(500, f"该模型关联了{application_count} 个应用，无法删除该模型。")
+            #         raise AppApiException(500, f"该ModelAssociation了{application_count} 个Application, cannotDeletion该Model。")
             # elif model.model_type == 'EMBEDDING':
             #     dataset_count = DataSet.objects.filter(embedding_model_id=model_id).count()
             #     if dataset_count > 0:
-            #         raise AppApiException(500, f"该模型关联了{dataset_count} 个知识库，无法删除该模型。")
+            #         raise AppApiException(500, f"该ModelAssociation了{dataset_count} 个Knowledge base, cannotDeletion该Model。")
             # elif model.model_type == 'TTS':
             #     dataset_count = Application.objects.filter(tts_model_id=model_id).count()
             #     if dataset_count > 0:
-            #         raise AppApiException(500, f"该模型关联了{dataset_count} 个应用，无法删除该模型。")
+            #         raise AppApiException(500, f"该ModelAssociation了{dataset_count} 个Application, cannotDeletion该Model。")
             # elif model.model_type == 'STT':
             #     dataset_count = Application.objects.filter(stt_model_id=model_id).count()
             #     if dataset_count > 0:
-            #         raise AppApiException(500, f"该模型关联了{dataset_count} 个应用，无法删除该模型。")
+            #         raise AppApiException(500, f"该ModelAssociation了{dataset_count} 个Application, cannotDeletion该Model。")
             model.delete()
             ResourceMapping.objects.filter(target_id=model_id).delete()
             return True
@@ -216,7 +216,7 @@ class ModelSerializer(serializers.Serializer):
             try:
                 model.status = Status.SUCCESS
                 default_params = {item["field"]: item["default_value"] for item in model.model_params_form}
-                # 校验模型认证数据
+                # ValidateModelAuthenticationData
                 provider_handler.is_valid_credential(
                     model.model_type, instance.get("model_name"), credential, default_params, raise_exception=True
                 )
@@ -345,7 +345,7 @@ class ModelSerializer(serializers.Serializer):
                         }
                     ).auth_resource(str(model.id))
             except Exception as save_error:
-                # 可添加日志记录
+                # 可AddLogRecord
                 raise AppApiException(500, _("Model saving failed")) from save_error
 
             if status == Status.DOWNLOAD:
@@ -413,7 +413,7 @@ class ModelSerializer(serializers.Serializer):
                 shared_queryset = self._build_query_params("None", False, user_id)["model_query_set"]
                 shared_queryset = get_authorized_model(shared_queryset, workspace_id)
 
-            # 构建共享模型和普通模型列表
+            # BuildSharedModel和NormalModelList
             shared_model = [self._build_model_data(model) for model in shared_queryset]
 
             is_x_pack_ee = self.is_x_pack_ee()
@@ -515,15 +515,15 @@ class ModelSerializer(serializers.Serializer):
                 model_params_form = []
             if not isinstance(model_params_form, list):
                 raise AppApiException(500, _("model_params_form must be a list"))
-            # 还需要校验几个字段：label required default_value
-            # 校验每个配置项的必要字段
+            # 还NeedsValidate几个Field：label required default_value
+            # ValidateEachConfiguration项的必要Field
             for index, param in enumerate(model_params_form):
                 if not isinstance(param, dict):
                     raise AppApiException(
                         500, _("The {index}th item in model_params_form must be a dictionary").format(index=index)
                     )
 
-                # 校验 label 字段
+                # Validate label Field
                 if "label" not in param or param["label"] is None:
                     raise AppApiException(
                         500,

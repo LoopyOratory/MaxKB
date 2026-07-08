@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： i_loop_node.py
+    @Author: Tiger
+    @file: i_loop_node.py
     @date：2025/3/11 18:19
     @desc:
 """
@@ -22,7 +22,7 @@ class ILoopNodeSerializer(serializers.Serializer):
                                   label=_("array"))
     number = serializers.IntegerField(required=False, allow_null=True,
                                       label=_("number"))
-    loop_body = serializers.DictField(required=True, label="循环体")
+    loop_body = serializers.DictField(required=True, label="Loop body")
 
     def is_valid(self, *, raise_exception=False):
         super().is_valid(raise_exception=True)

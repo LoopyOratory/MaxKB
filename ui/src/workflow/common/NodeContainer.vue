@@ -520,7 +520,7 @@ const closeNodeMenu = () => {
   anchorData.value = undefined
 }
 /**
- * 检索选中时候触发
+ * Triggered when search selection is made
  * @param kw
  */
 
@@ -532,7 +532,7 @@ const selectOn = (kw: string) => {
   currentKeyWord.value = false
 }
 /**
- * 定位时触发
+ * Triggered when positioning
  * @param kw
  */
 const focusOn = (kw: string) => {
@@ -540,14 +540,14 @@ const focusOn = (kw: string) => {
   currentKeyWord.value = true
 }
 /**
- * 清除时触发
+ * Triggered when clearing
  */
 const clearSelectOn = () => {
   keyWord.value = ''
   currentKeyWord.value = false
 }
 
-// 高亮选中关键字
+// Highlight selected keywords
 
 const highlightedStepName = (contentText: string) => {
   let res = contentText

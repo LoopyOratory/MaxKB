@@ -9,7 +9,7 @@
           require-asterisk-position="right"
           @submit.prevent
         >
-          <!-- 登录方式选择框 -->
+          <!-- LoginMethodSelectDialog -->
           <el-form-item
             :label="$t('views.system.login_method')"
             :rules="[
@@ -215,7 +215,7 @@
             "
             class="mr-12"
           >
-            <!-- 直接调用 submit，不传参 -->
+            <!-- DirectCall submit, notParameter -->
             <el-button @click="submit" type="primary" :disabled="loading">
               {{ $t('common.save') }}
             </el-button>
@@ -242,7 +242,7 @@ import {hasPermission} from '@/utils/permission'
 const loginMethods = ref<Array<{ label: string; value: string }>>([])
 const systemLoginMethods = ref<Array<{ label: string; value: string }>>([])
 const loading = ref(false)
-// 明确允许 null，避免未挂载时访问出错
+// Explicitly allow null, avoid when unmountedAccessError
 const authFormRef = ref<FormInstance | null>(null)
 
 const form = ref<any>({
@@ -257,7 +257,7 @@ const form = ref<any>({
 })
 
 const normalizeInputValue = (val: number | null): number => {
-  // 若输入为空或无法转换为有效数字，默认设为 1
+  // If input is empty or cannot be transformed to a valid number, default to 1
   let normalizedVal = typeof val === 'number' ? Math.trunc(val) : NaN
   if (!Number.isFinite(normalizedVal)) {
     normalizedVal = 1
@@ -280,7 +280,7 @@ const onMaxAttemptsChange = (val: number | null) => {
   form.value.max_attempts = normalizeInputValue(val)
 }
 
-// 提交：使用 authFormRef.value.validate() 的 Promise 风格，并保证 loading 在 finally 中恢复
+// Submit: use authFormRef.value.validate() promise style, and ensure loading is restored in finally
 const submit = async () => {
   const formRef = authFormRef.value
   if (!formRef) return
@@ -300,7 +300,7 @@ const submit = async () => {
     await authApi.putLoginSetting(params)
     MsgSuccess(t('common.saveSuccess'))
   } catch (err) {
-    // 验证或请求失败：按需处理，避免未捕获异常
+    // VerifyorRequestFailure: On-demandProcess, avoid uncapturedException
     // console.error(err);
   } finally {
     loading.value = false
@@ -310,7 +310,7 @@ const submit = async () => {
 const roleOptions = ref<Array<{ id: string; name: string; type?: string }>>([])
 const workspaceOptions = ref<Array<{ id: string; name: string }>>([])
 const {user} = useStore()
-const selectedRoleType = ref<string>('') // 存储选中角色类型，用于控制 workspace 显示
+const selectedRoleType = ref<string>('') // StorageSelectRoleType，Used forControl workspace Show
 const showWorkspaceSelector = computed(() => selectedRoleType.value !== 'ADMIN')
 const showPermissionSelector = computed(() => selectedRoleType.value === 'USER')
 const permissionOptions = computed(() => {
@@ -342,7 +342,7 @@ const permissionOptions = computed(() => {
 
   return baseOptions
 })
-// 当角色变更时更新 selectedRoleType
+// When role changes, update selectedRoleType
 const handleRoleChange = (roleId: string) => {
   const selectedRole = roleOptions.value.find((role) => role.id === roleId)
   selectedRoleType.value = selectedRole?.type || ''
@@ -351,20 +351,20 @@ const handleRoleChange = (roleId: string) => {
   }
 }
 const handleLoginMethodsChange = (values: string[]) => {
-  // 根据选中的登录方式过滤 systemLoginMethods
+  // Based onSelected in LoginMethodFilter systemLoginMethods
   loginMethods.value = systemLoginMethods.value.filter(method =>
     values.includes(method.value)
   )
 
-  // 如果当前默认登录方式不在选中的范围内，则重置为第一个选中的方式
+  // If current default login method is not in selection range, reset to the selected method
   if (values.length > 0 && !values.includes(form.value.default_value)) {
     form.value.default_value = values[0]
   }
 
-  // 如果没有任何选中的登录方式，清空默认登录方式
+  // IfNoneAny selected in LoginMethod, clearDefaultLoginMethod
   if (values.length === 0) {
     form.value.default_value = ''
-    // 重新触发验证
+    // Re-TriggerVerify
     setTimeout(() => {
       authFormRef.value?.validateField('login_methods')
     }, 0)
@@ -376,7 +376,7 @@ onMounted(async () => {
   try {
     const isEE = typeof user?.isEE === 'function' ? user.isEE() : false
 
-    // 并行请求：角色列表 + 登录设置；若为 EE 同时请求 workspace 列表
+    // ParallelRequest：RoleList + LoginSettings; if EE SimultaneouslyRequest workspace List
     const roleP = WorkspaceApi.getWorkspaceRoleList()
       .then((r) => r)
       .catch(() => ({data: []}))
@@ -398,7 +398,7 @@ onMounted(async () => {
     const settingRes = results[1] ?? {data: {}}
     const workspaceRes = isEE ? (results[2] ?? {data: []}) : null
 
-    // 处理角色列表（尽早回显）
+    // ProcessRoleList(Early echo)
     const rolesData = Array.isArray(roleRes?.data) ? roleRes.data : []
     roleOptions.value = rolesData.map((item: any) => ({
       id: item.id,
@@ -406,7 +406,7 @@ onMounted(async () => {
       type: item.type,
     }))
 
-    // 处理 setting（合并默认值，避免访问未定义）
+    // Process settings (merge default values, avoid accessing undefined)
     const data = settingRes?.data ?? {}
     form.value = {
       ...form.value,
@@ -420,17 +420,17 @@ onMounted(async () => {
     loginMethods.value = Array.isArray(data.auth_types) ? data.auth_types : []
     systemLoginMethods.value = Array.isArray(data.system_options) ? data.system_options : []
 
-    // 处理 workspace 列表（如果需要）
+    // Process workspace List（IfNeeds）
     if (isEE && workspaceRes) {
       const wks = Array.isArray(workspaceRes.data) ? workspaceRes.data : []
       workspaceOptions.value = wks.map((item: any) => ({id: item.id, name: item.name}))
     }
 
-    // 初始化 selectedRoleType（基于当前回显的 role_id 与已加载的 roleOptions）
+    // Initialize selectedRoleType(Based onCurrentEchoed role_id With existingLoad roleOptions）
     const initRole = roleOptions.value.find((r) => r.id === form.value.role_id)
     selectedRoleType.value = initRole?.type || ''
   } catch (e) {
-    // overall error, 保持默认回显
+    // overall error, MaintainDefaultEcho
     // console.error(e);
   } finally {
     loading.value = false

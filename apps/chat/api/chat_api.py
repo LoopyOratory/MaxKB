@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat_api.py
+    @Author: Tiger
+    @file: chat_api.py
     @date：2025/6/9 15:23
     @desc:
 """
@@ -21,21 +21,21 @@ class PromptGenerateAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="workspace_id",
-            description="工作空间id",
+            description="Workspace id",
             type=OpenApiTypes.STR,
             location='path',
             required=True,
         ),
             OpenApiParameter(
                 name="model_id",
-                description="模型id",
+                description="Modelid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
         ),
             OpenApiParameter(
                 name="application_id",
-                description="应用id",
+                description="Applicationid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -52,7 +52,7 @@ class ChatAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="chat_id",
-            description="对话id",
+            description="Conversationid",
             type=OpenApiTypes.STR,
             location='path',
             required=True,
@@ -108,7 +108,7 @@ class HistoricalConversationOperateAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="chat_id",
-            description="对话id",
+            description="Conversationid",
             type=OpenApiTypes.STR,
             location='path',
             required=True
@@ -128,7 +128,7 @@ class HistoricalConversationRecordAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="chat_id",
-            description="对话id",
+            description="Conversationid",
             type=OpenApiTypes.STR,
             location='path',
             required=True,
@@ -144,7 +144,7 @@ class PageHistoricalConversationRecordAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="chat_id",
-            description="对话id",
+            description="Conversationid",
             type=OpenApiTypes.STR,
             location='path',
             required=True,

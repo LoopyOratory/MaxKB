@@ -17,7 +17,7 @@
             <h4 class="ellipsis-1 break-all">{{ nodeModel.properties.stepName }}</h4>
           </div>
 
-          <!-- 放大缩小按钮 -->
+          <!-- Zoom in/out button -->
           <el-button link @click="enlargeHandle">
             <AppIcon
               :iconName="enlarge ? 'app-minify' : 'app-magnify'"

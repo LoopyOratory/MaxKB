@@ -12,117 +12,117 @@ from models_provider.tools import get_model_instance_by_model_workspace_id
 from ops import celery_app
 
 long_term_prompt = '''
-你是一个专业的用户长期记忆提炼引擎。你的唯一职责是：从对话中精确识别具有持久价值的用户信息，并与已有记忆进行结构化融合，输出供 AI 助手长期使用的用户画像记忆。
+你是One专业的UserLong-term memory提炼引擎。你的Unique职责是：从Conversation中精确识别具有持久价ValueUserInfo, and与已有记忆Perform结构化Merge，Output供 AI 助手长期Use的User画像记忆。
 
-## 输入
+## Input
 【已有记忆】：
 {{existing_memory}}
 
-【本轮新增对话】：
+【本轮AddConversation】：
 {{new_conversation}}
 
 ---
 
-## 提取门槛（必须同时满足，才可提取）
+## Extract门槛（Must同时满足，才可Extract）
 
-1. **跨会话复用价值**：这条信息在未来其他对话中仍然适用，而非当次临时需求
-2. **明确可证**：可从对话原文直接支撑，不得推断、脑补或延伸
-3. **改善回答质量**：记住这条信息后，AI 的回答会对该用户更准确或更贴合
+1. **跨Session复用价值**：这条Info在未来OtherConversation中仍然适用，而非当次Temporary需求
+2. **明确可证**：可从Conversation原文Direct支撑, not得推断、脑补或延伸
+3. **改善Answer质量**：记住这条InfoAfter, AI 的Answer会对该User更准确或更贴合
 
-**以下内容禁止提取：**
-- 用户的一次性临时要求（如「这次用表格输出就好」）
-- 用户提问的具体内容本身（问题不是记忆）
-- 无法从对话原文直接证明的推断
-- 闲聊、问候、感谢等无信息量内容
-- AI 的回答内容（只提取用户侧信息）
+**BelowContentForbiddenExtract：**
+- User的Once性TemporaryRequires（如「这次用TableOutput就好」）
+- User提问的SpecificContent本身（Question不是记忆）
+- 无法从Conversation原文Direct证明的推断
+- 闲聊、问候、感谢等无Info量Content
+- AI 的AnswerContent（只ExtractUser侧Info）
 
 ---
 
-## 四类记忆分类与融合规则
+## 四类记忆分类与MergeRule
 
 ### 【偏好】交互偏好
-用户对「AI 如何回应」的稳定期望，需明确声明或在多轮中反复体现才可录入。
+User对「AI 如何回应」的稳定期望，需明确声明或在多轮中反复体现才可录入。
 
-常见维度：回答详略 / 语言风格（正式/口语）/ 输出格式（表格/列表/段落）/ 是否要举例 / 代码风格偏好 / 回复语言
+CommonDimension：Answer详略 / Language风格（正式/口语）/ OutputFormat（Table/List/Paragraph）/ Whether要举例 / Code风格偏好 / ReplyLanguage
 
-融合规则：
-- 同维度出现新偏好 → **覆盖**旧值，条目末标注 `※已更新`
-- 新维度 → 直接追加
-- 旧偏好无新证据但未被否定 → **保留**
+MergeRule：
+- 同Dimension出现新偏好 → **Override**旧值，条目末Annotation `※已Update`
+- 新Dimension → DirectAppend
+- 旧偏好无新证据但未被否定 → **Retain**
 
 ---
 
-### 【背景】用户背景
-用户的客观身份与环境信息，稳定性强，用户未明确更正则不主动变动。
+### 【背景】User背景
+User的客观身份与EnvironmentInfo，稳定性强，User未明确更正则不主动变动。
 
-常见维度：职业/角色 / 所在行业 / 技术栈与熟练度 / 使用产品或系统 / 团队规模 / 所在地区
+CommonDimension：职业/Role / 所在行业 / 技术栈与熟练度 / Use产品或System / 团队规模 / 所在地区
 
-融合规则：
-- 与旧记忆冲突 → **以新对话为准**，标注 `※已更新`，删除旧值
-- 新增信息 → 追加
-- 信息模糊无法确认 → 追加时标注 `※待确认`
+MergeRule：
+- 与旧记忆冲突 → **以新Conversation为准**，Annotation `※已Update`，Deletion旧值
+- AddInfo → Append
+- Info模糊无法确认 → Append时Annotation `※待确认`
 
 ---
 
 ### 【约定】明确约定
-用户明确要求 AI 固定遵守的行为规则，须有明确指令性语言支撑，不可自行解读。
+User明确Requires AI 固定遵守的行为Rule，须有明确指令性Language支撑, not可自行解读。
 
-常见维度：禁止行为 / 固定执行动作 / 特定触发词响应 / 内容边界 / 输出限制
+CommonDimension：Forbidden行为 / 固定Execute动作 / 特定Trigger词Response / Content边界 / OutputLimit
 
-融合规则：
-- 同类新规则 → **覆盖**旧规则，标注 `※已更新`
-- 新增规则 → 追加
-- 用户明确取消的规则 → **直接删除**
-
----
-
-### 【目标】当前目标
-用户近期或长期正在推进的具体目标，有助于 AI 主动提供更相关的帮助。
-
-常见维度：正在进行的项目 / 学习计划 / 待解决的核心问题 / 关键决策
-
-融合规则：
-- 已明确完成或放弃的目标 → **删除**
-- 新目标 → 追加
-- 已有目标有进展更新 → **覆盖**旧描述
+MergeRule：
+- 同类新Rule → **Override**旧Rule，Annotation `※已Update`
+- AddRule → Append
+- User明确Cancel的Rule → **DirectDeletion**
 
 ---
 
-## 输出规范
+### 【Target】CurrentTarget
+User近期或长期正在推进的SpecificTarget, has助于 AI 主动Provide更Related的帮助。
 
-1. **只输出记忆内容本身**，不含任何开头语、解释、总结或分隔说明
-2. 四个章节**全部输出**，确无内容写「暂无」，不可省略章节
-3. 每条格式：`- [维度标签] 内容`，标签 2~5 字，精准简洁
-4. 有变更标记（`※已更新` / `※待确认`）的条目置于各章节**最前**
-5. 每条记忆控制在 **60 字以内**，信息密度优先，超出则拆为两条
-6. 输出语言与【本轮新增对话】主要语言保持一致
+CommonDimension：正在Perform的项目 / 学习计划 / 待解决的核心Question / 关键决策
+
+MergeRule：
+- 已明确Complete或放弃的Target → **Deletion**
+- 新Target → Append
+- 已有Target有进展Update → **Override**旧Description
 
 ---
 
-## 输出格式
+## OutputStandard
+
+1. **只Output记忆Content本身**, not含任何开头语、解释、总结或分隔说明
+2. 四个Chapter**AllOutput**，确无Content写「暂无」, not可省略Chapter
+3. 每条Format：`- [DimensionTag] Content`，Tag 2~5 字，精准简洁
+4. 有变更标记（`※已Update` / `※待确认`）的条目置于各Chapter**最前**
+5. 每条记忆控制在 **60 字以内**，Info密度优先，超出则拆为两条
+6. OutputLanguage与【本轮AddConversation】主要Language保持Consistent
+
+---
+
+## OutputFormat
 
 ### 【偏好】交互偏好
-- [维度标签] 内容
-（暂无则写：暂无）
+- [DimensionTag] Content
+(Write "None" if none)
 
-### 【背景】用户背景
-- [维度标签] 内容
-（暂无则写：暂无）
+### 【背景】User背景
+- [DimensionTag] Content
+(Write "None" if none)
 
 ### 【约定】明确约定
-- [维度标签] 内容
-（暂无则写：暂无）
+- [DimensionTag] Content
+(Write "None" if none)
 
-### 【目标】当前目标
-- [维度标签] 内容
-（暂无则写：暂无）
+### 【Target】CurrentTarget
+- [DimensionTag] Content
+(Write "None" if none)
 
 '''
 
 
 def _get_long_term_config(application, chat_user_id):
     """
-    提取长期记忆配置，返回 dict 或 None（None 表示不需要提取，已清理记忆）
+    ExtractLong-term memoryConfiguration，Return dict 或 None（None 表示不NeedsExtract，已Cleanup记忆）
     """
     if application.type == 'WORK_FLOW':
         node_list = application.work_flow.get('nodes', [])
@@ -157,8 +157,8 @@ def _get_long_term_config(application, chat_user_id):
 
 def _get_cron_interval(cron_expression: str):
     """
-    通过计算 cron 表达式的连续两次触发时间之差，估算执行间隔。
-    返回 timedelta，或 None（无法推断时）。
+    ThroughCalculate cron 表达式的连续两次TriggerTime之差，估算Execute间隔。
+    Return timedelta，或 None(None法推断时）。
     """
     from apscheduler.triggers.cron import CronTrigger
 
@@ -178,8 +178,8 @@ def _get_cron_interval(cron_expression: str):
 
 def _get_since_time_from_setting(setting: dict):
     """
-    根据定时设置推算本次应提取的对话起始时间。
-    返回 datetime（aware），或 None 表示无法推断（回退到 rounds 限制）。
+    Based onScheduledSettings推算本次应Extract的Conversation起始Time。
+    Return datetime（aware），或 None 表示无法推断（回退到 rounds Limit）。
     """
     now = timezone.now()
     schedule_type = setting.get("schedule_type")
@@ -215,9 +215,9 @@ def _get_since_time_from_setting(setting: dict):
 
 def _run_extract(workspace_id, application_id, chat_user_id, config, history_limit=None, since_time=None):
     """
-    执行一次长期记忆提取。
-    - since_time 不为 None 时：提取该时间点之后产生的对话。
-    - 否则按 history_limit 条数限制。
+    ExecuteOnceLong-term memoryExtract。
+    - since_time 不为 None 时：Extract该Time点之后产生的Conversation。
+    - 否则按 history_limit 条数Limit。
     """
     if since_time is None and (history_limit is None or history_limit <= 0):
         return
@@ -251,13 +251,13 @@ def _run_extract(workspace_id, application_id, chat_user_id, config, history_lim
 
     existing_memory = long_term_memory.memory if long_term_memory else ''
 
-    # 反转为时间正序（旧→新）
+    # 反转为Time正序（旧→新）
     history_chat_record = list(reversed(history_chat_record))
 
     new_conversation = '\n'.join(
         line
         for record in history_chat_record
-        for line in (f"用户：{record.problem_text}", f"AI：{record.answer_text}")
+        for line in (f"User：{record.problem_text}", f"AI：{record.answer_text}")
     )
 
     content = ''
@@ -321,7 +321,7 @@ def _remove_long_term_jobs(application_id) -> None:
 
 def _execute_scheduled_extract(workspace_id, application_id):
     """
-    APScheduler 触发的回调：遍历该应用下所有 chat_user_id，分别投递提取任务。
+    APScheduler Trigger的Callback：Traverse该Application下All chat_user_id，分别投递ExtractTask。
     """
     application = Application.objects.filter(id=application_id).first()
     if not application:
@@ -538,7 +538,7 @@ def extract_long_term_memory(workspace_id, application_id, chat_user_id):
     trigger_setting = config['trigger_setting']
 
     if trigger_type != 'ROUND':
-        # 按照时间的，定时任务会处理
+        # 按照Time的，ScheduledTask会Process
         return
 
     rounds = trigger_setting.get('rounds', 10)
@@ -558,18 +558,18 @@ def extract_long_term_memory(workspace_id, application_id, chat_user_id):
 
 @celery_app.task(name="celery:schedule_extract_long_term_memory")
 def schedule_extract_long_term_memory(workspace_id, application_id, enabled, trigger_type, trigger_setting):
-    # 先清理旧的调度任务
+    # 先Cleanup旧的调度Task
     _remove_long_term_jobs(application_id)
 
     application = Application.objects.filter(id=application_id).first()
     if not application:
         return
 
-    # 应用关闭长期记忆
+    # ApplicationCloseLong-term memory
     if not enabled:
         QuerySet(ApplicationLongTermMemory).filter(application_id=application_id).delete()
         return
-    # 不再是定时触发，则只清理不再部署
+    # 不再是ScheduledTrigger, then只Cleanup不再Deployment
     if trigger_type != 'SCHEDULED':
         return
 

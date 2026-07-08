@@ -14,8 +14,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 创建问题
- * @param 参数 knowledge_id
+ * CreationQuestion
+ * @param Parameters knowledge_id
  * data: array[string]
  */
 const postTermbase: (
@@ -27,8 +27,8 @@ const postTermbase: (
 }
 
 /**
- * 问题分页列表
- * @param 参数  knowledge_id,
+ * QuestionPaginationList
+ * @param Parameters  knowledge_id,
  * query {
  "content": "string",
  }
@@ -48,8 +48,8 @@ const getTermbasePage: (
 }
 
 /**
- * 修改问题
- * @param 参数
+ * ModificationQuestion
+ * @param Parameters
  * knowledge_id, termbase_id,
  * {
  "content": "string",
@@ -65,8 +65,8 @@ const putTermbase: (
 }
 
 /**
- * 删除问题
- * @param 参数 knowledge_id, termbase_id,
+ * DeletionQuestion
+ * @param Parameters knowledge_id, termbase_id,
  */
 const delTermbase: (
   knowledge_id: string,

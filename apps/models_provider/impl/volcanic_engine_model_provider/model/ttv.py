@@ -44,7 +44,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         return True
 
     def _build_prompt(self, prompt: str) -> str:
-        """拼接参数到 prompt 文本"""
+        """ConcatenateParameters到 prompt Text"""
         param_map = {
             "ratio": "rt",
             "duration": "dur",
@@ -59,7 +59,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         return prompt
 
     def _poll_task(self, client: Ark, task_id: str, interval: int = 30):
-        """轮询任务状态，直到完成"""
+        """PollTaskStatus，直到Complete"""
         while True:
             result = client.content_generation.tasks.get(task_id=task_id)
             status = getattr(result, "status", None)
@@ -70,10 +70,10 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
 
             time.sleep(interval)
 
-    # --- 通用异步生成函数 ---
+    # --- GeneralAsyncGenerateFunction ---
     def generate_video(self, prompt, negative_prompt=None, first_frame_url=None, last_frame_url=None, **kwargs):
         client = Ark(api_key=self.api_key, base_url=self.base_url)
-        # 根据params设置其他参数 豆包的参数和别的不一样  需要拼接在text里
+        # Based onparamsSettingsOtherParameters 豆包的Parameters和别的不一样  NeedsConcatenate在text里
         # --rt 16:9 --dur 5 --fps 24 --rs 720p --wm true --cf false
         prompt = self._build_prompt(prompt)
         content = [{"type": "text", "text": prompt}]
@@ -99,7 +99,7 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         task_id = task.id
         maxkb_logger.info(f"[ArkVideo] Created task {task_id}")
 
-        # 轮询获取结果
+        # PollGetResult
         result = self._poll_task(client, task_id)
         if not result:
             return {"status": "timeout", "task_id": task_id}
@@ -111,5 +111,5 @@ class GenerationVideoModel(MaxKBBaseModel, BaseGenerationVideo):
         except Exception as e:
             maxkb_logger.error(f"[ArkVideo] Failed to delete task {task_id}: {e}")
             raise e
-        maxkb_logger.info("视频地址", result.content.video_url)
+        maxkb_logger.info("VideoAddress", result.content.video_url)
         return result.content.video_url

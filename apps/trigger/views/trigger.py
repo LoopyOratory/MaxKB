@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： trigger.py
+    @Author: Niu
+    @file: trigger.py
     @date：2026/1/14 11:44
     @desc:
 """

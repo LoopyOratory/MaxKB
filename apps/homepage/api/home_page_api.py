@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： home_page_api.py
+    @Author: Tiger
+    @file: home_page_api.py
     @date：2026/5/18 16:02
     @desc:
 """
@@ -24,7 +24,7 @@ class ApplicationMonitoringAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="workspace_id",
-            description="工作空间id",
+            description="Workspace id",
             type=OpenApiTypes.STR,
             location='path',
             required=True,

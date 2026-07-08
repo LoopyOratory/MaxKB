@@ -21,12 +21,12 @@ from common.utils.logger import maxkb_logger
 from models_provider.base_model_provider import MaxKBBaseModel
 from models_provider.impl.base_stt import BaseSpeechToText
 
-audio_format = "mp3"  # wav 或者 mp3，根据实际音频格式设置
+audio_format = "mp3"  # wav Or mp3，Based onActualAudioFormatSettings
 
 
 def determine_api_mode(url):
     """
-    根据URL判断API模式
+    Based onURLDetermineAPIMode
     """
     if '/recognize/flash' in url:
         return 'sync'
@@ -44,7 +44,7 @@ class VolcanicASRClient:
         self.token = token
 
     def _build_headers(self, url, task_id=None, x_tt_logid=None):
-        """根据URL构建请求头"""
+        """Based onURLBuildRequest头"""
         mode = determine_api_mode(url)
 
         headers = {
@@ -74,7 +74,7 @@ class VolcanicASRClient:
         return headers
 
     def _create_request_body(self, audio_data, mode='sync'):
-        """创建请求体"""
+        """CreationRequest体"""
         base_request = {
             "user": {"uid": self.appid if mode == 'sync' else "fake_uid"},
             "audio": audio_data,
@@ -105,13 +105,13 @@ class VolcanicASRClient:
 
     def process_audio(self, audio_file=None, submit_url=None):
         """
-        根据submit_url自动选择处理模式
+        Based onsubmit_urlAutomaticSelectProcessMode
         """
-        # 获取音频数据
+        # GetAudioData
         base64_audio = base64.b64encode(audio_file.read()).decode("utf-8")
         audio_data = {"data": base64_audio}
 
-        # 根据URL判断API模式
+        # Based onURLDetermineAPIMode
         mode = determine_api_mode(submit_url)
 
         if mode == 'sync':
@@ -122,12 +122,12 @@ class VolcanicASRClient:
             raise ValueError(f"Unsupported URL pattern: {submit_url}")
 
     def _get_audio_data(self, audio_file):
-        """构建音频数据对象"""
+        """BuildAudioDataObject"""
         base64_audio = base64.b64encode(audio_file.read()).decode("utf-8")
         return {"data": base64_audio}
 
     def _sync_recognize(self, audio_data, submit_url):
-        """同步识别模式"""
+        """Sync识别Mode"""
         headers = self._build_headers(submit_url)
         request_body = self._create_request_body(audio_data, mode='sync')
 
@@ -135,8 +135,8 @@ class VolcanicASRClient:
         return self._handle_response(response, "sync_recognize")
 
     def _async_process(self, audio_data, submit_url):
-        """异步处理模式"""
-        # 提交任务
+        """AsyncProcessMode"""
+        # SubmitTask
         task_id = str(uuid.uuid4())
         headers = self._build_headers(submit_url, task_id=task_id)
         request_body = self._create_request_body(audio_data, mode='async')
@@ -145,35 +145,35 @@ class VolcanicASRClient:
 
         if submit_response.headers.get("X-Api-Status-Code") == "20000000":
             x_tt_logid = submit_response.headers.get("X-Tt-Logid", "")
-            # 查询结果
+            # QueryResult
             return self._poll_for_result(task_id, x_tt_logid)
         else:
             print(f"Submit task failed: {submit_response.headers}")
             return None
 
     def _poll_for_result(self, task_id, x_tt_logid):
-        """轮询查询异步任务结果"""
+        """PollQueryAsyncTaskResult"""
         query_url = "https://openspeech-direct.zijieapi.com/api/v3/auc/bigmodel/query"
 
         while True:
             query_response = self._query_task(task_id, x_tt_logid, query_url)
             code = query_response.headers.get('X-Api-Status-Code', "")
 
-            if code == '20000000':  # 任务完成
+            if code == '20000000':  # TaskComplete
                 return query_response
-            elif code != '20000001' and code != '20000002':  # 任务失败
+            elif code != '20000001' and code != '20000002':  # TaskFailure
                 print(f"Async task failed with code: {code}")
                 return None
             time.sleep(1)
 
     def _query_task(self, task_id, x_tt_logid, query_url):
-        """执行单次查询请求"""
+        """ExecuteSingleQueryRequest"""
         headers = self._build_headers(query_url, task_id=task_id, x_tt_logid=x_tt_logid)
         response = requests.post(query_url, json.dumps({}), headers=headers)
         return self._handle_response(response, "async_query", silent=True)
 
     def _handle_response(self, response, operation, silent=False):
-        """处理响应"""
+        """ProcessResponse"""
         if 'X-Api-Status-Code' in response.headers:
             if not silent:
                 print(f'{operation} response header X-Api-Status-Code: {response.headers["X-Api-Status-Code"]}')

@@ -239,7 +239,7 @@ const refresh = () => {
 const folderList = ref<any[]>([])
 const currentFolder = ref<any>({})
 const folderLoading = ref(false)
-// 文件
+// File
 function folderClickHandle(row: any) {
   if (row.id === currentFolder.value?.id) {
     return

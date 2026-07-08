@@ -52,7 +52,7 @@ class BaseVariableAssignNode(IVariableAssignNode):
                 evaluation(variable, val)
                 result['output_value'] = variable['value'] = val
             elif variable['type'] == 'string':
-                # 变量解析 例如：{{global.xxx}}
+                # VariableParse 例如：{{global.xxx}}
                 val = self.workflow_manage.generate_prompt(variable['value'])
                 evaluation(variable, val)
                 result['output_value'] = val
@@ -69,7 +69,7 @@ class BaseVariableAssignNode(IVariableAssignNode):
             evaluation(variable, val)
             result['output_value'] = val
 
-        # 获取输入输出值的类型，用于显示在执行详情页面中
+        # GetInputOutputValueType，Used forShow在ExecuteDetails页面中
         result['input_type'] = type(result.get('input_value')).__name__ if result.get('input_value') is not None else 'null'
         result['output_type'] = type(result.get('output_value')).__name__ if result.get('output_value') is not None else 'null'
 

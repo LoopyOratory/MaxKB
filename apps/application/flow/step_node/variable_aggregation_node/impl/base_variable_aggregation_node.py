@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎²
-    @file： base_variable_aggregation_node.py
+    @Author: Tiger²
+    @file: base_variable_aggregation_node.py
     @date：2025/10/23 17:42
     @desc:
 """
@@ -11,7 +11,7 @@ from application.flow.step_node.variable_aggregation_node.i_variable_aggregation
 
 
 def _filter_file_bytes(data):
-    """递归过滤掉所有层级的 file_bytes"""
+    """RecursiveFilter掉All层级的 file_bytes"""
     if isinstance(data, dict):
         return {k: _filter_file_bytes(v) for k, v in data.items() if k != 'file_bytes'}
     elif isinstance(data, list):
@@ -72,7 +72,7 @@ class BaseVariableAggregationNode(IVariableAggregation):
                         'variable_to_dict': self.set_variable_to_dict,
                         }
 
-        # 向下兼容
+        # Backward compatibility
         if strategy == 'variable_to_json':
             strategy = 'variable_to_array'
 

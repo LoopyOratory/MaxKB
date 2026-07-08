@@ -262,14 +262,14 @@ const showEditIcon = ref(false)
 const codeTemplate = `
 def get_form_list(node, **kwargs):
     """
-    获取表单配置列表
+    GetFormConfigurationList
 
     Args:
-        node: 节点对象
-        **kwargs: 其他关键字参数
+        node: NodeObject
+        **kwargs: OtherKeywordParameters
 
     Returns:
-        list: 包含表单字段配置的列表，用于构建文件树选择器
+        list: ContainsFormFieldConfigurationList，Used forBuildFileTreeSelectRenderer
     """
     return [{
         "field": 'file_list',
@@ -286,53 +286,53 @@ def get_form_list(node, **kwargs):
 
 def get_file_list(app_id=None, app_secret=None, folder_token=None, **kwargs):
     """
-    获取文件列表
+    GetFileList
 
     Args:
-        app_id (str, optional): 应用ID
-        app_secret (str, optional): 应用密钥
-        folder_token (str, optional): 文件夹token
-        **kwargs: 其他关键字参数，包括current_node当前节点信息
+        app_id (str, optional): ApplicationID
+        app_secret (str, optional): ApplicationSecret key
+        folder_token (str, optional): Foldertoken
+        **kwargs: OtherKeywordParameters, includingcurrent_nodeCurrentNodeInfo
 
     Returns:
-        list: 过滤后的文件列表，每个文件包含leaf标识和原始文件信息
+        list: Filter afterFileList，EachFileContainsleafIdentifier andOriginalFileInfo
     """
     pass
 
 def get_down_file_list(app_id=None, app_secret=None, **kwargs):
     """
-    获取需要下载的文件列表（过滤掉文件夹）
+    GetNeedsDownloadFileList（FilterOutFolder）
 
     Args:
-        app_id (str, optional): 应用ID
-        app_secret (str, optional): 应用密钥
-        **kwargs: 其他关键字参数，包括file_list文件列表
+        app_id (str, optional): ApplicationID
+        app_secret (str, optional): ApplicationSecret key
+        **kwargs: OtherKeywordParameters, includingfile_listFileList
 
     Returns:
-        list: 过滤后的文件列表，不包含文件夹类型
+        list: Filter afterFileList, notContainsFolderType
     """
     pass
 
 
 def download(app_id=None, app_secret=None, **kwargs):
     """
-    下载文件
+    DownloadFile
 
-    支持下载文档(docx)、表格(sheet)和普通文件
-    - 对于文档和表格，先创建导出任务，轮询等待导出完成后下载
-    - 对于普通文件，直接下载
+    Supports downloading documents (docx), spreadsheets (sheet), and normal files
+    - For documents and spreadsheets, first create an export task, poll until export is complete, then download
+    - ForNormalFile，DirectDownload
 
     Args:
-        app_id (str, optional): 应用ID
-        app_secret (str, optional): 应用密钥
-        **kwargs: 其他关键字参数，包括download_item下载项信息
+        app_id (str, optional): ApplicationID
+        app_secret (str, optional): ApplicationSecret key
+        **kwargs: Other keyword parameters, including download item information
 
     Returns:
-        dict: 包含文件字节数组(base64编码)和文件名的字典
+        dict: Contains file byte array (base64 encoded) and filename dict
               {'file_bytes': [base64_chunk1, base64_chunk2, ...], 'name': 'filename.ext'}
 
     Raises:
-        Exception: 当创建导出任务失败、查询任务失败或导出任务超时时抛出异常
+        Exception: When export task creation fails, query task fails, or export task throws timeout exception
     """
     pass
 `

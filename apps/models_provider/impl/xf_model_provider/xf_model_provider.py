@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： xf_model_provider.py
+    @Author: Tiger
+    @file: xf_model_provider.py
     @date：2024/04/19 14:47
     @desc:
 """
@@ -51,7 +51,7 @@ model_info_list = [
               XFSparkSpeechToText),
     ModelInfo('slm', _('Chinese and English recognition'), ModelTypeConst.STT, zh_en_stt_credential,
               XFZhEnSparkSpeechToText),
-    # 具体 TTS 模型
+    # Specific TTS Model
     ModelInfo('tts', _('Online TTS'), ModelTypeConst.TTS, tts_model_credential, XFSparkTextToSpeech),
     ModelInfo('tts-super-humanoid', _('Super Humanoid TTS'), ModelTypeConst.TTS, super_humanoid_tts_credential,
               XFSparkSuperHumanoidTextToSpeech),

@@ -2,12 +2,12 @@ import { SourceTypeEnum } from '@/enums/common'
 import { get_next_route } from '@/utils/permission'
 import { EditionConst, PermissionConst, RoleConst } from '@/utils/permission/data'
 import { ComplexPermission } from '@/utils/permission/type'
-/* type 类型
-    BASE = 0, '通用类型'
-    WEB = 1, 'web站点类型'
-    LARK = 2, '飞书类型'
-    YUQUE = 3, '语雀类型'
-    WORKFLOW = 4, '工作流类型'
+/* type Type
+    BASE = 0, 'GeneralType'
+    WEB = 1, 'webSiteType'
+    LARK = 2, 'FeishuType'
+    YUQUE = 3, 'YuqueType'
+    WORKFLOW = 4, 'WorkflowType'
 */
 const DocumentRouter = {
   path: '/knowledge/:id/:folderId/:type',

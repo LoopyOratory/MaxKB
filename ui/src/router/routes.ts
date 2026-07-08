@@ -62,14 +62,14 @@ export const routes: Array<RouteRecordRaw> = [
     ],
   },
 
-  // 高级编排
+  // AdvancedOrchestration
   {
     path: '/application/:from/:id/workflow',
     name: 'ApplicationWorkflow',
     meta: { activeMenu: '/application' },
     component: () => import('@/views/application-workflow/index.vue'),
   },
-  // 知识库工作流
+  // Knowledge base workflow
   {
     path: '/knowledge/:id/:folderId/workflow',
     name: 'KnowledgeWorkflow',
@@ -82,7 +82,7 @@ export const routes: Array<RouteRecordRaw> = [
     meta: { activeMenu: '/tool' },
     component: () => import('@/views/tool-workflow/index.vue'),
   },
-  // 对话
+  // Conversation
   {
     path: '/chat/:accessToken',
     name: 'Chat',
@@ -94,7 +94,7 @@ export const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/demo/index.vue'),
   },
 
-  // 对话用户登录
+  // ConversationUserLogin
   {
     path: '/user-login/:accessToken',
     name: 'UserLogin',

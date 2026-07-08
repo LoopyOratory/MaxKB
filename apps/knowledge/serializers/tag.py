@@ -2,9 +2,9 @@
 """
     @project: maxkb
     @Author：AI Assistant
-    @file： tag.py
+    @file: tag.py
     @date：2025/10/13
-    @desc: 标签系统相关序列化器
+    @desc: TagSystemRelated序列化器
 """
 from collections import defaultdict
 from typing import Dict
@@ -22,7 +22,7 @@ from knowledge.models import Tag, Knowledge, DocumentTag
 
 
 class TagModelSerializer(serializers.ModelSerializer):
-    """标签模型序列化器"""
+    """TagModel序列化器"""
 
     class Meta:
         model = Tag
@@ -31,7 +31,7 @@ class TagModelSerializer(serializers.ModelSerializer):
 
 
 class TagCreateSerializer(serializers.Serializer):
-    """创建标签序列化器"""
+    """CreationTag序列化器"""
     key = serializers.CharField(required=True, max_length=64, label=_('Tag Key'))
     value = serializers.CharField(required=True, max_length=128, label=_('Tag Value'))
 
@@ -61,19 +61,19 @@ class TagSerializers(serializers.Serializer):
 
             knowledge_id = self.data.get('knowledge_id')
 
-            # 获取数据库中已存在的key-value组合
+            # GetData库中已Existingkey-valueCombine
             existing_tags = set(
                 QuerySet(Tag).filter(knowledge_id=knowledge_id)
                 .values_list('key', 'value', named=False)
             )
 
-            # 过滤掉已存在的标签
+            # Filter掉已ExistingTag
             tag_objects = []
             for tag_data in self.data.get('tags', []):
                 key = tag_data.get('key')
                 value = tag_data.get('value')
 
-                # 检查key-value组合是否已存在
+                # Checkkey-valueCombineWhether已Exists
                 if (key, value) not in existing_tags:
                     tag = Tag(
                         id=uuid.uuid7(),
@@ -82,10 +82,10 @@ class TagSerializers(serializers.Serializer):
                         value=value
                     )
                     tag_objects.append(tag)
-                    # 将新标签添加到已存在集合中，避免本次批量插入中的重复
+                    # 将新TagAdd到已Exists集合中，避免本次BatchInsert in 重复
                     existing_tags.add((key, value))
 
-            # 批量插入未重复的标签
+            # BatchInsert未重复的Tag
             if tag_objects:
                 Tag.objects.bulk_create(tag_objects)
 
@@ -110,12 +110,12 @@ class TagSerializers(serializers.Serializer):
             if tag is None:
                 raise AppApiException(500, _('Tag id does not exist'))
 
-            # 如果key发生变化，更新所有相同key的标签
+            # Ifkey发生变化，UpdateAllSamekey的Tag
             if instance.get('key') and instance.get('key') != tag.key:
                 old_key = tag.key
                 new_key = instance.get('key')
 
-                # 检查新key是否已存在于同一个knowledge中
+                # Check新keyWhether已Exists于同Oneknowledge中
                 existing_key_exists = QuerySet(Tag).filter(
                     knowledge_id=tag.knowledge_id,
                     key=new_key
@@ -124,15 +124,15 @@ class TagSerializers(serializers.Serializer):
                 if existing_key_exists:
                     raise AppApiException(500, _('Tag key already exists'))
 
-                # 批量更新所有具有相同old_key的标签
+                # BatchUpdateAll具有Sameold_key的Tag
                 QuerySet(Tag).filter(
                     knowledge_id=tag.knowledge_id,
                     key=old_key
                 ).update(key=new_key)
 
-            # 如果只是value变化，只更新当前标签
+            # If只是value变化，只UpdateCurrentTag
             if instance.get('value') and instance.get('value') != tag.value:
-                # 检查新key是否已存在于同一个knowledge中
+                # Check新keyWhether已Exists于同Oneknowledge中
                 existing_value_exists = QuerySet(Tag).filter(
                     knowledge_id=tag.knowledge_id,
                     key=instance.get('key'),
@@ -149,7 +149,7 @@ class TagSerializers(serializers.Serializer):
         def delete(self, delete_type: str):
             self.is_valid(raise_exception=True)
             if delete_type == 'key':
-                # 删除同一knowledge_id下相同key的所有标签
+                # Deletion同一knowledge_id下Samekey的AllTag
                 tag = QuerySet(Tag).get(id=self.data.get('tag_id'))
                 if tag is None:
                     raise AppApiException(500, _('Tag id does not exist'))
@@ -159,7 +159,7 @@ class TagSerializers(serializers.Serializer):
                 ).delete()
                 QuerySet(DocumentTag).filter(tag_id=tag.id).delete()
             else:
-                # 仅删除当前标签
+                # 仅DeletionCurrentTag
                 QuerySet(Tag).filter(id=self.data.get('tag_id')).delete()
                 QuerySet(DocumentTag).filter(tag_id=self.data.get('tag_id')).delete()
 
@@ -184,17 +184,17 @@ class TagSerializers(serializers.Serializer):
             if not tag_ids:
                 return
 
-            # 获取要删除的标签的key
+            # Get要Deletion的Tag的key
             tags_to_delete = QuerySet(Tag).filter(id__in=tag_ids)
             keys_to_delete = set(tags_to_delete.values_list('key', flat=True))
 
-            # 删除具有相同key的所有标签
+            # Deletion具有Samekey的AllTag
             QuerySet(Tag).filter(
                 knowledge_id=self.data.get('knowledge_id'),
                 key__in=keys_to_delete
             ).delete()
 
-            # 删除关联的DocumentTag
+            # DeletionAssociation的DocumentTag
             QuerySet(DocumentTag).filter(tag_id__in=tag_ids).delete()
 
     class Query(serializers.Serializer):
@@ -221,7 +221,7 @@ class TagSerializers(serializers.Serializer):
                     Q(key__icontains=name) | Q(value__icontains=name)
                 ).values('key', 'value', 'id', 'create_time', 'update_time').order_by('create_time', 'key', 'value')
             else:
-                # 获取所有标签，按创建时间排序保持稳定顺序
+                # GetAllTag, byCreation timeSortMaintain stable order
                 tags = QuerySet(Tag).filter(
                     knowledge_id=self.data.get('knowledge_id')
                 ).values('key', 'value', 'id', 'create_time', 'update_time').order_by('create_time', 'key', 'value')
@@ -233,7 +233,7 @@ class TagSerializers(serializers.Serializer):
                                  .values('tag_id').annotate(doc_count=Count('document_id'))
                                  }
 
-            # 按key分组
+            # 按keyGroup
             grouped_tags = defaultdict(list)
             for tag in tags:
                 grouped_tags[tag['key']].append({
@@ -244,12 +244,12 @@ class TagSerializers(serializers.Serializer):
                     'update_time': tag['update_time']
                 })
 
-            # 转换为期望的格式，保持key的顺序
+            # Transform为期望的Format，保持key order
             result = []
-            # 按key排序以确保结果顺序一致
+            # 按keySort以EnsureResultConsistent order
             for key in sorted(grouped_tags.keys()):
                 values = grouped_tags[key]
-                # 按创建时间对values进行排序
+                # 按Creation time对valuesPerformSort
                 values.sort(key=lambda x: x['create_time'])
                 result.append({
                     'key': key,

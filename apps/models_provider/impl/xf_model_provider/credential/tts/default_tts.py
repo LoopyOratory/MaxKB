@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-讯飞 TTS 工厂类 Credential，根据 api_version 路由到具体 Credential
+iFlytek TTS 工厂类 Credential，Based on api_version Route toSpecific Credential
 """
 from typing import Dict
 
@@ -14,7 +14,7 @@ from common.utils.logger import maxkb_logger
 
 
 class XunFeiDefaultTTSModelCredential(BaseForm, BaseModelCredential):
-    """讯飞 TTS 工厂类 Credential，根据 api_version 参数路由到具体实现"""
+    """iFlytek TTS 工厂类 Credential，Based on api_version ParametersRoute toSpecificImplementation"""
 
     api_version = forms.SingleSelect(
         _("API Version"), required=True,
@@ -66,12 +66,12 @@ class XunFeiDefaultTTSModelCredential(BaseForm, BaseModelCredential):
         return {**model, 'spark_api_secret': super().encryption(model.get('spark_api_secret', ''))}
 
     def get_model_params_setting_form(self, model_name):
-        # params 只包含通用参数，vcn 已在 credential 中
+        # params 只ContainsGeneralParameters，vcn 已在 credential 中
         return XunFeiDefaultTTSModelParams()
 
 
 class XunFeiDefaultTTSModelParams(BaseForm):
-    """工厂类的参数表单，只包含通用参数"""
+    """工厂类的ParametersForm，只ContainsGeneralParameters"""
 
     speed = forms.SliderField(
         TooltipLabel(_('speaking speed'), _('Speech speed, optional value: [0-100], default is 50')),

@@ -21,7 +21,7 @@ def clean_debug_file_lock():
     minutes_30_ago = timezone.now() - timedelta(minutes=30)
     two_hours_ago = timezone.now() - timedelta(hours=2)
     one_days_ago = timezone.now() - timedelta(hours=24)
-    # 删除对应的文件
+    # DeletionCorrespondingFile
     File.objects.filter(
         Q(create_time__lt=one_days_ago, source_type=FileSourceType.TEMPORARY_1_DAY.value) |
         Q(create_time__lt=two_hours_ago, source_type=FileSourceType.TEMPORARY_120_MINUTE.value) |

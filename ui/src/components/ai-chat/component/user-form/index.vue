@@ -69,7 +69,7 @@ const props = defineProps<{
   excludeFields?: string[]
   title?: string
 }>()
-// 用于刷新动态表单
+// Used forRefreshDynamicForm
 const dynamicsFormRefresh = ref(0)
 const inputFieldList = ref<FormField[]>([])
 const apiInputFieldList = ref<FormField[]>([])
@@ -314,7 +314,7 @@ const validate = () => {
   return Promise.all(promise_list)
 }
 const validate_query = () => {
-  // 浏览器query参数找到接口传参
+  // BrowserqueryParametersFoundInterfaceParameter
   const msg = []
   for (const f of apiInputFieldList.value) {
     if (f.required && !api_form_data_context.value[f.field]) {

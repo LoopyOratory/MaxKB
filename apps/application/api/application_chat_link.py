@@ -54,7 +54,7 @@ class ChatRecordDetailShareAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="link",
-                description="链接",
+                description="Link",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

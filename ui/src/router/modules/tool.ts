@@ -22,7 +22,7 @@ const ModelRouter = {
     {
       path: '/tool',
       name: 'tool-index',
-      meta: { title: '工具主页', activeMenu: '/tool' },
+      meta: { title: 'ToolHomepage', activeMenu: '/tool' },
       sameRoute: 'tool',
       component: () => import('@/views/tool/index.vue'),
     },

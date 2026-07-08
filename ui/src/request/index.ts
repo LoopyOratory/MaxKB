@@ -11,13 +11,13 @@ import { ref, type WritableComputedRef } from 'vue'
 const axiosConfig = {
   baseURL: (window.MaxKB?.prefix ? window.MaxKB?.prefix : '/admin') + '/api',
   withCredentials: false,
-  timeout: 1800000, // 30分钟 timeout
+  timeout: 1800000, // 30Minutes timeout
   headers: {},
 }
 
 const instance = axios.create(axiosConfig)
 
-/* 设置请求拦截器 */
+/* SettingsRequestInterceptor */
 instance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     if (config.headers === undefined) {
@@ -40,7 +40,7 @@ instance.interceptors.request.use(
   },
 )
 
-//设置响应拦截器
+//SettingsResponseInterceptor
 instance.interceptors.response.use(
   (response: any) => {
     if (response.data) {
@@ -91,7 +91,7 @@ instance.interceptors.response.use(
 
 export const request = instance
 
-/* 简化请求方法，统一处理返回结果，并增加loading处理，这里以{success,data,message}格式的返回值为例，具体项目根据实际需求修改 */
+/* SimplifyRequestMethod，UnifiedProcessReturn result, andIncreaseloadingProcess, here taking{success,data,message}FormatReturnValueExample, SpecificProjectBased onActualRequirementsModification */
 const promise: (
   request: Promise<any>,
   loading?: NProgress | Ref<boolean> | WritableComputedRef<boolean>,
@@ -104,7 +104,7 @@ const promise: (
     }
     request
       .then((response) => {
-        // blob类型的返回状态是response.status
+        // blobTypeReturnStatusIsresponse.status
         if (response.status === 200) {
           resolve(response?.data || response)
         } else {
@@ -125,11 +125,11 @@ const promise: (
 }
 
 /**
- * 发送get请求   一般用来请求资源
- * @param url    资源url
- * @param params 参数
+ * SendgetRequest   Generally used forRequestResource
+ * @param url    Resourceurl
+ * @param params Parameters
  * @param loading loading
- * @returns 异步promise对象
+ * @returns AsyncpromiseObject
  */
 export const get: (
   url: string,
@@ -146,12 +146,12 @@ export const get: (
 }
 
 /**
- * faso post请求 一般用来添加资源
- * @param url    资源url
- * @param params 参数
- * @param data   添加数据
+ * faso postRequest Generally used forAddResource
+ * @param url    Resourceurl
+ * @param params Parameters
+ * @param data   AddData
  * @param loading loading
- * @returns 异步promise对象
+ * @returns AsyncpromiseObject
  */
 export const post: (
   url: string,
@@ -164,14 +164,14 @@ export const post: (
 }
 
 /**
- * 上传文件的 post 请求，支持上传进度回调与中断
- * @param url        资源url
- * @param data       上传数据（一般为 FormData）
- * @param onProgress 上传进度回调，参数为百分比(0-100)
- * @param params     查询参数
+ * UploadFile post Request, supportsUploadProgressCallbackandInterrupt
+ * @param url        Resourceurl
+ * @param data       UploadData(Generally FormData）
+ * @param onProgress UploadProgressCallback，ParametersAs percentage(0-100)
+ * @param params     QueryParameters
  * @param loading    loading
- * @param timeout    超时时间
- * @returns 返回 { request, abort }，request 为异步 promise 对象，abort 用于中断上传
+ * @param timeout    Timeout
+ * @returns Returns { request, abort }, request is an async promise object, abort is used to interrupt upload
  */
 export const postUpload: (
   url: string,
@@ -213,11 +213,11 @@ export const postUpload: (
 }
 
 /**|
- * 发送put请求 用于修改服务器资源
- * @param url     资源地址
- * @param params  params参数地址
- * @param data    需要修改的数据
- * @param loading 进度条
+ * SendputRequest Used forModificationServiceRendererResource
+ * @param url     ResourceAddress
+ * @param params  paramsParametersAddress
+ * @param data    NeedsModificationData
+ * @param loading Progress bar
  * @returns
  */
 export const put: (
@@ -231,10 +231,10 @@ export const put: (
 }
 
 /**
- * 删除
- * @param url     删除url
- * @param params  params参数
- * @param loading 进度条
+ * Deletion
+ * @param url     Deletionurl
+ * @param params  paramsParameters
+ * @param loading Progress bar
  * @returns
  */
 export const del: (
@@ -248,9 +248,9 @@ export const del: (
 }
 
 /**
- * 流处理
- * @param url  url地址
- * @param data 请求body
+ * StreamProcess
+ * @param url  urlAddress
+ * @param data Requestbody
  * @returns
  */
 export const postStream: (url: string, data?: unknown) => Promise<Result<any> | any> = (
@@ -293,7 +293,7 @@ export const exportExcel: (
         link.href = window.URL.createObjectURL(blob)
         link.download = fileName
         link.click()
-        //释放内存
+        //Release memory
         window.URL.revokeObjectURL(link.href)
       }
       return true
@@ -304,7 +304,7 @@ export const exportExcel: (
 function extractFilename(contentDisposition: string) {
   if (!contentDisposition) return null
 
-  // 处理 URL 编码的文件名
+  // Process URL EncodingFileName
   const urlEncodedMatch =
     contentDisposition.match(/filename=([^;]*)/i) ||
     contentDisposition.match(/filename\*=UTF-8''([^;]*)/i)
@@ -312,11 +312,11 @@ function extractFilename(contentDisposition: string) {
     try {
       return decodeURIComponent(urlEncodedMatch[1].replace(/"/g, ''))
     } catch (e) {
-      console.error('解码URL编码文件名失败:', e)
+      console.error('DecodeURLEncodingFileNameFailure:', e)
     }
   }
 
-  // 处理 Base64 编码的文件名
+  // Process Base64 EncodingFileName
   const base64Part = contentDisposition.match(/=\?utf-8\?b\?(.*?)\?=/i)?.[1]
   if (base64Part) {
     try {
@@ -324,7 +324,7 @@ function extractFilename(contentDisposition: string) {
       const filenameMatch = decoded.match(/filename="(.*?)"/i)
       return filenameMatch ? filenameMatch[1] : null
     } catch (e) {
-      console.error('解码Base64文件名失败:', e)
+      console.error('DecodeBase64FileNameFailure:', e)
     }
   }
 
@@ -350,7 +350,7 @@ export const exportFile: (
       responseType: 'blob',
       transformResponse: [
         function (data, headers) {
-          // 在这里可以访问 headers
+          // HereCanAccess headers
           if (data.type === 'application/json') {
             data.text().then((text: string) => {
               try {
@@ -366,9 +366,9 @@ export const exportFile: (
           const contentDisposition = headers['content-disposition']
           // console.log('Content-Type:', contentType);
           // console.log('Content-Disposition:', contentDisposition);
-          // 如果没有提供文件名，则使用默认名称
+          // IfNoneProvideFileName, thenUseDefaultName
           fileName = extractFilename(contentDisposition) || fileName
-          return data // 必须返回数据
+          return data // MustReturn data
         },
       ],
     }),
@@ -383,7 +383,7 @@ export const exportFile: (
         link.href = window.URL.createObjectURL(blob)
         link.download = fileName
         link.click()
-        //释放内存
+        //Release memory
         window.URL.revokeObjectURL(link.href)
       }
       return true
@@ -408,8 +408,8 @@ export const exportExcelPost: (
     request({
       url: url,
       method: 'post',
-      params, // 查询字符串参数
-      data, // 请求体数据
+      params, // QueryStringParameters
+      data, // RequestBodyData
       responseType: 'blob',
     }),
     loading,
@@ -422,7 +422,7 @@ export const exportExcelPost: (
       link.href = window.URL.createObjectURL(blob)
       link.download = fileName
       link.click()
-      // 释放内存
+      // Release memory
       window.URL.revokeObjectURL(link.href)
     }
     return true
@@ -451,7 +451,7 @@ export const exportFilePost: (
       responseType: 'blob',
       transformResponse: [
         function (data, headers) {
-          // 在这里可以访问 headers
+          // HereCanAccess headers
           if (data.type === 'application/json') {
             data.text().then((text: string) => {
               try {
@@ -467,9 +467,9 @@ export const exportFilePost: (
           const contentDisposition = headers['content-disposition']
           // console.log('Content-Type:', contentType);
           // console.log('Content-Disposition:', contentDisposition);
-          // 如果没有提供文件名，则使用默认名称
+          // IfNoneProvideFileName, thenUseDefaultName
           fileName = extractFilename(contentDisposition) || fileName
-          return data // 必须返回数据
+          return data // MustReturn data
         },
       ],
     }),
@@ -484,7 +484,7 @@ export const exportFilePost: (
         link.href = window.URL.createObjectURL(blob)
         link.download = fileName
         link.click()
-        //释放内存
+        //Release memory
         window.URL.revokeObjectURL(link.href)
       }
       return true
@@ -509,9 +509,9 @@ export const download: (
 }
 
 /**
- * 与服务器建立ws链接
- * @param url websocket路径
- * @returns  返回一个websocket实例
+ * andServiceEstablishwsLink
+ * @param url websocketPath
+ * @returns  ReturnOnewebsocketInstance
  */
 export const socket = (url: string) => {
   let protocol = 'ws://'

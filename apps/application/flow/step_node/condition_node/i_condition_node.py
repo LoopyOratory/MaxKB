@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_condition_node.py
+    @Author: Tiger
+    @file: i_condition_node.py
     @date：2024/6/7 9:54
     @desc:
 """

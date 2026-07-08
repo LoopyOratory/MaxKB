@@ -134,7 +134,7 @@ class VolcanicEngineTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
 
     @staticmethod
     def is_table_format_chars_only(s):
-        # 检查是否仅包含 "|", "-", 和空格字符
+        # CheckWhether仅Contains "|", "-", 和空格字符
         return bool(s) and re.fullmatch(r'[|\-\s]+', s)
 
     @staticmethod

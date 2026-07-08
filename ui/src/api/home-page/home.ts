@@ -13,28 +13,28 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 应用聚合
+ * ApplicationAggregation
  * @params
  */
 const getApplicationAggregation: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix.value}/application/aggregation`, undefined, loading)
 }
 /**
- * 知识库聚合
+ * Knowledge baseAggregation
  * @params
  */
 const getKnowledgeAggregation: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix.value}/knowledge/aggregation`, undefined, loading)
 }
 /**
- * 工具聚合
+ * ToolAggregation
  * @params
  */
 const getToolAggregation: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix.value}/tool/aggregation`, undefined, loading)
 }
 /**
- * 模型聚合
+ * ModelAggregation
  * @params
  */
 const getModelAggregation: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
@@ -42,7 +42,7 @@ const getModelAggregation: (loading?: Ref<boolean>) => Promise<Result<any>> = (l
 }
 
 /**
- * Tokens 消耗
+ * Tokens Consumption
  * @params {end_time,start_time}
  */
 const getTokensRanking: (
@@ -57,7 +57,7 @@ const getTokensRanking: (
   )
 }
 /**
- * 提问次数
+ * AskCount
  * @params {end_time,start_time}
  */
 const getQuestionsRanking: (
@@ -72,7 +72,7 @@ const getQuestionsRanking: (
   )
 }
 /**
- * 用户消耗token
+ * UserConsumptiontoken
  * @params {end_time,start_time}
  */
 const getUserTokensRanking: (
@@ -88,7 +88,7 @@ const getUserTokensRanking: (
 }
 
 /**
- * 与对话有关的统计趋势
+ * Conversation-related statistics trend
  * @params  {application_id, end_time, start_time}
  */
 const getMonitorAggregation: (params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -99,7 +99,7 @@ const getMonitorAggregation: (params: any, loading?: Ref<boolean>) => Promise<Re
 }
 
 /**
- * 对话总数
+ * ConversationTotal
  * @params  {end_time, start_time}
  */
 const getChatRecordAggregation: (params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -109,7 +109,7 @@ const getChatRecordAggregation: (params: any, loading?: Ref<boolean>) => Promise
   return get(`${prefix.value}/chat_record/aggregation`, params, loading)
 }
 /**
- * Token总数
+ * TokenTotal
  * @params  {end_time, start_time}
  */
 const getTokensAggregation: (params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
@@ -120,7 +120,7 @@ const getTokensAggregation: (params: any, loading?: Ref<boolean>) => Promise<Res
 }
 
 /**
- * 导出
+ * Export
  * @params  {name, end_time, start_time}
  */
 const exportTokensRankings: (params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (

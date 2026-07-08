@@ -10,9 +10,9 @@ const guideHtml=`
           </svg>
   </div>
 
-  <div class="maxkb-title"> 🌟 遇见问题，不再有障碍！</div>
-  <p>你好，我是你的智能小助手。<br/>
-      点我，开启高效解答模式，让问题变成过去式。</p>
+  <div class="maxkb-title"> 🌟 遇见Question, not再有障碍！</div>
+  <p>你好，I am你的智能小助手。<br/>
+      点我，Enable高效解答Mode，让Question变成过去式。</p>
   <div class="maxkb-button">
       <button>我知道了</button>
   </div>
@@ -43,7 +43,7 @@ const getChatContainerHtml=(protocol,host,token,query,prefix)=>{
 `
 }
 /**
- * 初始化引导
+ * InitializeGuide
  * @param {*} root
  */
 const initGuide=(root)=>{
@@ -59,16 +59,16 @@ const initGuide=(root)=>{
    close_icon.onclick=close_func
 }
 const initChat=(root)=>{
-  // 添加对话icon
+  // AddConversationicon
   root.insertAdjacentHTML("beforeend",chatButtonHtml)
-  // 添加对话框
+  // AddConversation框
   root.insertAdjacentHTML('beforeend',getChatContainerHtml('{{protocol}}','{{host}}','{{token}}','{{query}}','{{prefix}}'))
-  // 按钮元素
+  // ButtonElement
   const chat_button=root.querySelector('.maxkb-chat-button')
   const chat_button_img=root.querySelector('.maxkb-chat-button > img')
-  //  对话框元素
+  //  Conversation框Element
   const chat_container=root.querySelector('#maxkb-chat-container')
-    // 引导层
+    // Guide层
   const mask_content = root.querySelector('.maxkb-mask > .maxkb-content')
   const mask_tips = root.querySelector('.maxkb-tips')
  chat_button_img.onload=(event)=>{
@@ -127,7 +127,7 @@ const initChat=(root)=>{
   closeviewport.onclick=viewport_func
 }
 /**
- * 第一次进来的引导提示
+ * 第Once进 fromGuideTip
  */
 function initMaxkb(){
   const maxkb=document.createElement('div')
@@ -145,7 +145,7 @@ function initMaxkb(){
 }
 
 
-// 初始化全局样式
+// InitializeGlobalStyle
 function initMaxkbStyle(root, maxkbId){
   style=document.createElement('style')
   style.type='text/css'
@@ -166,7 +166,7 @@ function initMaxkbStyle(root, maxkbId){
   }
   }
 
-  /* 引导 */
+  /* Guide */
 
   #maxkb .maxkb-mask {
       position: fixed;
@@ -321,7 +321,7 @@ function embedChatbot() {
   white_list=white_list_str.split(',')
 
   if ({{is_auth}}&&({{white_active}}?white_list.includes(window.location.origin):true)) {
-    // 初始化maxkb智能小助手
+    // Initializemaxkb智能小助手
     initMaxkb()
   } else console.error('invalid parameter')
 }

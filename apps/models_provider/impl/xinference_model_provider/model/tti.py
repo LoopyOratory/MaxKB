@@ -48,13 +48,13 @@ class XinferenceTextToImage(MaxKBBaseModel, BaseTextToImage):
         )
 
     def check_auth(self):
-        self.generate_image('生成一个小猫图片')
+        self.generate_image('GenerateOneCatImage')
 
     def generate_image(self, prompt: str, negative_prompt: str = None):
         chat = OpenAI(api_key=self.api_key, base_url=self.api_base)
         res = chat.images.generate(model=self.model, prompt=prompt, response_format='b64_json', **self.params)
         file_urls = []
-        # 临时文件
+        # TemporaryFile
         for img in res.data:
             file_urls.append(base64.b64decode(img.b64_json))
 

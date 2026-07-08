@@ -2,36 +2,36 @@ import type { Dict } from '@/api/type/common'
 
 interface ViewCardItem {
   /**
-   * 类型
+   * Type
    */
   type: 'eval' | 'default'
   /**
-   * 标题
+   * Title
    */
   title: string
   /**
-   * 值 根据类型不一样 取值也不一样 default= row[value_field] eval `${parseFloat(row.number).toLocaleString("zh-CN",{style: "decimal",maximumFractionDigits:1})}%&nbsp;&nbsp;&nbsp;`
+   * Value differs based on type; default = row[value_field] eval `${parseFloat(row.number).toLocaleString("en-US",{style: "decimal",maximumFractionDigits:1})}%&nbsp;&nbsp;&nbsp;`
    */
   value_field: string
 }
 
 interface TableColumn {
   /**
-   * 字段|组件名称|可计算的模板字符串
+   * Field|ComponentName|canCalculateTemplateString
    */
   property: string
   /**
-   *表头
+   *Header
    */
   label: string
   /**
-   * 表数据字段
+   * Table data field
    */
   value_field?: string
 
   attrs?: Attrs
   /**
-   * 类型
+   * Type
    */
   type: 'eval' | 'component' | 'default'
 
@@ -39,29 +39,29 @@ interface TableColumn {
 }
 interface ColorItem {
   /**
-   * 颜色#f56c6c
+   * Color#f56c6c
    */
   color: string
   /**
-   * 进度
+   * Progress
    */
   percentage: number
 }
 interface Attrs {
   /**
-   * 提示语
+   * Tip text
    */
   placeholder?: string
   /**
-   * 标签的长度，例如 '50px'。 作为 Form 直接子元素的 form-item 会继承该值。 可以使用 auto。
+   * TagLength, for example '50px'。 As Form DirectSub-Element form-item Will inherit thisValue。 CanUse auto。
    */
   labelWidth?: string
   /**
-   * 表单域标签的后缀
+   * Form field tag suffix
    */
   labelSuffix?: string
   /**
-   * 星号的位置。
+   * AsteriskPosition。
    */
   requireAsteriskPosition?: 'left' | 'right'
 
@@ -71,37 +71,37 @@ interface Attrs {
 }
 interface PropsInfo {
   /**
-   * 表格选择的card
+   * TableSelectcard
    */
   view_card?: Array<ViewCardItem>
   /**
-   * 表格选择
+   * TableSelect
    */
   table_columns?: Array<TableColumn>
   /**
-   * 选中 message
+   * Select message
    */
   active_msg?: string
 
   /**
-   * 组件样式
+   * ComponentStyle
    */
   style?: Dict<any>
 
   /**
-   * el-form-item 样式
+   * el-form-item Style
    */
   item_style?: Dict<any>
   /**
-   * 表单校验 这个和element校验一样
+   * FormValidate This andelementValidateSame
    */
   rules?: Dict<any>
   /**
-   * 默认 不为空校验提示
+   * Default Not emptyValidateTip
    */
   err_msg?: string
   /**
-   *tabs的时候使用
+   *tabsWhenUse
    */
   tabs_label?: string
 
@@ -111,63 +111,63 @@ interface PropsInfo {
 interface FormField {
   field: string
   /**
-   * 输入框类型
+   * InputDialogType
    */
   input_type: string
   /**
-   * 提示
+   * Tip
    */
   label?: string | any
   /**
-   * 是否 必填
+   * Whether Required
    */
   required?: boolean
   /**
-   * 默认值
+   * DefaultValue
    */
   default_value?: any
   /**
-   * 是否显示默认值
+   * WhetherShowDefaultValue
    */
   show_default_value?: boolean
   /**
-   *  {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才显示
+   *  {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly inShow
    */
   relation_show_field_dict?: Dict<Array<any>>
   /**
-   * {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才 执行函数获取 数据
+   * {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly in ExecuteFunctionGet Data
    */
   relation_trigger_field_dict?: Dict<any>
   /**
-   * 执行器类型  OPTION_LIST请求Option_list数据 CHILD_FORMS请求子表单
+   * ExecuteRendererType  OPTION_LISTRequestOption_listData CHILD_FORMSRequestSub-Form
    */
   trigger_type?: 'OPTION_LIST' | 'CHILD_FORMS'
   /**
-   * 前端attr数据
+   * FrontendattrData
    */
   attrs?: Attrs
   /**
-   * 其他额外信息
+   * OtherExtraInfo
    */
   props_info?: PropsInfo
   /**
-   * 下拉选字段field
+   * DropdownSelectedFieldfield
    */
   text_field?: string
   /**
-   * 下拉选 value
+   * DropdownSelected value
    */
   value_field?: string
   /**
-   * 下拉选数据
+   * DropdownSelectedData
    */
   option_list?: Array<any>
   /**
-   * 供应商
+   * Provider
    */
   provider?: string
   /**
-   * 执行函数
+   * ExecuteFunction
    */
   method?: string
 

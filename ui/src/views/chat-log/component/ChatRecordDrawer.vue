@@ -39,20 +39,20 @@ const AiChatRef = ref()
 const props = withDefaults(
   defineProps<{
     /**
-     * 应用信息
+     * ApplicationInfo
      */
     application?: ApplicationFormType
     /**
-     * 对话 记录id
+     * Conversation Recordid
      */
     chatId: string
     currentAbstract: string
     /**
-     * 下一条
+     * Next item
      */
     next: () => void
     /**
-     * 上一条
+     * Previous item
      */
     pre: () => void
 
@@ -104,7 +104,7 @@ function getChatRecord() {
       )
       if (paginationConfig.current_page === 1) {
         nextTick(() => {
-          // 将滚动条滚动到最下面
+          // Scroll to the bottom
           AiChatRef.value.setScrollBottom()
         })
       }

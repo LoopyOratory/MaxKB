@@ -13,7 +13,7 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 工具商店-系统内置列表
+ * ToolStore-SystemBuilt-inList
  */
 const getInternalToolList: (param?: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   param,
@@ -23,7 +23,7 @@ const getInternalToolList: (param?: any, loading?: Ref<boolean>) => Promise<Resu
 }
 
 /**
- * 工具商店列表
+ * ToolStoreList
  */
 const getStoreToolList: (param?: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   param,
@@ -53,7 +53,7 @@ const getStoreAppList: (param?: any, loading?: Ref<boolean>) => Promise<Result<a
 }
 
 /**
- * 工具商店-添加系统内置
+ * ToolStore-AddSystemBuilt-in
  */
 const addInternalTool: (
   tool_id: string,
@@ -64,7 +64,7 @@ const addInternalTool: (
 }
 
 /**
- * 工具商店-添加
+ * ToolStore-Add
  */
 const addStoreTool: (
   tool_id: string,

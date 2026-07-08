@@ -648,6 +648,6 @@ export const iconMap: any = {
       ])
     },
   },
-  // 动态加载的图标
+  // DynamicLoadIcon
   ...dynamicIcons,
 }

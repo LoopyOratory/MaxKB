@@ -13,14 +13,14 @@ class TermbaseReadAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -52,28 +52,28 @@ class TermbasePageAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="current_page",
-                description="当前页码",
+                description="CurrentPage number",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="page_size",
-                description="每页条数",
+                description="Per page count",
                 type=OpenApiTypes.INT,
                 location='path',
                 required=True,
@@ -91,21 +91,21 @@ class TermbaseDeleteAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="problem_id",
-                description="问题id",
+                description="Questionid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

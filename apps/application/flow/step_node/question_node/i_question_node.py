@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_chat_node.py
+    @Author: Tiger
+    @file: i_chat_node.py
     @date：2024/6/4 13:58
     @desc:
 """
@@ -23,7 +23,7 @@ class QuestionNodeSerializer(serializers.Serializer):
     system = serializers.CharField(required=False, allow_blank=True, allow_null=True,
                                    label=_("Role Setting"))
     prompt = serializers.CharField(required=True, label=_("Prompt word"))
-    # 多轮对话数量
+    # Multi-turn conversation count
     dialogue_number = serializers.IntegerField(required=True, label=
     _("Number of multi-round conversations"))
 

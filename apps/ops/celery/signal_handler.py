@@ -28,25 +28,25 @@ def init_scheduler():
     job.run()
     init_template.run()
 
-    # 清理已经不存在的 trigger job
+    # CleanupAlready不Existing trigger job
     trigger_jobs = DjangoJob.objects.filter(id__startswith="trigger:")
-    # 从 job id 中提取 trigger_id (格式: trigger:<trigger_id>:task:...)
+    # 从 job id 中Extract trigger_id (Format: trigger:<trigger_id>:task:...)
     trigger_ids_from_jobs = set()
-    job_id_to_trigger_id = {}  # 映射 job_id -> trigger_id
+    job_id_to_trigger_id = {}  # Mapping job_id -> trigger_id
 
     for job in trigger_jobs:
         parts = job.id.split(':')
         if len(parts) >= 2:
-            trigger_id = uuid.UUID(parts[1])  # 提取 trigger_id
+            trigger_id = uuid.UUID(parts[1])  # Extract trigger_id
             trigger_ids_from_jobs.add(trigger_id)
             job_id_to_trigger_id[job.id] = trigger_id
 
-    # 获取所有有效的 Trigger ID
+    # GetAll有效的 Trigger ID
     valid_trigger_ids = set(Trigger.objects.filter(
         id__in=trigger_ids_from_jobs, is_active=True
     ).values_list('id', flat=True))
 
-    # 找出需要删除的 job (trigger 已不存在的)
+    # FindNeedsDeletion的 job (trigger 已不Existing)
     jobs_to_delete = [
         job_id for job_id, trigger_id in job_id_to_trigger_id.items()
         if trigger_id not in valid_trigger_ids
@@ -69,7 +69,7 @@ def on_app_ready(sender=None, headers=None, **kwargs):
     if cache.get("CELERY_APP_READY", 0) == 1:
         return
     cache.set("CELERY_APP_READY", 1, 10)
-    # 初始化定时任务
+    # InitializeScheduledTask
     init_scheduler()
 
     tasks = get_after_app_ready_tasks()
@@ -122,4 +122,4 @@ def on_task_revoked(request, terminated, signum, expired, **kwargs):
 def on_taskaa_start(sender, task_id, **kwargs):
     pass
     # sender.update_state(state='REVOKED',
-#                     meta={'exc_type': 'Exception', 'exc': 'Exception', 'message': '暂停任务', 'exc_message': ''})
+#                     meta={'exc_type': 'Exception', 'exc': 'Exception', 'message': 'PauseTask', 'exc_message': ''})

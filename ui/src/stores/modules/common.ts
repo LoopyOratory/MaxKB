@@ -13,7 +13,7 @@ export interface commonTypes {
 const useCommonStore = defineStore('common',{
   state: (): commonTypes => ({
     breadcrumb: null,
-    // 搜索和分页缓存
+    // Search and pagination cache
     paginationConfig: {},
     search: {},
     device: DeviceType.Desktop

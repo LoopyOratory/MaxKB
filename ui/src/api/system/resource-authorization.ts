@@ -6,8 +6,8 @@ import { t } from '@/locales/index'
 const prefix = '/workspace'
 
 /**
- * 系统资源授权获取资源权限
- * @query 参数
+ * SystemResourceAuthorizationGetResourcePermission
+ * @query Parameters
  */
 const getResourceAuthorization: (
   workspace_id: string,
@@ -24,9 +24,9 @@ const getResourceAuthorization: (
 }
 
 /**
- * 系统资源授权修改成员权限
- * @param 参数 member_id
- * @param 参数 {
+ * SystemResourceAuthorizationModificationMemberPermission
+ * @param Parameters member_id
+ * @param Parameters {
      [
       {
         "target_id": "string",
@@ -51,8 +51,8 @@ const putResourceAuthorization: (
 }
 
 /**
- * 获取成员列表
- * @query 参数
+ * GetMemberList
+ * @query Parameters
  */
 const getUserList: (workspace_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   workspace_id,
@@ -69,8 +69,8 @@ const getUserMember: (workspace_id: string, loading?: Ref<boolean>) => Promise<R
 }
 
 /**
- * 获得系统文件夹列表
- * @params 参数
+ * GetSystemFolderList
+ * @params Parameters
  *  source : APPLICATION, KNOWLEDGE, TOOL
  *  data : {name: string}
  */

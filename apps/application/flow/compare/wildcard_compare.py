@@ -2,7 +2,7 @@
 """
     @project: maxkb
     @Author：wangliang181230
-    @file： wildcard_compare.py
+    @file: wildcard_compare.py
     @date：2026/3/30 12:11
     @desc:
 """
@@ -14,10 +14,10 @@ from common.cache.mem_cache import MemCache
 
 
 match_cache = MemCache('wildcard_to_regex', {
-    'TIMEOUT': 3600, # 缓存有效期为 1 小时
+    'TIMEOUT': 3600, # CacheValid for 1 Hours
     'OPTIONS': {
-        'MAX_ENTRIES': 500, # 最多缓存 500 个条目
-        'CULL_FREQUENCY': 10, # 达到上限时，删除约 1/10 的缓存
+        'MAX_ENTRIES': 500, # At mostCache 500  entries
+        'CULL_FREQUENCY': 10, # When limit is reached, Deletion约 1/10 的Cache
     },
 })
 
@@ -33,6 +33,6 @@ def translate_and_compile_and_cache(wildcard):
 class WildcardCompare(Compare):
 
     def compare(self, source_value, compare, target_value):
-        # 转成正则，性能更高
+        # Convert to正则，性能更高
         match = translate_and_compile_and_cache(str(target_value))
         return bool(match(str(source_value)))

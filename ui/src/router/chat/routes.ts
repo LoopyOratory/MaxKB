@@ -1,19 +1,19 @@
 import type { RouteRecordRaw } from 'vue-router'
 
 export const routes: Array<RouteRecordRaw> = [
-  // 对话
+  // Conversation
   {
     path: '/:accessToken',
     name: 'chat',
     component: () => import('@/views/chat/index.vue'),
   },
-  // 对话用户登录
+  // ConversationUserLogin
   {
     path: '/login/:accessToken',
     name: 'login',
     component: () => import('@/views/chat/user-login/index.vue'),
   },
-  // 对话用户登录
+  // ConversationUserLogin
   {
     path: '/404',
     name: '404',
@@ -24,7 +24,7 @@ export const routes: Array<RouteRecordRaw> = [
     name: 'NoService',
     component: () => import('@/views/error/NoService.vue'),
   },
-  // 对话
+  // Conversation
   {
     path: '/share/:link',
     name: 'Share',

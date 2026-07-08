@@ -23,7 +23,7 @@ Object.defineProperty(prefix, 'value', {
   },
 })
 /**
- * 获取全部应用
+ * GetAllApplication
  * @param param
  * @param loading
  */
@@ -35,7 +35,7 @@ const getAllApplication: (param?: any, loading?: Ref<boolean>) => Promise<Result
 }
 
 /**
- * 获取分页应用
+ * GetPaginationApplication
  * param {
  "name": "string",
  }
@@ -49,7 +49,7 @@ const getApplication: (
 }
 
 /**
- * 创建应用
+ * CreationApplication
  * @param data
  * @param loading
  */
@@ -61,7 +61,7 @@ const postApplication: (
 }
 
 /**
- * 修改应用
+ * ModificationApplication
  * @param application_id
  * @param data
  * @param loading
@@ -74,7 +74,7 @@ const putApplication: (
   return put(`${prefix.value}/${application_id}`, data, undefined, loading)
 }
 /**
- * 移动应用
+ * MoveApplication
  * @param application_id
  * @param folder_id
  * @param loading
@@ -89,7 +89,7 @@ const moveApplication: (
 }
 
 /**
- * 删除应用
+ * DeletionApplication
  * @param application_id
  * @param loading
  */
@@ -101,7 +101,7 @@ const delApplication: (
 }
 
 /**
- * 应用详情
+ * ApplicationDetails
  * @param application_id
  * @param loading
  */
@@ -113,7 +113,7 @@ const getApplicationDetail: (
 }
 
 /**
- * 获取AccessToken
+ * GetAccessToken
  * @param application_id
  * @param loading
  */
@@ -124,9 +124,9 @@ const getAccessToken: (application_id: string, loading?: Ref<boolean>) => Promis
   return get(`${prefix.value}/${application_id}/access_token`, undefined, loading)
 }
 /**
- * 获取应用设置
- * @param application_id 应用id
- * @param loading 加载器
+ * GetApplicationSettings
+ * @param application_id Applicationid
+ * @param loading Loader
  * @returns
  */
 const getApplicationSetting: (
@@ -137,7 +137,7 @@ const getApplicationSetting: (
 }
 
 /**
- * 修改AccessToken
+ * ModificationAccessToken
  * data {
  *  "is_active": true
  * }
@@ -154,7 +154,7 @@ const putAccessToken: (
 }
 
 /**
- * 替换社区版-修改AccessToken
+ * ReplaceCommunity edition-ModificationAccessToken
  * data {
  *  "show_source": boolean,
  *  "show_history": boolean,
@@ -176,7 +176,7 @@ const putXpackAccessToken: (
 }
 
 /**
- * 导出应用
+ * ExportApplication
  */
 
 const exportApplication = (
@@ -193,7 +193,7 @@ const exportApplication = (
 }
 
 /**
- * 导入应用
+ * ImportApplication
  */
 const importApplication: (
   folder_id: string,
@@ -204,7 +204,7 @@ const importApplication: (
 }
 
 /**
- * 统计
+ * Statistics
  * @param application_id
  * @param data
  * @param loading
@@ -217,7 +217,7 @@ const getStatistics: (
   return get(`${prefix.value}/${application_id}/application_stats`, data, loading)
 }
 /**
- * 统计token消耗
+ * StatisticstokenConsumption
  */
 const getTokenUsage: (
   application_id: string,
@@ -227,7 +227,7 @@ const getTokenUsage: (
   return get(`${prefix.value}/${application_id}/application_token_usage`, data, loading)
 }
 /**
- * 统计提问次数
+ * StatisticsAskCount
  */
 const topQuestions: (
   application_id: string,
@@ -237,9 +237,9 @@ const topQuestions: (
   return get(`${prefix.value}/${application_id}/top_questions`, data, loading)
 }
 /**
- * 打开调试对话id
- * @param application_id 应用id
- * @param loading 加载器
+ * OpenDebugConversationid
+ * @param application_id Applicationid
+ * @param loading Loader
  * @returns
  */
 const open: (application_id: string, loading?: Ref<boolean>) => Promise<Result<string>> = (
@@ -250,7 +250,7 @@ const open: (application_id: string, loading?: Ref<boolean>) => Promise<Result<s
 }
 
 /**
- * 生成提示词
+ * Generate prompt
  * @param workspace_id
  * @param model_id
  * @param application_id
@@ -271,7 +271,7 @@ const generate_prompt: (
 }
 
 /**
- * 对话
+ * Conversation
  * chat_id: string
  * data
  * @param chat_id
@@ -282,8 +282,8 @@ const chat: (chat_id: string, data: any) => Promise<any> = (chat_id, data) => {
   return postStream(`${prefix}/chat_message/${chat_id}`, data)
 }
 /**
- * 获取对话用户认证类型
- * @param loading 加载器
+ * GetConversationUserAuthenticationType
+ * @param loading Loader
  * @returns
  */
 const getChatUserAuthType: (loading?: Ref<boolean>) => Promise<any> = (loading) => {
@@ -291,13 +291,13 @@ const getChatUserAuthType: (loading?: Ref<boolean>) => Promise<any> = (loading) 
 }
 
 /**
- * 获取平台状态
+ * GetPlatformStatus
  */
 const getPlatformStatus: (application_id: string) => Promise<Result<any>> = (application_id) => {
   return get(`${prefix.value}/${application_id}/platform/status`)
 }
 /**
- * 更新平台状态
+ * UpdatePlatformStatus
  */
 const updatePlatformStatus: (application_id: string, data: any) => Promise<Result<any>> = (
   application_id,
@@ -306,7 +306,7 @@ const updatePlatformStatus: (application_id: string, data: any) => Promise<Resul
   return post(`${prefix.value}/${application_id}/platform/status`, data)
 }
 /**
- * 获取平台配置
+ * GetPlatformConfiguration
  */
 const getPlatformConfig: (application_id: string, type: string) => Promise<Result<any>> = (
   application_id,
@@ -315,7 +315,7 @@ const getPlatformConfig: (application_id: string, type: string) => Promise<Resul
   return get(`${prefix.value}/${application_id}/platform/${type}`)
 }
 /**
- * 更新平台配置
+ * UpdatePlatformConfiguration
  */
 const updatePlatformConfig: (
   application_id: string,
@@ -326,7 +326,7 @@ const updatePlatformConfig: (
   return post(`${prefix.value}/${application_id}/platform/${type}`, data, undefined, loading)
 }
 /**
- * 应用发布
+ * ApplicationPublish
  * @param application_id
  * @param data
  * @param loading
@@ -362,7 +362,7 @@ const playDemoText: (application_id: string, data: any, loading?: Ref<boolean>) 
 }
 
 /**
- * 文本转语音
+ * TextTo speech
  */
 const postTextToSpeech: (
   application_id: string,
@@ -378,7 +378,7 @@ const postTextToSpeech: (
   )
 }
 /**
- * 语音转文本
+ * Speech toText
  */
 const speechToText: (
   application_id: string,
@@ -389,7 +389,7 @@ const speechToText: (
 }
 
 /**
- * mcp 节点
+ * mcp Node
  */
 const getMcpTools: (
   application_id: string,
@@ -400,7 +400,7 @@ const getMcpTools: (
 }
 
 /**
- * 上传文件
+ * UploadFile
  * @param file
  * @param sourceId
  * @param resourceType
@@ -428,13 +428,13 @@ const postUploadFile: (
 }
 
 /**
- * 上传文件（支持上传进度回调与中断）
+ * Upload file (supports upload progress callback and interrupt)
  * @param file
  * @param sourceId
  * @param resourceType
- * @param onProgress 上传进度回调，参数为百分比(0-100)
+ * @param onProgress UploadProgressCallback，ParametersAs percentage(0-100)
  * @param loading
- * @returns 返回 { request, abort }，request 为异步 promise 对象，abort 用于中断上传
+ * @returns Returns { request, abort }, request is an async promise object, abort is used to interrupt upload
  */
 const postUploadFileProgress: (
   file: any,
@@ -476,8 +476,8 @@ const getFile: (application_id: string, params: any) => Promise<Result<any>> = (
 }
 
 /**
- * 批量删除智能体
- * @param 参数
+ * BatchDeletionAgent
+ * @param Parameters
  * {
   "id_list": [String]
 }
@@ -489,8 +489,8 @@ const delMulApplication: (data: any, loading?: Ref<boolean>) => Promise<Result<b
   return put(`${prefix.value}/batch_delete`, { id_list: data }, undefined, loading)
 }
 /**
- * 批量删除智能体
- * @param 参数
+ * BatchDeletionAgent
+ * @param Parameters
  * {
   "id_list": [String]
   "folder_id": string
@@ -504,8 +504,8 @@ const putMulMoveApplication: (data: any, loading?: Ref<boolean>) => Promise<Resu
 }
 
 /**
- * 批量更新智能体对话日志清除策略
- * @param 参数
+ * BatchUpdateAgentConversationLogClearStrategy
+ * @param Parameters
  * {
   "id_list": [String],
   "clean_time": number,

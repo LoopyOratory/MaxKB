@@ -57,11 +57,11 @@ def clean_method(query_conditions, clean_log=True):
             chat_record_ids = [record.id for record in chat_records]
             chat_ids = {record.chat_id for record in chat_records}
 
-            # 计算每个 chat_id 的最大 create_time
+            # CalculateEach chat_id 的Maximum create_time
             max_create_times = ChatRecord.objects.filter(id__in=chat_record_ids).values('chat_id').annotate(
                 max_create_time=Max('create_time'))
 
-            # 收集需要删除的文件
+            # CollectNeedsDeletion的File
             files_to_delete = []
             for record in chat_records:
                 max_create_time = next(
@@ -71,7 +71,7 @@ def clean_method(query_conditions, clean_log=True):
                     files_to_delete.extend(
                         File.objects.filter(source_id=str(record.chat_id), create_time__lt=max_create_time)
                     )
-            # 删除 ChatRecord
+            # Deletion ChatRecord
             deleted_count = 0
             if clean_log:
                 deleted_count = ChatRecord.objects.filter(id__in=chat_record_ids).delete()[0]
@@ -84,10 +84,10 @@ def clean_method(query_conditions, clean_log=True):
                 count_map = {item['chat_id']: item['count'] for item in updated_counts}
 
                 for chat_id in chat_ids:
-                    count = count_map.get(chat_id, 0)  # 如果没有记录则为0
+                    count = count_map.get(chat_id, 0)  # IfNoneRecord则为0
                     Chat.objects.filter(id=chat_id).update(chat_record_count=count)
 
-                # 删除没有关联 ChatRecord 的 Chat
+                # DeletionNoneAssociation ChatRecord 的 Chat
                 Chat.objects.filter(chatrecord__isnull=True, id__in=chat_ids).delete()
             File.objects.filter(loid__in=[file.loid for file in files_to_delete]).delete()
 

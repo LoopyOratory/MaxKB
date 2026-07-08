@@ -4,14 +4,14 @@ import {type Ref} from 'vue'
 
 const prefix = '/system/auth'
 /**
- * 获取认证设置
+ * GetAuthenticationSettings
  */
 const getAuthSetting: (auth_type: string, loading?: Ref<boolean>) => Promise<Result<any>> = (auth_type, loading) => {
   return get(`${prefix}/${auth_type}/detail`, undefined, loading)
 }
 
 /**
- * ldap连接测试
+ * ldapConnection test
  */
 const postAuthSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -21,7 +21,7 @@ const postAuthSetting: (data: any, loading?: Ref<boolean>) => Promise<Result<any
 }
 
 /**
- * 修改邮箱设置
+ * ModificationEmailSettings
  */
 const putAuthSetting: (auth_type: string, data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   auth_type,

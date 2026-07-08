@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： utils.py
+@Author: Tiger
+@file: utils.py
 @date：2024/6/6 15:15
 @desc:
 """
@@ -112,11 +112,11 @@ class Reasoning:
         return {"content": "", "reasoning_content": ""}
 
     def _normalize_content(self, content):
-        """将不同类型的内容统一转换为字符串"""
+        """将DifferentType的ContentUnifiedTransform为String"""
         if isinstance(content, str):
             return content
         elif isinstance(content, list):
-            # 处理包含多种内容类型的列表
+            # ProcessContains多种ContentType的List
             normalized_parts = []
             for item in content:
                 if isinstance(item, dict):
@@ -127,11 +127,11 @@ class Reasoning:
             return str(content)
 
     def get_reasoning_content(self, chunk):
-        # 如果没有开始思考过程标签那么就全是结果
+        # IfNoneStart思考过程Tag那么就全是Result
         if self.reasoning_content_start_tag is None or len(self.reasoning_content_start_tag) == 0:
             self.content += chunk.content
             return {"content": chunk.content, "reasoning_content": ""}
-        # 如果没有结束思考过程标签那么就全部是思考过程
+        # IfNoneEnd思考过程Tag那么就All是思考过程
         if self.reasoning_content_end_tag is None or len(self.reasoning_content_end_tag) == 0:
             return {"content": "", "reasoning_content": chunk.content}
         chunk.content = self._normalize_content(chunk.content)
@@ -164,7 +164,7 @@ class Reasoning:
                 if chunk.additional_kwargs
                 else "",
             }
-        # 是否包含结束
+        # WhetherContainsEnd
         if reasoning_content_end_tag_prefix_index > -1:
             if (
                 len(self.reasoning_content_chunk) - reasoning_content_end_tag_prefix_index
@@ -210,13 +210,13 @@ class Reasoning:
 
 def event_content(chat_id, chat_record_id, response, workflow, write_context, post_handler: WorkFlowPostHandler):
     """
-    用于处理流式输出
-    @param chat_id:         会话id
-    @param chat_record_id:  对话记录id
-    @param response:        响应数据
-    @param workflow:        工作流管理器
-    @param write_context    写入节点上下文
-    @param post_handler:    后置处理器
+    Used forProcessStreaming output
+    @param chat_id:         Sessionid
+    @param chat_record_id:  Conversation record id
+    @param response:        ResponseData
+    @param workflow:        WorkflowManage器
+    @param write_context    WriteNodeContext
+    @param post_handler:    PostProcess器
     """
     answer = ""
     try:
@@ -270,14 +270,14 @@ def to_stream_response(
     chat_id, chat_record_id, response: Iterator[BaseMessageChunk], workflow, write_context, post_handler
 ):
     """
-    将结果转换为服务流输出
-    @param chat_id:        会话id
-    @param chat_record_id: 对话记录id
-    @param response:       响应数据
-    @param workflow:       工作流管理器
-    @param write_context   写入节点上下文
-    @param post_handler:   后置处理器
-    @return: 响应
+    将ResultTransform为Service流Output
+    @param chat_id:        Sessionid
+    @param chat_record_id: Conversation record id
+    @param response:       ResponseData
+    @param workflow:       WorkflowManage器
+    @param write_context   WriteNodeContext
+    @param post_handler:   PostProcess器
+    @return: Response
     """
     r = StreamingHttpResponse(
         streaming_content=event_content(chat_id, chat_record_id, response, workflow, write_context, post_handler),
@@ -293,15 +293,15 @@ def to_response(
     chat_id, chat_record_id, response: BaseMessage, workflow, write_context, post_handler: WorkFlowPostHandler
 ):
     """
-    将结果转换为服务输出
+    将ResultTransform为ServiceOutput
 
-    @param chat_id:        会话id
-    @param chat_record_id: 对话记录id
-    @param response:       响应数据
-    @param workflow:       工作流管理器
-    @param write_context   写入节点上下文
-    @param post_handler:   后置处理器
-    @return: 响应
+    @param chat_id:        Sessionid
+    @param chat_record_id: Conversation record id
+    @param response:       ResponseData
+    @param workflow:       WorkflowManage器
+    @param write_context   WriteNodeContext
+    @param post_handler:   PostProcess器
+    @return: Response
     """
     answer = response.content
     write_context(answer)
@@ -329,11 +329,11 @@ def to_stream_response_simple(stream_event):
 
 
 def generate_tool_message_complete(icon, name, input_content, output_content):
-    """生成包含输入和输出的工具消息模版"""
-    # 确保输入内容是字符串，如果不是则尝试转换为 JSON 字符串
+    """GenerateContainsInput和Output的ToolsMessage模版"""
+    # EnsureInputContent是String，If不是则尝试Transform为 JSON String
     if not isinstance(input_content, str):
         input_content = json.dumps(input_content, ensure_ascii=False)
-    # 格式化输出
+    # FormatOutput
     if not isinstance(output_content, str):
         output_content = json.dumps(output_content, ensure_ascii=False)
     content = {
@@ -345,14 +345,14 @@ def generate_tool_message_complete(icon, name, input_content, output_content):
     return f"<tool_calls_render>{json.dumps(content, ensure_ascii=False)}</tool_calls_render>"
 
 
-# 全局单例事件循环
+# Global单例EventLoop
 _global_loop = None
 _loop_thread = None
 _loop_lock = threading.Lock()
 
 
 def get_global_loop():
-    """获取全局共享的事件循环"""
+    """GetGlobalShared的EventLoop"""
     global _global_loop, _loop_thread
 
     with _loop_lock:
@@ -370,7 +370,7 @@ def get_global_loop():
 
 
 def _extract_tool_id(raw_id):
-    """从 raw_id 中提取最后一个符合 call_... 模式的 id，若无匹配则返回原值或 None"""
+    """从 raw_id 中ExtractLastOneMatches call_... Mode的 id，若无Match则Return原值或 None"""
     if not raw_id:
         return None
     if not isinstance(raw_id, str):
@@ -382,7 +382,7 @@ def _extract_tool_id(raw_id):
     if not positions:
         return raw_id
 
-    # 取最后一个前缀位置，截到下一个前缀或结尾
+    # 取LastOnePrefixPosition，截到下OnePrefix或结尾
     start = positions[-1]
     end = len(s)
     for pos in positions:
@@ -400,32 +400,32 @@ async def _initialize_skills(mcp_servers, temp_dir):
     if "skills" in mcp_config:
         skill_file_items = mcp_config.pop("skills")
         for skill_file in skill_file_items:
-            # 使用 sync_to_async 包装 ORM 查询
+            # Use sync_to_async 包装 ORM Query
             file = await sync_to_async(lambda: QuerySet(File).filter(id=skill_file["file_id"]).first())()
             if not file:
                 continue
-            # get_bytes 可能也涉及 IO，也用 sync_to_async 包装
+            # get_bytes Possible也涉及 IO，也用 sync_to_async 包装
             file_bytes = await sync_to_async(file.get_bytes)()
             params = skill_file.get("params", {})
             with zipfile.ZipFile(io.BytesIO(file_bytes), "r") as zip_ref:
                 members = [m for m in zip_ref.namelist() if not m.startswith("__MACOSX/") and "__MACOSX" not in m]
                 for member in members:
                     if ".." in member or member.startswith("/"):
-                        raise ValueError(f"非法路径: {member}")
+                        raise ValueError(f"非法Path: {member}")
                 zip_ref.extractall(skills_dir, members=members)
 
-                # 获取技能解压后的顶级目录名
+                # GetSkillsDecompress after顶级Directory名
                 top_level_dirs = set()
                 for member in members:
                     parts = member.split("/")
                     if parts[0]:
                         top_level_dirs.add(parts[0])
 
-                # 将 params 写入每个顶级目录下的 .env 文件
+                # 将 params WriteEach顶级Directory under .env File
                 if params:
                     env_lines = []
                     for key, value in params.items():
-                        # 对含空格或特殊字符的值加引号
+                        # 对含空格或Special characters的值加引号
                         env_lines.append(f"{key}={value}")
                     env_content = "\n".join(env_lines) + "\n"
                     for top_dir in top_level_dirs:
@@ -433,7 +433,7 @@ async def _initialize_skills(mcp_servers, temp_dir):
                         with open(env_path, "w", encoding="utf-8") as f:
                             f.write(env_content)
 
-        os.system("chmod -R g+rx " + temp_dir)  # 确保技能目录可访问
+        os.system("chmod -R g+rx " + temp_dir)  # EnsureSkillsDirectory可Access
 
     client = MultiServerMCPClient(mcp_config)
 
@@ -541,9 +541,9 @@ async def _yield_mcp_response(
             # print(chunk)
             if isinstance(chunk[0], AIMessageChunk):
                 # ----------------------------------------------------------------
-                # 1. 从 tool_call_chunks 中聚合工具调用片段
-                #    (qwen/OpenAI streaming 通过 tool_call_chunks 传递，
-                #     additional_kwargs['tool_calls'] 在流式时通常为空)
+                # 1. 从 tool_call_chunks 中AggregationToolsCall片段
+                #    (qwen/OpenAI streaming Through tool_call_chunks 传递，
+                #     additional_kwargs['tool_calls'] 在Streaming时通常为空)
                 # ----------------------------------------------------------------
                 for tc_chunk in chunk[0].tool_call_chunks or []:
                     raw_id = tc_chunk.get("id")
@@ -551,7 +551,7 @@ async def _yield_mcp_response(
                     _upsert_fragment(key, raw_id, tc_chunk.get("name"), tc_chunk.get("args", ""))
 
                 # ----------------------------------------------------------------
-                # 1.1 兼容部分模型将工具调用放在 chunk.tool_calls，且 tool_call_chunks
+                # 1.1 CompatiblePartModel将ToolsCall放在 chunk.tool_calls，且 tool_call_chunks
                 #     的 index 为空（例如 ollama/qwen）
                 # ----------------------------------------------------------------
                 has_tool_call_chunks = bool(chunk[0].tool_call_chunks)
@@ -566,7 +566,7 @@ async def _yield_mcp_response(
                     _upsert_fragment(key, raw_id, tool_call.get("name"), part_args)
 
                 # ----------------------------------------------------------------
-                # 1.2 兼容 invalid_tool_calls 分片（部分模型会把中间 JSON 片段放这里）
+                # 1.2 Compatible invalid_tool_calls 分片（PartModel会把中间 JSON 片段放这里）
                 # ----------------------------------------------------------------
                 for invalid_tool_call in chunk[0].invalid_tool_calls or []:
                     raw_id = invalid_tool_call.get("id")
@@ -574,7 +574,7 @@ async def _yield_mcp_response(
                     _upsert_fragment(key, raw_id, invalid_tool_call.get("name"), invalid_tool_call.get("args", ""))
 
                 # ----------------------------------------------------------------
-                # 2. 兼容 additional_kwargs['tool_calls'] 方式（旧格式/非流式情况）
+                # 2. Compatible additional_kwargs['tool_calls'] Method（旧Format/非Streaming情况）
                 # ----------------------------------------------------------------
                 legacy_tool_calls = chunk[0].additional_kwargs.get("tool_calls", [])
                 for tool_call in legacy_tool_calls:
@@ -590,14 +590,14 @@ async def _yield_mcp_response(
                     _upsert_fragment(key, raw_id, func_name, part_args)
 
                 # ----------------------------------------------------------------
-                # 3. 检测工具调用结束，更新 tool_calls_info
+                # 3. DetectToolsCallEnd，Update tool_calls_info
                 # ----------------------------------------------------------------
                 is_finish_chunk = (
                     chunk[0].response_metadata.get("finish_reason") == "tool_calls" or chunk[0].chunk_position == "last"
                 )
 
                 if is_finish_chunk:
-                    # 在 finish chunk 时，将所有未完成的 fragment 标记完成并更新 tool_calls_info
+                    # 在 finish chunk 时，将All未Complete的 fragment 标记Complete并Update tool_calls_info
                     maxkb_logger.debug(f"Processing finish chunk. Tool fragments: {_tool_fragments}")
                     for idx, entry in _tool_fragments.items():
                         if entry.get("completed"):
@@ -644,7 +644,7 @@ async def _yield_mcp_response(
                                 entry["completed"] = True
 
                 # ----------------------------------------------------------------
-                # 4. 修复 tool_call_chunks 中的空 id（回填已知 id）
+                # 4. 修复 tool_call_chunks  in 空 id（回填已知 id）
                 # ----------------------------------------------------------------
                 if chunk[0].tool_call_chunks:
                     for tc_chunk in chunk[0].tool_call_chunks:
@@ -655,10 +655,10 @@ async def _yield_mcp_response(
                                 tc_chunk["id"] = frag["id"]
 
                 # ----------------------------------------------------------------
-                # 5. 修复 additional_kwargs['tool_calls']（兼容旧格式）
-                #    仅在 finish chunk 时写入完整参数，避免污染中间 chunk 的
-                #    additional_kwargs（中间 chunk 会被 ainvoke 累积，如果写入
-                #    不完整 JSON 会导致下一轮 API 调用出现 arguments 非 JSON 格式错误）
+                # 5. 修复 additional_kwargs['tool_calls']（Compatible旧Format）
+                #    仅在 finish chunk 时WriteCompleteParameters，避免污染中间 chunk 的
+                #    additional_kwargs（中间 chunk 会被 ainvoke 累积，IfWrite
+                #    不Complete JSON 会导致下一轮 API Call出现 arguments 非 JSON FormatError）
                 # ----------------------------------------------------------------
                 if legacy_tool_calls and is_finish_chunk:
                     fixed_tool_calls = []
@@ -760,10 +760,10 @@ def mcp_response_generator(
     chat_id=None,
     extra_tools=None,
 ):
-    """使用全局事件循环，不创建新实例"""
+    """UseGlobalEventLoop, notCreation新Instance"""
     result_queue = queue.Queue()
-    loop = get_global_loop()  # 使用共享循环
-    # 创建临时文件夹
+    loop = get_global_loop()  # UseSharedLoop
+    # CreationTemporaryFolder
     if chat_id:
         temp_dir = os.path.join("/tmp", chat_id)
     else:
@@ -796,17 +796,17 @@ def mcp_response_generator(
         finally:
             result_queue.put(("done", None))
 
-    # 在全局循环中调度任务
+    # 在GlobalLoop中调度Task
     asyncio.run_coroutine_threadsafe(_run(), loop)
 
     while True:
         msg_type, data = result_queue.get()
         if msg_type == "done":
-            # 清理临时文件夹
+            # CleanupTemporaryFolder
             shutil.rmtree(temp_dir, ignore_errors=True)
             break
         if msg_type == "error":
-            # 清理临时文件夹
+            # CleanupTemporaryFolder
             shutil.rmtree(temp_dir, ignore_errors=True)
             raise data
         yield data

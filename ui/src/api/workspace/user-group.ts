@@ -7,15 +7,15 @@ import type {pageRequest, PageList, ListItem} from '@/api/type/common'
 const prefix = '/workspace/group'
 
 /**
- * 获取用户组列表
+ * GetUser group list
  */
 const getUserGroup: (loading?: Ref<boolean>) => Promise<Result<ListItem[]>> = () => {
   return get(`${prefix}`)
 }
 
 /**
- * 创建用户组
- * @param 参数
+ * Create user group
+ * @param Parameters
  * {
  "id": "string",
  "name": "string"
@@ -29,8 +29,8 @@ const postUserGroup: (data: ListItem, loading?: Ref<boolean>) => Promise<Result<
 }
 
 /**
- * 删除用户组
- * @param 参数 user_group_id
+ * Delete user group
+ * @param Parameters user_group_id
  */
 const delUserGroup: (user_group_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   user_group_id,
@@ -40,7 +40,7 @@ const delUserGroup: (user_group_id: string, loading?: Ref<boolean>) => Promise<R
 }
 
 /**
- * 给用户组添加用户
+ * Add user to user group
  */
 const postAddMember: (
   user_group_id: string,
@@ -51,7 +51,7 @@ const postAddMember: (
 }
 
 /**
- * 从用户组删除用户
+ * Remove user from user group
  */
 const postRemoveMember: (
   user_group_id: string,
@@ -62,7 +62,7 @@ const postRemoveMember: (
 }
 
 /**
- * 获取用户组的成员列表
+ * GetUserGroupMemberList
  */
 const getUserListByGroup: (
   user_group_id: string,

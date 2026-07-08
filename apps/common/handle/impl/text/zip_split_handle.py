@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： text_split_handle.py
+@Author: Tiger
+@file: text_split_handle.py
 @date：2024/3/27 18:19
 @desc:
 """
@@ -151,18 +151,18 @@ class ZipSplitHandle(BaseSplitHandle):
         buffer = get_buffer(file)
         bytes_io = io.BytesIO(buffer)
         result = []
-        # 打开zip文件
+        # OpenzipFile
         with zipfile.ZipFile(bytes_io, "r") as zip_ref:
-            # 获取压缩包中的文件名列表
+            # Get压缩包 in File名List
             files = zip_ref.namelist()
-            # 读取压缩包中的文件内容
+            # Read压缩包 in FileContent
             for file in files:
                 if file.endswith("/") or file.startswith("__MACOSX"):
                     continue
                 with zip_ref.open(file) as f:
-                    # 对文件内容进行处理
+                    # 对FileContentPerformProcess
                     try:
-                        # 处理一下文件名
+                        # Process一下File名
                         f.name = get_file_name(f.name)
                         value = file_to_paragraph(f, pattern_list, with_filter, limit, save_image)
                         if isinstance(value, list):
@@ -179,7 +179,7 @@ class ZipSplitHandle(BaseSplitHandle):
                     i = File(
                         id=image.get("image_id"),
                         file_name=os.path.basename(image.get("source_file")),
-                        meta={"debug": False, "content": f.read()},  # 这里的content是二进制数据
+                        meta={"debug": False, "content": f.read()},  # Herecontent是二进制Data
                     )
                     image_mode_list.append(i)
             save_image(image_mode_list)
@@ -193,8 +193,8 @@ class ZipSplitHandle(BaseSplitHandle):
 
     def get_content(self, file, save_image):
         """
-        从 zip 中提取并返回拼接的 md 文本，同时收集并保存内嵌图片（通过 save_image 回调）。
-        使用 posixpath 来正确处理 zip 内部的路径拼接与规范化。
+        从 zip 中Extract并ReturnConcatenate的 md Text，同时Collect并Save内嵌Image（Through save_image Callback）。
+        Use posixpath 来正确Process zip Internal的PathConcatenate与Standard化。
         """
         buffer = file.read() if hasattr(file, "read") else None
         bytes_io = io.BytesIO(buffer) if buffer is not None else io.BytesIO(file)
@@ -212,7 +212,7 @@ class ZipSplitHandle(BaseSplitHandle):
                         real_name = get_file_name(zf.name)
                     except Exception:
                         real_name = zf.name
-                    # 为 split_handle 提供可重复读取的 file-like 对象
+                    # 为 split_handle Provide可重复Read的 file-like Object
                     zf.name = real_name
                     get_buffer = FileBufferHandle().get_buffer
                     for split_handle in split_handles:
@@ -229,7 +229,7 @@ class ZipSplitHandle(BaseSplitHandle):
                 for image in _image_list:
                     image_list.append(image)
 
-            # 将收集到的图片通过回调保存（一次性）
+            # 将Collect toImageThroughCallbackSave（Once性）
             if image_list:
                 image_mode_list = []
                 for image in image_list:
@@ -237,7 +237,7 @@ class ZipSplitHandle(BaseSplitHandle):
                         i = File(
                             id=image.get("image_id"),
                             file_name=os.path.basename(image.get("source_file")),
-                            meta={"debug": False, "content": f.read()},  # 这里的content是二进制数据
+                            meta={"debug": False, "content": f.read()},  # Herecontent是二进制Data
                         )
                         image_mode_list.append(i)
                 save_image(image_mode_list)

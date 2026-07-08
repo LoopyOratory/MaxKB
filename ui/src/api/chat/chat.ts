@@ -26,17 +26,17 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 打开调试对话id
- * @param application_id 应用id
- * @param loading 加载器
+ * OpenDebugConversationid
+ * @param application_id Applicationid
+ * @param loading Loader
  * @returns
  */
 const open: (loading?: Ref<boolean>) => Promise<Result<string>> = (loading) => {
   return get('/open', {}, loading)
 }
 /**
- * 对话
- * @param 参数
+ * Conversation
+ * @param Parameters
  * chat_id: string
  * data
  */
@@ -46,7 +46,7 @@ const chat: (chat_id: string, data: any) => Promise<any> = (chat_id, data) => {
 }
 
 /**
- * 应用认证信息
+ * ApplicationAuthenticationInfo
  */
 const chatProfile: (assessToken: string, loading?: Ref<boolean>) => Promise<Result<ChatProfile>> = (
   assessToken,
@@ -55,7 +55,7 @@ const chatProfile: (assessToken: string, loading?: Ref<boolean>) => Promise<Resu
   return get('/profile', { access_token: assessToken }, loading)
 }
 /**
- * 匿名认证
+ * AnonymousAuthentication
  * @param assessToken
  * @param loading
  * @returns
@@ -67,7 +67,7 @@ const anonymousAuthentication: (
   return post('/auth/anonymous', { access_token: assessToken }, {}, loading)
 }
 /**
- * 密码认证
+ * PasswordAuthentication
  * @param assessToken
  * @param password
  * @param loading
@@ -81,7 +81,7 @@ const passwordAuthentication: (
   return post('auth/password', { access_token: assessToken, password: password }, {}, loading)
 }
 /**
- * 获取应用相关信息
+ * GetApplicationRelatedInfo
  * @param loading
  * @returns
  */
@@ -90,10 +90,10 @@ const applicationProfile: (loading?: Ref<boolean>) => Promise<Result<any>> = (lo
 }
 
 /**
- * 登录
- * @param request 登录接口请求表单
- * @param loading 接口加载器
- * @returns 认证数据
+ * Login
+ * @param request LoginInterfaceRequestForm
+ * @param loading InterfaceLoader
+ * @returns AuthenticationData
  */
 const login: (
   accessToken: string,
@@ -112,9 +112,9 @@ const ldapLogin: (
 }
 
 /**
- * 获取验证码
+ * GetVerifyCode
  * @param username
- * @param loading 接口加载器
+ * @param loading InterfaceLoader
  */
 const getCaptcha: (
   username?: string,
@@ -125,7 +125,7 @@ const getCaptcha: (
 }
 
 /**
- * 获取二维码类型
+ * GetQR codeType
  */
 const getQrType: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('auth/qr_type', undefined, loading)
@@ -167,7 +167,7 @@ const getLarkCallback: (
 }
 
 /**
- * 获取认证设置
+ * GetAuthenticationSettings
  */
 const getAuthSetting: (auth_type: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   auth_type,
@@ -176,11 +176,11 @@ const getAuthSetting: (auth_type: string, loading?: Ref<boolean>) => Promise<Res
   return get(`/chat_user/${auth_type}/detail`, undefined, loading)
 }
 /**
- * 点赞点踩
- * @param chat_id         对话id
- * @param chat_record_id  对话记录id
- * @param vote_status     点赞状态
- * @param loading         加载器
+ * LikeDislike
+ * @param chat_id         Conversationid
+ * @param chat_record_id  ConversationRecordid
+ * @param vote_status     LikeStatus
+ * @param loading         Loader
  * @returns
  */
 const vote: (
@@ -226,14 +226,14 @@ const pageChatRecord: (
 }
 
 /**
- * 登出
+ * Logout
  */
 const logout: (loading?: Ref<boolean>) => Promise<Result<boolean>> = (loading) => {
   return post('/auth/logout', undefined, undefined, loading)
 }
 
 /**
- * 重置密码
+ * ResetPassword
  */
 const resetCurrentPassword: (
   data: any,
@@ -243,16 +243,16 @@ const resetCurrentPassword: (
 }
 
 /**
- * 获取当前用户信息
+ * GetCurrentUserInfo
  */
 const getChatUserProfile: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('/chat_user/profile', {}, loading)
 }
 /**
- * 获取对话详情
- * @param chat_id         对话id
- * @param chat_record_id  对话记录id
- * @param loading         加载器
+ * GetConversationDetails
+ * @param chat_id         Conversationid
+ * @param chat_record_id  ConversationRecordid
+ * @param loading         Loader
  * @returns
  */
 const getChatRecord: (
@@ -263,7 +263,7 @@ const getChatRecord: (
   return get(`historical_conversation/${chat_id}/record/${chat_record_id}`, {}, loading)
 }
 /**
- * 文本转语音
+ * TextTo speech
  */
 const textToSpeech: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -273,7 +273,7 @@ const textToSpeech: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> 
 }
 
 /**
- * 语音转文本
+ * Speech toText
  */
 const speechToText: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -283,7 +283,7 @@ const speechToText: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> 
 }
 /**
  *
- * @param chat_id  对话ID
+ * @param chat_id  ConversationID
  * @param loading
  * @returns
  */
@@ -303,8 +303,8 @@ const clearChat: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) =>
 }
 /**
  *
- * @param chat_id 对话id
- * @param data    对话简介
+ * @param chat_id Conversationid
+ * @param data    ConversationIntroduction
  * @param loading
  * @returns
  */
@@ -316,10 +316,10 @@ const modifyChat: (chat_id: string, data: any, loading?: Ref<boolean>) => Promis
   return put(`historical_conversation/${chat_id}`, data, undefined, loading)
 }
 /**
- * 上传文件
- * @param file      文件
- * @param sourceId  资源id
- * @param resourceType  资源类型
+ * UploadFile
+ * @param file      File
+ * @param sourceId  Resourceid
+ * @param resourceType  Resource type
  * @returns
  */
 const postUploadFile: (
@@ -344,13 +344,13 @@ const postUploadFile: (
 }
 
 /**
- * 上传文件（支持上传进度回调与中断）
+ * Upload file (supports upload progress callback and interrupt)
  * @param file
- * @param sourceId  资源id
- * @param resourceType  资源类型
- * @param onProgress  上传进度回调，参数为百分比(0-100)
+ * @param sourceId  Resourceid
+ * @param resourceType  Resource type
+ * @param onProgress  UploadProgressCallback，ParametersAs percentage(0-100)
  * @param loading
- * @returns 返回 { request, abort }，request 为异步 promise 对象，abort 用于中断上传
+ * @returns Returns { request, abort }, request is an async promise object, abort is used to interrupt upload
  */
 const postUploadFileProgress: (
   file: any,
@@ -388,8 +388,8 @@ const getFile: (application_id: string, params: any) => Promise<Result<any>> = (
 }
 
 /**
- * 生成分享链接
- * @param 参数
+ * GenerateShareLink
+ * @param Parameters
  * chat_id: string
  * data
  */

@@ -120,14 +120,14 @@ class ProvideApi(APIMixin):
         @staticmethod
         def get_query_params_api():
             return [OpenApiParameter(
-                # 参数的名称是done
+                # Parameters的Name是done
                 name="provider",
-                # 对参数的备注
+                # 对Parameters的Remark
                 description=_("provider"),
-                # 指定参数的类型
+                # SpecifyParameters的Type
                 type=OpenApiTypes.STR,
                 location=OpenApiParameter.QUERY,
-                # 指定必须给
+                # SpecifyMust给
                 required=True,
             )]
 

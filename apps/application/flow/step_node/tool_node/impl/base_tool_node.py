@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： base_function_lib_node.py
+    @Author: Tiger
+    @file: base_function_lib_node.py
     @date：2024/8/8 17:49
     @desc:
 """
@@ -100,7 +100,7 @@ class BaseToolNodeNode(IToolNode):
         params = {field.get('name'): convert_value(field.get('name'), field.get('value'), field.get('type'),
                                                    field.get('is_required'), field.get('source'), self)
                   for field in input_field_list}
-        # 合并启动参数默认值（如果有 init_field_list 定义）
+        # MergeStartParametersDefault值（If有 init_field_list Definition）
         init_field_list = self.node_params.get('init_field_list', [])
         if init_field_list:
             init_params_default_value = {i["field"]: i.get('default_value') for i in init_field_list}

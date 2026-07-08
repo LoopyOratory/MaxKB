@@ -235,7 +235,7 @@ const getModelInfo = (modelId: string) => {
   return rawModelOptions.value.find((item: any) => item.id === modelId)
 }
 
-// default_value 赋值
+// default_value Assign
 const getProviderItem = (modelId: string) => {
   const found = formValue.value.provider_list.find((p: any) => p.model_id === modelId)
   if (found) {

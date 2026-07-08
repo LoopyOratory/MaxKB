@@ -75,12 +75,12 @@ const customizer: (x: any, y: any) => any = (objValue: any, srcValue: any) => {
   if (srcValue == undefined && objValue) {
     return objValue
   }
-  // 如果是数组，我们将元素进行聚合
+  // IfArray, we willElementPerformAggregation
   if (typeof objValue === 'object' && typeof srcValue === 'object') {
-    // 若是object类型的对象，我们进行递归
+    // IfobjectTypeObject, wePerformRecursive
     return mergeWith(objValue, srcValue, customizer)
   } else {
-    // 否则，单纯的将值进行累加
+    // Otherwise, simply accumulate the value
     return objValue + srcValue
   }
 }

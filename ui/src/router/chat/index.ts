@@ -16,7 +16,7 @@ const router = createRouter({
   routes: routes,
 })
 
-// 路由前置拦截器
+// Route prefixInterceptor
 router.beforeEach(
   async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     NProgress.start()

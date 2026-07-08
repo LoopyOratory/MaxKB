@@ -261,7 +261,7 @@
         }"
       >
         <template v-if="['APPLICATION', 'TOOL'].includes(resourceType)">
-          <!-- 资源端智能体 -->
+          <!-- ResourceEndpointAgent -->
           <div class="w-full" v-if="resourceType === 'APPLICATION'">
             <template v-for="(item, index) in applicationTask" :key="index">
               <div class="border border-r-6 white-bg mb-8" style="padding: 2px 8px">
@@ -309,7 +309,7 @@
               </div>
             </template>
           </div>
-          <!-- 资源端工具 -->
+          <!-- ResourceEndpointTools -->
           <div class="w-full" v-if="resourceType === 'TOOL'">
             <template v-for="(item, index) in toolTask" :key="index">
               <div class="border border-r-6 white-bg mb-4" style="padding: 2px 8px 5px">
@@ -358,14 +358,14 @@
             </template>
           </div>
         </template>
-        <!-- 触发器 -->
+        <!-- Trigger -->
         <el-card
           shadow="never"
           class="card-never w-full"
           style="--el-card-padding: 8px 12px"
           v-else
         >
-          <!-- 智能体    -->
+          <!-- Agent    -->
           <div class="flex-between" @click="collapseData.agent = !collapseData.agent">
             <div class="flex align-center lighter cursor">
               <el-icon class="mr-8 arrow-icon" :class="collapseData.agent ? 'rotate-90' : ''">
@@ -434,7 +434,7 @@
               </div>
             </template>
           </div>
-          <!-- 工具    -->
+          <!-- Tools    -->
           <div class="flex-between" @click="collapseData.tool = !collapseData.tool">
             <div class="flex align-center lighter cursor">
               <el-icon class="mr-8 arrow-icon" :class="collapseData.tool ? 'rotate-90' : ''">

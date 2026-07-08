@@ -17,7 +17,7 @@ class ToolFolderTreeSerializer(serializers.ModelSerializer):
 
 
 class ToolFolderFlatSerializer(serializers.ModelSerializer):
-    """只序列化当前层的文件夹，不包含子节点"""
+    """只序列化Current层的Folder, notContains子Node"""
 
     class Meta:
         model = ToolFolder

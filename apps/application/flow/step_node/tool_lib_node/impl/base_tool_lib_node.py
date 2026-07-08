@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： base_function_lib_node.py
+    @Author: Tiger
+    @file: base_function_lib_node.py
     @date：2024/8/8 17:49
     @desc:
 """
@@ -128,7 +128,7 @@ def valid_function(tool_lib, workspace_id, user_id=None):
 
 
 def _filter_file_bytes(data):
-    """递归过滤掉所有层级的 file_bytes"""
+    """RecursiveFilter掉All层级的 file_bytes"""
     if isinstance(data, dict):
         return {k: _filter_file_bytes(v) for k, v in data.items() if k != 'file_bytes'}
     elif isinstance(data, list):
@@ -140,12 +140,12 @@ def _filter_file_bytes(data):
 def bytes_to_uploaded_file(file_bytes, file_name="unknown"):
     content_type, _ = mimetypes.guess_type(file_name)
     if content_type is None:
-        # 如果未能识别，设置为默认的二进制文件类型
+        # IfIf not recognized, Settings为Default binaryFileType
         content_type = "application/octet-stream"
-    # 创建一个内存中的字节流对象
+    # CreationOneMemory in Byte streamObject
     file_stream = io.BytesIO(file_bytes)
 
-    # 获取文件大小
+    # GetFileSize
     file_size = len(file_bytes)
 
     uploaded_file = InMemoryUploadedFile(
@@ -202,7 +202,7 @@ class BaseToolLibNodeNode(IToolLibNode):
         }
 
         self.context['params'] = params
-        # 合并初始化参数
+        # MergeInitializeParameters
         init_params_default_value = {i["field"]: i.get('default_value') for i in tool_lib.init_field_list}
         if tool_lib.init_params is not None:
             all_params = init_params_default_value | json.loads(rsa_long_decrypt(tool_lib.init_params)) | params
@@ -243,7 +243,7 @@ class BaseToolLibNodeNode(IToolLibNode):
         start_time = time.time()
         filtered_args = all_params
         try:
-            # 过滤掉 tool_init_params 中的参数
+            # Filter掉 tool_init_params  in Parameters
             tool_init_params = json.loads(rsa_long_decrypt(tool_lib.init_params)) if tool_lib.init_params else {}
             if tool_init_params:
                 filtered_args = {

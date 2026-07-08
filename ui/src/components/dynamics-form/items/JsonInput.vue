@@ -19,7 +19,7 @@
         <AppIcon iconName="app-magnify" style="font-size: 16px"></AppIcon>
       </el-button>
     </div>
-    <!-- Codemirror 弹出层 -->
+    <!-- Codemirror Popover -->
     <el-dialog
       v-model="dialogVisible"
       :title="$t('dynamicsForm.default.label')"
@@ -85,7 +85,7 @@ const codemirrorStyle = {
   width: '100%',
 }
 
-// 弹出框相关代码
+// Popup dialog related code
 const dialogVisible = ref<boolean>(false)
 
 const cloneContent = ref<string>('')
@@ -107,7 +107,7 @@ function submitDialog() {
   dialogVisible.value = false
 }
 /**
- * 校验格式
+ * ValidateFormat
  * @param rule
  * @param value
  * @param callback

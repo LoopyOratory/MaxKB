@@ -1,27 +1,27 @@
 interface User {
   /**
-   * 用户id
+   * Userid
    */
   id: string
   /**
-   * 用户名
+   * Username
    */
   username: string
   nick_name: string
   /**
-   * 邮箱
+   * Email
    */
   email: string
   /**
-   * 用户角色
+   * UserRole
    */
   role: Array<string>
   /**
-   * 用户权限
+   * UserPermission
    */
   permissions: Array<string>
   /**
-   * 是否需要修改密码
+   * WhetherNeedsModificationPassword
    */
   is_edit_password?: boolean
   IS_XPACK?: boolean
@@ -34,83 +34,83 @@ interface User {
 
 interface LoginRequest {
   /**
-   * 用户名
+   * Username
    */
   username: string
   /**
-   * 密码
+   * Password
    */
   password: string
 }
 
 interface RegisterRequest {
   /**
-   * 用户名
+   * Username
    */
   username: string
   /**
-   * 密码
+   * Password
    */
   password: string
   /**
-   * 确定密码
+   * ConfirmPassword
    */
   re_password: string
   /**
-   * 邮箱
+   * Email
    */
   email: string
   /**
-   * 验证码
+   * VerifyCode
    */
   code: string
 }
 
 interface CheckCodeRequest {
   /**
-   * 邮箱
+   * Email
    */
   email: string
   /**
-   *验证码
+   *VerifyCode
    */
   code: string
   /**
-   * 类型
+   * Type
    */
   type: 'register' | 'reset_password'
 }
 
 interface ResetCurrentUserPasswordRequest {
   /**
-   * 验证码
+   * VerifyCode
    */
   code?: string
   /**
-   *密码
+   *Password
    */
   password: string
   /**
-   * 确认密码
+   * ConfirmPassword
    */
   re_password: string
 }
 
 interface ResetPasswordRequest {
   /**
-   * 邮箱
+   * Email
    */
   email?: string
   /**
-   * 验证码
+   * VerifyCode
    */
   code?: string
   /**
-   * 密码
+   * Password
    */
   password: string
   /**
-   * 确认密码
+   * ConfirmPassword
    */
   re_password: string
   encrypted?: boolean

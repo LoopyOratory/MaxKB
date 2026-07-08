@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： __init__.py
+    @Author: Tiger
+    @file: __init__.py
     @date：2023/11/10 10:43
     @desc:
 """
@@ -27,13 +27,13 @@ def run():
     rlock = RedisLock()
     if rlock.try_lock('event_init', 30 * 30):
         try:
-            # 修改Model状态为ERROR
+            # ModificationModelStatus为ERROR
             QuerySet(Model).filter(
                 status=Status.DOWNLOAD
             ).update(
                 status=Status.ERROR, meta={'message': _('The download process was interrupted, please try again')}
             )
-            # 更新文档状态
+            # UpdateDocumentStatus
             update_execute(update_document_status_sql, [])
             version, get_key = Cache_Version.SYSTEM.value
             cache.delete(get_key(key='rsa_key'), version=version)

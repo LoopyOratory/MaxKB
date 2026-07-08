@@ -115,7 +115,7 @@
                   ]"
                   @click="toggleSelect(item.record_id)"
                 >
-                  <!-- 问题 -->
+                  <!-- Question -->
                   <QuestionContent
                     :chat-management="ChatManagement"
                     :type="type"
@@ -137,7 +137,7 @@
                   ]"
                   @click="toggleSelect(item.record_id)"
                 >
-                  <!-- 回答 -->
+                  <!-- Answer -->
                   <AnswerContent
                     :application="applicationDetails"
                     :loading="currentChatGenerating"
@@ -167,7 +167,7 @@
         </div>
       </el-scrollbar>
       <div style="position: relative">
-        <!-- 置底按钮 -->
+        <!-- Scroll to bottom button -->
         <el-button v-if="isBottom" circle class="back-bottom-button" @click="setScrollBottom">
           <el-icon>
             <ArrowDownBold />
@@ -348,20 +348,20 @@ const loading = ref(false)
 const inputValue = ref<string>('')
 const chartOpenId = ref<string>('')
 const chatList = ref<any[]>([])
-// 当前正在查看的会话是否有在途消息(还在吐字)。
-// 用它驱动"停止回答"按钮、输入禁用、发送拦截, 替代组件级全局 loading,
-// 这样后台其它会话的流式不会把当前会话的输入栏按住。
+// Whether the currently viewed conversation has in-flight messages (still streaming)。
+// Use it to drive "Stop Answer" button, input disable, send intercept, replacing component-level global loading,
+// So other background conversations streaming won't lock the current conversation's input bar。
 const currentChatGenerating = computed(() =>
   chatList.value.some((c) => c && c.write_ed === false && c.is_stop !== true),
 )
 const form_data = ref<any>({})
 const api_form_data = ref<any>({})
 const userFormRef = ref<InstanceType<typeof UserForm>>()
-// 用户输入
+// User input
 const firsUserInput = ref(false)
 const showUserInput = ref(false)
 
-// 初始表单数据（用于恢复）
+// Initial form data (for recovery)
 const initialFormData = ref({})
 const initialApiFormData = ref({})
 
@@ -421,7 +421,7 @@ watch(
   },
 )
 
-// 选择对话分享
+// Select conversation share
 const checkAll = ref(false)
 const multipleSelectionChat = ref<any[]>([])
 const shareLoading = ref(false)
@@ -495,7 +495,7 @@ function cancelCheckHandle() {
 const toggleUserInput = () => {
   showUserInput.value = !showUserInput.value
   if (showUserInput.value) {
-    // 保存当前数据作为初始数据（用于可能的恢复）
+    // Save current data as initial data (for potential recovery)
     initialFormData.value = JSON.parse(JSON.stringify(form_data.value))
     initialApiFormData.value = JSON.parse(JSON.stringify(api_form_data.value))
   }
@@ -507,7 +507,7 @@ function UserFormConfirm() {
 }
 
 function UserFormCancel() {
-  // 恢复初始数据
+  // Restore initial data
   form_data.value = JSON.parse(JSON.stringify(initialFormData.value))
   api_form_data.value = JSON.parse(JSON.stringify(initialApiFormData.value))
   userFormRef.value?.render(form_data.value)
@@ -572,7 +572,7 @@ const handleDebounceClick = debounce((val, other_params_data?: any, chat?: chatT
 }, 200)
 
 /**
- * 打开对话id
+ * Open conversation id
  */
 const openChatId: () => Promise<string> = () => {
   const obj = props.applicationDetails
@@ -633,7 +633,7 @@ const getChatRecordDetailsAPI = (row: any) => {
 }
 
 /**
- * 获取对话详情
+ * Get conversation details
  * @param row
  */
 function getSourceDetail(row: any) {
@@ -648,7 +648,7 @@ function getSourceDetail(row: any) {
 }
 
 /**
- * 对话
+ * Conversation
  */
 function getChartOpenId(chat?: any, problem?: string, re_chat?: boolean, other_params_data?: any) {
   return openChatId().then(() => {
@@ -664,8 +664,8 @@ const errorWrite = (chat: any, message?: string) => {
   ChatManagement.close(chat.id)
 }
 
-// 停止"当前正在查看的会话"里在途的消息。
-// 只动 chatList(当前会话), 不会波及后台其它正在跑的会话。
+// Stop"CurrentCurrently viewingSession"In-flightMessage。
+// Only affects chatList (current conversation); won't impact other running conversations in the background。
 const stopGenerating = () => {
   chatList.value.forEach((c) => {
     if (c && c.write_ed === false && c.is_stop !== true) {
@@ -674,7 +674,7 @@ const stopGenerating = () => {
   })
 }
 
-// 保存上传文件列表
+// Save uploaded file list
 
 function chatMessage(chat?: any, problem?: string, re_chat?: boolean, other_params_data?: any) {
   loading.value = true
@@ -714,7 +714,7 @@ function chatMessage(chat?: any, problem?: string, re_chat?: boolean, other_para
     ChatManagement.write(chat.id)
     inputValue.value = ''
     nextTick(() => {
-      // 将滚动条滚动到最下面
+      // Scroll to the bottom
       scrollDiv.value.setScrollTop(getMaxHeight())
     })
   }
@@ -741,7 +741,7 @@ function chatMessage(chat?: any, problem?: string, re_chat?: boolean, other_para
     if (other_params_data && other_params_data.form_data) {
       obj.form_data = { ...obj.form_data, ...other_params_data.form_data }
     }
-    // 对话
+    // Conversation
     getChatMessageAPI()(chartOpenId.value, obj)
       .then((response) => {
         if (response.status === 460) {
@@ -749,17 +749,17 @@ function chatMessage(chat?: any, problem?: string, re_chat?: boolean, other_para
         } else if (response.status === 461) {
           return Promise.reject(t('aiChat.tip.errorLimitMessage'))
         } else {
-          // 新建会话: 此刻后端已执行 set_chat 建好 Chat 行(在产出流之前),
-          // 通知父级把新会话加入历史列表, 这样长回答流式期间切走也能切回来继续看
+          // New conversation: backend has already executed set_chat to create Chat row (before streaming),
+          // Notify parent to add new conversation to history list, so you can switch away during a long streaming answer and come back to continue
           if (props.chatId === 'new') {
             emit('openChat', chartOpenId.value)
           }
           nextTick(() => {
-            // 将滚动条滚动到最下面
+            // Scroll to the bottom
             scrollDiv.value.setScrollTop(getMaxHeight())
           })
           const reader = response.body.getReader()
-          // 处理流数据
+          // Process stream data
           const write = getWrite(
             chat,
             reader,
@@ -794,7 +794,7 @@ function chatMessage(chat?: any, problem?: string, re_chat?: boolean, other_para
 }
 
 /**
- * 滚动条距离最上面的高度
+ * Scrollbar distance from top
  */
 const scrollTop = ref(0)
 
@@ -806,7 +806,7 @@ const getMaxHeight = () => {
 }
 
 /**
- * 滚动滚动条到最上面
+ * Scroll to the top
  * @param $event
  */
 const handleScrollTop = ($event: any) => {
@@ -824,19 +824,19 @@ const handleScrollTop = ($event: any) => {
   emit('scroll', { ...$event, dialogScrollbar: dialogScrollbar.value, scrollDiv: scrollDiv.value })
 }
 /**
- * 处理跟随滚动条
+ * Handle scroll following
  */
 const handleScroll = () => {
   if (props.type !== 'log' && scrollDiv.value) {
-    // 内部高度小于外部高度 就需要出滚动条
+    // Scrollbar needed when inner height exceeds outer height
     if (scrollDiv.value.wrapRef.offsetHeight < dialogScrollbar.value.scrollHeight) {
-      // 只有在用户已经在底部附近时才自动滚动到底部
+      // Only auto-scroll to bottom when user is near the bottom
       const isNearBottom =
         dialogScrollbar.value.scrollHeight -
           (scrollTop.value + scrollDiv.value.wrapRef.offsetHeight) <=
         40
       if (scorll.value || isNearBottom) {
-        // 滚动到底部
+        // Scroll to bottom
         scrollDiv.value.setScrollTop(dialogScrollbar.value.scrollHeight)
       }
     }
@@ -848,12 +848,12 @@ function parseTransform(transformStr: string) {
 
   if (!transformStr || transformStr === 'none') return result
 
-  // 使用正则表达式匹配 scale 和 translate3d 的值
+  // Use regex to match scale and translate3d values
   const scaleMatch = transformStr.match(/scale\(([^)]+)\)/)
   const translateMatch = transformStr.match(/translate3d\(([^)]+)\)/)
 
   if (scaleMatch) {
-    // scale可能是一个值，也可能是两个值（scaleX, scaleY）
+    // Scale may be one value or two values (scaleX, scaleY)
     const scaleValues = scaleMatch[1].split(',').map((v) => parseFloat(v.trim()))
     result.scale = scaleValues[0]
   }
@@ -876,31 +876,31 @@ onMounted(() => {
   }
 
   const handleZoom = throttle((event: WheelEvent, target: HTMLElement) => {
-    // 2. 解析当前变换状态
+    // 2. Parse current transform state
     const currentTransform = target.style.transform
     const transformValues = parseTransform(currentTransform)
     const { scale, translateX, translateY } = transformValues
-    // 确保scale是数值类型
+    // Ensure scale is numeric type
     const currentScale = Array.isArray(scale) ? scale[0] : scale
 
-    // 3. 计算缩放方向和新的缩放比例
-    const zoomIntensity = 0.05 // 每次滚轮的缩放步长
+    // 3. Calculate zoom direction and new zoom ratio
+    const zoomIntensity = 0.05 // Zoom step per scroll wheel event
     const zoomFactor = event.deltaY < 0 ? 1 + zoomIntensity : 1 - zoomIntensity
-    const newScale = Math.max(0.1, currentScale * zoomFactor) // 设置最小缩放限制
-    // 4. 计算新的平移值
+    const newScale = Math.max(0.1, currentScale * zoomFactor) // Set minimum zoom limit
+    // 4. Calculate new translate value
     const newTranslateX = (translateX * currentScale) / newScale
     const newTranslateY = (translateY * currentScale) / newScale
-    // 5. 应用新的变换
+    // 5. Apply new transform
     target.style.transform = `scale(${newScale}) translate3d(${newTranslateX}px, ${newTranslateY}px, 0px)`
-  }, 50) // 50ms 内只执行一次
+  }, 50) // Execute at most once per 50ms
 
   document.body.addEventListener(
     'wheel',
     (event) => {
-      // 1. 定位目标元素
+      // 1. Locate target element
       if (event.target) {
         const target = event.target as HTMLElement
-        // 假设打开状态的图片具有特定类名
+        // Assume opened images have a specific class name
         if (target.classList && target.classList.contains('medium-zoom-overlay')) {
           event.preventDefault()
           event.stopPropagation()
@@ -940,7 +940,7 @@ onBeforeUnmount(() => {
 })
 
 function setScrollBottom() {
-  // 将滚动条滚动到最下面
+  // Scroll to the bottom
   scrollDiv.value.setScrollTop(getMaxHeight())
 }
 
@@ -948,7 +948,7 @@ watch(
   chatList,
   () => {
     nextTick(() => {
-      handleScroll() // 确保 DOM 更新后再滚动
+      handleScroll() // Ensure scroll after DOM update
     })
   },
   { deep: true, immediate: true },

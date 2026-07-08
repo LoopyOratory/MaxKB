@@ -3,14 +3,14 @@ export default {
   install: (app: App) => {
     app.directive('resize', {
       created(el: any, binding: any) {
-        // 记录长宽
+        // RecordLength/width
         let width = ''
         let height = ''
         function getSize() {
           const style = (document.defaultView as any).getComputedStyle(el)
-          // 如果当前长宽和历史长宽不同
+          // IfCurrentLength, width, andHistoryLength/widthDifferent
           if (width !== style.width || height !== style.height) {
-            // binding.value在这里就是下面的resizeChart函数
+            // binding.valueHere it refers to the followingresizeChartFunction
 
             binding.value({
               width: parseFloat(style.width),

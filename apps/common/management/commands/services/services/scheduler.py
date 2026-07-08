@@ -42,7 +42,7 @@ class SchedulerService(BaseService):
         return APPS_DIR
 
     def open_subprocess(self):
-        # 复制当前环境变量，并设置 ENABLE_SCHEDULER=1
+        # CopyCurrentEnvironmentVariable, andSettings ENABLE_SCHEDULER=1
         env = os.environ.copy()
         env['ENABLE_SCHEDULER'] = '1'
         kwargs = {

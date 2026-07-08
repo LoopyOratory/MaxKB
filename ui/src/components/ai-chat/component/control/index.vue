@@ -22,7 +22,7 @@ function getSelection() {
   if (selection) {
     if (selection.rangeCount === 0) return undefined
     const range = selection.getRangeAt(0)
-    const fragment = range.cloneContents() // 克隆选区内容
+    const fragment = range.cloneContents() // Clone selectionContent
     const div = document.createElement('div')
     div.appendChild(fragment)
     if (div.textContent) {
@@ -33,7 +33,7 @@ function getSelection() {
 }
 
 /**
- * 打开控制台
+ * OpenConsole
  * @param event
  */
 const openControl = (event: any) => {
@@ -95,7 +95,7 @@ const menus = ref([
   },
 ])
 /**
- * 清除选中文本
+ * ClearSelectText
  */
 const clearSelectedText = () => {
   if (window.getSelection) {

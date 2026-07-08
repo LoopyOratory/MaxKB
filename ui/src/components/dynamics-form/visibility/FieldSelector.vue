@@ -113,7 +113,7 @@ const injectDraftSiblings = (rawList: Array<any>) => {
       label: typeof f.label === 'string' ? f.label : f.label?.label,
       value: f.field,
     }))
-  // 将 draft parameter 转换成 cascader 适配的 {label, value} 格式
+  // Transform draft parameter into cascader-adapted {label, value} format
 
   // base-node
   const excludeSet = new Set(

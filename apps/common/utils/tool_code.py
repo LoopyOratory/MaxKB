@@ -46,16 +46,16 @@ class ToolExecutor:
     @staticmethod
     def init_sandbox_dir():
         if not _enable_sandbox:
-            # 不启用sandbox就不初始化目录
+            # 不Enablesandbox就不InitializeDirectory
             return
         try:
-            # 只初始化一次
+            # 只InitializeOnce
             fd = os.open(
                 os.path.join(PROJECT_DIR, "tmp", "tool_executor_init_dir.lock"), os.O_CREAT | os.O_EXCL | os.O_WRONLY
             )
             os.close(fd)
         except FileExistsError:
-            # 文件已存在 → 已初始化过
+            # File已Exists → 已Initialize过
             return
         maxkb_logger.info("Init sandbox dir.")
         try:
@@ -66,7 +66,7 @@ class ToolExecutor:
             pass
         if CONFIG.get("SANDBOX_TMP_DIR_ENABLED", "0") == "1":
             os.system("chmod g+rwx /tmp")
-        # 初始化sandbox配置文件
+        # InitializesandboxConfigurationFile
         sandbox_lib_path = os.path.dirname(f"{_sandbox_path}/lib/sandbox.so")
         sandbox_conf_file_path = f"{sandbox_lib_path}/.sandbox.conf"
         if os.path.exists(sandbox_conf_file_path):
@@ -155,7 +155,7 @@ sys.stdout.flush()
         raise Exception(result.get("msg") + (f"\n{subprocess_result.stderr}" if subprocess_result.stderr else ""))
 
     def _generate_mcp_server_code(self, _code, params, name=None, description=None, tool_id=None):
-        # 解析代码,提取导入语句和函数定义
+        # ParseCode,ExtractImport语句和FunctionDefinition
         try:
             tree = ast.parse(_code)
         except SyntaxError:
@@ -170,17 +170,17 @@ sys.stdout.flush()
                 if node.name.startswith("_"):
                     other_code.append(ast.unparse(node))
                     continue
-                # 修改函数参数以包含 params 中的默认值
+                # ModificationFunctionParameters以Contains params  in Default值
                 arg_names = [arg.arg for arg in node.args.args]
-                # 为参数添加默认值,确保参数顺序正确
+                # 为ParametersAddDefault值,EnsureParameters顺序正确
                 defaults = []
                 num_defaults = 0
-                # 从后往前检查哪些参数有默认值
+                # 从后往前Check哪些Parameters有Default值
                 for i, arg_name in enumerate(arg_names):
                     if arg_name in params:
                         num_defaults = len(arg_names) - i
                         break
-                # 为有默认值的参数创建默认值列表
+                # 为有DefaultValueParametersCreationDefault值List
                 if num_defaults > 0:
                     for i in range(len(arg_names) - num_defaults, len(arg_names)):
                         arg_name = arg_names[i]
@@ -195,11 +195,11 @@ sys.stdout.flush()
                             else:
                                 defaults.append(ast.Constant(value=str(default_value)))
                         else:
-                            # 如果某个参数没有默认值,需要添加 None 占位
+                            # If某个ParametersNoneDefault值,NeedsAdd None 占位
                             defaults.append(ast.Constant(value=None))
                     node.args.defaults = defaults
-                # 将不支持 JSON Schema 的参数类型注解替换为 Any，
-                # 避免 FastMCP/Pydantic 生成 schema 时崩溃（如 requests.Response）
+                # 将不支持 JSON Schema 的ParametersType注解Replace为 Any，
+                # 避免 FastMCP/Pydantic Generate schema 时崩溃（如 requests.Response）
                 _safe_annotation_names = {
                     "str",
                     "int",
@@ -242,17 +242,17 @@ sys.stdout.flush()
                 for arg in node.args.args:
                     if not _is_safe_annotation(arg.annotation):
                         arg.annotation = ast.Name(id="Any", ctx=ast.Load())
-                # 修改返回类型注解为 Result
+                # ModificationReturnType注解为 Result
                 node.returns = ast.Name(id="Result", ctx=ast.Load())
 
-                # 修改 return 语句为 return Result(result=..., tool_id=...)
+                # Modification return 语句为 return Result(result=..., tool_id=...)
                 class ReturnTransformer(ast.NodeTransformer):
                     def __init__(self, func_name):
                         self.func_name = func_name
 
                     def visit_Return(self, node):
                         if node.value is None:
-                            # return 语句没有返回值
+                            # return 语句NoneReturn值
                             new_return = ast.Return(
                                 value=ast.Call(
                                     func=ast.Name(id="Result", ctx=ast.Load()),
@@ -264,7 +264,7 @@ sys.stdout.flush()
                                 )
                             )
                         else:
-                            # return 语句有返回值
+                            # return 语句有Return值
                             new_return = ast.Return(
                                 value=ast.Call(
                                     func=ast.Name(id="Result", ctx=ast.Load()),
@@ -281,12 +281,12 @@ sys.stdout.flush()
                 node = transformer.visit(node)
                 ast.fix_missing_locations(node)
                 func_code = ast.unparse(node)
-                # 有些模型不支持name是中文,例如: deepseek, 其他模型未知
+                # 有些Model不支持name是中文,例如: deepseek, OtherModelUnknown
                 escaped_desc = (name + " " + description).replace("\n", " ").replace("'", " ")
                 functions.append(f"@mcp.tool(description='{escaped_desc}')\n{func_code}\n")
             else:
                 other_code.append(ast.unparse(node))
-        # 构建完整的 MCP 服务器代码
+        # BuildComplete的 MCP Service器Code
         code_parts = ["from mcp.server.fastmcp import FastMCP"]
         code_parts.extend(imports)
         code_parts.append(f"\nfrom pydantic import BaseModel")

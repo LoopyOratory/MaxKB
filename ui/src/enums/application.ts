@@ -50,16 +50,16 @@ export enum WorkflowKind {
   DataSource = 'data-source',
 }
 export enum WorkflowMode {
-  // 应用工作流
+  // ApplicationWorkflow
   Application = 'application',
-  // 应用工作流循环
+  // ApplicationWorkflowLoop
   ApplicationLoop = 'application-loop',
-  // 知识库工作流
+  // Knowledge base workflow
   Knowledge = 'knowledge',
-  // 工具
+  // Tool
   Tool = 'tool',
-  // 工具循环体
+  // Tool loop body
   ToolLoop = 'tool-loop',
-  // 知识库工作流循环体
+  // Knowledge base workflow loop body
   KnowledgeLoop = 'knowledge-loop',
 }

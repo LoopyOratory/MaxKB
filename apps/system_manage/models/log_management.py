@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： log_management.py
+    @Author: Tiger
+    @file: log_management.py
     @date：2025/6/4 14:15
     @desc:
 """
@@ -16,24 +16,24 @@ from common.mixins.app_model_mixin import AppModelMixin
 
 class Log(AppModelMixin):
     """
-    审计日志
+    AuditLog
     """
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
 
-    menu = models.CharField(max_length=128, verbose_name="操作菜单")
+    menu = models.CharField(max_length=128, verbose_name="ActionsMenu")
 
-    operate = models.CharField(max_length=128, verbose_name="操作", db_index=True)
+    operate = models.CharField(max_length=128, verbose_name="Actions", db_index=True)
 
-    operation_object = models.JSONField(verbose_name="操作对象", default=dict, encoder=SystemEncoder)
+    operation_object = models.JSONField(verbose_name="ActionsObject", default=dict, encoder=SystemEncoder)
 
-    user = models.JSONField(verbose_name="用户信息", default=dict)
+    user = models.JSONField(verbose_name="UserInfo", default=dict)
 
-    status = models.IntegerField(verbose_name="状态", db_index=True)
+    status = models.IntegerField(verbose_name="Status", db_index=True)
 
-    ip_address = models.CharField(max_length=128, verbose_name="ip地址")
+    ip_address = models.CharField(max_length=128, verbose_name="ipAddress")
 
-    details = models.JSONField(verbose_name="详情", default=dict, encoder=SystemEncoder)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
+    details = models.JSONField(verbose_name="Details", default=dict, encoder=SystemEncoder)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
 
     class Meta:
         db_table = "log"

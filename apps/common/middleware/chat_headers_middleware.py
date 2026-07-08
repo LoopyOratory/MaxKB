@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： static_headers_middleware.py
+    @Author: Tiger
+    @file: static_headers_middleware.py
     @date：2024/3/13 18:26
     @desc:
 """
@@ -28,7 +28,7 @@ class ChatHeadersMiddleware(MiddlewareMixin):
                 application_icon = escape(application_access_token.get('application_icon') or '')
                 application_name = escape(application_access_token.get('application_name') or '')
                 if white_active:
-                    # 添加自定义的响应头
+                    # AddCustom的Response头
                     response[
                         'Content-Security-Policy'] = f'frame-ancestors {" ".join(white_list)}'
                 response.content = (response.content.decode('utf-8').replace(

@@ -140,17 +140,17 @@ const emit = defineEmits(['update:modelValue'])
 
 const fileArray = ref<any>([])
 const loading = ref(false)
-// 上传成功数量
+// UploadSuccessCount
 const successCount = computed(
   () => fileArray.value.filter((i: any) => i.status !== 'uploading').length,
 )
-// 上传失败数量
+// UploadFailureCount
 const errorCount = computed(() => fileArray.value.filter((i: any) => i.status === 'error').length)
-// 上传中数量
+// Upload in Count
 const uploadingCount = computed(
   () => fileArray.value.filter((i: any) => i.status === 'uploading').length,
 )
-// 可重新上传的失败项（网络错误等）
+// canRe-UploadFailureItems (networkErroretc.)
 const retryList = computed(() =>
   fileArray.value.filter((i: any) => i.status === 'error' && i.canRetry),
 )
@@ -169,15 +169,15 @@ const sortedFileArray = computed(() =>
     )
     .map(({ item }: any) => item),
 )
-// 重新上传所有可重试的失败文件
+// Re-UploadAllRetryableFailureFile
 const retryAll = () => {
   retryList.value.forEach((i: any) => uploadFile(i))
 }
 
-// 上传on-change事件
+// Uploadon-changeEvent
 const fileHandleChange = (file: any, fileList: UploadFiles) => {
-  // 按文件唯一标识精确定位并移除当前文件
-  // 注意：不能使用 splice(-1, 1) 盲删末尾元素，文件夹上传时会误删正常文件而放走超限文件
+  // Confirm position by file unique identifier and remove current file
+  // Note: cannotUse splice(-1, 1) Blind delete tailElement，FolderUploadwill mistakenly delete normalFilewhile letting over-limit ones throughFile
   const removeCurrentFile = () => {
     const index = fileList.findIndex((item: any) => item.uid === file.uid)
     if (index !== -1) {
@@ -203,13 +203,13 @@ const fileHandleChange = (file: any, fileList: UploadFiles) => {
     aborted: false,
   })
 
-  //1、判断文件大小是否合法，文件限制不能大于100M
+  //1、DetermineFileSizeWhetherValid, FileLimitCannot be greater than100M
   const isLimit = file?.size / 1024 / 1024 < file_size_limit.value
   if (!isLimit) {
     item.status = 'error'
     item.errMsg = t('dynamicsForm.UploadInput.errorTip.sizeError')
     // MsgError(t('views.document.tip.fileLimitSizeTip1') + file_size_limit.value + 'MB')
-    // fileList.splice(-1, 1) //移除当前超出大小的文件
+    // fileList.splice(-1, 1) //RemoveCurrentExceedSizeFile
     fileArray.value?.push(item)
     removeCurrentFile()
     return false
@@ -232,7 +232,7 @@ const fileHandleChange = (file: any, fileList: UploadFiles) => {
   removeCurrentFile()
   uploadFile(item)
 }
-// 执行上传
+// ExecuteUpload
 const uploadFile = (item: any) => {
   item.status = 'uploading'
   item.percentage = 0
@@ -246,7 +246,7 @@ const uploadFile = (item: any) => {
     },
     loading,
   )
-  // provider 返回 { request, abort } 时保存中断方法，删除时可中断上传
+  // When provider returns { request, abort }, save interrupt method so upload can be interrupted on deletion
   item.abort = typeof res?.abort === 'function' ? res.abort : null
   const request: Promise<any> = res?.then ? res : res?.request
   request
@@ -258,7 +258,7 @@ const uploadFile = (item: any) => {
       emit('update:modelValue', fileArray.value)
     })
     .catch(() => {
-      // 主动中断（删除）导致的失败不再标记错误
+      // ActiveInterrupt（Deletion) caused byFailureNo longer markError
       if (item.aborted) return
       item.status = 'error'
       item.errMsg = t('dynamicsForm.UploadInput.errorTip.networkError')
@@ -266,7 +266,7 @@ const uploadFile = (item: any) => {
     })
 }
 function deleteFile(item: any) {
-  // 上传过程中删除则中断上传请求
+  // Interrupt upload request on deletion during upload
   if (item?.status === 'uploading' && typeof item.abort === 'function') {
     item.aborted = true
     item.abort()

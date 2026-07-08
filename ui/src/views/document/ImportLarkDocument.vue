@@ -148,7 +148,7 @@ const router = useRouter()
 const route = useRoute()
 const {
   params: { folderId },
-  query: { id, folder_token }, // id为knowledgeID，有id的是上传文档 folder_token为飞书文件夹token
+  query: { id, folder_token }, // id is knowledgeID, hasid isUploadDocument folder_tokenisFeishuFoldertoken
 } = route
 const apiType = computed(() => {
   if (route.path.includes('shared')) {
@@ -192,7 +192,7 @@ const props = {
 }
 
 const loadNode: LoadFunction = (node, resolve) => {
-  const token = node.level === 0 ? folder_token : node.data.token // 根节点使用 folder_token，其他节点使用 node.data.token
+  const token = node.level === 0 ? folder_token : node.data.token // Root node uses folder_token, other nodes use node.data.token
   loadSharedApi({ type: 'document', systemType: apiType.value })
     .getLarkDocumentList(id, token, {}, loading)
     .then((res: any) => {
@@ -212,10 +212,10 @@ const loadNode: LoadFunction = (node, resolve) => {
 
 const handleAllCheckChange = (checked: boolean) => {
   if (checked) {
-    // 获取所有已加载的节点
+    // Get all loaded nodes
     const nodes = Object.values(treeRef.value?.store.nodesMap || {}) as any[]
     nodes.forEach((node) => {
-      // 只选择未禁用且是文件的节点
+      // Only select non-disabled file nodes
       if (!node.disabled) {
         treeRef.value?.setChecked(node.data, true, false)
       }
@@ -228,7 +228,7 @@ const handleAllCheckChange = (checked: boolean) => {
 function submit() {
   loading.value = true
   disabled.value = true
-  // 选中的节点的token
+  // Selected in Nodetoken
   const checkedNodes = treeRef.value?.getCheckedNodes() || []
   const filteredNodes = checkedNodes.filter((node: any) => !node.is_exist)
   const newList = filteredNodes.map((node: any) => {

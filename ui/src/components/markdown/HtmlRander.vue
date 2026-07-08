@@ -25,7 +25,7 @@ const props = withDefaults(
   },
 )
 
-// 每个实例生成唯一 id，防止多个 iframe 消息串扰
+// EachInstanceGenerateUnique id, prevent multiple iframe MessageCrosstalk
 const instanceId = Math.random().toString(36).slice(2)
 
 function createIframeHtml(sourceHtml: string) {

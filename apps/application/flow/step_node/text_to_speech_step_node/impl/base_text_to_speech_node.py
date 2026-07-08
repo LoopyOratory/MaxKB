@@ -17,12 +17,12 @@ from pydub import AudioSegment
 def bytes_to_uploaded_file(file_bytes, file_name="generated_audio.mp3"):
     content_type, _ = mimetypes.guess_type(file_name)
     if content_type is None:
-        # 如果未能识别，设置为默认的二进制文件类型
+        # IfIf not recognized, Settings为Default binaryFileType
         content_type = "application/octet-stream"
-    # 创建一个内存中的字节流对象
+    # CreationOneMemory in Byte streamObject
     file_stream = io.BytesIO(file_bytes)
 
-    # 获取文件大小
+    # GetFileSize
     file_size = len(file_bytes)
 
     uploaded_file = InMemoryUploadedFile(
@@ -47,7 +47,7 @@ class BaseTextToSpeechNode(ITextToSpeechNode):
     def execute(self, tts_model_id,
                 content, model_params_setting=None, tts_model_id_type=None, tts_model_id_reference=None,
                 max_length=1024, **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if tts_model_id_type == 'reference' and tts_model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 tts_model_id_reference[0],
@@ -61,12 +61,12 @@ class BaseTextToSpeechNode(ITextToSpeechNode):
 
         if tts_model_id is None or tts_model_id == '':
             raise Exception(_('Model is not allowed to be empty'))
-        # 分割文本为合理片段
+        # SplitText为合理片段
         content = _remove_empty_lines(content)
         content_chunks = [content[i:i + max_length]
                           for i in range(0, len(content), max_length)]
 
-        # 生成并收集所有音频片段
+        # Generate并CollectAllAudio片段
         audio_segments = []
         temp_files = []
 
@@ -78,31 +78,31 @@ class BaseTextToSpeechNode(ITextToSpeechNode):
 
             audio_byte = model.text_to_speech(chunk)
 
-            # 保存为临时音频文件用于合并
+            # Save为TemporaryAudioFileUsed forMerge
             temp_file = io.BytesIO(audio_byte)
             audio_segment = AudioSegment.from_file(temp_file)
             audio_segments.append(audio_segment)
             temp_files.append(temp_file)
 
-        # 合并所有音频片段
+        # MergeAllAudio片段
         combined_audio = AudioSegment.empty()
         for segment in audio_segments:
             combined_audio += segment
 
-        # 将合并后的音频转为字节流
+        # 将Merge afterAudio转为Byte stream
         output_buffer = io.BytesIO()
         combined_audio.export(output_buffer, format="mp3")
         combined_bytes = output_buffer.getvalue()
         file_name = 'combined_audio.mp3'
         file = bytes_to_uploaded_file(combined_bytes, file_name)
-        # 存储合并后的音频文件
+        # StorageMerge afterAudioFile
         file_url = self.upload_file(file)
-        # 生成音频标签
+        # GenerateAudioTag
         audio_label = f'<audio src="{file_url}" controls style="width: 300px; height: 43px"></audio>'
         file_id = file_url.split('/')[-1]
         audio_list = [{'file_id': file_id, 'file_name': file_name, 'url': file_url}]
 
-        # 关闭所有临时文件
+        # CloseAllTemporaryFile
         for temp_file in temp_files:
             temp_file.close()
         output_buffer.close()

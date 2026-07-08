@@ -162,7 +162,7 @@ function handleDialogRefresh() {
 
 const route = useRoute()
 const {
-  params: { id, folderId }, // id为knowledgeID
+  params: { id, folderId }, // id is knowledgeID
 } = route as any
 
 const isShared = computed(() => {
@@ -202,7 +202,7 @@ function cellMouseLeave() {
   currentMouseId.value = null
 }
 
-// 1) 仍然把后端全量 tags 转成“扁平行”，每行带上 keyIndex
+// 1) Still send full backend data tags Convert to“Flatten row”, each row with keyIndex
 const tableData = computed(() => {
   const result: any[] = []
   tags.value.forEach((tag: any) => {
@@ -213,7 +213,7 @@ const tableData = computed(() => {
           key: tag.key,
           value: value.value,
           doc_count: value.doc_count,
-          keyIndex: index, // 同一个 key 下第几行
+          keyIndex: index, // SameOne key Which row below
         })
       })
     }
@@ -221,16 +221,16 @@ const tableData = computed(() => {
   return result
 })
 
-// 2) 按“key 分组”做分页：每页 pageSize 个 key
+// 2) Paginate by "key group": per page pageSize keys
 const pagedGroups = computed(() => {
   const start = (pageNum.value - 1) * pageSize.value
   const end = start + pageSize.value
   return tableData.value.slice(start, end)
 })
 
-// 5) 合并单元格：只在当前页内合并，同一个 key 的第一行 rowspan=该 key 在当前页的行数
+// 5) Merge cells: only merge within current page; same key first row rowspan = count of this key in current page
 const spanMethod = ({ row, columnIndex }: any) => {
-  // 注意：你现在有 selection 列，所以 key 列索引是 1；如需同时合并 value 列按需调整
+  // Note: You currently have a selection column, so key column index is 1; adjust on-demand if also merging value columns
   if (columnIndex === 0 || columnIndex === 1) {
     const sameKeyItems = pagedGroups.value.filter((item) => item.key === row.key)
     const isFirstItem = sameKeyItems.length > 0 && sameKeyItems[0].id === row.id
@@ -248,17 +248,17 @@ const syncingSelection = ref(false)
 const handleSelectionChange = async (val: any[]) => {
   if (syncingSelection.value) return
 
-  // 当前已选中的 id 集合（用于判断哪些行刚刚被取消）
+  // CurrentSelected in  id Set (Used forDetermineWhich lines were justCancel）
   const selectedIds = new Set(val.map((r) => r.id))
 
-  // 找出“刚被取消选中的行”
+  // Find rows that were just deselected
   const deselectedRows = multipleSelection.value.filter((r) => !selectedIds.has(r.id))
   if (deselectedRows.length === 0) {
     multipleSelection.value = val
     return
   }
 
-  // 取消选中时：把同 key 分组里其它行也一并取消
+  // CancelSelectWhen: same key GroupOther lines here are alsoCancel
   syncingSelection.value = true
   await nextTick()
 
@@ -273,8 +273,8 @@ const handleSelectionChange = async (val: any[]) => {
   await nextTick()
   syncingSelection.value = false
 
-  // 以表格最终状态为准更新缓存（这里直接用传入 val 可能已过期）
-  // 简化：重新从表格取 selection（Element Plus 有 store，没暴露就用 val\+补丁）
+  // Use table final state as standard to update cache (val passed in here may be expired)
+  // Simplified: Re-derive from table selection (Element Plus has internal store, no need to expose via val + patch)
   multipleSelection.value = pagedGroups.value.filter((r) =>
     tableRef.value?.getSelectionRows
       ? tableRef.value.getSelectionRows().some((s: any) => s.id === r.id)

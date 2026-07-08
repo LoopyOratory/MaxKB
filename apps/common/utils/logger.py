@@ -11,7 +11,7 @@ class DailyTimedRotatingFileHandler(TimedRotatingFileHandler):
         """ Override the original method to rotate the log file daily."""
         dest = self._get_rotate_dest_filename(source)
         if os.path.exists(source) and not os.path.exists(dest):
-            # 存在多个服务进程时, 保证只有一个进程成功 rotate
+            # Exists多个Service进程时, 保证只有One进程Success rotate
             os.rename(source, dest)
 
     @staticmethod

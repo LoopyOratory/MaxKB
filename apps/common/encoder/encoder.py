@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： SystemEncoder.py
+    @Author: Tiger
+    @file: SystemEncoder.py
     @date：2025/3/17 16:38
     @desc:
 """
@@ -16,9 +16,9 @@ from django.core.files.uploadedfile import InMemoryUploadedFile, TemporaryUpload
 
 class SystemEncoder(json.JSONEncoder):
     def encode(self, obj):
-        # 先序列化为字符串
+        # 先序列化为String
         json_str = super().encode(obj)
-        # 移除所有空字符
+        # RemoveAll空字符
         json_str = json_str.replace('\\u0000', '')
         return json_str
 

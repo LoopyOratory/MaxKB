@@ -130,7 +130,7 @@ import permissionMap from '@/permission'
 
 const route = useRoute()
 const {
-  params: { id, folderId }, // 知识库id
+  params: { id, folderId }, // Knowledge database id
 } = route as any
 
 const apiType = computed(() => {
@@ -155,9 +155,9 @@ const isShared = computed(() => {
 const CreateTermbaseDialogRef = ref()
 const loading = ref(false)
 
-// 当前需要修改问题的id
+// CurrentNeedsModificationQuestionid
 const currentMouseId = ref('')
-// 当前点击打开drawer的id
+// CurrentClickOpendrawerid
 const currentClickId = ref('')
 const currentContent = ref('')
 
@@ -204,7 +204,7 @@ const handleSelectionChange = (val: any[]) => {
 }
 
 /*
-  快速创建空白文档
+  QuickCreationBlankDocument
 */
 function creatQuickHandle(val: string) {
   loading.value = true

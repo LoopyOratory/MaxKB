@@ -7,7 +7,7 @@
 defineOptions({ name: 'TagEllipsis' })
 </script>
 <style lang="scss" scoped>
-/* tag超出省略号 */
+/* tagExceedEllipsis */
 .tag-ellipsis {
   border: 1px solid var(--el-border-color);
   color: var(--app-text-color);

@@ -7,7 +7,7 @@
           <h5 class="ml-4 color-text-primary">{{ activeData.label }}</h5>
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <!-- 企业版: 工作空间下拉框-->
+      <!-- Enterprise: WorkspaceDropdownDialog-->
       <el-divider
         class="ml-24"
         direction="vertical"
@@ -96,8 +96,8 @@ const route = useRoute()
 const { user } = useStore()
 const loading = ref(false)
 const rLoading = ref(false)
-const memberList = ref<any[]>([]) // 全部成员
-const filterMember = ref<any[]>([]) // 搜索过滤后列表
+const memberList = ref<any[]>([]) // AllMember
+const filterMember = ref<any[]>([]) // SearchFilterAfterList
 const currentUser = ref<string>('')
 const currentType = ref<string>('')
 const filterText = ref('')
@@ -121,7 +121,7 @@ const settingTags = reactive([
     type: SourceTypeEnum.MODEL,
   },
 ])
-// 当前激活的数据类型（应用/知识库/模型/工具）
+// CurrentActivatedDataType（Application/KnowledgeDatabase/Model/Tools）
 const activeData = computed(() => {
   const lastIndex = route.path.lastIndexOf('/')
   const currentPathType = route.path.substring(lastIndex + 1).toUpperCase()

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： text_split_handle.py
+    @Author: Tiger
+    @file: text_split_handle.py
     @date：2024/3/27 18:19
     @desc:
 """
@@ -42,11 +42,11 @@ split_handles = [
 
 def file_to_paragraph(file, save_inner_image):
     """
-    文件转换为段落列表
-    @param file: 文件
+    FileTransform为ParagraphList
+    @param file: File
     @return: {
-      name:文件名
-      paragraphs:段落列表
+      name:File名
+      paragraphs:ParagraphList
     }
     """
     get_buffer = FileBufferHandle().get_buffer
@@ -58,8 +58,8 @@ def file_to_paragraph(file, save_inner_image):
 
 def is_valid_uuid(uuid_str: str):
     """
-    校验字符串是否是uuid
-    @param uuid_str: 需要校验的字符串
+    ValidateStringWhether是uuid
+    @param uuid_str: NeedsValidate的String
     @return: bool
     """
     try:
@@ -115,17 +115,17 @@ class ZipParseQAHandle(BaseParseQAHandle):
         buffer = get_buffer(file)
         bytes_io = io.BytesIO(buffer)
         result = []
-        # 打开zip文件
+        # OpenzipFile
         with zipfile.ZipFile(bytes_io, 'r') as zip_ref:
-            # 获取压缩包中的文件名列表
+            # Get压缩包 in File名List
             files = zip_ref.namelist()
-            # 读取压缩包中的文件内容
+            # Read压缩包 in FileContent
             for file in files:
-                # 跳过 macOS 特有的元数据目录和文件
+                # 跳过 macOS 特有的元DataDirectory和File
                 if file.endswith('/') or file.startswith('__MACOSX'):
                     continue
                 with zip_ref.open(file) as f:
-                    # 对文件内容进行处理
+                    # 对FileContentPerformProcess
                     try:
                         value = file_to_paragraph(f, save_image)
                         if isinstance(value, list):

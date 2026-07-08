@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_start_node.py
+    @Author: Tiger
+    @file: base_start_node.py
     @date：2024/6/3 17:17
     @desc:
 """
@@ -79,7 +79,7 @@ class BaseStartStepNode(IStarNode):
                 chat_user_id=chat_user_id, application_id=self.workflow_params.get('application_id')
             ).first()
         """
-        开始节点 初始化全局变量
+        StartNode InitializeGlobalVariable
         """
         node_variable = {
             'question': question,

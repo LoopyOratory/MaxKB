@@ -61,7 +61,7 @@
           <p v-else shadow="always" style="margin: 0.5rem 0">
             {{ $t('aiChat.tip.answerLoading') }} <span class="dotting"></span>
           </p>
-          <!-- 知识来源 -->
+          <!-- Knowledge source -->
           <KnowledgeSourceComponent
             :data="chatRecord"
             :application="application"

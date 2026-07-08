@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： common.py
+    @Author: Tiger
+    @file: common.py
     @date：2024/12/11 17:57
     @desc:
 """
@@ -106,23 +106,23 @@ class WorkflowMode(Enum):
 
 class Workflow:
     """
-    节点列表
+    Node list
     """
     nodes: List[Node]
     """
-    线列表
+    Edge list
     """
     edges: List[Edge]
     """
-    节点id:node
+    Node id:node
     """
     node_map: Dict[str, Node]
     """
-    节点id:当前节点id上面的所有节点
+    Node id: all nodes above current node id
     """
     up_node_map: Dict[str, List[EdgeNode]]
     """
-     节点id:当前节点id下面的所有节点
+     Node id: all nodes below current node id
     """
     next_node_map: Dict[str, List[EdgeNode]]
 
@@ -146,41 +146,41 @@ class Workflow:
 
     def get_node(self, node_id):
         """
-        根据node_id 获取节点信息
+        Get node info by node_id
         @param node_id: node_id
-        @return: 节点信息
+        @return: node info
         """
         return self.node_map.get(node_id)
 
     def get_up_edge_nodes(self, node_id) -> List[EdgeNode]:
         """
-        根据节点id 获取当前连接前置节点和连线
-        @param node_id: 节点id
-        @return: 节点连线列表
+        Get connected predecessor nodes and edges by node id
+        @param node_id: node id
+        @return: node edge list
         """
         return self.up_node_map.get(node_id)
 
     def get_next_edge_nodes(self, node_id) -> List[EdgeNode]:
         """
-        根据节点id 获取当前连接目标节点和连线
-        @param node_id: 节点id
-        @return: 节点连线列表
+        Get connected target nodes and edges by node id
+        @param node_id: node id
+        @return: node edge list
         """
         return self.next_node_map.get(node_id)
 
     def get_up_nodes(self, node_id) -> List[Node]:
         """
-        根据节点id 获取当前连接前置节点
-        @param node_id: 节点id
-        @return: 节点列表
+        Get connected predecessor nodes by node id
+        @param node_id: node id
+        @return: node list
         """
         return [en.node for en in (self.up_node_map.get(node_id) or [])]
 
     def get_next_nodes(self, node_id) -> List[Node]:
         """
-        根据节点id 获取当前连接目标节点
-        @param node_id: 节点id
-        @return: 节点列表
+        Get connected target nodes by node id
+        @param node_id: node id
+        @return: node list
         """
         return [en.node for en in self.next_node_map.get(node_id, [])]
 
@@ -201,7 +201,7 @@ class Workflow:
 
     def is_valid(self):
         """
-        校验工作流数据
+        Validate workflow data
         """
         self.is_valid_model_params()
         self.is_valid_start_node()

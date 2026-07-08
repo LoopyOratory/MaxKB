@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_parse_qa_handle.py
+    @Author: Tiger
+    @file: base_parse_qa_handle.py
     @date：2024/5/21 14:56
     @desc:
 """
@@ -33,11 +33,11 @@ def get_title_row_index_dict(title_row_list):
         title_row = title_row_list[index]
         if title_row is None:
             title_row = ''
-        elif title_row.startswith('分段标题'):
+        elif title_row.startswith('SegmentTitle'):
             title_row_index_dict['title'] = index
-        elif title_row.startswith('分段内容'):
+        elif title_row.startswith('SegmentContent'):
             title_row_index_dict['content'] = index
-        elif title_row.startswith('问题'):
+        elif title_row.startswith('Question'):
             title_row_index_dict['problem_list'] = index
     return title_row_index_dict
 

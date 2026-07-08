@@ -891,7 +891,7 @@
     <EmbeddingContentDialog ref="embeddingContentDialogRef"></EmbeddingContentDialog>
 
     <ImportDocumentDialog ref="ImportDocumentDialogRef" :title="title" @refresh="refresh" />
-    <!-- 选择知识库 -->
+    <!-- SelectKnowledgeDatabase -->
     <SelectKnowledgeDialog
       ref="selectKnowledgeDialogRef"
       @refresh="refreshMigrate"
@@ -909,7 +909,7 @@
       "
     />
     <AddTagDialog ref="addTagDialogRef" @addTags="addTags" :apiType="apiType" />
-    <!-- 执行详情 -->
+    <!-- ExecuteDetails -->
     <ExecutionRecord ref="ListActionRef"></ExecutionRecord>
   </div>
 </template>
@@ -940,7 +940,7 @@ import UserApi from '@/api/user/user.ts'
 const route = useRoute()
 const router = useRouter()
 const {
-  params: { id, folderId, type }, // id为knowledgeID
+  params: { id, folderId, type }, // id is knowledgeID
 } = route as any
 const { common, user } = useStore()
 const storeKey = 'documents'
@@ -1173,7 +1173,7 @@ function openBatchEditDocument() {
 }
 
 /**
- * 初始化轮询
+ * InitializePoll
  */
 const initInterval = () => {
   interval = setInterval(() => {
@@ -1182,7 +1182,7 @@ const initInterval = () => {
 }
 
 /**
- * 关闭轮询
+ * ClosePoll
  */
 const closeInterval = () => {
   if (interval) {
@@ -1269,7 +1269,7 @@ function rowClickHandle(row: any, column: any) {
 }
 
 /*
-  快速创建空白文档
+  QuickCreationBlankDocument
 */
 function creatQuickHandle(val: string) {
   loading.value = true
@@ -1444,7 +1444,7 @@ function deleteDocument(row: any) {
 }
 
 /*
-  更新名称或状态
+  UpdateNameorState
 */
 function updateData(documentId: string, data: any, msg: string) {
   loadSharedApi({ type: 'document', systemType: apiType.value })
@@ -1573,7 +1573,7 @@ function buildTagCascaderOptions(tags: any[]) {
     value: group.key,
     children: (group.values || []).map((item: any) => ({
       label: item.value,
-      value: item.id, // 叶子节点 tag.id
+      value: item.id, // LeafNode tag.id
     })),
   }))
 
@@ -1587,7 +1587,7 @@ function buildTagCascaderOptions(tags: any[]) {
 }
 
 async function ensureTagFilterOptions(needRefresh = false) {
-  // 非刷新 && 已加载 && 非脏数据
+  // Non-refresh && already loaded && not dirty data
   if (!needRefresh && tagFilterLoaded.value && !tagFilterDirty.value) return
 
   try {
@@ -1685,7 +1685,7 @@ onMounted(() => {
     search_form.value = beforeSearch.value['search_form']
   }
   getList()
-  // 初始化定时任务
+  // InitializeScheduledTask
   initInterval()
 
   if (route.query.imported === 'true') {
@@ -1696,7 +1696,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  // 清除定时任务
+  // ClearScheduledTask
   closeInterval()
 })
 </script>

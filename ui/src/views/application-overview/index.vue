@@ -78,12 +78,12 @@
                     <AppIcon iconName="app-export" class="mr-4"></AppIcon>
                     {{ $t('views.applicationOverview.appInfo.embedInWebsite') }}
                   </el-button>
-                  <!-- 访问限制 -->
+                  <!-- AccessLimit -->
                   <el-button @click="openLimitDialog" v-if="permissionPrecise.overview_access(id)">
                     <AppIcon iconName="app-lock" class="mr-4"></AppIcon>
                     {{ $t('views.applicationOverview.appInfo.accessControl') }}
                   </el-button>
-                  <!-- 显示设置 -->
+                  <!-- ShowSettings -->
                   <el-button
                     @click="openDisplaySettingDialog"
                     v-if="permissionPrecise.overview_display(id)"
@@ -184,9 +184,9 @@
     />
     <APIKeyDialog ref="APIKeyDialogRef" />
 
-    <!-- 社区版访问限制 -->
+    <!-- Community editionAccessLimit -->
     <component :is="currentLimitDialog" ref="LimitDialogRef" @refresh="refresh" />
-    <!-- 显示设置 -->
+    <!-- ShowSettings -->
     <component :is="currentDisplaySettingDialog" ref="DisplaySettingDialogRef" @refresh="refresh" />
   </div>
 </template>
@@ -274,10 +274,10 @@ const dayOptions = [
 
 const history_day = ref<number | string>(7)
 
-// 日期组件时间
+// Date component time
 const daterangeValue = ref('')
 
-// 提交日期时间
+// SubmitDateTime
 const daterange = ref({
   start_time: '',
   end_time: '',
@@ -294,16 +294,16 @@ function toUrl(url: string) {
   window.open(url, '_blank')
 }
 
-// 显示设置
+// ShowSettings
 const DisplaySettingDialogRef = ref()
 const currentDisplaySettingDialog = shallowRef<any>(null)
 
 function openDisplaySettingDialog() {
-  // 企业版和专业版
+  // EnterpriseAnd Professional
   if (hasPermission([EditionConst.IS_EE, EditionConst.IS_PE], 'OR')) {
     currentDisplaySettingDialog.value = XPackDisplaySettingDialog
   } else {
-    // 社区版
+    // Community edition
     currentDisplaySettingDialog.value = DisplaySettingDialog
   }
   nextTick(() => {
@@ -319,16 +319,16 @@ function openDisplaySettingDialog() {
   })
 }
 
-// 访问限制
+// AccessLimit
 const LimitDialogRef = ref()
 const currentLimitDialog = shallowRef<any>(null)
 
 function openLimitDialog() {
-  // 企业版和专业版
+  // EnterpriseAnd Professional
   if (hasPermission([EditionConst.IS_EE, EditionConst.IS_PE], 'OR')) {
     currentLimitDialog.value = XPackLimitDrawer
   } else {
-    // 社区版
+    // Community edition
     currentLimitDialog.value = LimitDialog
   }
   nextTick(() => {
@@ -359,13 +359,13 @@ function getAppStatistics() {
   loadSharedApi({ type: 'application', systemType: apiType.value })
     .getTokenUsage(id, daterange.value, statisticsLoading)
     .then((res: any) => {
-      // [{'token_usage': 200, 'username': '张三'}, ...]
+      // [{'token_usage': 200, 'username': 'Zhang San'}, ...]
       tokenUsage.value = res.data
     })
   loadSharedApi({ type: 'application', systemType: apiType.value })
     .topQuestions(id, daterange.value, statisticsLoading)
     .then((res: any) => {
-      // [{'chat_record_count': 200, 'username': '张三'}, ...]
+      // [{'chat_record_count': 200, 'username': 'Zhang San'}, ...]
       topQuestions.value = res.data
     })
 }

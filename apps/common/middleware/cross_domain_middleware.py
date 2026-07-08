@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： cross_domain_middleware.py
+    @Author: Tiger
+    @file: cross_domain_middleware.py
     @date：2024/5/8 13:36
     @desc:
 """

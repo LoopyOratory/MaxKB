@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： conf.py
+@Author: Tiger
+@file: conf.py
 @date：2025/4/11 16:58
 @desc:
 """
@@ -21,7 +21,7 @@ logger = logging.getLogger("maxkb.conf")
 
 class Config(dict):
     defaults = {
-        # 数据库相关配置
+        # Data库RelatedConfiguration
         "DB_HOST": "127.0.0.1",
         "DB_PORT": 5432,
         "DB_USER": "root",
@@ -32,20 +32,20 @@ class Config(dict):
         "LOCAL_MODEL_PORT": "11636",
         "LOCAL_MODEL_PROTOCOL": "http",
         "LOCAL_MODEL_HOST_WORKER": 1,
-        # 语言
+        # Language
         "LANGUAGE_CODE": "zh-CN",
         "DEBUG": False,
         # redis host
         "REDIS_HOST": "127.0.0.1",
-        # 端口
+        # Port
         "REDIS_PORT": 6379,
-        # 密码
+        # Password
         "REDIS_PASSWORD": "Password123@redis",
         # 库
         "REDIS_DB": 0,
-        # 最大连接数
+        # MaximumConnect数
         "REDIS_MAX_CONNECTIONS": 100,
-        # 外置语言包路径
+        # ExternalLanguage包Path
         "EXTERNAL_LOCALE_PATH": "/opt/maxkb/local/locales",
     }
 
@@ -110,8 +110,8 @@ class Config(dict):
 
     def get_languages(self) -> list:
         """
-        获取支持的语言列表
-        使用公共模块 LocaleConfigHelper，支持缓存和多项目复用
+        GetSupportedLanguageList
+        UsePublic模块 LocaleConfigHelper, supportsCache和多项目复用
         """
         try:
             from common.locale.config_helper import LocaleConfigHelper
@@ -121,7 +121,7 @@ class Config(dict):
             from common.utils.logger import maxkb_logger
 
             maxkb_logger.warning(f"Failed to load languages, using defaults: {e}")
-            return [("en", "English"), ("zh", "中文简体"), ("zh-hant", "中文繁体")]
+            return [("en", "English"), ("zh", "Simplified Chinese"), ("zh-hant", "Traditional Chinese")]
 
     def get_log_level(self):
         return self.get("LOG_LEVEL", "DEBUG")
@@ -224,18 +224,18 @@ class ConfigManager:
                              Error: No config env found.
 
                              Please set environment variables
-                                MAXKB_CONFIG_TYPE: 配置文件读取方式 FILE: 使用配置文件配置  ENV: 使用ENV配置
-                                MAXKB_DB_NAME: 数据库名称
-                                MAXKB_DB_HOST: 数据库主机
-                                MAXKB_DB_PORT: 数据库端口
-                                MAXKB_DB_USER: 数据库用户名
-                                MAXKB_DB_PASSWORD: 数据库密码
+                                MAXKB_CONFIG_TYPE: ConfigurationFileReadMethod FILE: UseConfigurationFileConfiguration  ENV: UseENVConfiguration
+                                MAXKB_DB_NAME: Data库Name
+                                MAXKB_DB_HOST: Data库Host
+                                MAXKB_DB_PORT: Data库Port
+                                MAXKB_DB_USER: Data库User名
+                                MAXKB_DB_PASSWORD: Data库Password
                                 
-                                MAXKB_REDIS_HOST:缓存数据库主机
-                                MAXKB_REDIS_PORT:缓存数据库端口
-                                MAXKB_REDIS_PASSWORD:缓存数据库密码
-                                MAXKB_REDIS_DB:缓存数据库
-                                MAXKB_REDIS_MAX_CONNECTIONS:缓存数据库最大连接数
+                                MAXKB_REDIS_HOST:CacheData库Host
+                                MAXKB_REDIS_PORT:CacheData库Port
+                                MAXKB_REDIS_PASSWORD:CacheData库Password
+                                MAXKB_REDIS_DB:CacheData库
+                                MAXKB_REDIS_MAX_CONNECTIONS:CacheData库MaximumConnect数
                              """
             raise ImportError(msg)
         self.from_mapping(config)

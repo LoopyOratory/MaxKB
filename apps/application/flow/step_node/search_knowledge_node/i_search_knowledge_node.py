@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_search_dataset_node.py
+    @Author: Tiger
+    @file: i_search_dataset_node.py
     @date：2024/6/3 17:52
     @desc:
 """
@@ -19,10 +19,10 @@ from common.utils.common import flat_map
 
 
 class DatasetSettingSerializer(serializers.Serializer):
-    # 需要查询的条数
+    # NeedsQueryCount of
     top_n = serializers.IntegerField(required=True,
                                      label=_("Reference segment number"))
-    # 相似度 0-1之间
+    # Similarity 0-1Between
     similarity = serializers.FloatField(required=True, max_value=2, min_value=0,
                                         label=_('similarity'))
     search_mode = serializers.CharField(required=True, validators=[
@@ -34,7 +34,7 @@ class DatasetSettingSerializer(serializers.Serializer):
 
 
 class SearchDatasetStepNodeSerializer(serializers.Serializer):
-    # 需要查询的数据集id列表
+    # NeedsQuery的DatasetidList
     knowledge_id_list = serializers.ListField(required=True, child=serializers.UUIDField(required=True),
                                               label=_("Dataset id list"))
     knowledge_setting = DatasetSettingSerializer(required=True)

@@ -11,9 +11,9 @@ class LoopNodeView extends AppNode {
 }
 class LoopModel extends AppNodeModel {
   refreshBranch() {
-    // 更新节点连接边的path
+    // Update the path of connected edges for the node
     this.incoming.edges.forEach((edge: any) => {
-      // 调用自定义的更新方案
+      // Call custom update scheme
       edge.updatePathByAnchor()
     })
     this.outgoing.edges.forEach((edge: any) => {

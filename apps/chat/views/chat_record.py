@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat_record.py
+    @Author: Tiger
+    @file: chat_record.py
     @date：2025/6/23 10:42
     @desc:
 """

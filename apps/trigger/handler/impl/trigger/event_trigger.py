@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： event_trigger.py
+    @Author: Tiger
+    @file: event_trigger.py
     @date：2026/1/15 11:08
     @desc:
 """
@@ -94,7 +94,7 @@ class EventTriggerView(APIView):
                 'Example Request',
                 description='Send an empty JSON object as request body',
                 value={},
-                request_only=True,  # 仅用于请求示例
+                request_only=True,  # 仅Used forRequest示例
                 response_only=False,
             )
         ]
@@ -109,7 +109,7 @@ class EventTriggerView(APIView):
 
 class EventTrigger(BaseTrigger):
     """
-    事件触发器
+    EventTrigger
     """
 
     @staticmethod

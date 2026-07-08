@@ -102,7 +102,7 @@
           </div>
         </div>
 
-        <!-- 右边 -->
+        <!-- Right -->
         <div class="user-right" v-loading="rightLoading">
           <div class="flex align-center">
             <h4 class="medium ellipsis" :title="current?.name">{{ i18n_name(current?.name as string) }}</h4>
@@ -282,7 +282,7 @@ import { loadPermissionApi } from '@/utils/dynamics-api/permission-api.ts'
 const filterText = ref('')
 const loading = ref(false)
 const list = ref<ListItem[]>([])
-const filterList = ref<ListItem[]>([]) // 搜索过滤后列表
+const filterList = ref<ListItem[]>([]) // SearchFilterAfterList
 const current = ref<ListItem>()
 
 async function getUserGroupList() {
@@ -368,7 +368,7 @@ function deleteGroup(item: ListItem) {
 
 async function refresh(group?: ListItem) {
   await getUserGroupList()
-  // 创建后选中新建的
+  // CreationAfterSelectCreate
   if (group) {
     current.value = group
   } else {

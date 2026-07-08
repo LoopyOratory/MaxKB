@@ -50,19 +50,19 @@ class TencentSpeechToText(MaxKBBaseModel, BaseSpeechToText):
     def speech_to_text(self, audio_file):
         try:
             cred = credential.Credential(self.hunyuan_secret_id, self.hunyuan_secret_key)
-            # 实例化一个http选项，可选的，没有特殊需求可以跳过
+            # Instance化OnehttpOptions, optional; Nonespecial needs; can skip
             httpProfile = HttpProfile()
             httpProfile.endpoint = "asr.tencentcloudapi.com"
 
-            # 实例化一个client选项，可选的，没有特殊需求可以跳过
+            # Instance化OneclientOptions, optional; Nonespecial needs; can skip
             clientProfile = ClientProfile()
             clientProfile.httpProfile = httpProfile
-            # 实例化要请求产品的client对象,clientProfile是可选的
+            # Instance化要Request产品的clientObject,clientProfile是可选的
             client = asr_client.AsrClient(cred, "", clientProfile)
             buf = audio_file.read()
             _v = base64.b64encode(buf)
 
-            # 实例化一个请求对象,每个接口都会对应一个request对象
+            # Instance化OneRequestObject,EachInterface都会对应OnerequestObject
             req = models.SentenceRecognitionRequest()
             params = {
                 "EngSerViceType": self.params.get('EngSerViceType'),
@@ -73,9 +73,9 @@ class TencentSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             }
             req.from_json_string(json.dumps(params))
 
-            # 返回的resp是一个SentenceRecognitionResponse的实例，与请求对象对应
+            # Return的resp是OneSentenceRecognitionResponse的Instance，与RequestObject对应
             resp = client.SentenceRecognition(req)
-            # 输出json格式的字符串回包
+            # OutputjsonFormat的String回包
             return resp.Result
 
 

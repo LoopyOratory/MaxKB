@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_step_node.py
+    @Author: Tiger
+    @file: i_step_node.py
     @date：2024/6/3 14:57
     @desc:
 """
@@ -216,7 +216,7 @@ class NodeResult:
 
     def is_interrupt_exec(self, current_node):
         """
-        是否中断执行
+        Whether to interrupt execution
         @param current_node:
         @return:
         """
@@ -224,50 +224,50 @@ class NodeResult:
 
 
 class ReferenceAddressSerializer(serializers.Serializer):
-    node_id = serializers.CharField(required=True, label="节点id")
+    node_id = serializers.CharField(required=True, label="Node id")
     fields = serializers.ListField(
-        child=serializers.CharField(required=True, label="节点字段"), required=True,
-        label="节点字段数组")
+        child=serializers.CharField(required=True, label="Node field"), required=True,
+        label="Node field array")
 
 
 class FlowParamsSerializer(serializers.Serializer):
-    # 历史对答
+    # Conversation history
     history_chat_record = serializers.ListField(child=InstanceField(model_type=ChatRecord, required=True),
-                                                label="历史对答")
+                                                label="Conversation history")
 
-    question = serializers.CharField(required=True, label="用户问题")
+    question = serializers.CharField(required=True, label="User question")
 
-    chat_id = serializers.CharField(required=True, label="对话id")
+    chat_id = serializers.CharField(required=True, label="Conversation id")
 
-    chat_record_id = serializers.CharField(required=True, label="对话记录id")
+    chat_record_id = serializers.CharField(required=True, label="Conversation record id")
 
-    stream = serializers.BooleanField(required=True, label="流式输出")
+    stream = serializers.BooleanField(required=True, label="Streaming output")
 
-    chat_user_id = serializers.CharField(required=False, label="对话用户id")
+    chat_user_id = serializers.CharField(required=False, label="Conversation user id")
 
-    chat_user_type = serializers.CharField(required=False, label="对话用户类型")
+    chat_user_type = serializers.CharField(required=False, label="Conversation user type")
 
-    workspace_id = serializers.CharField(required=True, label="工作空间id")
+    workspace_id = serializers.CharField(required=True, label="Workspace id")
 
-    application_id = serializers.CharField(required=True, label="应用id")
+    application_id = serializers.CharField(required=True, label="Application id")
 
-    re_chat = serializers.BooleanField(required=True, label="换个答案")
+    re_chat = serializers.BooleanField(required=True, label="Try another answer")
 
-    debug = serializers.BooleanField(required=True, label="是否debug")
+    debug = serializers.BooleanField(required=True, label="Is debug mode")
 
 
 class KnowledgeFlowParamsSerializer(serializers.Serializer):
-    knowledge_id = serializers.UUIDField(required=True, label="知识库id")
-    workspace_id = serializers.CharField(required=True, label="工作空间id")
-    knowledge_action_id = serializers.UUIDField(required=True, label="知识库任务执行器id")
-    data_source = serializers.DictField(required=True, label="数据源")
-    knowledge_base = serializers.DictField(required=False, label="知识库设置")
-    user_id = serializers.UUIDField(required=False, label="创建人")
+    knowledge_id = serializers.UUIDField(required=True, label="Knowledge database id")
+    workspace_id = serializers.CharField(required=True, label="Workspace id")
+    knowledge_action_id = serializers.UUIDField(required=True, label="Knowledge database task executor id")
+    data_source = serializers.DictField(required=True, label="Data source")
+    knowledge_base = serializers.DictField(required=False, label="Knowledge database settings")
+    user_id = serializers.UUIDField(required=False, label="Created by")
 
 
 class ToolFlowParamsSerializer(serializers.Serializer):
-    tool_id = serializers.UUIDField(required=True, label="工具id")
-    workspace_id = serializers.CharField(required=True, label="工作空间id")
+    tool_id = serializers.UUIDField(required=True, label="Tool id")
+    workspace_id = serializers.CharField(required=True, label="Workspace id")
 
 
 class INode:
@@ -288,7 +288,7 @@ class INode:
 
     def __init__(self, node, workflow_params, workflow_manage, up_node_id_list=None,
                  get_node_params=lambda node: node.properties.get('node_data'), salt=None):
-        # 当前步骤上下文,用于存储当前步骤信息
+        # CurrentStepContext,Used forStorageCurrentStepInfo
         self.status = 200
         self.err_message = ''
         self.node = node
@@ -321,7 +321,7 @@ class INode:
             self.node_params_serializer = node_params_serializer_class(data=node_params)
             self.node_params_serializer.is_valid(raise_exception=True)
         if self.node.properties.get('status', 200) != 200:
-            raise ValidationError(ErrorDetail(f'节点{self.node.properties.get("stepName")} 不可用'))
+            raise ValidationError(ErrorDetail(f'Node{self.node.properties.get("stepName")} 不Available'))
 
     def get_reference_field(self, fields: List[str]):
         return self.get_field(self.context, fields)
@@ -357,7 +357,7 @@ class INode:
 
     def run(self) -> NodeResult:
         """
-        :return: 执行结果
+        :return: ExecuteResult
         """
         start_time = time.time()
         self.context['start_time'] = start_time
@@ -374,7 +374,7 @@ class INode:
 
     def get_details(self, index: int, **kwargs):
         """
-        运行详情
-        :return: 步骤详情
+        RunDetails
+        :return: StepDetails
         """
         return {}

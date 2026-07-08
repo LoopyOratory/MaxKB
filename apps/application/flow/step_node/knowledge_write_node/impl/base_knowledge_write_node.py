@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： base_knowledge_write_node.py
+    @Author: Niu
+    @file: base_knowledge_write_node.py
     @date：2025/11/13 11:19
     @desc:
 """
@@ -82,11 +82,11 @@ def link_file(source_file_id, document_id):
             file_name=source_file.file_name,
             file_size=source_file.file_size,
             source_type=FileSourceType.DOCUMENT,
-            source_id=document_id,  # 更新为当前知识库ID
+            source_id=document_id,  # Update为CurrentKnowledgeDatabaseID
             meta=source_file.meta.copy() if source_file.meta else {}
         )
 
-        # 保存文件内容和元数据
+        # SaveFileContent和元Data
         new_file.save(file_content)
 
 
@@ -191,13 +191,13 @@ def save_knowledge_tags(knowledge_id: str, tags: List[Dict[str, Any]]):
 
 def batch_add_document_tag(document_tag_map: Dict[str, List[str]]):
     """
-    批量添加文档-标签关联
+    BatchAddDocument-TagAssociation
     document_tag_map: {document_id: [tag_id1, tag_id2, ...]}
     """
     all_document_ids = list(document_tag_map.keys())
     all_tag_ids = list(set(tag_id for tag_ids in document_tag_map.values() for tag_id in tag_ids))
 
-    # 查询已存在的文档-标签关联
+    # Query已ExistingDocument-TagAssociation
     existed_relations = set(
         QuerySet(DocumentTag).filter(
             document_id__in=all_document_ids,
@@ -236,9 +236,9 @@ class BaseKnowledgeWriteNode(IKnowledgeWriteNode):
         document_model_list = []
         paragraph_model_list = []
         problem_paragraph_object_list = []
-        # 所有标签
+        # AllTag
         knowledge_tag_list = []
-        # 文档标签映射关系
+        # DocumentTagMappingRelation
         document_tags_map = {}
         knowledge_tag_dict = {}
 
@@ -251,9 +251,9 @@ class BaseKnowledgeWriteNode(IKnowledgeWriteNode):
             document_instance = document_paragraph_dict_model.get('document')
             link_file(document.get("source_file_id"), document_instance.id)
             document_model_list.append(document_instance)
-            # 收集标签
+            # CollectTag
             single_document_tag_list = document.get("tags", [])
-            # 去重传入的标签
+            # 去重Pass in的Tag
             for tag in single_document_tag_list:
                 tag_key = (tag['key'], tag['value'])
                 if tag_key not in knowledge_tag_dict:
@@ -267,12 +267,12 @@ class BaseKnowledgeWriteNode(IKnowledgeWriteNode):
             for problem_paragraph_object in document_paragraph_dict_model.get("problem_paragraph_object_list"):
                 problem_paragraph_object_list.append(problem_paragraph_object)
         knowledge_tag_list = list(knowledge_tag_dict.values())
-        # 保存所有文档中含有的标签到知识库
+        # SaveAllDocument中含有的Tag到KnowledgeDatabase
         if knowledge_tag_list:
             all_tag_dict, new_tag_dict = save_knowledge_tags(knowledge_id, knowledge_tag_list)
-            # 构建文档-标签ID映射
+            # BuildDocument-TagIDMapping
             document_tag_id_map = {}
-            # 为每个文档添加其对应的标签
+            # 为EachDocumentAdd其CorrespondingTag
             for doc_id, doc_tags in document_tags_map.items():
                 doc_tag_ids = [
                     all_tag_dict[(tag.get("key"), tag.get("value"))]

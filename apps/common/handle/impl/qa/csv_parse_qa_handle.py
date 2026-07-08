@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： csv_parse_qa_handle.py
+    @Author: Tiger
+    @file: csv_parse_qa_handle.py
     @date：2024/5/21 14:59
     @desc:
 """

@@ -96,16 +96,16 @@ import { t } from '@/locales'
 const props = withDefaults(
   defineProps<{
     /**
-     * 当前的id
+     * Currentid
      */
     currentId: string
     currentContent: string
     /**
-     * 下一条
+     * Next item
      */
     next: () => void
     /**
-     * 上一条
+     * Previous item
      */
     pre: () => void
 

@@ -68,20 +68,20 @@
         <el-table-column prop="name" :label="$t('common.name')">
           <template #default="{ row }">
             <span style="vertical-align: sub">
-              <!--  文件夹 icon -->
+              <!--  Folder icon -->
               <AppIcon
                 v-if="row.resource_type === 'folder'"
                 iconName="app-folder"
                 style="font-size: 20px"
               ></AppIcon>
-              <!--  知识库 icon -->
+              <!--  KnowledgeDatabase icon -->
               <KnowledgeIcon
                 :size="20"
                 v-else-if="isKnowledge"
                 :type="row.icon"
                 style="--el-avatar-border-radius: 6px"
               />
-              <!--  应用/工具 自定义 icon -->
+              <!--  Application/Tools Custom icon -->
               <el-avatar
                 v-else-if="isAppIcon(row?.icon) && !isModel"
                 style="background: none"
@@ -90,16 +90,16 @@
               >
                 <img :src="resetUrl(row?.icon)" alt="" />
               </el-avatar>
-              <!--  应用 icon -->
+              <!--  Application icon -->
               <LogoIcon v-else-if="isApplication" height="20px" />
-              <!-- 工具 icon -->
+              <!-- Tools icon -->
               <ToolIcon
                 v-else-if="isTool"
                 :size="20"
                 :type="row?.tool_type"
                 style="--el-avatar-border-radius: 6px"
               />
-              <!-- 模型 icon -->
+              <!-- Model icon -->
               <span
                 v-else-if="isModel"
                 style="width: 20px; height: 20px; display: inline-block"
@@ -124,7 +124,7 @@
       </app-table>
     </div>
 
-    <!-- 批量配置 弹出层 -->
+    <!-- BatchConfiguration Popover -->
     <el-dialog
       v-model="dialogVisible"
       :title="$t('views.system.resourceAuthorization.setting.configure')"
@@ -171,7 +171,7 @@ const props = defineProps<{
 const emit = defineEmits(['submitPermissions'])
 
 const defaultExpandKeys = ref<Array<string>>([])
-const isComputedFirst = ref(true) // 仅第一次获得数据的时候需要计算一次展开属性
+const isComputedFirst = ref(true) // Only firstOnceGetDataWhenNeedsCalculateOnceExpand property
 
 watch(
   () => props.data,
@@ -192,7 +192,7 @@ watch(
 
 // }
 // const expandIds: string[] = []
-// // 传入过滤后的数据
+// // Pass inFilter afterData
 // const collectExpandIds = (nodes: any[]) => {
 //   nodes.forEach((node) => {
 //     if (node.children && node.children.length > 0) {

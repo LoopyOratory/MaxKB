@@ -10,20 +10,20 @@ from models_provider.base_model_provider import BaseModelCredential, ValidCode
 
 
 class XInferenceTTSModelGeneralParams(BaseForm):
-    # ['中文女', '中文男', '日语男', '粤语女', '英文女', '英文男', '韩语女']
+    # ['Chinese Female', 'Chinese Male', 'Japanese Male', 'Cantonese Female', 'English Female', 'English Male', 'Korean Female']
     voice = forms.SingleSelect(
         TooltipLabel(_('timbre'), ''),
-        required=True, default_value='中文女',
+        required=True, default_value='Chinese Female',
         text_field='value',
         value_field='value',
         option_list=[
-            {'text': _('Chinese female'), 'value': '中文女'},
-            {'text': _('Chinese male'), 'value': '中文男'},
-            {'text': _('Japanese male'), 'value': '日语男'},
-            {'text': _('Cantonese female'), 'value': '粤语女'},
-            {'text': _('English female'), 'value': '英文女'},
-            {'text': _('English male'), 'value': '英文男'},
-            {'text': _('Korean female'), 'value': '韩语女'},
+            {'text': _('Chinese female'), 'value': 'Chinese Female'},
+            {'text': _('Chinese male'), 'value': 'Chinese Male'},
+            {'text': _('Japanese male'), 'value': 'Japanese Male'},
+            {'text': _('Cantonese female'), 'value': 'Cantonese Female'},
+            {'text': _('English female'), 'value': 'English Female'},
+            {'text': _('English male'), 'value': 'English Male'},
+            {'text': _('Korean female'), 'value': 'Korean Female'},
         ])
 
 

@@ -31,8 +31,8 @@
       ></DynamicsForm>
       <template #footer>
         <div class="dialog-footer">
-          <el-button @click="close">取消</el-button>
-          <el-button type="primary" @click="submit"> 确定 </el-button>
+          <el-button @click="close">Cancel</el-button>
+          <el-button type="primary" @click="submit"> Confirm </el-button>
         </div>
       </template>
     </el-dialog>
@@ -63,7 +63,7 @@ const close = () => {
   form_data.value = undefined
 }
 /**
- * 当前 field是否展示
+ * Current fieldWhetherDisplay
  * @param field
  */
 const show = (field: any) => {

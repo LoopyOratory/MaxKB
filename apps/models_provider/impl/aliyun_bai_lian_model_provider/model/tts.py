@@ -54,13 +54,13 @@ class AliyunBaiLianTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
         elif 'qwen' in self.model:
             import requests
             response = dashscope.MultiModalConversation.call(
-                # 如需使用指令控制功能，请将model替换为qwen3-tts-instruct-flash
+                # 如需Use指令控制功能, please将modelReplace为qwen3-tts-instruct-flash
                 model=self.model,
                 api_key=self.api_key,
                 text=text,
                 **self.params
             )
-            # 这个的接口返回格式和上面两个不太一样，直接返回了一个url地址，下载后就是音频文件
+            # 这个的InterfaceReturnFormat和上面两个不太一样，DirectReturn了OneurlAddress，Download后就是AudioFile
             audio_url = response.output.audio.url
             res = requests.get(audio_url)
             audio = res.content

@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted, onBeforeUnmount } from 'vue'
-// 每个实例生成唯一 id，防止多个 iframe 消息串扰
+// EachInstanceGenerateUnique id, prevent multiple iframe MessageCrosstalk
 const instanceId = Math.random().toString(36).slice(2)
 
 function createIframeHtml(sourceHtml: string) {
@@ -81,7 +81,7 @@ const props = withDefaults(
 
 const iframeRef = ref<HTMLIFrameElement>()
 
-// 如果不允许执行 script，就过滤掉
+// If not allowed to execute script, filter it out
 const finalSource = computed(() => {
   if (props.script_exec) return fSource.value
 

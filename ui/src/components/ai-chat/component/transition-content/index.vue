@@ -1,5 +1,5 @@
 <template>
-  <!-- 问题内容 -->
+  <!-- QuestionContent -->
   <div class="question-content item-content mb-16 lighter">
     <div class="content p-12-16 border-r-8">
       <span> {{ text }}</span

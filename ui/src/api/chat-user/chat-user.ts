@@ -13,21 +13,21 @@ Object.defineProperty(prefix, 'value', {
   },
 })
 /**
- * 获取用户组列表
+ * GetUser group list
  */
 const getUserGroupList: (resource: any, loading?: Ref<boolean>) => Promise<Result<ChatUserGroupItem[]>> = (resource, loading) => {
   return get(`${prefix.value}/${resource.resource_type}/${resource.resource_id}/user_group`, undefined, loading)
 }
 
 /**
- * 修改用户组列表授权
+ * ModificationUser group listAuthorization
  */
 const editUserGroupList: (resource: any, data: { user_group_id: string, is_auth: boolean }[], loading?: Ref<boolean>) => Promise<Result<any>> = (resource, data, loading) => {
   return put(`${prefix.value}/${resource.resource_type}/${resource.resource_id}/user_group`, data, undefined, loading)
 }
 
 /**
- * 获取用户组的用户列表
+ * GetUserGroupUserList
  */
 const getUserGroupUserList: (
   resource: any,
@@ -44,7 +44,7 @@ const getUserGroupUserList: (
 }
 
 /**
- * 更新用户组的用户列表
+ * UpdateUserGroupUserList
  */
 const putUserGroupUser: (
   resource: any,

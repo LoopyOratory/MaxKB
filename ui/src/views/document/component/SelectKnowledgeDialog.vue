@@ -61,7 +61,7 @@ import { loadSharedApi } from '@/utils/dynamics-api/shared-api'
 import useStore from '@/stores'
 const route = useRoute()
 const {
-  params: { id }, // id为knowledgeID
+  params: { id }, // id is knowledgeID
 } = route as any
 
 const { user } = useStore()

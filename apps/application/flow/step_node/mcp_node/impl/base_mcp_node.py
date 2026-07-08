@@ -40,7 +40,7 @@ class BaseMcpNode(IMcpNode):
         else:
             servers = json.loads(mcp_servers)
 
-        servers = self.handle_variables(servers)  # 处理servers中的变量
+        servers = self.handle_variables(servers)  # Processservers in Variable
         ToolExecutor().validate_mcp_transport(json.dumps(servers))
         params = json.loads(json.dumps(tool_params))
         params = self.handle_variables(params)
@@ -55,7 +55,7 @@ class BaseMcpNode(IMcpNode):
             {'result': [content.text for content in res.content], 'tool_params': params, 'mcp_tool': mcp_tool}, {})
 
     def handle_variables(self, tool_params):
-        # 处理参数中的变量
+        # Process variables in parameters
         for k, v in tool_params.items():
             if type(v) == str:
                 tool_params[k] = self.workflow_manage.generate_prompt(tool_params[k])

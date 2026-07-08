@@ -80,7 +80,7 @@
         </el-dropdown>
       </div>
     </div>
-    <!-- 下拉框 -->
+    <!-- DropdownDialog -->
     <el-collapse-transition>
       <DropdownMenu
         :show="showPopover"
@@ -91,11 +91,11 @@
         :workflowRef="workflowRef"
       />
     </el-collapse-transition>
-    <!-- 主画布 -->
+    <!-- Main canvas -->
     <div class="workflow-main" ref="workflowMainRef">
       <workflow ref="workflowRef" v-if="detail" :data="detail?.work_flow" />
     </div>
-    <!-- 调试 -->
+    <!-- Debug -->
     <el-collapse-transition>
       <div class="workflow-debug-container" :class="enlarge ? 'enlarge' : ''" v-if="showDebug">
         <div class="workflow-debug-header" :class="!isDefaultTheme ? 'custom-header' : ''">
@@ -137,7 +137,7 @@
       </div>
     </el-collapse-transition>
 
-    <!-- 发布历史 -->
+    <!-- PublishHistory -->
     <PublishHistory
       v-if="showHistory"
       @click="checkVersion"
@@ -185,7 +185,7 @@ const route = useRoute()
 const {
   params: { id, folderId },
   /*
-  folderId 可以区分 resource-management shared还是 workspace
+  folderId Can distinguish resource-management sharedOr workspace
   */
 } = route as any
 const apiType = computed(() => {
@@ -523,7 +523,7 @@ function openTemplateStoreDialog() {
 }
 let interval: any
 /**
- * 定时保存
+ * ScheduledSave
  */
 const initInterval = () => {
   interval = setInterval(() => {
@@ -532,7 +532,7 @@ const initInterval = () => {
 }
 
 /**
- * 关闭定时
+ * CloseScheduled
  */
 const closeInterval = () => {
   if (interval) {
@@ -544,14 +544,14 @@ onBeforeMount(() => {
   getDetail()
   const workflowAutoSave = localStorage.getItem('workflowAutoSave')
   isSave.value = workflowAutoSave === 'true' ? true : false
-  // 初始化定时任务
+  // InitializeScheduledTask
   if (isSave.value) {
     initInterval()
   }
 })
 
 onBeforeUnmount(() => {
-  // 清除定时任务
+  // ClearScheduledTask
   closeInterval()
   workflowRef.value?.clearGraphData()
 })

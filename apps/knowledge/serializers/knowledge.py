@@ -606,14 +606,14 @@ class KnowledgeSerializer(serializers.Serializer):
                 )
             source_file_map = {str(source_file.source_id): source_file for source_file in source_file_list}
 
-            # 查询标签和文档标签关联
+            # QueryTag和DocumentTagAssociation
             tag_list = list(QuerySet(Tag).filter(knowledge_id=knowledge_id).values("id", "key", "value"))
             document_tag_list = list(
                 QuerySet(DocumentTag).filter(document__knowledge_id=knowledge_id).values("document_id", "tag_id")
             )
-            # 知识库标签map
+            # Knowledge baseTagmap
             tag_map = {t["id"]: t for t in tag_list}
-            # 文档标签map
+            # DocumentTagmap
             doc_tag_map = defaultdict(list)
 
             for dt in document_tag_list:
@@ -651,7 +651,7 @@ class KnowledgeSerializer(serializers.Serializer):
                 paragraph_active_map[doc_id].append("1" if p.get("is_active") else "0")
 
             res = [parse_image(paragraph.get("content")) for paragraph in paragraph_list]
-            # 新增字段
+            # AddField
             workbook = self._get_knowledge_workbook(
                 data_dict, document_dict, doc_tag_map, doc_obj_map, paragraph_active_map
             )
@@ -777,7 +777,7 @@ class KnowledgeSerializer(serializers.Serializer):
 
                 rows = data_dict.get(sheet_id, [])
                 para_active_list = paragraph_active_map.get(sheet_id, [])
-                # 初始化标题
+                # InitializeTitle
                 data = [header]
                 for row_idx, row in enumerate(rows):
                     para_active = para_active_list[row_idx] if row_idx < len(para_active_list) else "1"
@@ -937,7 +937,7 @@ class KnowledgeSerializer(serializers.Serializer):
             )
             knowledge.save()
 
-            # 图片
+            # Image
             old_to_new_file_map = {}
             for name in namelist:
                 if name.startswith("oss/file/") and name != "oss/file/":
@@ -972,7 +972,7 @@ class KnowledgeSerializer(serializers.Serializer):
                 if not rows:
                     continue
 
-                # 首行文档元数据
+                # 首行Document元Data
                 first_row = rows[0]
                 tags_str = first_row[3] if len(first_row) > 3 and first_row[3] else ""
                 hit_method = first_row[4] if len(first_row) > 4 and first_row[4] else "optimization"
@@ -1024,14 +1024,14 @@ class KnowledgeSerializer(serializers.Serializer):
                 document_model_list.append(document)
                 if tags_str:
                     doc_tags_map[document_id] = tags_str
-                # 逐行创建 para + problem
+                # 逐行Creation para + problem
                 for row_idx, row in enumerate(rows):
                     title = str(row[0]) if len(row) > 0 and row[0] is not None else ""
                     content = str(row[1]) if len(row) > 1 and row[1] is not None else ""
                     problems_str = str(row[2]) if len(row) > 2 and row[2] is not None else ""
                     para_is_active = row[7] if len(row) > 7 and row[7] else "1"
 
-                    # 图片 link 替换
+                    # Image link Replace
                     for old_id, new_id in old_to_new_file_map.items():
                         content = content.replace(old_id, new_id)
 
@@ -1066,7 +1066,7 @@ class KnowledgeSerializer(serializers.Serializer):
             QuerySet(Document).bulk_create(document_model_list) if len(document_model_list) > 0 else None
             QuerySet(Paragraph).bulk_create(paragraph_model_list) if len(paragraph_model_list) > 0 else None
 
-            # 问题
+            # Question
             problem_model_list, problem_paragraph_mapping_list = ProblemParagraphManage(
                 problem_paragraph_object_list, knowledge_id
             ).to_problem_model_list()
@@ -1106,7 +1106,7 @@ class KnowledgeSerializer(serializers.Serializer):
                 ]
                 QuerySet(Termbase).bulk_create(termbase_instance_list) if len(termbase_instance_list) > 0 else None
 
-                # 工作流导入
+                # WorkflowImport
             if "workflow.kbwf" in namelist:
                 workflow_bytes = zf.read("workflow.kbwf")
                 from knowledge.serializers.knowledge_workflow import KnowledgeWorkflowSerializer
@@ -1116,7 +1116,7 @@ class KnowledgeSerializer(serializers.Serializer):
                     data={"knowledge_id": str(knowledge_id), "user_id": user_id, "workspace_id": workspace_id}
                 ).import_({"file": workflow_file}, is_import_tool)
 
-            # 授权 + 资源映射
+            # Authorization + ResourceMapping
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1168,7 +1168,7 @@ class KnowledgeSerializer(serializers.Serializer):
             document_model_list = []
             paragraph_model_list = []
             problem_paragraph_object_list = []
-            # 插入文档
+            # InsertDocument
             for document in instance.get("documents") if "documents" in instance else []:
                 document_paragraph_dict_model = DocumentSerializers.Create.get_document_paragraph_model(
                     knowledge_id, self.data.get("user_id"), document
@@ -1182,19 +1182,19 @@ class KnowledgeSerializer(serializers.Serializer):
             problem_model_list, problem_paragraph_mapping_list = ProblemParagraphManage(
                 problem_paragraph_object_list, knowledge_id
             ).to_problem_model_list()
-            # 插入知识库
+            # InsertKnowledge base
             knowledge.save()
-            # 插入文档
+            # InsertDocument
             QuerySet(Document).bulk_create(document_model_list) if len(document_model_list) > 0 else None
-            # 批量插入段落
+            # BatchInsertParagraph
             QuerySet(Paragraph).bulk_create(paragraph_model_list) if len(paragraph_model_list) > 0 else None
-            # 批量插入问题
+            # BatchInsertQuestion
             QuerySet(Problem).bulk_create(problem_model_list) if len(problem_model_list) > 0 else None
-            # 批量插入关联问题
+            # BatchInsertAssociationQuestion
             QuerySet(ProblemParagraphMapping).bulk_create(problem_paragraph_mapping_list) if len(
                 problem_paragraph_mapping_list
             ) > 0 else None
-            # 自动资源给授权当前用户
+            # AutomaticResource给AuthorizationCurrentUser
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1236,7 +1236,7 @@ class KnowledgeSerializer(serializers.Serializer):
                 },
             )
             knowledge.save()
-            # 自动资源给授权当前用户
+            # AutomaticResource给AuthorizationCurrentUser
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1308,10 +1308,10 @@ class KnowledgeSerializer(serializers.Serializer):
                             .first()
                         )
                         if first is not None:
-                            # 如果存在,使用文档同步
+                            # IfExists,UseDocumentSync
                             DocumentSerializers.Sync(data={"document_id": first.id}).sync()
                         else:
-                            # 插入
+                            # Insert
                             DocumentSerializers.Create(data={"knowledge_id": knowledge.id}).save(
                                 {
                                     "name": document_name,
@@ -1331,7 +1331,7 @@ class KnowledgeSerializer(serializers.Serializer):
 
         def replace_sync(self, knowledge):
             """
-            替换同步
+            ReplaceSync
             :return:
             """
             url = knowledge.meta.get("source_url")
@@ -1341,18 +1341,18 @@ class KnowledgeSerializer(serializers.Serializer):
 
         def complete_sync(self, knowledge):
             """
-            完整同步  删掉当前数据集下所有的文档,再进行同步
+            CompleteSync  删掉CurrentDataset下All的Document,再PerformSync
             :return:
             """
-            # 删除关联问题
+            # DeletionAssociationQuestion
             QuerySet(ProblemParagraphMapping).filter(knowledge=knowledge).delete()
-            # 删除文档
+            # DeletionDocument
             QuerySet(Document).filter(knowledge=knowledge).delete()
-            # 删除段落
+            # DeletionParagraph
             QuerySet(Paragraph).filter(knowledge=knowledge).delete()
-            # 删除向量
+            # DeletionVector
             delete_embedding_by_knowledge(self.data.get("knowledge_id"))
-            # 同步
+            # Sync
             self.replace_sync(knowledge)
 
     class HitTest(serializers.Serializer):
@@ -1393,7 +1393,7 @@ class KnowledgeSerializer(serializers.Serializer):
                 for document in QuerySet(Document).filter(knowledge_id=self.data.get("knowledge_id"), is_active=False)
             ]
             model = get_embedding_model_by_knowledge_id(self.data.get("knowledge_id"))
-            # 向量库检索
+            # Vector库Search
             hit_list = vector.hit_test(
                 self.data.get("query_text"),
                 [self.data.get("knowledge_id")],
@@ -1420,24 +1420,24 @@ class KnowledgeSerializer(serializers.Serializer):
 
         def get_appstore_templates(self):
             self.is_valid(raise_exception=True)
-            # 下载zip文件
+            # DownloadzipFile
             try:
                 appstore_url = CONFIG.get("APPSTORE_URL", "https://apps-assets.fit2cloud.com/stable/maxkb.json.zip")
                 res = requests.get(appstore_url, timeout=5)
                 res.raise_for_status()
-                # 创建临时文件保存zip
+                # CreationTemporaryFileSavezip
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as temp_zip:
                     temp_zip.write(res.content)
                     temp_zip_path = temp_zip.name
 
                 try:
-                    # 解压zip文件
+                    # DecompresszipFile
                     with zipfile.ZipFile(temp_zip_path, "r") as zip_ref:
-                        # 获取zip中的第一个文件（假设只有一个json文件）
+                        # Getzip in 第OneFile(Assuming only OnejsonFile）
                         json_filename = zip_ref.namelist()[0]
                         json_content = zip_ref.read(json_filename)
 
-                    # 将json转换为字典
+                    # 将jsonTransform为Dict
                     tool_store = json.loads(json_content.decode("utf-8"))
                     tag_dict = {tag["name"]: tag["key"] for tag in tool_store["additionalProperties"]["tags"]}
                     filter_apps = []
@@ -1461,7 +1461,7 @@ class KnowledgeSerializer(serializers.Serializer):
                     tool_store["apps"] = filter_apps
                     return tool_store
                 finally:
-                    # 清理临时文件
+                    # CleanupTemporaryFile
                     os.unlink(temp_zip_path)
             except Exception as e:
                 maxkb_logger.error(f"fetch appstore tools error: {e}")
@@ -1517,7 +1517,7 @@ class KnowledgeSerializer(serializers.Serializer):
                     .order_by("create_time", "key", "value")
                 )
             else:
-                # 获取所有标签，按创建时间排序保持稳定顺序
+                # GetAllTag, byCreation timeSortMaintain stable order
                 tags = (
                     QuerySet(Tag)
                     .filter(knowledge_id__in=self.data.get("knowledge_ids"))
@@ -1525,7 +1525,7 @@ class KnowledgeSerializer(serializers.Serializer):
                     .order_by("create_time", "key", "value")
                 )
 
-            # 按key分组
+            # 按keyGroup
             grouped_tags = defaultdict(list)
             for tag in tags:
                 grouped_tags[tag["key"]].append(
@@ -1537,12 +1537,12 @@ class KnowledgeSerializer(serializers.Serializer):
                     }
                 )
 
-            # 转换为期望的格式，保持key的顺序
+            # Transform为期望的Format，保持key order
             result = []
-            # 按key排序以确保结果顺序一致
+            # 按keySort以EnsureResultConsistent order
             for key in sorted(grouped_tags.keys()):
                 values = grouped_tags[key]
-                # 按创建时间对values进行排序
+                # 按Creation time对valuesPerformSort
                 values.sort(key=lambda x: x["create_time"])
                 result.append(
                     {
@@ -1569,7 +1569,7 @@ class KnowledgeBatchOperateSerializer(serializers.Serializer):
         workspace_id = self.data.get("workspace_id")
         knowledge_query_set = QuerySet(Knowledge).filter(id__in=id_list, workspace_id=workspace_id)
 
-        # 删除所有关联
+        # DeletionAllAssociation
         document_query_set = QuerySet(Document).filter(knowledge__in=knowledge_query_set)
         QuerySet(ProblemParagraphMapping).filter(knowledge__in=knowledge_query_set).delete()
         QuerySet(Paragraph).filter(knowledge__in=knowledge_query_set).delete()

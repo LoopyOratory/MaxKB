@@ -7,7 +7,7 @@ import type { ListModelRequest } from '@/api/type/model'
 const useModelStore = defineStore('model', {
   state: () => ({}),
   actions: {
-    // 仅限在应用下拉列表使用，非共享资源
+    // Only inApplicationDropdownListUse, notSharedResource
     async asyncGetSelectModel(data?: ListModelRequest, loading?: Ref<boolean>) {
       return new Promise((resolve, reject) => {
         ModelApi.getSelectModelList(data, loading)

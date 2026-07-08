@@ -449,7 +449,7 @@ const paginationConfig = reactive({
   total: 0,
 })
 
-// 依赖
+// Depend
 const dependencyTableData = ref<Array<any>>()
 const dependencyPaginationConfig = reactive({
   current_page: 1,
@@ -469,7 +469,7 @@ const apiType = computed(() => {
 
 const showWorkspace = computed(() => (user.isPE() || user.isEE()) && route.path.includes('shared'))
 
-const currentTab = ref('dependency') // 'dependency' 代表“我依赖的”， 'dependent' 代表“依赖我的”
+const currentTab = ref('dependency') // 'dependency' Represents“What I depend on”， 'dependent' Represents“Depends on my”
 const dependencyTableRef = ref()
 const tabList = [
   {
@@ -534,7 +534,7 @@ const pageResourceMapping = () => {
       paginationConfig.total = res.data.total || 0
     })
 }
-// 依赖
+// Depend
 const pageMappingResource = () => {
   const workspaceId = user.getWorkspaceId() || 'default'
   const params: any = {}
@@ -580,7 +580,7 @@ const open = (source: string, data: any) => {
   currentSourceId.value = data.id
   currentSource.value = data
 
-  // 根据资源类型设置默认 tab
+  // Based onResource typeSettingsDefault tab
   if (currentSourceType.value === 'MODEL') {
     currentTab.value = 'dependent'
   } else if (currentSourceType.value === 'TOOL' && data.tool_type !== 'WORKFLOW') {

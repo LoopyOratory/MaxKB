@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： reranker.py
+    @Author: Tiger
+    @file: reranker.py
     @date：2024/9/10 9:46
     @desc:
 """

@@ -20,7 +20,7 @@ const props = defineProps<{
 
 const iframeUrl = ref('')
 const init = async () => {
-  await nextTick() // 确保DOM已更新
+  await nextTick() // Ensure DOM has been updated
   const data = {
     corpId: props.config.corp_id,
     agentId: props.config.agent_id,
@@ -34,7 +34,7 @@ const init = async () => {
   }
   const redirectUri = encodeURIComponent(data.redirectUri)
   console.log('redirectUri', data.redirectUri)
-  // 手动构建生成二维码的url
+  // ManualBuildGenerateQR codeurl
   iframeUrl.value = `${props.config.qr_url}?login_type=CorpApp&appid=${data.corpId}&agentid=${data.agentId}&redirect_uri=${redirectUri}&state=fit2cloud-wecom-qr&lang=${lang}&panel_size=small`
 }
 

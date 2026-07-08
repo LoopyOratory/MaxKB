@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： tool_workflow_manage.py
+    @Author: Tiger
+    @file: tool_workflow_manage.py
     @date：2026/3/12 15:17
     @desc:
 """
@@ -52,31 +52,31 @@ class ToolWorkflowManage(WorkflowManage):
 
     def get_base_node(self):
         """
-        获取基础节点
+        Get base node
         @return:
         """
         return self.flow.get_node('tool-base-node')
 
     def get_input_field_list(self):
         """
-        获取输入字段列表
-        @return: 输入字段配置
+        Get input field list
+        @return: input field configuration
         """
         base_node = self.get_base_node()
         return base_node.properties.get("user_input_field_list") or []
 
     def get_output_field_list(self):
         """
-        获取输出字段列表配置
-        @return:  输出字段列表配置
+        Get output field list configuration
+        @return: output field list configuration
         """
         base_node = self.get_base_node()
         return base_node.properties.get("user_output_field_list") or []
 
     def get_input(self):
         """
-        获取用户输入
-        @return: 用户输入
+        Get user input
+        @return: user input
         """
         input_field_list = self.get_input_field_list()
         return {f.get('field'): self.params.get(f.get('field')) for f in input_field_list}

@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_key.py
+    @Author: Tiger
+    @file: application_key.py
     @date：2025/7/10 03:02
-    @desc:  应用api key认证
+    @desc:  Applicationapi keyAuthentication
 """
 from django.db.models import QuerySet
 from django.utils import timezone

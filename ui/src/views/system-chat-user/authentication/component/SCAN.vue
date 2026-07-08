@@ -142,7 +142,7 @@ function createPlatform(key: string, name: string): Platform {
       logo = 'lark'
       break
     default:
-      logo = '' // 默认值
+      logo = '' // DefaultValue
       break
   }
 

@@ -87,7 +87,7 @@ import { cloneDeep } from 'lodash'
 
 const route = useRoute()
 const {
-  params: { id }, // id为knowledgeID
+  params: { id }, // id is knowledgeID
 } = route as any
 const emit = defineEmits(['refresh'])
 

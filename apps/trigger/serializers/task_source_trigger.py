@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： task_source_trigger.py
+    @Author: Niu
+    @file: task_source_trigger.py
     @date：2026/1/22 16:18
     @desc:
 """
@@ -129,7 +129,7 @@ class TaskSourceTriggerOperateSerializer(serializers.Serializer):
 
         trigger_task = valid_data.get('trigger_task')
         if trigger_task is not None:
-            # 检查是否为空列表
+            # CheckIs空List
             if not trigger_task:
                 raise serializers.ValidationError(_('Trigger must have at least one task'))
 
@@ -139,7 +139,7 @@ class TaskSourceTriggerOperateSerializer(serializers.Serializer):
                 trigger_id=trigger_id
             ).update(parameter=trigger_task[0].get("parameter"), meta=trigger_task[0].get("meta"))
         else:
-            # 用户没提交 trigger_task 字段，确保数据库中有 task
+            # User没Submit trigger_task Field，EnsureData库中有 task
             if not TriggerTask.objects.filter(trigger_id=trigger_id).exists():
                 raise serializers.ValidationError(_('Trigger must have at least one task'))
 
@@ -151,7 +151,7 @@ class TaskSourceTriggerOperateSerializer(serializers.Serializer):
 
         return self.one()
 
-    # 删除的是当前trigger_id+source_id+source_type对应的task
+    # Deletion isCurrenttrigger_id+source_id+source_typeCorrespondingtask
     @transaction.atomic
     def delete(self):
         from trigger.handler.simple_tools import undeploy

@@ -141,14 +141,14 @@ const paragraphList = ref<any[]>([])
 const currentProblemId = ref<string>('')
 const currentMulProblemId = ref<string[]>([])
 
-// 回显
+// Echo
 const associationParagraph = ref<any[]>([])
 
 const currentDocument = ref<string>('')
 const search = ref('')
 const searchType = ref('title')
 const filterDoc = ref('')
-// 批量
+// Batch
 const isMul = ref(false)
 
 const paginationConfig = reactive({
@@ -246,7 +246,7 @@ function getParagraphList(documentId: string) {
     })
 }
 
-// 已关联分段
+// Associated segment
 function getRecord(problemId: string) {
   loadSharedApi({ type: 'problem', systemType: apiType.value })
     .getDetailProblems(id as string, problemId as string, loading)
@@ -302,7 +302,7 @@ defineExpose({ open })
 <style lang="scss" scoped>
 .paragraph-card {
   position: relative;
-  // card 选中样式
+  // card SelectStyle
   &.selected {
     border: 1px solid var(--el-color-primary) !important;
     &:before {

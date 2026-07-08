@@ -13,14 +13,14 @@ class TagCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -42,21 +42,21 @@ class TagDeleteAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tag_id",
-                description="标签id",
+                description="Tagid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -78,21 +78,21 @@ class DocsTagDeleteAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tag_id",
-                description="标签id",
+                description="Tagid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -114,21 +114,21 @@ class TagEditAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="knowledge_id",
-                description="知识库id",
+                description="Knowledge baseid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="tag_id",
-                description="标签id",
+                description="Tagid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

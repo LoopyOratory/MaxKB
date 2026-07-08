@@ -253,7 +253,7 @@
                   {{ $t('views.knowledge.title') }}
                 </p>
 
-                <!-- 知识库 -->
+                <!-- KnowledgeDatabase -->
                 <el-card shadow="never" class="card-never" style="--el-card-padding: 12px">
                   <el-form-item
                     :label="$t('views.application.form.prompt.label')"
@@ -372,7 +372,7 @@
                     </div>
                   </div>
                 </el-card>
-                <!-- 技能 -->
+                <!-- Skills -->
                 <div class="mb-8 mt-12 flex-between">
                   <span class="mr-4 lighter">
                     {{ $t('views.tool.skill.title') }}
@@ -497,7 +497,7 @@
                     </div>
                   </div>
 
-                  <!-- 工具       -->
+                  <!-- Tools       -->
                   <div v-if="toolPermissionPrecise.read()">
                     <div class="flex-between mb-8" @click="collapseData.tool = !collapseData.tool">
                       <div class="flex align-center lighter cursor">
@@ -574,7 +574,7 @@
                     </div>
                   </div>
 
-                  <!-- 技能   -->
+                  <!-- Skills   -->
                   <div v-if="toolPermissionPrecise.read()">
                     <div
                       class="flex-between mb-8"
@@ -659,7 +659,7 @@
                     </div>
                   </div>
 
-                  <!-- 应用       -->
+                  <!-- Application       -->
                   <div v-if="toolPermissionPrecise.read()">
                     <div
                       class="flex-between mb-8"
@@ -740,7 +740,7 @@
                     </div>
                   </div>
                 </el-card>
-                <!-- 开场白 -->
+                <!-- Opening -->
                 <el-form-item :label="$t('views.application.form.prologue')">
                   <MdEditorMagnify
                     :title="$t('views.application.form.prologue')"
@@ -902,7 +902,7 @@
           </div>
         </el-col>
 
-        <!-- 预览 -->
+        <!-- Preview -->
         <el-col :span="14" class="p-24 border-l">
           <h4 class="title-decoration-1 mb-16">
             {{ $t('views.application.appTest') }}
@@ -1440,7 +1440,7 @@ function getDetail() {
       applicationForm.value.model_setting.no_references_prompt =
         res.data.model_setting.no_references_prompt || '{question}'
 
-      // 企业版和专业版
+      // EnterpriseAnd Professional
       if (hasPermission([EditionConst.IS_EE, EditionConst.IS_PE], 'OR')) {
         loadSharedApi({ type: 'application', systemType: apiType.value })
           .getApplicationSetting(id)

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： chat_embed_serializers.py
+    @Author: Tiger
+    @file: chat_embed_serializers.py
     @date：2025/5/30 14:34
     @desc:
 """
@@ -42,7 +42,7 @@ class ChatEmbedSerializer(serializers.Serializer):
         float_icon = f"{self.data.get('protocol')}://{self.data.get('host')}{CONFIG.get_chat_path()}/MaxKB.gif"
         is_license_valid = DatabaseModelManage.get_model('license_is_valid')
         X_PACK_LICENSE_IS_VALID = is_license_valid() if is_license_valid is not None else False
-        # 获取接入的query参数
+        # GetAccess的queryParameters
         query = self.get_query_api_input(application_access_token.application, params)
         float_location = {"x": {"type": "right", "value": 0}, "y": {"type": "bottom", "value": 30}}
         header_font_color = "rgb(100, 106, 115)"

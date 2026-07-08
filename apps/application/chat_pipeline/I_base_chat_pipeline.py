@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： I_base_chat_pipeline.py
+    @Author: Tiger
+    @file: I_base_chat_pipeline.py
     @date：2024/1/9 17:25
     @desc:
 """
@@ -126,7 +126,7 @@ class ParagraphPipelineModel:
 
 class IBaseChatPipelineStep:
     def __init__(self):
-        # 当前步骤上下文,用于存储当前步骤信息
+        # CurrentStepContext,Used forStorageCurrentStepInfo
         self.context = {}
         self.status = 200
         self.err_message = ''
@@ -144,13 +144,13 @@ class IBaseChatPipelineStep:
     def run(self, manage):
         """
 
-        :param manage:      步骤管理器
-        :return: 执行结果
+        :param manage:      StepManage器
+        :return: ExecuteResult
         """
         try:
             start_time = time.time()
             self.context['start_time'] = start_time
-            # 校验参数,
+            # ValidateParameters,
             self.valid_args(manage)
             self._run(manage)
             self.context['run_time'] = time.time() - start_time
@@ -179,7 +179,7 @@ class IBaseChatPipelineStep:
 
     def get_details(self, manage, **kwargs):
         """
-        运行详情
-        :return: 步骤详情
+        RunDetails
+        :return: StepDetails
         """
         return None

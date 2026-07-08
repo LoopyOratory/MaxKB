@@ -1,7 +1,7 @@
 # apps/common/locale_manager.py
 """
-语言包管理器
-负责外置语言包的部署、编译和管理
+Language包Manage器
+负责ExternalLanguage包的Deployment、编译和Manage
 """
 
 import os
@@ -16,14 +16,14 @@ from common.utils.logger import maxkb_logger as logger
 
 
 class LocaleManager:
-    """语言包管理器"""
+    """Language包Manage器"""
 
     def __init__(self, external_locale_path: str = None):
         """
-        初始化语言包管理器
+        InitializeLanguage包Manage器
 
         Args:
-            external_locale_path: 外置语言包路径，默认从配置读取
+            external_locale_path: ExternalLanguage包Path，Default从ConfigurationRead
         """
         from maxkb.const import CONFIG, PROJECT_DIR
 
@@ -32,7 +32,7 @@ class LocaleManager:
             "EXTERNAL_LOCALE_PATH", "/opt/maxkb/local/locales"
         )
 
-        # 目录路径
+        # DirectoryPath
         self.internal_locales_dir = os.path.join(self.PROJECT_DIR, "apps", "locales")
         self.static_locales_dirs = [
             os.path.join(self.PROJECT_DIR, "apps", "static", "admin", "locales"),
@@ -41,16 +41,16 @@ class LocaleManager:
 
     def deploy_all(self) -> bool:
         """
-        部署所有外置语言包
+        DeploymentAllExternalLanguage包
 
         Returns:
-            bool: 是否成功部署
+            bool: WhetherSuccessDeployment
         """
         if not self.external_locale_path or not os.path.exists(self.external_locale_path):
             logger.debug(f"External locale path not found: {self.external_locale_path}")
             return False
 
-        # 确保目录存在
+        # EnsureDirectoryExists
         os.makedirs(self.internal_locales_dir, exist_ok=True)
         for static_dir in self.static_locales_dirs:
             os.makedirs(static_dir, exist_ok=True)
@@ -72,7 +72,7 @@ class LocaleManager:
                     if self._deploy_folder(item_path, item):
                         deployed_count += 1
 
-                # 每个语言包部署后更新索引
+                # EachLanguage包Deployment后UpdateIndex
                 self._write_static_index()
 
             except Exception as e:
@@ -83,7 +83,7 @@ class LocaleManager:
         return deployed_count > 0
 
     def _deploy_zip(self, zip_path: str, zip_name: str) -> bool:
-        """部署 ZIP 格式的语言包"""
+        """Deployment ZIP Format的Language包"""
         lang_code = zip_name[:-4].replace("-", "_")
         logger.info(f"Processing zip locale: {zip_name}")
 
@@ -102,7 +102,7 @@ class LocaleManager:
             return self._deploy_files(lang_code, po_content=po_content, json_content=json_content)
 
     def _deploy_folder(self, folder_path: str, folder_name: str) -> bool:
-        """部署文件夹格式的语言包"""
+        """DeploymentFolderFormat的Language包"""
         lang_code = folder_name.replace("-", "_")
         logger.info(f"Processing folder locale: {folder_name}")
 
@@ -126,14 +126,14 @@ class LocaleManager:
 
     def _deploy_files(self, lang_code: str, po_content=None, json_content=None, po_src=None, json_src=None) -> bool:
         """
-        部署单个语言包的文件
+        Deployment单个Language包的File
 
         Returns:
-            bool: PO 文件是否发生变化
+            bool: PO FileWhether发生变化
         """
         po_changed = False
 
-        # 部署 PO 文件
+        # Deployment PO File
         lang_dir = os.path.join(self.internal_locales_dir, lang_code)
         lc_messages_dir = os.path.join(lang_dir, "LC_MESSAGES")
         os.makedirs(lc_messages_dir, exist_ok=True)
@@ -154,19 +154,19 @@ class LocaleManager:
                 shutil.copy2(po_src, po_dest)
                 po_changed = True
 
-        # 如果 PO 文件变化，编译 MO 文件
+        # If PO File变化，编译 MO File
         if po_changed:
             self._compile_po_to_mo(po_dest)
             self._reload_django_mo(lang_code)
             logger.info(f"Compiled MO file for {lang_code}")
 
-        # 部署 JSON 文件
+        # Deployment JSON File
         self._deploy_json_files(lang_code, json_content=json_content, json_src=json_src)
 
         return po_changed
 
     def _deploy_json_files(self, lang_code: str, json_content=None, json_src=None):
-        """部署 JSON 文件到静态目录（只写入 admin，然后复制到 chat）"""
+        """Deployment JSON File到静态Directory（只Write admin，然后Copy到 chat）"""
         file_name = f"{lang_code.replace('_', '-')}.json"
 
         if json_content is None and json_src and os.path.isfile(json_src):
@@ -177,7 +177,7 @@ class LocaleManager:
             logger.warning(f"Skip JSON deploy for {lang_code}: no valid source")
             return
 
-        # 只写入 admin 目录
+        # 只Write admin Directory
         admin_static_dir = self.static_locales_dirs[0]
         os.makedirs(admin_static_dir, exist_ok=True)
         static_json_dest = os.path.join(admin_static_dir, file_name)
@@ -187,7 +187,7 @@ class LocaleManager:
         logger.info(f"Deployed JSON file to: {static_json_dest}")
 
     def _write_static_index(self):
-        """生成静态目录的 index.json 并同步到 chat 目录"""
+        """Generate静态Directory的 index.json 并Sync到 chat Directory"""
         admin_static_dir = self.static_locales_dirs[0]
 
         if not os.path.exists(admin_static_dir):
@@ -195,7 +195,7 @@ class LocaleManager:
 
         json_files = [f for f in os.listdir(admin_static_dir) if f.endswith(".json") and f != "index.json"]
 
-        # 为 admin 目录生成 index.json
+        # 为 admin DirectoryGenerate index.json
         index_file = os.path.join(admin_static_dir, "index.json")
         with open(index_file, "w", encoding="utf-8") as f:
             json.dump(
@@ -206,7 +206,7 @@ class LocaleManager:
             )
         logger.info(f"Updated locale index file: {index_file}")
 
-        # 将 admin 目录的所有文件复制到 chat 目录
+        # 将 admin Directory的AllFileCopy到 chat Directory
         chat_static_dir = self.static_locales_dirs[1]
         os.makedirs(chat_static_dir, exist_ok=True)
 
@@ -220,7 +220,7 @@ class LocaleManager:
 
     @staticmethod
     def _compile_po_to_mo(po_file: str):
-        """编译 PO 文件为 MO 文件"""
+        """编译 PO File为 MO File"""
         mo_file = po_file[:-3] + ".mo"
         os.makedirs(os.path.dirname(mo_file), exist_ok=True)
 
@@ -234,7 +234,7 @@ class LocaleManager:
 
     @staticmethod
     def _reload_django_mo(lang_code: str = None):
-        """重新加载 Django 翻译"""
+        """Re-Load Django Translation"""
         import gettext
         from django.apps import apps
         from django.utils import translation
@@ -259,12 +259,12 @@ class LocaleManager:
             translation.deactivate_all()
 
 
-# 单例实例
+# 单例Instance
 _locale_manager = None
 
 
 def get_locale_manager() -> LocaleManager:
-    """获取语言包管理器单例"""
+    """GetLanguage包Manage器单例"""
     global _locale_manager
     if _locale_manager is None:
         _locale_manager = LocaleManager()
@@ -272,5 +272,5 @@ def get_locale_manager() -> LocaleManager:
 
 
 def deploy_external_locales():
-    """便捷函数：部署外置语言包"""
+    """便捷Function：DeploymentExternalLanguage包"""
     return get_locale_manager().deploy_all()

@@ -52,17 +52,17 @@ defineOptions({ name: 'dynamicsForm' })
 
 const props = withDefaults(
   defineProps<{
-    // 页面渲染数据
+    // PageRenderData
     render_data:
       | Promise<Result<Array<FormField>>>
       | string
       | Array<FormField>
       | (() => Promise<Result<Array<FormField>>>)
-    // 调用接口所需要的其他参数
+    // Other parameters needed by the API call
     otherParams?: any
-    // 是否只读
+    // WhetherRead-only
     view?: boolean
-    // 默认每个宽度
+    // DefaultEachWidth
     defaultItemWidth?: string
 
     parent_field?: string
@@ -85,7 +85,7 @@ const formFieldRef = ref<Array<InstanceType<typeof FormItem>>>([])
 const visibilityMap = computed(() => computeVisibilityMap(formFieldList.value, formValue.value))
 
 /**
- * 当前 field是否展示
+ * Current fieldWhetherDisplay
  * @param field
  */
 const show = (field: FormField) => {
@@ -117,7 +117,7 @@ const show = (field: FormField) => {
 
 const emit = defineEmits(['update:modelValue'])
 /**
- * 表单字段修改
+ * FormFieldModification
  * @param field
  * @param value
  */
@@ -126,7 +126,7 @@ const change = (field: FormField, value: any) => {
 }
 
 /**
- * 表单字段修改
+ * FormFieldModification
  * @param field
  * @param value
  */
@@ -158,7 +158,7 @@ function renderTemplate(template: string, data: any) {
   })
 }
 /**
- * 触发器,用户获取子表单 或者 下拉选项
+ * Trigger to let user get sub-form or dropdown options
  * @param field
  * @param loading
  */
@@ -208,7 +208,7 @@ const trigger = (
   })
 }
 /**
- * 初始化默认数据
+ * InitializeDefaultData
  */
 const initDefaultData = (formField: FormField) => {
   if (
@@ -300,7 +300,7 @@ const getFormDefaultValue = (fieldList: Array<any>, form_data?: any) => {
   return value
 }
 /**
- * 校验函数
+ * ValidateFunction
  */
 const validate = () => {
   for (const field of formFieldList.value) {
@@ -314,7 +314,7 @@ const validate = () => {
   ])
 }
 
-// 暴露获取当前表单数据函数
+// ExposeGetCurrentFormDataFunction
 defineExpose({
   initDefaultData,
   validate,

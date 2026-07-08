@@ -18,7 +18,7 @@ class ImageGenerateNodeSerializer(serializers.Serializer):
 
     negative_prompt = serializers.CharField(required=False, label=_("Prompt word (negative)"),
                                             allow_null=True, allow_blank=True, )
-    # 多轮对话数量
+    # Multi-turn conversation count
     dialogue_number = serializers.IntegerField(required=False, default=0,
                                                label=_("Number of multi-round conversations"))
 

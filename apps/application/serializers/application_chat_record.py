@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎虎
-@file： application_chat_record.py
+@Author: Tiger
+@file: application_chat_record.py
 @date：2025/6/10 15:10
 @desc:
 """
@@ -358,12 +358,12 @@ class ApplicationChatRecordAddKnowledgeSerializer(serializers.Serializer):
         document_id = instance["document_id"]
         knowledge_id = instance["knowledge_id"]
 
-        # 获取所有聊天记录
+        # GetAll聊天Record
         chat_record_list = list(ChatRecord.objects.filter(chat_id__in=chat_ids))
         if len(chat_record_list) < len(chat_ids):
             raise AppApiException(500, gettext("Conversation records that do not exist"))
 
-        # 批量创建段落和问题映射
+        # BatchCreationParagraph和QuestionMapping
         paragraphs = []
         paragraph_ids = []
         problem_paragraph_mappings = []
@@ -389,14 +389,14 @@ class ApplicationChatRecordAddKnowledgeSerializer(serializers.Serializer):
             problem_paragraph_mappings.append(problem_paragraph_mapping)
             chat_record.improve_paragraph_id_list.append(paragraph.id)
 
-        # 处理段落位置
+        # ProcessParagraphPosition
         self.prepend_paragraphs(document_id, paragraphs)
 
-        # 批量创建新段落和问题映射
+        # BatchCreation新Paragraph和QuestionMapping
         Paragraph.objects.bulk_create(paragraphs)
         ProblemParagraphMapping.objects.bulk_create(problem_paragraph_mappings)
 
-        # 批量保存聊天记录
+        # BatchSave聊天Record
         ChatRecord.objects.bulk_update(chat_record_list, ["improve_paragraph_id_list"])
         update_document_char_length(document_id)
         for chat_id in chat_ids:
@@ -406,23 +406,23 @@ class ApplicationChatRecordAddKnowledgeSerializer(serializers.Serializer):
 
     @staticmethod
     def prepend_paragraphs(document_id, paragraphs):
-        # 获取所有现有段落
+        # GetAll现有Paragraph
         existing_paragraphs = list(Paragraph.objects.filter(document_id=document_id).order_by("position"))
 
-        # 计算新段落数量
+        # Calculate新ParagraphCount
         new_count = len(paragraphs)
 
-        # 如果已有段落，需要重新调整所有段落的位置
+        # If已有Paragraph，NeedsRe-AdjustAllParagraph的Position
         if existing_paragraphs:
-            # 为现有段落重新分配位置，从新段落数量+1开始
+            # 为现有ParagraphRe-分配Position，从新ParagraphCount+1Start
             for i, existing_paragraph in enumerate(existing_paragraphs):
                 existing_paragraph.position = new_count + i + 1
 
-            # 批量更新现有段落位置
+            # BatchUpdate现有ParagraphPosition
             if existing_paragraphs:
                 Paragraph.objects.bulk_update(existing_paragraphs, ["position"])
 
-        # 为新段落分配位置，从1开始
+        # 为新Paragraph分配Position，从1Start
         for i, paragraph in enumerate(paragraphs):
             paragraph.position = i + 1
 
@@ -464,7 +464,7 @@ class ApplicationChatRecordImproveSerializer(serializers.Serializer):
     @staticmethod
     def post_embedding_paragraph(chat_record, paragraph_id, knowledge_id):
         model_id = get_embedding_model_id_by_knowledge_id(knowledge_id)
-        # 发送向量化事件
+        # SendVectorizationEvent
         embedding_by_paragraph(paragraph_id, model_id)
         return chat_record
 
@@ -525,13 +525,13 @@ class ApplicationChatRecordImproveSerializer(serializers.Serializer):
             problem_id=problem.id,
             paragraph_id=paragraph.id,
         )
-        # 插入段落
+        # InsertParagraph
         paragraph.save()
-        # 插入关联问题
+        # InsertAssociationQuestion
         problem_paragraph_mapping.save()
         chat_record.improve_paragraph_id_list.append(paragraph.id)
         update_document_char_length(document_id)
-        # 添加标注
+        # AddAnnotation
         chat_record.save()
         ChatCountSerializer(data={"chat_id": chat_id}).update_chat()
         return ChatRecordSerializerModel(chat_record).data, paragraph.id, knowledge_id

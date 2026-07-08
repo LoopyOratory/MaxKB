@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： user.py
+    @Author: Tiger
+    @file: user.py
     @date：2025/4/14 19:18
     @desc:
 """
@@ -41,12 +41,12 @@ from django.core.mail import send_mail
 from django.utils.translation import get_language
 
 PASSWORD_REGEX = re.compile(
-    r"^"  # 开始
-    r"(?=.*[a-z])"  # 至少一个小写字母
-    r"(?=.*[-_!@#$%^&*`~.()+=])"  # 至少一个指定的特殊字符
-    r"(?:(?=.*[A-Z])|(?=.*\d))"  # 至少一个大写字母 或 数字
-    r"[a-zA-Z0-9-_!@#$%^&*`~.()+=]{6,20}"  # 总长度6~20个合法字符
-    r"$"  # 结束
+    r"^"  # Start
+    r"(?=.*[a-z])"  # 至少One小写字母
+    r"(?=.*[-_!@#$%^&*`~.()+=])"  # 至少OneSpecify的Special characters
+    r"(?:(?=.*[A-Z])|(?=.*\d))"  # 至少One大写字母 或 Number
+    r"[a-zA-Z0-9-_!@#$%^&*`~.()+=]{6,20}"  # 总Length6~20个合法字符
+    r"$"  # End
 )
 
 version, get_key = Cache_Version.SYSTEM.value
@@ -87,7 +87,7 @@ def is_workspace_manage_permission_read(user_id: str, workspace_id: str, permiss
     role_permission_mapping_model = DatabaseModelManage.get_model("role_permission_mapping_model")
     is_x_pack_ee = workspace_user_role_mapping_model is not None and role_permission_mapping_model is not None
     if is_x_pack_ee:
-        # 内置工作空间管理员（role_id 固定为 'WORKSPACE_MANAGE'）拥有全量权限，直接放行
+        # Built-inWorkspaceAdmin（role_id 固定为 'WORKSPACE_MANAGE'）Has全量Permission，Direct放行
         is_builtin_manage = QuerySet(workspace_user_role_mapping_model).filter(
             user_id=user_id,
             workspace_id=workspace_id,
@@ -95,7 +95,7 @@ def is_workspace_manage_permission_read(user_id: str, workspace_id: str, permiss
         ).exists()
         if is_builtin_manage:
             return True
-        # 继承（自定义）工作空间管理员：需被显式授予对应权限
+        # 继承（Custom）WorkspaceAdmin：需被显式授予对应Permission
         has_permission = QuerySet(role_permission_mapping_model).filter(
             role__userrolerelation__user_id=user_id,
             role__userrolerelation__workspace_id=workspace_id,
@@ -118,9 +118,9 @@ class UserProfileSerializer(serializers.Serializer):
     @staticmethod
     def profile(user: User, auth: Auth):
         """
-          获取用户详情
-        @param user: 用户对象
-        @param auth: 认证对象
+          GetUserDetails
+        @param user: UserObject
+        @param auth: AuthenticationObject
         @return:
         """
         workspace_list = get_workspace_list_by_user(user.id)
@@ -301,17 +301,17 @@ class UserManageSerializer(serializers.Serializer):
                 workspace_mapping = {str(workspace_model.id): workspace_model.name for workspace_model in
                                      workspace_model.objects.all()}
 
-                # 获取所有相关角色关系，并预加载角色信息
+                # GetAllRelatedRoleRelation, and预LoadRoleInfo
                 user_role_relations = (
                     user_role_relation_model.objects
                     .filter(user_id__in=user_ids)
                     .select_related('role')
-                    .distinct('user_id', 'role_id', 'workspace_id')  # 确保组合唯一性
+                    .distinct('user_id', 'role_id', 'workspace_id')  # EnsureCombineUnique性
                 )
 
-                # 构建用户ID到角色名称列表的映射
-                user_role_mapping = defaultdict(set)  # 使用 set 去重
-                # 构建用户ID到角色ID与工作空间ID映射
+                # BuildUserID到RoleNameList的Mapping
+                user_role_mapping = defaultdict(set)  # Use set 去重
+                # BuildUserID到RoleID与WorkspaceIDMapping
                 user_role_setting_mapping = defaultdict(lambda: defaultdict(list))
                 user_role_workspace_mapping = defaultdict(lambda: defaultdict(list))
 
@@ -326,10 +326,10 @@ class UserManageSerializer(serializers.Serializer):
                     user_role_workspace_mapping[user_id][relation.role.role_name].append(
                         workspace_mapping.get(workspace_id, workspace_id))
 
-                    # 将 set 转换为 list 以符合返回格式
+                    # 将 set Transform为 list 以MatchesReturnFormat
                 user_role_mapping = {uid: list(roles) for uid, roles in user_role_mapping.items()}
 
-                # 转换为所需的结构
+                # Transform为所需的结构
                 result_user_role_setting_mapping = {
                     user_id: [{"role_id": role_id, "workspace_ids": workspace_ids}
                               for role_id, workspace_ids in roles.items()]
@@ -344,14 +344,14 @@ class UserManageSerializer(serializers.Serializer):
                 return user_role_mapping, result_user_role_setting_mapping, result_user_role_workspace_mapping
 
             if role_model and user_role_relation_model:
-                # 获取当前用户的所有角色 判断是不是内置的系统管理员
+                # GetCurrentUser的AllRole Determine是不是Built-in的SystemAdmin
                 is_admin = user_role_relation_model.objects.filter(user_id=user_id,
                                                                    role_id=RoleConstants.ADMIN.name).exists()
                 user_ids = [user['id'] for user in result['records']]
                 user_role_mapping, user_role_setting_mapping, user_role_workspace_mapping = _get_user_roles(user_ids,
                                                                                                             is_admin)
 
-                # 将角色信息添加回用户数据中
+                # 将RoleInfoAdd回UserData中
                 for user in result['records']:
                     user_id = str(user['id'])
                     user['role_name'] = user_role_mapping.get(user_id, [])
@@ -476,7 +476,7 @@ class UserManageSerializer(serializers.Serializer):
                 self.is_valid(raise_exception=True)
                 self._check_not_admin()
             user_id = self.data.get('id')
-            # TODO  需要删除授权关系
+            # TODO  NeedsDeletionAuthorizationRelation
             User.objects.filter(id=user_id).delete()
             return True
 
@@ -543,7 +543,7 @@ class UserManageSerializer(serializers.Serializer):
                 if encrypted_data:
                     try:
                         decrypted_raw = decrypt(encrypted_data)
-                        # decrypt 可能返回非 JSON 字符串，防护解析异常
+                        # decrypt PossibleReturn非 JSON String，防护ParseException
                         decrypted_data = json.loads(decrypted_raw) if decrypted_raw else {}
                         if isinstance(decrypted_data, dict):
                             instance.update(decrypted_data)
@@ -557,9 +557,9 @@ class UserManageSerializer(serializers.Serializer):
 
     def get_user_list(self, workspace_id, nick_name):
         """
-        获取用户列表
-        :param workspace_id: 工作空间ID
-        :return: 用户列表
+        GetUserList
+        :param workspace_id: WorkspaceID
+        :return: UserList
         """
         workspace_user_role_mapping_model = DatabaseModelManage.get_model("workspace_user_role_mapping")
         if workspace_user_role_mapping_model:
@@ -581,9 +581,9 @@ class UserManageSerializer(serializers.Serializer):
 
     def get_user_members(self, workspace_id):
         """
-        获取工作空间成员列表
-        :param workspace_id: 工作空间ID
-        :return: 成员列表
+        GetWorkspaceMemberList
+        :param workspace_id: WorkspaceID
+        :return: MemberList
         """
         role_model = DatabaseModelManage.get_model("role_model")
         user_role_relation_model = DatabaseModelManage.get_model("workspace_user_role_mapping")
@@ -607,7 +607,7 @@ class UserManageSerializer(serializers.Serializer):
                 else:
                     user_dict[user_id]['roles'].append(relation.role.role_name)
 
-            # 将字典值转换为列表形式
+            # 将Dict值Transform为List形式
             return list(user_dict.values())
         user_list = User.objects.exclude(role=RoleConstants.ADMIN.name)
         return [
@@ -659,12 +659,12 @@ def update_user_role(instance, user, user_id=None):
                                                                     role_id=RoleConstants.ADMIN.name).exists()
 
         if str(user.id) == 'f0dd8f71-e4ee-11ee-8c84-a8a1595801ab':
-            # 需要判断当前角色的权限 不能删除系统管理员 空间管理员 普通管理员等角色
-            # role_setting是一个数组 结构式 [{role_id:1,workspace_ids:[1,2]}]
-            # 如果role_id不包含ADMIN 就直接报错   如果WORKSPACE_MANAGE 或者USER 必须判断workspace_ids是否包含默认工作空间 不包含就报错
+            # NeedsDetermineCurrentRole的Permission 不能DeletionSystemAdmin 空间Admin NormalAdmin等Role
+            # role_setting是OneArray 结构式 [{role_id:1,workspace_ids:[1,2]}]
+            # Ifrole_id不ContainsADMIN 就Direct报错   IfWORKSPACE_MANAGE OrUSER MustDetermineworkspace_idsWhetherContainsDefaultWorkspace 不Contains就报错
             admin_role_id = RoleConstants.ADMIN.name
             workspace_manage_role_id = RoleConstants.WORKSPACE_MANAGE.name
-            # 判断内置的三个角色是不是不在
+            # DetermineBuilt-in的三个Role是不是不在
             current_role_ids = {item['role_id'] for item in role_setting}
             initial_role = [admin_role_id, workspace_manage_role_id, RoleConstants.USER.name]
             if not set(initial_role).issubset(current_role_ids):
@@ -673,7 +673,7 @@ def update_user_role(instance, user, user_id=None):
             if not any(item['role_id'] == str(admin_role_id) for item in role_setting):
                 raise AppApiException(1004, _("Cannot delete built-in role"))
 
-            # 验证 WORKSPACE_MANAGE 或 USER 是否包含默认工作空间
+            # Verify WORKSPACE_MANAGE 或 USER WhetherContainsDefaultWorkspace
             default_workspace_id = 'default'
 
             for item in role_setting:
@@ -710,41 +710,41 @@ def update_user_role(instance, user, user_id=None):
 
 def set_default_permission(user_id, instance):
     """
-    为用户设置默认权限
+    为UserSettingsDefaultPermission
     """
     default_permission = instance.get('defaultPermission', 'NOT_AUTH')
 
-    # 获取工作空间ID列表
+    # GetWorkspaceIDList
     workspace_ids = _get_workspace_ids(instance, default_permission)
     if not workspace_ids:
         return
 
-    # 根据权限类型确定认证类型
+    # Based onPermissionTypeConfirmAuthenticationType
     auth_type = (ResourceAuthType.ROLE
                  if default_permission == ResourceAuthType.ROLE
                  else ResourceAuthType.RESOURCE_PERMISSION_GROUP)
 
-    # 设置根目录权限
+    # Settings根DirectoryPermission
     _set_root_permissions(user_id, workspace_ids)
 
-    # 如果是无权限设置，直接返回
+    # If无PermissionSettings，DirectReturn
     if default_permission == 'NOT_AUTH':
         return
 
-    # 设置具体资源权限
+    # SettingsSpecificResourcePermission
     _set_resource_permissions(user_id, workspace_ids, default_permission, auth_type)
 
 
 def _get_workspace_ids(instance, default_permission):
     """
-    获取工作空间ID列表
+    GetWorkspaceIDList
     """
     role_setting_model = DatabaseModelManage.get_model("role_model")
 
     if not role_setting_model:
         return ['default']
 
-    # 检查许可证有效性
+    # Check许可证有效性
     license_is_valid = DatabaseModelManage.get_model('license_is_valid') or (lambda: False)
     if default_permission == ResourceAuthType.ROLE and not license_is_valid():
         return []
@@ -753,7 +753,7 @@ def _get_workspace_ids(instance, default_permission):
     if not role_setting:
         return ['default']
 
-    # 获取用户角色的工作空间ID
+    # GetUserRole的WorkspaceID
     all_role_ids = [item['role_id'] for item in role_setting]
     user_role_ids = set(role_setting_model.objects.filter(
         id__in=all_role_ids,
@@ -771,7 +771,7 @@ def _get_workspace_ids(instance, default_permission):
 
 def _set_root_permissions(user_id, workspace_ids):
     """
-    设置根目录权限（默认为查看权限）
+    Settings根DirectoryPermission（Default为查看Permission）
     """
     root_permissions = []
     for ws in workspace_ids:
@@ -796,24 +796,24 @@ def _set_root_permissions(user_id, workspace_ids):
 
 def _set_resource_permissions(user_id, workspace_ids, default_permission, auth_type):
     """
-    设置具体资源权限
+    SettingsSpecificResourcePermission
     """
-    # 批量查询资源并按工作空间分组
+    # BatchQueryResource并按WorkspaceGroup
     resource_maps = _get_resource_maps(workspace_ids)
 
-    # 构造权限实例
+    # 构造PermissionInstance
     instances = []
     for ws in workspace_ids:
         instances.extend(_create_resource_permission_instances(
             ws, resource_maps, user_id, default_permission, auth_type))
 
-    # 批量创建权限
+    # BatchCreationPermission
     _batch_create_permissions(instances)
 
 
 def _get_resource_maps(workspace_ids):
     """
-    获取各类型资源按工作空间的映射
+    Get各TypeResource按Workspace的Mapping
     """
     from application.models import Application, ApplicationFolder
     from knowledge.models import Knowledge, KnowledgeFolder
@@ -831,7 +831,7 @@ def _get_resource_maps(workspace_ids):
         'models': defaultdict(list)
     }
 
-    # 查询应用资源
+    # QueryApplicationResource
     for ws, rid in Application.objects.filter(workspace_id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['apps'][ws].append(rid)
 
@@ -839,7 +839,7 @@ def _get_resource_maps(workspace_ids):
             id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['app_folders'][ws].append(fid)
 
-    # 查询知识库资源
+    # QueryKnowledge baseResource
     for ws, kid in Knowledge.objects.filter(workspace_id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['knowledge'][ws].append(kid)
 
@@ -847,7 +847,7 @@ def _get_resource_maps(workspace_ids):
             id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['knowledge_folders'][ws].append(kfid)
 
-    # 查询工具资源
+    # QueryToolResource
     for ws, tid in Tool.objects.filter(workspace_id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['tools'][ws].append(tid)
 
@@ -855,7 +855,7 @@ def _get_resource_maps(workspace_ids):
             id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['tool_folders'][ws].append(tfid)
 
-    # 查询模型资源
+    # QueryModelResource
     for ws, mid in Model.objects.filter(workspace_id__in=workspace_ids).values_list('workspace_id', 'id'):
         resource_maps['models'][ws].append(mid)
 
@@ -864,7 +864,7 @@ def _get_resource_maps(workspace_ids):
 
 def _create_resource_permission_instances(workspace_id, resource_maps, user_id, permission, auth_type):
     """
-    创建资源权限实例列表
+    CreationResourcePermissionInstanceList
     """
     instances = []
     if permission == ResourcePermission.MANAGE:
@@ -872,7 +872,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
     else:
         permission = [permission]
 
-    # 应用权限
+    # ApplicationPermission
     for rid in resource_maps['apps'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=rid,
@@ -883,7 +883,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 应用文件夹权限
+    # ApplicationFolderPermission
     for fid in resource_maps['app_folders'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=fid,
@@ -894,7 +894,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 知识库权限
+    # Knowledge basePermission
     for kid in resource_maps['knowledge'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=kid,
@@ -905,7 +905,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 知识库文件夹权限
+    # Knowledge baseFolderPermission
     for kf in resource_maps['knowledge_folders'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=kf,
@@ -916,7 +916,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 工具权限
+    # ToolPermission
     for tid in resource_maps['tools'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=tid,
@@ -927,7 +927,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 工具文件夹权限
+    # ToolFolderPermission
     for tf in resource_maps['tool_folders'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=tf,
@@ -938,7 +938,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
             auth_type=auth_type
         ))
 
-    # 模型权限
+    # ModelPermission
     for mid in resource_maps['models'].get(workspace_id, []):
         instances.append(WorkspaceUserResourcePermission(
             target=mid,
@@ -954,7 +954,7 @@ def _create_resource_permission_instances(workspace_id, resource_maps, user_id, 
 
 def _batch_create_permissions(instances, batch_size=500):
     """
-    批量创建权限实例
+    BatchCreationPermissionInstance
     """
     if not instances:
         return
@@ -1017,8 +1017,8 @@ class RePasswordSerializer(serializers.Serializer):
 
     def reset_password(self):
         """
-        修改密码
-        :return: 是否成功
+        ModificationPassword
+        :return: WhetherSuccess
         """
         if self.is_valid():
             email = self.data.get("email")
@@ -1070,8 +1070,8 @@ class ResetCurrentUserPassword(serializers.Serializer):
 
     def reset_password(self, user_id: str):
         """
-        修改密码
-        :return: 是否成功
+        ModificationPassword
+        :return: WhetherSuccess
         """
         if self.is_valid():
             QuerySet(User).filter(id=user_id).update(
@@ -1107,16 +1107,16 @@ class SendEmailSerializer(serializers.Serializer):
 
     def send(self):
         """
-        发送邮件
-        :return:   是否发送成功
-        :exception 发送失败异常
+        SendEmail
+        :return:   WhetherSendSuccess
+        :exception SendFailureException
         """
         email = self.data.get("email")
         state = self.data.get("type")
-        # 生成随机验证码
+        # Generate随机Verify码
         code = "".join(list(map(lambda i: random.choice(['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
                                                          ]), range(6))))
-        # 获取邮件模板
+        # GetEmailTemplate
         language = get_language()
         file = open(
             os.path.join(PROJECT_DIR, "apps", "common", 'template', f'email_template_{language}.html'), "r",
@@ -1125,7 +1125,7 @@ class SendEmailSerializer(serializers.Serializer):
         file.close()
         code_cache_key = email + ":" + state
         code_cache_key_lock = code_cache_key + "_lock"
-        # 设置缓存
+        # SettingsCache
         cache.set(get_key(code_cache_key_lock), code, timeout=60, version=version)
         system_setting = QuerySet(SystemSetting).filter(type=SettingType.EMAIL.value).first()
         if system_setting is None:
@@ -1141,7 +1141,7 @@ class SendEmailSerializer(serializers.Serializer):
                                       False,
                                       system_setting.meta.get('email_use_ssl')
                                       )
-            # 发送邮件
+            # SendEmail
             send_mail(_('【Intelligent knowledge base question and answer system-{action}】').format(
                 action=_('User registration') if state == 'register' else _('Change password')),
                 '',
@@ -1157,7 +1157,7 @@ class SendEmailSerializer(serializers.Serializer):
 
 class CheckCodeSerializer(serializers.Serializer):
     """
-     校验验证码
+     ValidateVerify码
     """
     email = serializers.EmailField(
         required=True,
@@ -1191,7 +1191,7 @@ class SwitchLanguageSerializer(serializers.Serializer):
         self.is_valid(raise_exception=True)
         language = self.data.get('language')
         support_language_list = CONFIG.get_languages()
-        # 这个是一个list 完事是对象 key是语言的key value是语言的value  我只需要提取语言的key就行
+        # 这个是Onelist 完事是Object key是Language的key value是Language的value  我只NeedsExtractLanguage的keyIs sufficient
         support_keys = [lang[0] for lang in support_language_list]
         # support_language_list = ['zh-CN', 'zh-Hant', 'en-US'] en_US,ja,zh_CN,zh_Hant
         if not support_keys.__contains__(language):

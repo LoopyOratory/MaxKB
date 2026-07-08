@@ -45,7 +45,7 @@ import resourceManageMappingApi from '@/api/system-resource-management/resource-
 import resourceTriggerApi from '@/api/system-resource-management/trigger'
 
 
-// 普通 API
+// Normal API
 const workspaceApiMap = {
   knowledge: knowledgeWorkspaceApi,
   model: modelWorkspaceApi,
@@ -66,7 +66,7 @@ const workspaceApiMap = {
   trigger: triggerApi,
 } as any
 
-// 系统分享 API
+// SystemShare API
 const systemShareApiMap = {
   knowledge: knowledgeSystemShareApi,
   model: modelSystemShareApi,
@@ -76,11 +76,11 @@ const systemShareApiMap = {
   problem: problemSystemShareApi,
   termbase: termbaseSystemShareApi,
   chatUser: chatUserSystemShareApi,
-  workspace: systemUserApi, // 共享的应该查全部人吧
+  workspace: systemUserApi, // Shared should query all users
   resourceMapping: systemResourceMappingApi,
 } as any
 
-// 资源管理 API
+// ResourceManage API
 const systemManageApiMap = {
   knowledge: knowledgeResourceApi,
   document: documentResourceApi,
@@ -107,7 +107,7 @@ const data = {
   workspaceShare: workspaceApiMap,
 }
 
-/** 动态导入 API 模块的函数
+/** DynamicImport API ModuleFunction
  *  loadSharedApi('knowledge', true,'systemShare')
  */
 export function loadSharedApi({
@@ -120,7 +120,7 @@ export function loadSharedApi({
   systemType?: 'systemShare' | 'workspace' | 'systemManage' | 'workspaceShare'
 }) {
   if (isShared) {
-    // 共享 API
+    // Shared API
     return sharedWorkspaceApi
   } else {
     return data[systemType || 'workspace'][type]

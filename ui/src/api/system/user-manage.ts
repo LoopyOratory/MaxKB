@@ -6,8 +6,8 @@ import type {Ref} from 'vue'
 
 const prefix = '/user_manage'
 /**
- * 用户分页列表
- * @query 参数
+ * UserPaginationList
+ * @query Parameters
  email_or_username: string
  */
 const getUserManage: (
@@ -23,8 +23,8 @@ const getUserManage: (
 }
 
 /**
- * 删除用户
- * @param 参数 user_id,
+ * DeletionUser
+ * @param Parameters user_id,
  */
 const delUserManage: (user_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   user_id,
@@ -34,7 +34,7 @@ const delUserManage: (user_id: string, loading?: Ref<boolean>) => Promise<Result
 }
 
 /**
- * 创建用户
+ * CreationUser
  */
 const postUserManage: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -44,7 +44,7 @@ const postUserManage: (data: any, loading?: Ref<boolean>) => Promise<Result<any>
 }
 
 /**
- * 编辑用户
+ * EditUser
  */
 const putUserManage: (
   user_id: string,
@@ -55,7 +55,7 @@ const putUserManage: (
 }
 
 /**
- * 修改用户密码
+ * ModificationUserPassword
  */
 const putUserManagePassword: (
   user_id: string,
@@ -67,7 +67,7 @@ const putUserManagePassword: (
 
 
 /**
- * 获取系统默认密码
+ * GetSystemDefaultPassword
  */
 const getSystemDefaultPassword: (
   loading?: Ref<boolean>
@@ -77,9 +77,9 @@ const getSystemDefaultPassword: (
 
 
 /**
- * 获取校验
- * @param valid_type 校验类型: application|knowledge|user
- * @param valid_count 校验数量: 5 | 50 | 2
+ * GetValidate
+ * @param valid_type ValidateType: application|knowledge|user
+ * @param valid_count ValidateCount: 5 | 50 | 2
  */
 const getValid: (
   valid_type: string,

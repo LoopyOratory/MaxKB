@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： user.py
+    @Author: Tiger
+    @file: user.py
     @date：2025/4/14 19:23
     @desc:
 """
@@ -182,14 +182,14 @@ class TestWorkspacePermissionUserApi(APIMixin):
     @staticmethod
     def get_parameters():
         return [OpenApiParameter(
-            # 参数的名称是done
+            # Parameters的Name是done
             name="workspace_id",
-            # 对参数的备注
-            description="工作空间id",
-            # 指定参数的类型
+            # 对Parameters的Remark
+            description="Workspace id",
+            # SpecifyParameters的Type
             type=OpenApiTypes.STR,
             location=OpenApiParameter.PATH,
-            # 指定必须给
+            # SpecifyMust给
             required=True,
         )]
 

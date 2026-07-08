@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： Trigger.py
+    @Author: Tiger
+    @file: Trigger.py
     @date：2026/1/14 18:45
     @desc:
 """
@@ -12,7 +12,7 @@ from abc import ABC, abstractmethod
 
 class BaseTrigger(ABC):
     """
-    触发器抽象
+    Trigger抽象
     """
 
     @abstractmethod

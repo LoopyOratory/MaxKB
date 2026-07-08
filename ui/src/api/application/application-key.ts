@@ -11,8 +11,8 @@ Object.defineProperty(prefix, 'value', {
   },
 })
 /**
- * API_KEY列表
- * @param 参数 application_id
+ * API_KEYList
+ * @param Parameters application_id
  */
 const getAPIKey: (application_id: string, current_page: number, page_size: number, params: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   application_id,
@@ -25,8 +25,8 @@ const getAPIKey: (application_id: string, current_page: number, page_size: numbe
 }
 
 /**
- * 新增API_KEY
- * @param 参数 application_id
+ * AddAPI_KEY
+ * @param Parameters application_id
  */
 const postAPIKey: (application_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   application_id,
@@ -36,8 +36,8 @@ const postAPIKey: (application_id: string, loading?: Ref<boolean>) => Promise<Re
 }
 
 /**
- * 删除API_KEY
- * @param 参数 application_id api_key_id
+ * DeletionAPI_KEY
+ * @param Parameters application_id api_key_id
  */
 const delAPIKey: (
   application_id: string,
@@ -53,8 +53,8 @@ const delAPIKey: (
 }
 
 /**
- * 修改API_KEY
- * @param 参数 application_id,api_key_id
+ * ModificationAPI_KEY
+ * @param Parameters application_id,api_key_id
  * data {
  *   is_active: boolean
  * }

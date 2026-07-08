@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： listener_manage.py
+@Author: Tiger
+@file: listener_manage.py
 @date：2023/10/20 14:01
 @desc:
 """
@@ -122,13 +122,13 @@ class ListenerManagement:
             _("Start--->Embedding paragraph: {paragraph_id_list}").format(paragraph_id_list=paragraph_id_list)
         )
         try:
-            # 删除段落
+            # DeletionParagraph
             VectorStore.get_embedding_vector().delete_by_paragraph_ids(paragraph_id_list)
 
             def is_save_function():
                 return QuerySet(Paragraph).filter(id__in=paragraph_id_list).exists()
 
-            # 批量向量化
+            # BatchVectorization
             VectorStore.get_embedding_vector().batch_save(data_list, embedding_model, is_save_function)
             ListenerManagement.update_status(
                 QuerySet(Paragraph).filter(id__in=paragraph_id_list), TaskType.EMBEDDING, State.SUCCESS
@@ -150,12 +150,12 @@ class ListenerManagement:
     @staticmethod
     def embedding_by_paragraph(paragraph_id, embedding_model: Embeddings):
         """
-        向量化段落 根据段落id
-        @param paragraph_id:    段落id
-        @param embedding_model:  向量模型
+        VectorizationParagraph Based onParagraphid
+        @param paragraph_id:    Paragraphid
+        @param embedding_model:  VectorModel
         """
         maxkb_logger.info(_("Start--->Embedding paragraph: {paragraph_id}").format(paragraph_id=paragraph_id))
-        # 更新到开始状态
+        # Update到StartStatus
         ListenerManagement.update_status(QuerySet(Paragraph).filter(id=paragraph_id), TaskType.EMBEDDING, State.STARTED)
         try:
             data_list = native_search(
@@ -169,7 +169,7 @@ class ListenerManagement:
                     os.path.join(PROJECT_DIR, "apps", "common", "sql", "list_embedding_text.sql")
                 ),
             )
-            # 删除段落
+            # DeletionParagraph
             VectorStore.get_embedding_vector().delete_by_paragraph_id(paragraph_id)
 
             def is_the_task_interrupted():
@@ -178,9 +178,9 @@ class ListenerManagement:
                     return True
                 return False
 
-            # 批量向量化
+            # BatchVectorization
             VectorStore.get_embedding_vector().batch_save(data_list, embedding_model, is_the_task_interrupted)
-            # 更新到开始状态
+            # Update到StartStatus
             ListenerManagement.update_status(
                 QuerySet(Paragraph).filter(id=paragraph_id), TaskType.EMBEDDING, State.SUCCESS
             )
@@ -198,7 +198,7 @@ class ListenerManagement:
 
     @staticmethod
     def embedding_by_data_list(data_list: List, embedding_model: Embeddings):
-        # 批量向量化
+        # BatchVectorization
         VectorStore.get_embedding_vector().batch_save(data_list, embedding_model, lambda: False)
 
     @staticmethod
@@ -215,14 +215,14 @@ class ListenerManagement:
     @staticmethod
     def tokenize_by_paragraph(paragraph_id):
         maxkb_logger.info(_("Start--->Tokenize paragraph: {paragraph_id}").format(paragraph_id=paragraph_id))
-        # 更新到开始状态
+        # Update到StartStatus
         ListenerManagement.update_status(QuerySet(Paragraph).filter(id=paragraph_id), TaskType.TOKENIZE, State.STARTED)
         try:
             paragraph = QuerySet(Paragraph).filter(id=paragraph_id).first()
             if paragraph is None:
                 return
             chunks = paragraph.chunks
-            # 提前查询一次用户词汇，避免循环内重复查询
+            # 提前QueryOnceUser词汇，避免Loop内重复Query
             user_words = list(
                 QuerySet(Termbase)
                 .filter(knowledge_id=paragraph.knowledge_id)
@@ -231,7 +231,7 @@ class ListenerManagement:
             data_list = list(QuerySet(Embedding).filter(paragraph_id=paragraph_id))
             for data, chunk in zip(data_list, chunks):
                 data.search_vector = SearchVector(Value(to_ts_vector(chunk, user_words=user_words)), config='simple')
-            # 批量保存，减少数据库写入次数
+            # BatchSave，减少Data库WriteCount
             QuerySet(Embedding).filter(paragraph_id=paragraph_id).bulk_update(data_list, ["search_vector"])
 
             ListenerManagement.update_status(
@@ -353,10 +353,10 @@ class ListenerManagement:
     @staticmethod
     def embedding_by_document(document_id, embedding_model: Embeddings, state_list=None):
         """
-        向量化文档
+        VectorizationDocument
         @param state_list:
-        @param document_id: 文档id
-        @param embedding_model 向量模型
+        @param document_id: Documentid
+        @param embedding_model VectorModel
         :return: None
         """
         if state_list is None:
@@ -375,12 +375,12 @@ class ListenerManagement:
             if is_the_task_interrupted():
                 return
             maxkb_logger.info(_("Start--->Embedding document: {document_id}").format(document_id=document_id))
-            # 批量修改状态为PADDING
+            # BatchModificationStatus为PADDING
             ListenerManagement.update_status(
                 QuerySet(Document).filter(id=document_id), TaskType.EMBEDDING, State.STARTED
             )
 
-            # 根据段落进行向量化处理
+            # Based onParagraphPerformVectorizationProcess
             page_desc(
                 QuerySet(Paragraph)
                 .annotate(
@@ -397,7 +397,7 @@ class ListenerManagement:
                 ),
                 is_the_task_interrupted,
             )
-            # 检查是否存在索引
+            # CheckWhetherExistsIndex
             create_knowledge_index(document_id=document_id)
         except Exception as e:
             maxkb_logger.error(
@@ -414,9 +414,9 @@ class ListenerManagement:
     @staticmethod
     def embedding_by_knowledge(knowledge_id, embedding_model: Embeddings):
         """
-        向量化知识库
-        @param knowledge_id: 知识库id
-        @param embedding_model 向量模型
+        VectorizationKnowledge base
+        @param knowledge_id: Knowledge baseid
+        @param embedding_model VectorModel
         :return: None
         """
         maxkb_logger.info(_("Start--->Embedding knowledge: {knowledge_id}").format(knowledge_id=knowledge_id))
@@ -533,12 +533,12 @@ class ListenerManagement:
             if is_the_task_interrupted():
                 return
             maxkb_logger.info(_("Start--->Tokenize document: {document_id}").format(document_id=document_id))
-            # 批量修改状态为PADDING
+            # BatchModificationStatus为PADDING
             ListenerManagement.update_status(
                 QuerySet(Document).filter(id=document_id), TaskType.TOKENIZE, State.STARTED
             )
 
-            # 根据段落进行向量化处理
+            # Based onParagraphPerformVectorizationProcess
             page_desc(
                 QuerySet(Paragraph)
                 .annotate(

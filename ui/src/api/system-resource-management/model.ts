@@ -13,8 +13,8 @@ import type { FormField } from '@/components/dynamics-form/type'
 const prefix = '/system/resource'
 
 /**
- * 获得模型列表
- * @params 参数 name, model_type, model_name
+ * GetModelList
+ * @params Parameters name, model_type, model_name
  */
 const getModelListPage: (
   page: pageRequest,
@@ -25,8 +25,8 @@ const getModelListPage: (
 }
 
 /**
- * 获得下拉选择框模型列表
- * @params 参数 name, model_type, model_name
+ * Get dropdown model list
+ * @params Parameters name, model_type, model_name
  */
 const getSelectModelList: (
   data?: ListModelRequest,
@@ -48,8 +48,8 @@ const getSelectModelList: (
 }
 
 /**
- * 获取模型参数表单
- * @param model_id 模型id
+ * GetModelParametersForm
+ * @param model_id Modelid
  * @param loading
  * @returns
  */
@@ -61,9 +61,9 @@ const getModelParamsForm: (
 }
 
 /**
- * 创建模型
- * @param request 请求对象
- * @param loading 加载器
+ * CreationModel
+ * @param request RequestObject
+ * @param loading Loader
  * @returns
  */
 const createModel: (
@@ -74,9 +74,9 @@ const createModel: (
 }
 
 /**
- * 修改模型
- * @param request 請求對象
- * @param loading 加載器
+ * ModificationModel
+ * @param request Request object
+ * @param loading Loader
  * @returns
  */
 const updateModel: (
@@ -88,9 +88,9 @@ const updateModel: (
 }
 
 /**
- * 修改模型参数配置
- * @param request 請求對象
- * @param loading 加載器
+ * ModificationModelParametersConfiguration
+ * @param request Request object
+ * @param loading Loader
  * @returns
  */
 const updateModelParamsForm: (
@@ -102,9 +102,9 @@ const updateModelParamsForm: (
 }
 
 /**
- * 获取模型详情根据模型id 包括认证信息
- * @param model_id 模型id
- * @param loading  加载器
+ * GetModelDetailsBased onModelid IncludeAuthenticationInfo
+ * @param model_id Modelid
+ * @param loading  Loader
  * @returns
  */
 const getModelById: (model_id: string, loading?: Ref<boolean>) => Promise<Result<Model>> = (
@@ -114,9 +114,9 @@ const getModelById: (model_id: string, loading?: Ref<boolean>) => Promise<Result
   return get(`${prefix}/model/${model_id}`, {}, loading)
 }
 /**
- * 获取模型信息不包括认证信息根据模型id
- * @param model_id 模型id
- * @param loading  加载器
+ * GetModelInfoExcludeAuthenticationInfoBased onModelid
+ * @param model_id Modelid
+ * @param loading  Loader
  * @returns
  */
 const getModelMetaById: (model_id: string, loading?: Ref<boolean>) => Promise<Result<Model>> = (
@@ -126,9 +126,9 @@ const getModelMetaById: (model_id: string, loading?: Ref<boolean>) => Promise<Re
   return get(`${prefix}/model/${model_id}/meta`, {}, loading)
 }
 /**
- * 暂停下载
- * @param model_id 模型id
- * @param loading 加载器
+ * PauseDownload
+ * @param model_id Modelid
+ * @param loading Loader
  * @returns
  */
 const pauseDownload: (model_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (

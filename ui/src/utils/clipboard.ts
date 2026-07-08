@@ -2,7 +2,7 @@ import Clipboard from 'vue-clipboard3'
 import { MsgSuccess, MsgError } from '@/utils/message'
 import { t } from '@/locales'
 /*
-  复制粘贴
+  CopyPaste
 */
 export async function copyClick(info: string) {
   const { toClipboard } = Clipboard()

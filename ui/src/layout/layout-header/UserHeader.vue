@@ -7,7 +7,7 @@
 
     <div class="flex-between w-full">
       <div class="ml-24 flex align-center w-120">
-        <!-- 企业版: 工作空间下拉框-->
+        <!-- Enterprise: WorkspaceDropdownDialog-->
         <el-divider
           class="mr-8"
           direction="vertical"

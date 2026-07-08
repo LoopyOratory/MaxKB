@@ -98,7 +98,7 @@ watch(
       form.value.desc = value.desc
       form.value.embedding_model_id = value.embedding_model_id
       workspace_id.value = value.workspace_id || ''
-      // 重新刷新模型列表
+      // Re-RefreshModelList
       getSelectModel()
     }
   },
@@ -108,7 +108,7 @@ watch(
 )
 
 /*
-  表单校验
+  FormValidate
 */
 function validate() {
   if (!FormRef.value) return

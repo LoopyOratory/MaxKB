@@ -336,7 +336,7 @@
             </div>
           </div>
 
-          <!-- 工具       -->
+          <!-- Tools       -->
           <div>
             <div class="flex-between mb-8" @click="collapseData.tool = !collapseData.tool">
               <div class="flex align-center lighter cursor">
@@ -408,7 +408,7 @@
             </div>
           </div>
 
-          <!-- 技能       -->
+          <!-- Skills       -->
           <div>
             <div class="flex-between mb-8" @click="collapseData.skill = !collapseData.skill">
               <div class="flex align-center lighter cursor">
@@ -484,7 +484,7 @@
             </div>
           </div>
 
-          <!-- 应用 没有共享应用，在共享知识库工作流不显示这个      -->
+          <!-- Application - no shared app; hidden in shared knowledge base workflow      -->
           <div v-if="apiType !== 'systemShare'">
             <div class="flex-between" @click="collapseData.agent = !collapseData.agent">
               <div class="flex align-center lighter cursor">

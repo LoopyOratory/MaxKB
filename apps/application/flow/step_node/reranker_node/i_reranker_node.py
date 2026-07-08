@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： i_reranker_node.py
+    @Author: Tiger
+    @file: i_reranker_node.py
     @date：2024/9/4 10:40
     @desc:
 """
@@ -17,10 +17,10 @@ from django.utils.translation import gettext_lazy as _
 
 
 class RerankerSettingSerializer(serializers.Serializer):
-    # 需要查询的条数
+    # NeedsQueryCount of
     top_n = serializers.IntegerField(required=True,
                                      label=_("Reference segment number"))
-    # 相似度 0-1之间
+    # Similarity 0-1Between
     similarity = serializers.FloatField(required=True, max_value=2, min_value=0,
                                         label=_("Reference segment number"))
     max_paragraph_char_number = serializers.IntegerField(required=True,
@@ -64,7 +64,7 @@ class IRerankerNode(INode):
         reranker_model_id_reference = node_params_data.pop('reranker_model_id_reference', None)
         reranker_model_id = node_params_data.pop('reranker_model_id', None)
 
-        # 处理引用类型
+        # Handle reference types
         if reranker_model_id_type == 'reference' and reranker_model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 reranker_model_id_reference[0],

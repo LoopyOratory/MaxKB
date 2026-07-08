@@ -127,7 +127,7 @@ class RestrictedUnpickler(pickle.Unpickler):
 
 def encryption(message: str):
     """
-        加密敏感字段数据  加密方式是 如果密码是 1234567890  那么给前端则是 123******890
+        EncryptSensitiveFieldData  EncryptMethod是 IfPassword是 1234567890  那么给Frontend则是 123******890
     :param message:
     :return:
     """
@@ -469,17 +469,17 @@ class ToolSerializer(serializers.Serializer):
             if with_valid:
                 self.is_valid(raise_exception=True)
                 ToolCreateRequest(data=instance).is_valid(raise_exception=True)
-                # 校验代码是否包括禁止的关键字
+                # ValidateCodeWhetherIncluding forbiddenKeyword
                 if instance.get("tool_type") == ToolType.MCP:
                     ToolExecutor().validate_mcp_transport(instance.get("code", ""))
 
-            # 处理 work_flow_template
+            # Process work_flow_template
             if instance.get("work_flow_template") is not None:
                 template_instance = instance.get("work_flow_template")
                 download_url = template_instance.get("downloadUrl")
                 if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
                     raise AppApiException(500, _("Illegal download url"))
-                # 查找匹配的版本名称
+                # Find matchingVersionName
                 res = requests.get(download_url, timeout=5)
                 tool = ToolSerializer.Import(
                     data={
@@ -515,7 +515,7 @@ class ToolSerializer(serializers.Serializer):
                 is_active=False,
             ).save()
 
-            # 自动授权给创建者
+            # AutomaticAuthorization给Creation者
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -525,12 +525,12 @@ class ToolSerializer(serializers.Serializer):
             ).auth_resource(str(tool_id))
             if instance.get("tool_type") == ToolType.WORKFLOW:
                 ToolWorkflow(id=uuid.uuid7(), tool_id=tool_id, work_flow=instance.get("work_flow", {})).save()
-            # 如果是SKILL类型的工具，修改file表中对应的记录
+            # IfSKILLType的Tool，Modificationfile表中CorrespondingRecord
             if instance.get("tool_type") == ToolType.SKILL:
                 file_id = instance.get("code")
                 old_file = QuerySet(File).filter(id=file_id).first()
                 if old_file:
-                    # 创建新的文件副本,不复制实际文件内容
+                    # Creation新的File副本,不CopyActualFileContent
                     new_file_id = uuid.uuid7()
                     new_file = File(
                         id=new_file_id,
@@ -542,7 +542,7 @@ class ToolSerializer(serializers.Serializer):
                         meta=old_file.meta,
                     )
                     new_file.save(old_file.get_bytes())
-                    # 更新工具的code为新的文件id
+                    # UpdateTool的code为新的Fileid
                     QuerySet(Tool).filter(id=tool_id).update(code=str(new_file_id))
             return ToolSerializer.Operate(data={"id": tool_id, "workspace_id": self.data.get("workspace_id")}).one()
 
@@ -552,10 +552,10 @@ class ToolSerializer(serializers.Serializer):
 
         def test_connection(self):
             self.is_valid(raise_exception=True)
-            # 校验代码是否包括禁止的关键字
+            # ValidateCodeWhetherIncluding forbiddenKeyword
             ToolExecutor().validate_mcp_transport(self.data.get("code", ""))
 
-            # 校验mcp json
+            # Validatemcp json
             validate_mcp_config(json.loads(self.data.get("code")))
             return True
 
@@ -583,9 +583,9 @@ class ToolSerializer(serializers.Serializer):
                     for field in input_field_list
                 ]
             }
-            # 合并初始化参数（默认值 → 已保存的启动参数 → 运行时入参）
+            # MergeInitializeParameters（Default值 → 已Save的StartParameters → Run时入参）
             init_params_default_value = {i["field"]: i.get('default_value') for i in init_field_list}
-            # 合并初始化参数
+            # MergeInitializeParameters
             if init_params is not None:
                 all_params = init_params_default_value | init_params | params
             else:
@@ -645,7 +645,7 @@ class ToolSerializer(serializers.Serializer):
             if with_valid:
                 self.is_valid(raise_exception=True)
                 ToolEditRequest(data=instance).is_valid(raise_exception=True)
-                # 校验代码是否包括禁止的关键字
+                # ValidateCodeWhetherIncluding forbiddenKeyword
                 if instance.get("tool_type") == ToolType.MCP:
                     ToolExecutor().validate_mcp_transport(instance.get("code", ""))
 
@@ -692,7 +692,7 @@ class ToolSerializer(serializers.Serializer):
                     is_active=instance.get("is_active")
                 )
 
-            # 如果是SKILL类型的工具，修改file表中对应的记录
+            # IfSKILLType的Tool，Modificationfile表中CorrespondingRecord
             if instance.get("tool_type") == ToolType.SKILL:
                 old_file_id = tool.code
                 file_id = instance.get("code")
@@ -813,7 +813,7 @@ class ToolSerializer(serializers.Serializer):
                 id = self.data.get("id")
                 tool = QuerySet(Tool).filter(id=id).first()
                 tool_dict = ToolExportModelSerializer(tool).data
-                # 如果是SKILL类型的工具，校验文件是否存在
+                # IfSKILLType的Tool，ValidateFileWhetherExists
                 if tool.tool_type == ToolType.SKILL:
                     skill_file = QuerySet(File).filter(id=tool.code).first()
                     if skill_file:
@@ -883,7 +883,7 @@ class ToolSerializer(serializers.Serializer):
                         "module": "",
                         "obj": "",
                         "line": item.get("location", {}).get("row", 1),
-                        # Ruff column 是 1-based，前端 CodeMirror 用 0-based
+                        # Ruff column 是 1-based，Frontend CodeMirror 用 0-based
                         "column": max(item.get("location", {}).get("column", 1) - 1, 0),
                         "endLine": item.get("end_location", {}).get("row", item.get("location", {}).get("row", 1)),
                         "endColumn": max(
@@ -921,7 +921,7 @@ class ToolSerializer(serializers.Serializer):
 
         @staticmethod
         def to_tool(tool, workspace_id, user_id, folder_id):
-            # 如果是技能类型的工具，需要将code保存为文件
+            # IfSkillsType的Tool，Needs将codeSave为File
             code = tool.get("code")
             if tool.get("tool_type") == ToolType.SKILL:
                 skill_file_id = uuid.uuid7()
@@ -954,14 +954,14 @@ class ToolSerializer(serializers.Serializer):
         def import_workflow_tools(self, tool, workspace_id, user_id, folder_id, new_child_policy):
             """
 
-            @param tool:                  工具对象
-            @param workspace_id:          工作空间id
-            @param user_id:               用户id
-            @param folder_id:             文件夹id
-            @param new_child_policy:      子工具创建策略
-                                          0: 不创建
-                                          1: 对比创建: 如果存在就不创建 不存在则创建
-                                          2: 全部创建
+            @param tool:                  ToolObject
+            @param workspace_id:          Workspace id
+            @param user_id:               Userid
+            @param folder_id:             Folderid
+            @param new_child_policy:      子ToolCreationStrategy
+                                          0: 不Creation
+                                          1: 对比Creation: IfExists就不Creation 不Exists则Creation
+                                          2: AllCreation
             @return:
             """
             if new_child_policy == 0:
@@ -986,11 +986,11 @@ class ToolSerializer(serializers.Serializer):
                     ],
                     [],
                 )
-                # 存在的工具列表
+                # ExistingToolList
                 exits_tool_id_list = [
                     str(tool.id) for tool in QuerySet(Tool).filter(id__in=tool_id_list, workspace_id=workspace_id)
                 ]
-                # 需要更新的工具集合
+                # NeedsUpdate的Toolset合
                 update_tool_map = {
                     tool.get("id"): new_uuid.generate_uuid(tool.get("id"))
                     if new_child_policy == 2
@@ -1122,7 +1122,7 @@ class ToolSerializer(serializers.Serializer):
                 scope=scope,
                 is_active=False,
             )
-            # 校验代码是否包括禁止的关键字
+            # ValidateCodeWhetherIncluding forbiddenKeyword
             if tool.get("tool_type") == ToolType.MCP:
                 ToolExecutor().validate_mcp_transport(code)
             tool_model.save()
@@ -1135,7 +1135,7 @@ class ToolSerializer(serializers.Serializer):
                     folder_id=folder_id,
                     new_child_policy=2 if source == "template" else 1,
                 )
-            # 自动授权给创建者
+            # AutomaticAuthorization给Creation者
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1167,7 +1167,7 @@ class ToolSerializer(serializers.Serializer):
             tool = QuerySet(Tool).filter(id=self.data.get("id")).first()
             if tool is None:
                 raise AppApiException(500, _("Function does not exist"))
-            # 删除旧的图片
+            # Deletion旧的Image
             if tool.icon != "":
                 QuerySet(File).filter(id=tool.icon.split("/")[-1]).delete()
             if self.data.get("image") is None:
@@ -1239,7 +1239,7 @@ class ToolSerializer(serializers.Serializer):
             )
             tool.save()
 
-            # 自动授权给创建者
+            # AutomaticAuthorization给Creation者
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1256,24 +1256,24 @@ class ToolSerializer(serializers.Serializer):
 
         def get_appstore_tools(self):
             self.is_valid(raise_exception=True)
-            # 下载zip文件
+            # DownloadzipFile
             try:
                 appstore_url = CONFIG.get("APPSTORE_URL", "https://apps-assets.fit2cloud.com/stable/maxkb.json.zip")
                 res = requests.get(appstore_url, timeout=5)
                 res.raise_for_status()
-                # 创建临时文件保存zip
+                # CreationTemporaryFileSavezip
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".zip") as temp_zip:
                     temp_zip.write(res.content)
                     temp_zip_path = temp_zip.name
 
                 try:
-                    # 解压zip文件
+                    # DecompresszipFile
                     with zipfile.ZipFile(temp_zip_path, "r") as zip_ref:
-                        # 获取zip中的第一个文件（假设只有一个json文件）
+                        # Getzip in 第OneFile(Assuming only OnejsonFile）
                         json_filename = zip_ref.namelist()[0]
                         json_content = zip_ref.read(json_filename)
 
-                    # 将json转换为字典
+                    # 将jsonTransform为Dict
                     tool_store = json.loads(json_content.decode("utf-8"))
                     tag_dict = {tag["name"]: tag["key"] for tag in tool_store["additionalProperties"]["tags"]}
                     filter_apps = []
@@ -1297,7 +1297,7 @@ class ToolSerializer(serializers.Serializer):
                     tool_store["apps"] = filter_apps
                     return tool_store
                 finally:
-                    # 清理临时文件
+                    # CleanupTemporaryFile
                     os.unlink(temp_zip_path)
             except Exception as e:
                 maxkb_logger.error(f"fetch appstore tools error: {e}")
@@ -1317,14 +1317,14 @@ class ToolSerializer(serializers.Serializer):
             download_url = instance.get("download_url")
             if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
                 raise AppApiException(500, _("Illegal download url"))
-            # 查找匹配的版本名称
+            # Find matchingVersionName
             version_name = next(
                 (version.get("name") for version in versions if version.get("downloadUrl") == download_url),
             )
             res = requests.get(download_url, timeout=5)
             tool_data = RestrictedUnpickler(io.BytesIO(res.content)).load().tool
             tool_id = uuid.uuid7()
-            # 如果是SKILL类型的工具，保存文件内容到file表，并将code替换为file_id
+            # IfSKILLType的Tool，SaveFileContent到file表, and将codeReplace为file_id
             if tool_data.get("tool_type") == ToolType.SKILL:
                 skill_file_id = uuid.uuid7()
                 skill_file = File(
@@ -1356,7 +1356,7 @@ class ToolSerializer(serializers.Serializer):
             )
             tool.save()
 
-            # 自动授权给创建者
+            # AutomaticAuthorization给Creation者
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -1388,7 +1388,7 @@ class ToolSerializer(serializers.Serializer):
             tool = QuerySet(Tool).filter(id=self.data.get("tool_id")).first()
             if tool is None:
                 raise AppApiException(500, _("Tool does not exist"))
-            # 查找匹配的版本名称
+            # Find matchingVersionName
             version_name = next(
                 (
                     version.get("name")
@@ -1398,7 +1398,7 @@ class ToolSerializer(serializers.Serializer):
             )
             res = requests.get(self.data.get("download_url"), timeout=5)
             tool_data = RestrictedUnpickler(io.BytesIO(res.content)).load().tool
-            # 如果是SKILL类型的工具，保存文件内容到file表，并将code替换为file_id
+            # IfSKILLType的Tool，SaveFileContent到file表, and将codeReplace为file_id
             if tool_data.get("tool_type") == ToolType.SKILL:
                 skill_file_id = uuid.uuid7()
                 skill_file = File(
@@ -1704,7 +1704,7 @@ class ToolTreeSerializer(serializers.Serializer):
             root = ToolFolder.objects.filter(id=folder_id).first()
             if not root:
                 raise serializers.ValidationError(_("Folder not found"))
-            # 使用MPTT的get_descendants()方法获取所有相关节点
+            # UseMPTT的get_descendants()MethodGetAllRelatedNode
             all_folders = root.get_descendants(include_self=True)
 
             if self.data.get("name"):
@@ -1829,7 +1829,7 @@ class ToolTreeSerializer(serializers.Serializer):
                 ),
             )
 
-            # 返回包含文件夹和工具的结构
+            # ReturnContainsFolder和Tool的结构
             return {
                 "folders": [folder for folder in results if folder["resource_type"] == "folder"],
                 "tools": [

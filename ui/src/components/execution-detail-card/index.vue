@@ -44,7 +44,7 @@
     <el-collapse-transition>
       <div class="mt-12" v-if="data['show']">
         <template v-if="data.status === 200 || data.type == WorkflowType.LoopNode">
-          <!-- 开始 -->
+          <!-- Start -->
           <template
             v-if="data.type === WorkflowType.Start || data.type === WorkflowType.Application"
           >
@@ -147,7 +147,7 @@
               </div>
             </div>
           </template>
-          <!-- 知识库检索 -->
+          <!-- KnowledgeDatabaseSearch -->
           <template v-if="data.type == WorkflowType.SearchKnowledge">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -180,7 +180,7 @@
               </div>
             </div>
           </template>
-          <!-- 判断器 -->
+          <!-- DetermineRenderer -->
           <template v-if="data.type == WorkflowType.Condition">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -191,7 +191,7 @@
               </div>
             </div>
           </template>
-          <!-- AI 对话 -->
+          <!-- AI Conversation -->
           <template v-if="data.type == WorkflowType.AiChat">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -275,7 +275,7 @@
               </div>
             </div>
           </template>
-          <!-- 问题优化 / 意图识别-->
+          <!-- QuestionOptimization / Intent recognition-->
           <template
             v-if="
               data.type == WorkflowType.Question ||
@@ -337,7 +337,7 @@
             </div>
           </template>
 
-          <!-- 指定回复 -->
+          <!-- SpecifyReply -->
           <template v-if="data.type === WorkflowType.Reply">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -359,7 +359,7 @@
             </div>
           </template>
 
-          <!-- 文档内容提取 -->
+          <!-- DocumentContentExtract -->
           <template v-if="data.type === WorkflowType.DocumentExtractNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12 flex align-center">
@@ -482,7 +482,7 @@
             </div>
           </template>
 
-          <!-- 工具库 -->
+          <!-- ToolsDatabase -->
           <template
             v-if="data.type === WorkflowType.ToolLib || data.type === WorkflowType.ToolLibCustom"
           >
@@ -499,7 +499,7 @@
               </div>
             </div>
           </template>
-          <!-- 多路召回 -->
+          <!-- Multi-path recall -->
           <template v-if="data.type == WorkflowType.RerankerNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -550,7 +550,7 @@
             </div>
           </template>
 
-          <!-- 表单收集 -->
+          <!-- FormCollect -->
           <template v-if="data.type === WorkflowType.FormNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -574,7 +574,7 @@
               </div>
             </div>
           </template>
-          <!-- 图片理解 -->
+          <!-- ImageUnderstand -->
           <template v-if="data.type == WorkflowType.ImageUnderstandNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -684,7 +684,7 @@
               </div>
             </div>
           </template>
-          <!-- 视频理解 -->
+          <!-- VideoUnderstand -->
           <template v-if="data.type == WorkflowType.VideoUnderstandNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -784,7 +784,7 @@
               </div>
             </div>
           </template>
-          <!-- 图片生成 -->
+          <!-- ImageGenerate -->
           <template v-if="data.type == WorkflowType.ImageGenerateNode">
             <div class="card-never border-r-6 mt-8">
               <h5 class="p-8-12">
@@ -819,7 +819,7 @@
               </div>
             </div>
           </template>
-          <!-- 文生视频 -->
+          <!-- Text-toVideo -->
           <template v-if="data.type == WorkflowType.TextToVideoGenerateNode">
             <div class="card-never border-r-6 mt-8">
               <h5 class="p-8-12">
@@ -854,7 +854,7 @@
               </div>
             </div>
           </template>
-          <!-- 图生视频 -->
+          <!-- Image toVideo -->
           <template v-if="data.type == WorkflowType.ImageToVideoGenerateNode">
             <div class="card-never border-r-6 mt-8">
               <h5 class="p-8-12">
@@ -965,7 +965,7 @@
               </div>
             </div>
           </template>
-          <!-- 变量赋值 -->
+          <!-- VariableAssign -->
           <template v-if="data.type === WorkflowType.VariableAssignNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -991,7 +991,7 @@
             </div>
           </template>
 
-          <!-- 变量拆分 -->
+          <!-- VariableSplit -->
           <template
             v-if="
               data.type === WorkflowType.VariableSplittingNode ||
@@ -1017,7 +1017,7 @@
               </div>
             </div>
           </template>
-          <!-- 变量聚合 -->
+          <!-- VariableAggregation -->
           <template v-if="data.type === WorkflowType.VariableAggregationNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1063,7 +1063,7 @@
               </el-scrollbar>
             </div>
           </template>
-          <!-- MCP 节点 -->
+          <!-- MCP Node -->
           <template v-if="data.type === WorkflowType.McpNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1097,7 +1097,7 @@
               </div>
             </div>
           </template>
-          <!-- 循环 节点 -->
+          <!-- Loop Node -->
           <div class="card-never border-r-6" v-if="data.type === WorkflowType.LoopNode">
             <h5 class="p-8-12">
               {{ $t('workflow.nodes.loopNode.loopSetting') }}
@@ -1142,7 +1142,7 @@
               </template>
             </div>
           </div>
-          <!-- 循环开始 节点-->
+          <!-- LoopStart Node-->
           <template v-if="data.type === WorkflowType.LoopStartNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1167,7 +1167,7 @@
               </div>
             </div>
           </template>
-          <!-- 循环跳过 节点-->
+          <!-- LoopSkip Node-->
           <template v-if="data.type === WorkflowType.LoopContinueNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1185,7 +1185,7 @@
               </div>
             </div>
           </template>
-          <!-- 循环退出 节点-->
+          <!-- LoopExit Node-->
           <template v-if="data.type === WorkflowType.LoopBreakNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1203,7 +1203,7 @@
               </div>
             </div>
           </template>
-          <!-- 文档检索 -->
+          <!-- DocumentSearch -->
           <template v-if="data.type === WorkflowType.SearchDocument">
             <div class="card-never border-r-6">
               <h5 class="p-8-12 flex align-center">
@@ -1221,7 +1221,7 @@
               </div>
             </div>
           </template>
-          <!-- 文本文件 -->
+          <!-- TextFile -->
           <template v-if="data.type === WorkflowType.DataSourceLocalNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1235,7 +1235,7 @@
               </div>
             </div>
           </template>
-          <!-- 文档分段 -->
+          <!-- DocumentSegment -->
           <template v-if="data.type === WorkflowType.DocumentSplitNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1292,7 +1292,7 @@
               </div>
             </div>
           </template>
-          <!-- 知识库写入 -->
+          <!-- KnowledgeDatabaseWrite -->
           <template v-if="data.type === WorkflowType.KnowledgeWriteNode">
             <div class="card-never border-r-6 mt-8">
               <h5 class="p-8-12">
@@ -1325,7 +1325,7 @@
               </div>
             </div>
           </template>
-          <!-- Web站点 -->
+          <!-- WebSite -->
           <template v-if="data.type === WorkflowType.DataSourceWebNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1370,7 +1370,7 @@
             </div>
           </template>
 
-          <!-- 工作流开始 节点-->
+          <!-- WorkflowStart Node-->
           <template v-if="data.type === WorkflowType.ToolStartNode">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">
@@ -1384,7 +1384,7 @@
               </div>
             </div>
           </template>
-          <!-- 工作流 节点 -->
+          <!-- Workflow Node -->
           <div class="card-never border-r-6" v-if="data.type === WorkflowType.ToolWorkflowLib">
             <div class="card-never border-r-6">
               <h5 class="p-8-12">

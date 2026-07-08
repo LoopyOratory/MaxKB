@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： embedding.py
+    @Author: Tiger
+    @file: embedding.py
     @date：2024/10/17 15:40
     @desc:
 """
@@ -72,10 +72,10 @@ class QianfanEmbeddingCredential(BaseForm, BaseModelCredential):
                               provider='',
                               method='', )
 
-    # v2版本字段
+    # v2VersionField
     api_base = forms.TextInputField("API URL", required=True, relation_show_field_dict={"api_version": ["v2"]})
 
-    # v1版本字段
+    # v1VersionField
     qianfan_ak = forms.PasswordInputField('API Key', required=True)
     qianfan_sk = forms.PasswordInputField("Secret Key", required=True,
                                           relation_show_field_dict={"api_version": ["v1"]})

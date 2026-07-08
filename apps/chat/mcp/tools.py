@@ -103,6 +103,6 @@ class MCPToolHandler:
                     break
 
         data = ''.join(chunks)
-        # 排除<tool_calls_render></tool_calls_render>标签
+        # Exclude<tool_calls_render></tool_calls_render>Tag
         data = re.sub(r'<tool_calls_render>.*?</tool_calls_render>', '', data, flags=re.DOTALL)
         return {"content": [{"type": "text", "text": data}]}

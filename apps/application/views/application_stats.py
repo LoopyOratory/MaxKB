@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_stats.py
+    @Author: Tiger
+    @file: application_stats.py
     @date：2025/6/9 20:30
     @desc:
 """
@@ -50,7 +50,7 @@ class ApplicationStats(APIView):
     class TokenUsageStatistics(APIView):
         authentication_classes = [TokenAuth]
 
-        # 应用的token使用统计 根据人的使用数排序
+        # Application的tokenUseStatistics Based on人的Use数Sort
         @extend_schema(
             methods=['GET'],
             description=_('Application token usage statistics'),
@@ -77,7 +77,7 @@ class ApplicationStats(APIView):
 
     class TopQuestionsStatistics(APIView):
         authentication_classes = [TokenAuth]
-        # 应用的top问题统计
+        # Application的topQuestionStatistics
         @extend_schema(
             methods=['GET'],
             description=_('Application top question statistics'),

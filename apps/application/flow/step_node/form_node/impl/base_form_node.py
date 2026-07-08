@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： base_form_node.py
+    @Author: Tiger
+    @file: base_form_node.py
     @date：2024/11/4 14:52
     @desc:
 """
@@ -128,11 +128,11 @@ class BaseFormNode(IFormNode):
     def _render_cond_value(self, value):
         """
         render cross-node/global/chat {{}} to literal, preserve same-form {{}}
-        match.group(0)  →  "{{开始.question}}"    # 完整匹配
-        match.group(1)  →  "开始"                  # 第一个 () 捕获的
+        match.group(0)  →  "{{Start.question}}"    # CompleteMatch
+        match.group(1)  →  "Start"                  # 第One () 捕获的
         match.group(2)  →  "question"             # 第二个 () 捕获的
-        match.start()   →  3                      # 匹配起始位置
-        match.end()     →  16                     # 匹配结束位置
+        match.start()   →  3                      # Match起始Position
+        match.end()     →  16                     # MatchEndPosition
         """
         def replacer(match):
             node_display = match.group(1)
@@ -147,7 +147,7 @@ class BaseFormNode(IFormNode):
                     return str(ref) if ref is not None else ''
 
             # global
-            if node_display in ('全局变量', 'global'):
+            if node_display in ('GlobalVariable', 'global'):
                 for f in self.workflow_manage.global_field_list:
                     if f.get('value') == field_name:
                         ref = self.workflow_manage.get_reference_field('global', [field_name])

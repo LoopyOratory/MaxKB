@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： authentication.py
+    @Author: Tiger
+    @file: authentication.py
     @date：2025/4/15 20:12
     @desc:
 """
@@ -19,10 +19,10 @@ from common.exception.app_exception import AppUnauthorizedFailed
 def exist_permissions_by_permission_constants(user_permission: List[PermissionConstants],
                                               permission_list: List[PermissionConstants]):
     """
-    用户是否拥有 permission_list的权限
-    :param user_permission:  用户权限
-    :param permission_list:  需要的权限
-    :return: 是否拥有
+    UserWhetherHas permission_list的Permission
+    :param user_permission:  UserPermission
+    :param permission_list:  Needs的Permission
+    :return: WhetherHas
     """
     return any(list(map(lambda up: permission_list.__contains__(up), user_permission)))
 
@@ -30,10 +30,10 @@ def exist_permissions_by_permission_constants(user_permission: List[PermissionCo
 def exist_role_by_role_constants(user_role: List[RoleConstants],
                                  role_list: List[RoleConstants]):
     """
-    用户是否拥有这个角色
-    :param user_role: 用户角色
-    :param role_list: 需要拥有的角色
-    :return:  是否拥有
+    UserWhetherHas这个Role
+    :param user_role: UserRole
+    :param role_list: NeedsHas的Role
+    :return:  WhetherHas
     """
     return any([True for role in role_list if user_role.__contains__(role.value.__str__())])
 
@@ -42,12 +42,12 @@ def exist_permissions_by_view_permission(user_role: List[RoleConstants],
                                          user_permission: List[PermissionConstants | object],
                                          permission: ViewPermission, request, **kwargs):
     """
-    用户是否存在这些权限
+    UserWhetherExists这些Permission
     :param request:
-    :param user_role:        用户角色
-    :param user_permission:  用户权限
-    :param permission:       所属权限
-    :return:                 是否存在 True False
+    :param user_role:        UserRole
+    :param user_permission:  UserPermission
+    :param permission:       所属Permission
+    :return:                 WhetherExists True False
     """
 
     role_list = [user_r(request, kwargs) if callable(user_r) else user_r for user_r in
@@ -99,7 +99,7 @@ def check_batch_permissions(request: Request, id_list: List[str], id_key: str, p
     if not id_list:
         return []
 
-    # workspace manager 直接放行
+    # workspace manager Direct放行
     # 预检
     kwargs[id_key] = '__workspace_level_pre_check__'
     pre_check = list(
@@ -108,7 +108,7 @@ def check_batch_permissions(request: Request, id_list: List[str], id_key: str, p
         )
     if any(pre_check) if compare == CompareConstants.OR else all(pre_check):
         return list(id_list)
-    # 逐个资源校验
+    # 逐个ResourceValidate
     result_list = []
     for resource_id in id_list:
         kwargs[id_key] = resource_id
@@ -122,10 +122,10 @@ def check_batch_permissions(request: Request, id_list: List[str], id_key: str, p
 
 def has_permissions(*permission, compare=CompareConstants.OR):
     """
-    权限 role or permission
-    :param compare:    比较符号
-    :param permission: 如果是角色 role:roleId
-    :return: 权限装饰器函数,用于判断用户是否有权限访问当前接口
+    Permission role or permission
+    :param compare:    比较Symbol
+    :param permission: IfRole role:roleId
+    :return: Permission装饰器Function,Used forDetermineUserWhether有PermissionAccessCurrentInterface
     """
 
     def inner(func):
@@ -133,7 +133,7 @@ def has_permissions(*permission, compare=CompareConstants.OR):
             exit_list = list(
                 map(lambda p: exist(request.auth.role_list, request.auth.permission_list, p, request, **kwargs),
                     permission))
-            # 判断是否有权限
+            # DetermineWhether有Permission
             if any(exit_list) if compare == CompareConstants.OR else all(exit_list):
                 return func(view, request, **kwargs)
             raise AppUnauthorizedFailed(403, _('No permission to access'))

@@ -41,16 +41,16 @@ import bus from '@/utils/bus'
 import { t } from '@/locales'
 import { get } from 'lodash'
 const props = defineProps<{
-  // 双向绑定的值
+  // Two-wayBindValue
   modelValue: any
 
-  // 表单Item
+  // FormItem
   formfield: FormField
-  // 是否只读
+  // WhetherRead-only
   view: boolean
-  // 调用接口所需要的其他参数
+  // Other parameters needed by the API call
   otherParams: any
-  // 获取Options
+  // GetOptions
   trigger: (
     trigger_field: string,
     trigger_value: any,
@@ -58,11 +58,11 @@ const props = defineProps<{
     self: any,
     loading: Ref<boolean>,
   ) => void
-  // 初始化默认数据
+  // InitializeDefaultData
   initDefaultData: (formItem: FormField) => void
-  // 默认每个宽度
+  // DefaultEachWidth
   defaultItemWidth: string
-  // 表单收集数据
+  // FormCollectData
   formValue: Dict<any>
 
   formfieldList: Array<FormField>
@@ -111,14 +111,14 @@ const props_info = computed(() => {
   return props.formfield.props_info ? props.formfield.props_info : {}
 })
 /**
- * 表单 item style
+ * Form item style
  */
 const formItemStyle = computed(() => {
   return props_info.value.item_style ? props_info.value.item_style : {}
 })
 
 /**
- * 表单错误Msg
+ * FormErrorMsg
  */
 const errMsg = computed(() => {
   return props_info.value.err_msg
@@ -128,7 +128,7 @@ const errMsg = computed(() => {
       : props.formfield.label.label + ' ' + t('dynamicsForm.tip.requiredMessage')
 })
 /**
- * 反序列化
+ * Deserialize
  * @param rule
  */
 const to_rule = (rule: any) => {
@@ -142,7 +142,7 @@ const to_rule = (rule: any) => {
 }
 
 /**
- * 校验
+ * Validate
  */
 const rules = computed(() => {
   return props_info.value.rules
@@ -155,14 +155,14 @@ const rules = computed(() => {
 })
 
 /**
- * 组件样式
+ * ComponentStyle
  */
 const componentStyle = computed(() => {
   return props_info.value.style ? props_info.value.style : {}
 })
 
 /**
- * 组件attrs
+ * Componentattrs
  */
 const attrs = computed(() => {
   return props.formfield.attrs ? props.formfield.attrs : {}
@@ -198,7 +198,7 @@ const onTrigger = (self: any, trigger_field_dict?: Dict<any>) => {
     keys.forEach((key) => {
       const setting = trigger_field_dict[key]
       const values: Array<any> = setting.values
-      // 添加关系
+      // AddRelation
       bus.on(key, (v: any) => {
         if (values && values.length > 0) {
           if (values.includes(v)) {

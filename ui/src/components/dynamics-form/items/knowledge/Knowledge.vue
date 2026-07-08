@@ -56,7 +56,7 @@ const model_value = computed({
     emit('change', props.formField)
   },
 })
-// 可用
+// Available
 const availableList = computed(() => {
   return (props.formField.attrs?.knowledge_list as any[]) || []
 })

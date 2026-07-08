@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_start_node.py
+    @Author: Tiger
+    @file: base_start_node.py
     @date：2024/6/3 17:17
     @desc:
 """
@@ -26,7 +26,7 @@ class BaseLoopStartStepNode(ILoopStarNode):
 
     def execute(self, **kwargs) -> NodeResult:
         """
-        开始节点 初始化全局变量
+        StartNode InitializeGlobalVariable
         """
         loop_params = self.workflow_manage.loop_params
         node_variable = {

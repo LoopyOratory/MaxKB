@@ -460,7 +460,7 @@ tti_model_info = [
 
 xinference_embedding_model_credential = XinferenceEmbeddingModelCredential()
 
-# 生成embedding_model_info列表
+# Generateembedding_model_infoList
 embedding_model_info = [
     ModelInfo('bce-embedding-base_v1', '', ModelTypeConst.EMBEDDING,
               xinference_embedding_model_credential, XinferenceEmbedding),

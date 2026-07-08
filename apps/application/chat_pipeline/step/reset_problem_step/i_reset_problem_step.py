@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： i_reset_problem_step.py
+    @Author: Tiger
+    @file: i_reset_problem_step.py
     @date：2024/1/9 18:12
-    @desc: 重写处理问题
+    @desc: 重写ProcessQuestion
 """
 from abc import abstractmethod
 from typing import Type, List
@@ -20,12 +20,12 @@ from common.field.common import InstanceField
 
 class IResetProblemStep(IBaseChatPipelineStep):
     class InstanceSerializer(serializers.Serializer):
-        # 问题文本
+        # QuestionText
         problem_text = serializers.CharField(required=True, label=_("question"))
-        # 历史对答
+        # Conversation history
         history_chat_record = serializers.ListField(child=InstanceField(model_type=ChatRecord, required=True),
                                                     label=_("History Questions"))
-        # 大语言模型
+        # 大LanguageModel
         model_id = serializers.UUIDField(required=False, allow_null=True, label=_("Model id"))
         workspace_id = serializers.CharField(required=True, label=_("User ID"))
         problem_optimization_prompt = serializers.CharField(required=False, max_length=102400,
@@ -36,7 +36,7 @@ class IResetProblemStep(IBaseChatPipelineStep):
 
     def _run(self, manage: PipelineManage):
         padding_problem = self.execute(**self.context.get('step_args'))
-        # 用户输入问题
+        # UserInputQuestion
         source_problem_text = self.context.get('step_args').get('problem_text')
         self.context['problem_text'] = source_problem_text
         self.context['padding_problem_text'] = padding_problem

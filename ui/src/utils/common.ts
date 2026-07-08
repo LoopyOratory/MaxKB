@@ -2,7 +2,7 @@ import {nanoid} from 'nanoid'
 import {t} from '@/locales'
 
 /**
- * 数字处理
+ * NumberProcess
  */
 export function toThousands(num: any) {
   return num?.toString().replace(/\d+/, function (n: any) {
@@ -26,7 +26,7 @@ export function filesize(size: number) {
   return (size / Math.pow(num, 4)).toFixed(2) + 'T' //T
 }
 
-// 头像
+// Avatar
 export const defaultIcon = '/${window.MaxKB.prefix}/favicon.ico'
 
 export function isAppIcon(url: string | undefined) {
@@ -38,14 +38,14 @@ export function isFunction(fn: any) {
 }
 
 /*
-  随机id
+  Randomid
 */
 export const randomId = function () {
   return nanoid()
 }
 
 /*
-  获取文件后缀
+  GetFileSuffix
 */
 export function fileType(name: string) {
   const suffix = name.split('.')
@@ -53,7 +53,7 @@ export function fileType(name: string) {
 }
 
 /*
-  获得文件对应图片
+  GetFileCorrespondImage
 */
 const typeList: any = {
   txt: ['txt', 'pdf', 'docx', 'md', 'html', 'zip', 'xlsx', 'xls', 'csv'],
@@ -70,12 +70,12 @@ export function getImgUrl(name: string) {
   return new URL(`../assets/fileType/${type}-icon.svg`, import.meta.url).href
 }
 
-// 是否是白名单后缀
+// WhetherIs whitelist suffix
 export function isRightType(name: string, type: string) {
   return typeList[type].includes(fileType(name).toLowerCase())
 }
 
-// 下载
+// Download
 export function downloadByURL(url: string, name: string) {
   const a = document.createElement('a')
   a.setAttribute('href', url)
@@ -86,14 +86,14 @@ export function downloadByURL(url: string, name: string) {
   document.body.removeChild(a)
 }
 
-// 替换固定数据国际化
+// ReplaceFixedDataInternationalization
 const i18n_default_name_map:any = {
-  "系统管理员": 'layout.about.inner_admin',
-  "工作空间管理员": 'layout.about.inner_wsm',
-  "普通用户": 'layout.about.inner_user',
-  "根目录": 'layout.about.root',
-  "默认工作空间": 'layout.about.default_workspace',
-  "默认用户组": 'layout.about.default_user_group',
+  "SystemAdmin": 'layout.about.inner_admin',
+  "WorkspaceAdmin": 'layout.about.inner_wsm',
+  "NormalUser": 'layout.about.inner_user',
+  "Root Directory": 'layout.about.root',
+  "DefaultWorkspace": 'layout.about.default_workspace',
+  "DefaultUserGroup": 'layout.about.default_user_group',
 }
 
 export function i18n_name(name: string) {
@@ -102,7 +102,7 @@ export function i18n_name(name: string) {
 }
 
 
-// 截取文件名
+// CaptureFileName
 export function cutFilename(filename: string, num: number) {
   const lastIndex = filename.lastIndexOf('.')
   const suffix = lastIndex === -1 ? '' : filename.substring(lastIndex + 1)
@@ -110,8 +110,8 @@ export function cutFilename(filename: string, num: number) {
 }
 
 interface LoadScriptOptions {
-  jsId?: string // 自定义脚本 ID
-  forceReload?: boolean // 是否强制重新加载（默认 false）
+  jsId?: string // CustomScript ID
+  forceReload?: boolean // WhetherForceRe-Load（Default false）
 }
 
 export const loadScript = (url: string, options: LoadScriptOptions = {}): Promise<void> => {
@@ -161,7 +161,7 @@ export const loadScript = (url: string, options: LoadScriptOptions = {}): Promis
   });
 };
 
-// 清理脚本（可选）
+// CleanupScript (optional)
 const cleanupScript = (script: HTMLScriptElement) => {
   script.onload = null
   script.onerror = null

@@ -1,6 +1,6 @@
 <template>
   <div className="workflow-app" id="container"></div>
-  <!-- 辅助工具栏 -->
+  <!-- Auxiliary toolbar -->
   <Control class="workflow-control" v-if="lf" :lf="lf"></Control>
   <TeleportContainer :flow-id="flowId"/>
   <NodeSearch :lf="lf" ref="nodeSearchRef"></NodeSearch>
@@ -115,7 +115,7 @@ const renderGraphData = (data?: any) => {
       })
     })
     lf.value.graphModel.eventCenter.on('anchor:drop', (data: any) => {
-      // 清除当前节点下面的子节点的所有缓存
+      // Clear all caches of child nodes under the current node
       data.nodeModel.clear_next_node_field(false)
     })
 

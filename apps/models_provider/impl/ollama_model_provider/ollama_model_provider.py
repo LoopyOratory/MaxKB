@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： ollama_model_provider.py
+    @Author: Tiger
+    @file: ollama_model_provider.py
     @date：2024/3/5 17:23
     @desc:
 """

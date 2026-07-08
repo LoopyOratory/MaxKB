@@ -216,7 +216,7 @@ import { isAppIcon } from '@/utils/common'
 import EditTitleDialog from './EditTitleDialog.vue'
 
 const scrollData = inject('scrollData') as any
-// 子组件
+// Sub-Component
 const chatLogPagination = inject('chatLogPagination') as any
 const _chatLogPagination = chatLogPagination()
 
@@ -243,7 +243,7 @@ const showHistory = computed(() => {
     : true
 })
 
-// 更新页码的方法
+// UpdatePage numberMethod
 const updateCurrentPage = (page: number) => {
   if (chatLogPagination) {
     chatLogPagination.current_page = page

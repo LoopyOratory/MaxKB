@@ -1,5 +1,5 @@
 <template>
-  <!-- 问题内容 -->
+  <!-- QuestionContent -->
   <div @mouseenter.stop="showIcon = true" @mouseleave.stop="showIcon = false">
     <div class="question-content item-content lighter">
       <div v-if="!isReQuestion" class="content p-12-16 border-r-8" :class="getClassName">
@@ -284,13 +284,13 @@ function sendReQuestionMessage(event?: any) {
   const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
     navigator.userAgent,
   )
-  // 如果是移动端，且按下回车键，不直接发送
+  // IfMoveEnd, andPressEnter key, notDirectSend
   if ((isMobile || mode === 'mobile') && event?.key === 'Enter') {
-    // 阻止默认事件
+    // BlockDefaultEvent
     return
   }
   if (!event?.ctrlKey && !event?.shiftKey && !event?.altKey && !event?.metaKey) {
-    // 如果没有按下组合键，则会阻止默认事件
+    // If no modifier key is pressed, block the default event
     event?.preventDefault()
     if (editText.value.trim() && editText.value.trim() !== props.chatRecord.problem_text.trim()) {
       const container = props.chatRecord?.upload_meta
@@ -319,7 +319,7 @@ function sendReQuestionMessage(event?: any) {
       )
     }
   } else {
-    // 如果同时按下ctrl/shift/cmd/opt +enter，则会换行
+    // If ctrl/shift/cmd/opt + enter is pressed simultaneously, insert a newline
     insertNewlineAtCursor(event)
   }
 }
@@ -330,13 +330,13 @@ const insertNewlineAtCursor = (event?: any) => {
   ) as HTMLTextAreaElement
   const startPos = textarea.selectionStart
   const endPos = textarea.selectionEnd
-  // 阻止默认行为（避免额外的换行符）
+  // Block default behavior (avoid extra newlines)
   event.preventDefault()
-  // 在光标处插入换行符
+  // At cursor, insert newline
   editText.value =
     editText.value.trim().slice(0, startPos) + '\n' + editText.value.trim().slice(endPos)
   nextTick(() => {
-    textarea.setSelectionRange(startPos + 1, startPos + 1) // 光标定位到换行后位置
+    textarea.setSelectionRange(startPos + 1, startPos + 1) // Position cursor after newline
   })
 }
 

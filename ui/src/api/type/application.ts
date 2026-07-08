@@ -79,11 +79,11 @@ interface chatType {
     }>
   >
   /**
-   * 是否写入结束
+   * WhetherWriteEnd
    */
   write_ed?: boolean
   /**
-   * 是否暂停
+   * Whether paused
    */
   is_stop?: boolean
   record_id: string
@@ -487,8 +487,8 @@ export class ChatManagement {
   }
 
   /**
-   * 持续从缓存区 写出数据
-   * @param chatRecordId 对话记录id
+   * Continuously write out data from cache zone
+   * @param chatRecordId ConversationRecordid
    */
   static write(chatRecordId: string) {
     const chatRecord = this.chatMessageContainer[chatRecordId]
@@ -505,8 +505,8 @@ export class ChatManagement {
   }
 
   /**
-   * 等待所有数据输出完毕后 才会关闭流
-   * @param chatRecordId 对话记录id
+   * Wait for all data output to complete, then close stream
+   * @param chatRecordId ConversationRecordid
    * @returns boolean
    */
   static close(chatRecordId: string) {
@@ -517,8 +517,8 @@ export class ChatManagement {
   }
 
   /**
-   * 停止输出 立即关闭定时任务输出
-   * @param chatRecordId 对话记录id
+   * StopOutput ImmediatelyCloseScheduledTaskOutput
+   * @param chatRecordId ConversationRecordid
    * @returns boolean
    */
   static stop(chatRecordId: string) {
@@ -529,8 +529,8 @@ export class ChatManagement {
   }
 
   /**
-   * 判断是否输出完成
-   * @param chatRecordId 对话记录id
+   * DetermineWhetherOutputComplete
+   * @param chatRecordId ConversationRecordid
    * @returns boolean
    */
   static isClose(chatRecordId: string) {
@@ -539,8 +539,8 @@ export class ChatManagement {
   }
 
   /**
-   * 判断是否停止输出
-   * @param chatRecordId 对话记录id
+   * DetermineWhetherStopOutput
+   * @param chatRecordId ConversationRecordid
    * @returns
    */
   static isStop(chatRecordId: string) {
@@ -549,10 +549,10 @@ export class ChatManagement {
   }
 
   /**
-   * 获取指定会话中仍在流式输出(尚未写完)的在途消息
-   * 用于切回会话时, 把后台还在跑的流重新接回列表继续实时显示
-   * @param chatId 会话id (chat.chat_id)
-   * @returns 在途的 chat 对象列表
+   * GetSpecifySessionStill inStreaming output(Not yet finished) in-flightMessage
+   * Used when switching back to a session: re-connect to streams still running in the background and continue real-time display
+   * @param chatId Sessionid (chat.chat_id)
+   * @returns In-flight chat ObjectList
    */
   static getActiveByChatId(chatId: string): chatType[] {
     return Object.values(this.chatMessageContainer)
@@ -561,7 +561,7 @@ export class ChatManagement {
   }
 
   /**
-   * 清除无用数据 也就是被close掉的和stop的数据
+   * ClearUselessData Which is beingcloseRemoved andstopData
    */
   static clean() {
     for (const key in Object.keys(this.chatMessageContainer)) {

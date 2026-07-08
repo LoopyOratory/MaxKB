@@ -22,7 +22,7 @@ const bindMousePosition = (lf: any) => {
     lastMouse.hasValue = true
   }
 
-  // 推荐直接监听容器，这样鼠标在节点上移动也能拿到
+  // Recommended to listen on the container directly so mouse moves over nodes are also captured
   lf.container.addEventListener('mousemove', updateMouse)
 
   return () => {
@@ -33,7 +33,7 @@ const bindCanvasActive = (lf: any) => {
   const container = lf.container as HTMLElement
   if (!container) return
 
-  // 让容器可聚焦
+  // Make container focusable
   container.tabIndex = 0
 
   const activate = () => {
@@ -115,7 +115,7 @@ export function initDefaultShortcut(lf: LogicFlow, graph: GraphModel) {
     copyClick(JSON.stringify(selected))
     return false
   }
-  // 3. 求节点包围盒
+  // 3. Calculate node bounding box
   const getBounds = (nodes: any[]) => {
     if (!nodes.length) {
       return { minX: 0, maxX: 0, minY: 0, maxY: 0 }
@@ -136,7 +136,7 @@ export function initDefaultShortcut(lf: LogicFlow, graph: GraphModel) {
     return { minX, maxX, minY, maxY }
   }
 
-  // 4. 整体平移
+  // 4. Translate all
   const moveData = (data: any, dx: number, dy: number) => {
     for (const node of data.nodes ?? []) {
       node.x += dx
@@ -219,7 +219,7 @@ export function initDefaultShortcut(lf: LogicFlow, graph: GraphModel) {
       if (!lastMouse.hasValue) {
         moveData(data, 40, 40)
       } else {
-        // LogicFlow 文档里 getPointByClient 会把页面坐标转成画布坐标
+        // LogicFlow docs: getPointByClient converts page coordinates to canvas coordinates
         const point = lf.graphModel.getPointByClient({
           x: lastMouse.x,
           y: lastMouse.y,
@@ -254,34 +254,34 @@ export function initDefaultShortcut(lf: LogicFlow, graph: GraphModel) {
     try {
       data = JSON.parse(text)
     } catch {
-      throw new Error('数据不是合法的 JSON')
+      throw new Error('Data is not valid JSON')
     }
 
     if (!data || typeof data !== 'object' || Array.isArray(data)) {
-      throw new Error('数据必须是对象')
+      throw new Error('Data must be an object')
     }
 
     if (!('nodes' in data)) {
-      throw new Error('数据缺少 nodes 字段')
+      throw new Error('Data is missing nodes field')
     }
 
     if (!('edges' in data)) {
-      throw new Error('数据缺少 edges 字段')
+      throw new Error('Data is missing edges field')
     }
 
     if (!Array.isArray(data.nodes)) {
-      throw new Error('nodes 必须是数组')
+      throw new Error('nodes must be an array')
     }
 
     for (let i = 0; i < data.nodes.length; i++) {
       const node = data.nodes[i]
 
       if (!node || typeof node !== 'object' || Array.isArray(node)) {
-        throw new Error(`nodes[${i}] 必须是对象`)
+        throw new Error(`nodes[${i}] must be an object`)
       }
 
       if (!('id' in node) || node.id === undefined || node.id === null || node.id === '') {
-        throw new Error(`nodes[${i}] 缺少 id`)
+        throw new Error(`nodes[${i}] is missing id`)
       }
     }
 
@@ -340,9 +340,9 @@ export function initDefaultShortcut(lf: LogicFlow, graph: GraphModel) {
     return false
   }
   graph.eventCenter.on('copy_node', copy_node)
-  // 复制
+  // Copy
   keyboard.on(['cmd + c', 'ctrl + c'], copy_node)
-  // 粘贴
+  // Paste
   keyboard.on(['cmd + v', 'ctrl + v'], () => {})
   // undo
   keyboard.on(['cmd + z', 'ctrl + z'], () => {

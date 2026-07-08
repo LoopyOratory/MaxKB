@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： default_stt.py
+    @Author: Niu
+    @file: default_stt.py
     @date：2025/12/5 15:40
     @desc:
 """

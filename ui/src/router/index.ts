@@ -17,7 +17,7 @@ const router = createRouter({
   routes: routes,
 })
 
-// 路由前置拦截器
+// Route prefixInterceptor
 router.beforeEach(
   async (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
     NProgress.start()
@@ -44,7 +44,7 @@ router.beforeEach(
       }
     }
     set_next_route(to)
-    // 判断是否有菜单权限
+    // Determine whether there is menu permission
     if (to.meta.permission ? hasPermission(to.meta.permission as any, 'OR') : true) {
       if(to.name=='noPermissionD'){
          const n = getPermissionRoute(routes, to)

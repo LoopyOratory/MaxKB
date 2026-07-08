@@ -2,7 +2,7 @@
 """
     @project: maxkb
     @Author：wangliang181230
-    @file： regex_compare.py
+    @file: regex_compare.py
     @date：2026/3/30 12:11
     @desc:
 """
@@ -12,10 +12,10 @@ from .compare import Compare
 from common.cache.mem_cache import MemCache
 
 match_cache = MemCache('regex', {
-    'TIMEOUT': 3600,  # 缓存有效期为 1 小时
+    'TIMEOUT': 3600,  # CacheValid for 1 Hours
     'OPTIONS': {
-        'MAX_ENTRIES': 500,  # 最多缓存 500 个条目
-        'CULL_FREQUENCY': 10,  # 达到上限时，删除约 1/10 的缓存
+        'MAX_ENTRIES': 500,  # At mostCache 500  entries
+        'CULL_FREQUENCY': 10,  # When limit is reached, Deletion约 1/10 的Cache
     },
 })
 

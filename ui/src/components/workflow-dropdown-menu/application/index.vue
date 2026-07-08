@@ -72,7 +72,7 @@
           </div>
         </el-scrollbar>
       </el-tab-pane>
-      <!-- 工具 -->
+      <!-- Tool -->
       <el-tab-pane :label="$t('views.tool.title')" name="tool">
         <LayoutContainer>
           <template #left>
@@ -110,7 +110,7 @@
           </el-scrollbar>
         </LayoutContainer>
       </el-tab-pane>
-      <!-- 应用 -->
+      <!-- Application -->
       <el-tab-pane :label="$t('views.application.title')" name="application">
         <LayoutContainer>
           <template #left>

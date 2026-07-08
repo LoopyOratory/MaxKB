@@ -5,13 +5,13 @@ import {type Ref} from 'vue'
 
 const prefix = '/operate_log'
 /**
- * 日志分页列表
- * @param 参数
+ * LogPaginationList
+ * @param Parameters
  * page  {
  "current_page": "string",
  "page_size": "string",
  }
- * @query 参数
+ * @query Parameters
  param: any
  */
 const getOperateLog: (

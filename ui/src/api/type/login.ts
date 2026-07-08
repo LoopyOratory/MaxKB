@@ -1,18 +1,18 @@
 interface LoginRequest {
   /**
-   * 用户名
+   * Username
    */
   username: string
   /**
-   * 密码
+   * Password
    */
   password: string
   /**
-   * 验证码
+   * VerifyCode
    */
   captcha: string
   /**
-   * 加密数据
+   * EncryptData
    */
   encryptedData?: string
 }

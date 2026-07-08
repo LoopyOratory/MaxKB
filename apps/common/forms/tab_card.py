@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： tab_card.py
+    @Author: Tiger
+    @file: tab_card.py
     @date：2023/10/31 18:03
     @desc:
 """
@@ -13,7 +13,7 @@ from common.forms.base_field import BaseExecField, TriggerType
 
 class TabCard(BaseExecField):
     """
-    收集 Tab类型数据 tab1:{},tab2:{}
+    Collect TabTypeData tab1:{},tab2:{}
     """
 
     def __init__(self,

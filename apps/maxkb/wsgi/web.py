@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： web.py
+    @Author: Tiger
+    @file: web.py
     @date：2025/11/5 15:14
     @desc:
 """
@@ -28,7 +28,7 @@ class TorchBlocker:
             return self.original_import(name, *args, **kwargs)
 
 
-# 安装导入拦截器
+# 安装ImportInterceptor
 builtins.__import__ = TorchBlocker()
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'maxkb.settings')
@@ -45,5 +45,5 @@ def post_handler():
     init_template.run()
 
 
-# 启动后处理函数
+# Start后ProcessFunction
 post_handler()

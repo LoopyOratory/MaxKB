@@ -43,7 +43,7 @@ const form_setting_data = computed(() => {
 })
 const _submit = ref<boolean>(false)
 /**
- * 表单字段列表
+ * FormFieldList
  */
 const form_field_list = computed(() => {
   if (form_setting_data.value.form_field_list) {

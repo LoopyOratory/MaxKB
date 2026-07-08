@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_chat.py
+    @Author: Tiger
+    @file: application_chat.py
     @date：2025/6/10 11:06
     @desc:
 """
@@ -168,7 +168,7 @@ class ApplicationChatQuerySerializers(serializers.Serializer):
                                                                                                     [])) for
              key, node in search_dataset_node_list])
         improve_paragraph_list = row.get('improve_paragraph_list') or []
-        vote_status_map = {'-1': '未投票', '0': '赞同', '1': '反对'}
+        vote_status_map = {'-1': 'Not voted', '0': '赞同', '1': '反对'}
         vote_reason_map = {'accurate': gettext('accurate'), 'complete': gettext('complete'),
                            'inaccurate': gettext('inaccurate'), 'incomplete': gettext('incomplete'),
                            'other': gettext('Other'), }
@@ -283,7 +283,7 @@ def get_source_display(source):
         return '-'
     source_type = source.get('type')
 
-    # 定义映射关系
+    # DefinitionMappingRelation
     source_mapping = {
         ChatSourceChoices.ONLINE.value: gettext('Online Usage'),
         ChatSourceChoices.API_CALL.value: gettext('API Call'),

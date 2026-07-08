@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： azure_chat_model.py
+    @Author: Tiger
+    @file: azure_chat_model.py
     @date：2024/4/28 11:45
     @desc:
 """
@@ -67,7 +67,7 @@ class AzureChatModel(MaxKBBaseModel, AzureChatOpenAI):
         if isinstance(message.content, str):
             return message
         elif isinstance(message.content, list):
-            # 构造新的响应消息返回
+            # 构造新的ResponseMessageReturn
             content = message.content
             normalized_parts = []
             for item in content:

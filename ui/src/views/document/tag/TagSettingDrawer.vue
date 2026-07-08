@@ -65,7 +65,7 @@ import AddTagDialog from '@/views/document/tag/MulAddTagDialog.vue'
 const emit = defineEmits(['refresh'])
 const route = useRoute()
 const {
-  params: { id, folderId }, // id为knowledgeID
+  params: { id, folderId }, // id is knowledgeID
 } = route as any
 
 const apiType = computed(() => {
@@ -88,7 +88,7 @@ const debugVisible = ref(false)
 const filterText = ref('')
 const tags = ref<Array<any>>([])
 
-// 将原始数据转换为表格数据
+// Transform original data into table data
 const tableData = computed(() => {
   const result: any[] = []
   tags.value.forEach((tag: any) => {
@@ -98,7 +98,7 @@ const tableData = computed(() => {
           id: value.id,
           key: tag.key,
           value: value.value,
-          keyIndex: index, // 用于判断是否为第一行
+          keyIndex: index, // Used forDetermineIsFirst row
         })
       })
     }
@@ -106,12 +106,12 @@ const tableData = computed(() => {
   return result
 })
 
-// 合并单元格方法
+// MergeCellMethod
 const spanMethod = ({ row, column, rowIndex, columnIndex }: any) => {
   if (columnIndex === 0 || columnIndex === 1) {
-    // key列 (由于添加了选择列，索引变为1)
+    // Key column (due to added select column, index becomes 1)
     if (row.keyIndex === 0) {
-      // 计算当前key有多少个值
+      // CalculateCurrentkeyHas multipleFewValue
       const sameKeyCount = tableData.value.filter((item) => item.key === row.key).length
       return {
         rowspan: sameKeyCount,
@@ -133,7 +133,7 @@ const handleSelectionChange = (val: any[]) => {
 
 function batchDelete() {
   const tagsToDelete = multipleSelection.value.reduce((acc, item) => {
-    // 找出当前选中项的key对应的所有value id
+    // FindCurrentSelectItemkeyCorrespondingAllvalue id
     const sameKeyItems = tableData.value.filter((data) => data.key === item.key)
     const sameKeyIds = sameKeyItems.map((data) => data.id)
     return [...acc, ...sameKeyIds]

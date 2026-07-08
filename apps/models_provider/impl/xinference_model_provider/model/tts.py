@@ -33,7 +33,7 @@ class XInferenceTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
 
     @staticmethod
     def new_instance(model_type, model_name, model_credential: Dict[str, object], **model_kwargs):
-        optional_params = {'params': {'voice': '中文女'}}
+        optional_params = {'params': {'voice': 'Chinese Female'}}
         for key, value in model_kwargs.items():
             if key not in ['model_id', 'use_local', 'streaming']:
                 optional_params['params'][key] = value
@@ -52,7 +52,7 @@ class XInferenceTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
             base_url=self.api_base,
             api_key=self.api_key
         )
-        # ['中文女', '中文男', '日语男', '粤语女', '英文女', '英文男', '韩语女']
+        # ['Chinese Female', 'Chinese Male', 'Japanese Male', 'Cantonese Female', 'English Female', 'English Male', 'Korean Female']
         text = _remove_empty_lines(text)
         with client.audio.speech.with_streaming_response.create(
                 model=self.model,

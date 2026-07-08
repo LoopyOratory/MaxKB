@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： trigger_task.py
+    @Author: Tiger
+    @file: trigger_task.py
     @date：2026/1/28 16:37
     @desc:
 """
@@ -17,16 +17,16 @@ from trigger.serializers.trigger_task import ChatRecordSerializerModel, TriggerT
 
 
 class TriggerTaskRecordResultSerializer(serializers.Serializer):
-    id = serializers.UUIDField(required=True, help_text="任务记录id", label='任务记录id')
-    state = serializers.CharField(required=True, help_text="任务记录状态", label='任务记录状态')
-    source_type = serializers.CharField(required=True, help_text="资源类型", label='资源类型')
-    source_name = serializers.CharField(required=True, help_text="资源名称", label="资源名称")
-    source_id = serializers.CharField(required=True, help_text="资源id", label="资源id")
-    task_record_id = serializers.CharField(required=True, help_text="资源任务记录id", label="资源任务记录id")
-    trigger_id = serializers.CharField(required=True, help_text="触发器id", label="触发器id")
-    type = serializers.CharField(required=True, help_text="资源类型", label="资源类型")
-    create_time = serializers.CharField(required=True, help_text="创建时间", label="创建时间")
-    update_time = serializers.CharField(required=True, help_text="修改时间", label="修改时间")
+    id = serializers.UUIDField(required=True, help_text="TaskRecordid", label='TaskRecordid')
+    state = serializers.CharField(required=True, help_text="TaskRecordStatus", label='TaskRecordStatus')
+    source_type = serializers.CharField(required=True, help_text="Resource type", label='Resource type')
+    source_name = serializers.CharField(required=True, help_text="ResourceName", label="ResourceName")
+    source_id = serializers.CharField(required=True, help_text="Resourceid", label="Resourceid")
+    task_record_id = serializers.CharField(required=True, help_text="ResourceTaskRecordid", label="ResourceTaskRecordid")
+    trigger_id = serializers.CharField(required=True, help_text="Triggerid", label="Triggerid")
+    type = serializers.CharField(required=True, help_text="Resource type", label="Resource type")
+    create_time = serializers.CharField(required=True, help_text="Creation time", label="Creation time")
+    update_time = serializers.CharField(required=True, help_text="ModificationTime", label="ModificationTime")
 
 
 class TriggerTaskRecordResponse(ResultSerializer):
@@ -55,14 +55,14 @@ class TriggerTaskAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_id",
-                description="触发器id",
+                description="Triggerid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -85,14 +85,14 @@ class TriggerTaskRecordPageAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_id",
-                description="触发器id",
+                description="Triggerid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -113,21 +113,21 @@ class TriggerTaskRecordPageAPI(APIMixin):
             ),
             OpenApiParameter(
                 name="name",
-                description="任务名称",
+                description="TaskName",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
             ),
             OpenApiParameter(
                 name="state",
-                description="状态",
+                description="Status",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
             ),
             OpenApiParameter(
                 name="order",
-                description="排序字段",
+                description="SortField",
                 type=OpenApiTypes.STR,
                 location='query',
                 required=True,
@@ -150,21 +150,21 @@ class TriggerTaskRecordExecutionDetailsAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_id",
-                description="触发器id",
+                description="Triggerid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_task_id",
-                description="触发器任务id",
+                description="TriggerTaskid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

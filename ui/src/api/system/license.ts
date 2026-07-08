@@ -5,14 +5,14 @@ import { type Ref } from 'vue'
 const prefix = '/license'
 
 /**
- * 获得license信息
+ * GetlicenseInfo
  */
 const getLicense: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix}/profile`, undefined, loading)
 }
 /**
- * 更新license信息
- * @param 参数  license_file:file
+ * UpdatelicenseInfo
+ * @param Parameters  license_file:file
  */
 const putLicense: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (data, loading) => {
   return put(`${prefix}/profile`, data, undefined, loading)

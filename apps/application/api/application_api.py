@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application.py
+    @Author: Tiger
+    @file: application.py
     @date：2025/5/26 16:59
     @desc:
 """
@@ -44,7 +44,7 @@ class ApplicationQueryAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -115,7 +115,7 @@ class ApplicationCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -147,14 +147,14 @@ class ApplicationOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="application_id",
-                description="应用id",
+                description="Applicationid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -168,7 +168,7 @@ class ApplicationBatchOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

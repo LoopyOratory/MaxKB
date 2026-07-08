@@ -11,7 +11,7 @@
   >
     <div class="generate-prompt-dialog-bg border-r-8">
       <div class="scrollbar-height">
-        <!-- 生成内容 -->
+        <!-- GenerateContent -->
         <div class="p-16 pb-0 lighter">
           <el-scrollbar ref="scrollDiv">
             <div
@@ -51,7 +51,7 @@
           </div>
         </div>
 
-        <!-- 文本输入框 -->
+        <!-- TextInputDialog -->
 
         <div class="generate-prompt-operate p-16">
           <div v-if="showStopButton" class="text-center mb-8">
@@ -119,7 +119,7 @@ const apiType = computed(() => {
     return 'workspace'
   }
 })
-// 原始输入
+// OriginalInput
 const originalUserInput = ref<string>('')
 const modelID = ref('')
 const applicationID = ref('')
@@ -129,79 +129,79 @@ const loading = ref<boolean>(false)
 
 const promptTemplates = {
   INIT_TEMPLATE: `
-请根据用户描述生成一个完整的AI角色人设模板:
+Please generate a complete AI role persona template based on user description:
 
-用户需求：{userInput}
+User requirements: {userInput}
 
-重要说明：
-1. 角色设定必须服务于"{userInput}"内容设定应用的核心功能
-2. 允许用户对角色设定的具体内容进行调整和优化
-3. 如果用户要求修改某个技能或部分，在保持应用主题的前提下进行相应调整
+Important notes:
+1. Role must serve the application core functionality described in "{userInput}"
+2. Allow users to adjust and optimize specific parts of the role definition
+3. If the user requests modification to a skill or part, make adjustments while maintaining the application theme
 
-请按以下格式生成：
+Please generate using the format below:
 
-必须严格遵循以下规则：
-1. **严格禁止输出解释、前言、额外说明**，只输出最终结果。
-2. **严格使用以下格式**，不能缺少标题、不能多出其他段落。
-3. **如果用户要求修改角色设定的某个部分，在保持应用核心功能的前提下进行调整**。
-4. **如果用户需求与角色设定生成完全无关（如闲聊、其他话题），则主要依据应用信息生成标准角色设定，但不完全忽略用户输入，可从中提取有价值的辅助信息（如领域背景、语气风格等）作为次要参考**。
+Must strictly follow these rules:
+1. **Strictly forbidden to output explanations, prefaces, or extra notes**，Only output the final result.
+2. **Strictly use the format below**, Do not omit titles or add extra paragraphs.
+3. **If user requests modification to a role part, adjust while maintaining core application functionality**。
+4. **If user request is completely unrelated to role generation (e.g., chitchat, other topics), generate a standard role based primarily on application info, but do not completely ignore user input - extract valuable auxiliary info (e.g., domain background, tone style, etc.) as secondary reference**。
 
-# 角色:
-角色概述和主要职责的一句话描述
+# Role:
+One-sentence description of the role overview and main responsibilities
 
-## 目标：
-角色的工作目标,如果有多目标可以分点列出,但建议更聚焦1-2个目标
+## Target：
+Work targets of the role; if multiple, list by point, but focus on 1-2 targets
 
-## 核心技能：
-### 技能 1: [技能名称，如作品推荐/信息查询/专业分析等]
-1. [执行步骤1 - 描述该技能的第一个具体操作步骤，包括条件判断和处理方式]
-2. [执行步骤2 - 描述该技能的第二个具体操作步骤，包括如何获取或处理信息]
-3. [执行步骤3 - 描述该技能的最终输出步骤，说明如何呈现结果]
+## Core Skills:
+### Skills 1: [Skill name, e.g., work recommendation/info query/professional analysis, etc.]
+1. [Step 1 - Describe the first specific action step for this skill, including condition checks and process methods]
+2. [Step 2 - Describe the second specific action step, including how to get or process information]
+3. [Step 3 - Describe the final output step, noting how to present results]
 
-===回复示例===
-- 📋 [标识符]: <具体内容格式说明>
-- 🎯 [标识符]: <具体内容格式说明>
-- 💡 [标识符]: <具体内容格式说明>
-===示例结束===
+===Reply Example===
+- 📋 [Identifier]: <Specific content format notes>
+- 🎯 [Identifier]: <Specific content format notes>
+- 💡 [Identifier]: <Specific content format notes>
+===Example End===
 
-### 技能 2: [技能名称]
-1. [执行步骤1 - 描述触发条件和初始处理方式]
-2. [执行步骤2 - 描述信息获取和深化处理的具体方法]
-3. [执行步骤3 - 描述最终输出的具体要求和格式]
+### Skills 2: [SkillsName]
+1. [Step 1 - Describe trigger conditions and initial process method]
+2. [Step 2 - Describe specific methods for information gathering and deepening process]
+3. [Step 3 - Describe specific requirements and format for final output]
 
-### 技能 3: [技能名称]
-- [核心能力描述 - 说明该技能的主要作用和知识基础]
-- [应用方法 - 描述如何运用该技能为用户提供服务，包括具体的实施方式]
+### Skills 3: [SkillsName]
+- [Core capability description - Note the main function and knowledge basics of this skill]
+- [Application method - Describe how to use this skill to provide service, including specific implementation methods]
 
-## 工作流：
-1. 描述角色工作流程的第一步
-2. 描述角色工作流程的第二步
-3. 描述角色工作流程的第三步
+## Workflow：
+1. Describe the first step of the role workflow
+2. Describe the second step of the role workflow
+3. Describe the third step of the role workflow
 
-## 输出格式：
-如果对角色的输出格式有特定要求，可以在这里强调并举例说明想要的输出格式
+## OutputFormat：
+If there are specific requirements for the role output format, emphasize and give examples of the desired format here
 
 
-## 限制：
-1. **严格限制回答范围**：仅回答与角色设定相关的问题。
-   - 如果用户提问与角色无关，必须使用以下固定格式回复：
-     “对不起，我只能回答与[角色设定]相关的问题，您的问题不在服务范围内。”
-   - 不得提供任何与角色设定无关的回答。
-2. 描述角色在互动过程中需要遵循的限制条件2
-3. 描述角色在互动过程中需要遵循的限制条件3
+## Limit：
+1. **Strictly Limit Answer Scope**：Only answer questions related to the role definition.
+   - If user asks something unrelated to the role, must use the following fixed format reply:
+     “Sorry, I can only answer questions related to [Role]. Your question is outside my service scope.”
+   - Do not provide any answers unrelated to the role definition.
+2. Describe limitation condition 2 that the role must follow during interaction
+3. Describe limitation condition 3 that the role must follow during interaction
 
-输出时不得包含任何解释或附加说明，只能返回符合以上格式的内容。
+Output must not contain any explanations or additional notes; only return content matching the above format.
   `,
 }
 
-const isStreaming = ref<boolean>(false) // 是否正在流式输出
-const isPaused = ref<boolean>(false) // 是否暂停
-const fullContent = ref<string>('') // 完整内容缓存
-const currentDisplayIndex = ref<number>(0) // 当前显示到的字符位置
-let streamTimer: number | null = null // 定时器引用
+const isStreaming = ref<boolean>(false) // Whether currently streaming output
+const isPaused = ref<boolean>(false) // Whether paused
+const fullContent = ref<string>('') // Complete content cache
+const currentDisplayIndex = ref<number>(0) // Current display character position
+let streamTimer: number | null = null // Timer reference
 const isOutputComplete = ref<boolean>(false)
 
-// 模拟流式输出的定时器函数
+// Timer function simulating streaming output
 const startStreamingOutput = () => {
   if (streamTimer) {
     clearInterval(streamTimer)
@@ -212,7 +212,7 @@ const startStreamingOutput = () => {
 
   streamTimer = setInterval(() => {
     if (isApiComplete.value && !isPaused.value) {
-      // 更新显示内容
+      // Update display content
       const currentAnswer = chatMessages.value[chatMessages.value.length - 1]
       if (currentAnswer && currentAnswer.role === 'ai') {
         currentAnswer.content = fullContent.value
@@ -221,11 +221,11 @@ const startStreamingOutput = () => {
       return
     }
     if (!isPaused.value && currentDisplayIndex.value < fullContent.value.length) {
-      // 每次输出1-3个字符，模拟真实的流式输出
+      // Output 1-3 characters each time, simulating real streaming output
       const step = Math.min(3, fullContent.value.length - currentDisplayIndex.value)
       currentDisplayIndex.value += step
 
-      // 更新显示内容
+      // Update display content
       const currentAnswer = chatMessages.value[chatMessages.value.length - 1]
       if (currentAnswer && currentAnswer.role === 'ai') {
         currentAnswer.content = fullContent.value.substring(0, currentDisplayIndex.value)
@@ -236,7 +236,7 @@ const startStreamingOutput = () => {
   }, 50) as any
 }
 
-// 停止流式输出
+// Stop streaming output
 const stopStreaming = () => {
   if (streamTimer) {
     clearInterval(streamTimer)
@@ -252,13 +252,13 @@ const showStopButton = computed(() => {
   return isStreaming.value
 })
 
-// 暂停流式输出
+// Pause streaming output
 const pauseStreaming = () => {
   isPaused.value = true
   isStreaming.value = false
 }
 
-// 继续流式输出
+// Continue streaming output
 const continueStreaming = () => {
   if (currentDisplayIndex.value < fullContent.value.length) {
     startStreamingOutput()
@@ -266,17 +266,17 @@ const continueStreaming = () => {
 }
 
 /**
- * 获取一个递归函数,处理流式数据
- * @param chat    每一条对话记录
- * @param reader  流数据
- * @param stream  是否是流式数据
+ * Get a recursive function to process streaming data
+ * @param chat    Each conversation record
+ * @param reader  Stream data
+ * @param stream  Whether it is streaming data
  */
 const getWrite = (reader: any) => {
   let tempResult = ''
   const middleAnswer = reactive({ content: '', role: 'ai' })
   chatMessages.value.push(middleAnswer)
 
-  // 初始化状态并
+  // Initialize state and
   fullContent.value = ''
   currentDisplayIndex.value = 0
   isOutputComplete.value = false
@@ -285,20 +285,20 @@ const getWrite = (reader: any) => {
 
   /**
    *
-   * @param done  是否结束
-   * @param value 值
+   * @param done  Whether ended
+   * @param value Value
    */
   const write_stream = ({ done, value }: { done: boolean; value: any }) => {
     try {
       if (done) {
-        // 流数据接收完成，但定时器继续运行直到显示完所有内容
+        // Stream data received completely, but timer continues running until all content is displayed
         loading.value = false
         isApiComplete.value = true
         return
       }
       const decoder = new TextDecoder('utf-8')
       let str = decoder.decode(value, { stream: true })
-      // 这里解释一下 start 因为数据流返回流并不是按照后端chunk返回 我们希望得到的chunk是data:{xxx}\n\n 但是它获取到的可能是 data:{ -> xxx}\n\n 总而言之就是 fetch不能保证每个chunk都说以data:开始 \n\n结束
+      // Explanation start Because the data stream return is not aligned with backend chunks. We expect chunks as data:{xxx}\n\n but may receive partial chunks like data:{ -> xxx}\n\n. In summary, fetch cannot guarantee each chunk starts with data: and ends with \n\n
       tempResult += str
       const split = tempResult.match(/data:.*}\n\n/g)
       if (split) {
@@ -307,7 +307,7 @@ const getWrite = (reader: any) => {
       } else {
         return reader.read().then(write_stream)
       }
-      // 这里解释一下 end
+      // Explanation end
       if (str && str.startsWith('data:')) {
         if (split) {
           for (const index in split) {
@@ -319,7 +319,7 @@ const getWrite = (reader: any) => {
               return Promise.reject(new Error(chunk.error))
             }
             if (!chunk.is_end) {
-              // 实时将新接收的内容添加到完整内容中
+              // Add newly received content to the complete content in real time
               fullContent.value += chunk.content
               if (!streamingStarted) {
                 streamingStarted = true
@@ -352,7 +352,7 @@ const answer = computed(() => {
   return ''
 })
 
-// 按钮状态计算
+// Calculate button state
 const showContinueButton = computed(() => {
   return (
     !isStreaming.value && isPaused.value && currentDisplayIndex.value < fullContent.value.length
@@ -374,7 +374,7 @@ function generatePrompt(inputValue: any) {
       .then((response) => {
         nextTick(() => {
           if (dialogScrollbar.value) {
-            // 将滚动条滚动到最下面
+            // Scroll to the bottom
             scrollDiv.value.setScrollTop(getMaxHeight())
           }
         })
@@ -387,7 +387,7 @@ function generatePrompt(inputValue: any) {
       .then((response) => {
         nextTick(() => {
           if (dialogScrollbar.value) {
-            // 将滚动条滚动到最下面
+            // Scroll to the bottom
             scrollDiv.value.setScrollTop(getMaxHeight())
           }
         })
@@ -397,11 +397,11 @@ function generatePrompt(inputValue: any) {
   }
 }
 
-// 重新生成点击
+// Re-generate click
 const reAnswerClick = () => {
   if (originalUserInput.value) {
     generatePrompt(
-      `上一次回答不满意。请针对原始问题"${originalUserInput.value}"并结合对话记录，严格按照格式规范重新生成。`,
+      `The previous answer was unsatisfactory. Regarding the original question "${originalUserInput.value}" and based on the conversation record, strictly re-generate following the format standard.`,
     )
   }
 }
@@ -410,7 +410,7 @@ const quickInputRef = ref()
 
 const handleSubmit = (event?: any) => {
   if (!event?.ctrlKey && !event?.shiftKey && !event?.altKey && !event?.metaKey) {
-    // 如果没有按下组合键，则会阻止默认事件
+    // If no modifier key is pressed, block the default event
     event?.preventDefault()
     if (!inputValue.value.trim() || loading.value || isStreaming.value) {
       return
@@ -426,7 +426,7 @@ const handleSubmit = (event?: any) => {
       inputValue.value = ''
     }
   } else {
-    // 如果同时按下ctrl/shift/cmd/opt +enter，则会换行
+    // If ctrl/shift/cmd/opt + enter is pressed simultaneously, insert a newline
     insertNewlineAtCursor(event)
   }
 }
@@ -436,12 +436,12 @@ const insertNewlineAtCursor = (event?: any) => {
   ) as HTMLTextAreaElement
   const startPos = textarea.selectionStart
   const endPos = textarea.selectionEnd
-  // 阻止默认行为（避免额外的换行符）
+  // Block default behavior (avoid extra newlines)
   event.preventDefault()
-  // 在光标处插入换行符
+  // At cursor, insert newline
   inputValue.value = inputValue.value.slice(0, startPos) + '\n' + inputValue.value.slice(endPos)
   nextTick(() => {
-    textarea.setSelectionRange(startPos + 1, startPos + 1) // 光标定位到换行后位置
+    textarea.setSelectionRange(startPos + 1, startPos + 1) // Position cursor after newline
   })
 }
 
@@ -461,13 +461,13 @@ const getMaxHeight = () => {
 }
 
 /**
- * 处理跟随滚动条
+ * Handle scroll following
  */
 const handleScroll = () => {
   if (scrollDiv.value) {
-    // 内部高度小于外部高度 就需要出滚动条
+    // Scrollbar needed when inner height exceeds outer height
     if (scrollDiv.value.wrapRef.offsetHeight < dialogScrollbar.value?.scrollHeight) {
-      // 如果当前滚动条距离最下面的距离在 规定距离 滚动条就跟随
+      // If the current scrollbar distance from the bottom is within the specified range, make the scrollbar follow
       scrollDiv.value.setScrollTop(getMaxHeight())
     }
   }
@@ -475,30 +475,30 @@ const handleScroll = () => {
 
 const handleDialogClose = (done: () => void) => {
   if (answer.value) {
-    // 弹出 消息
+    // Show popup message
     MsgConfirm(t('common.tip'), t('views.application.generateDialog.exit'), {
       confirmButtonText: t('common.confirm'),
       cancelButtonText: t('common.cancel'),
       distinguishCancelAndClose: true,
     })
       .then(() => {
-        // 点击确认，清除状态
+        // Click confirm, clear state
         stopStreaming()
         chatMessages.value = []
         fullContent.value = ''
         currentDisplayIndex.value = 0
         isOutputComplete.value = false
-        done() // 真正关闭
+        done() // Actually close
       })
       .catch(() => {
-        // 点击取消
+        // Click cancel
       })
   } else {
     done()
   }
 }
 
-// 组件卸载时清理定时器
+// Clean up timer when component unmounts
 onUnmounted(() => {
   stopStreaming()
 })

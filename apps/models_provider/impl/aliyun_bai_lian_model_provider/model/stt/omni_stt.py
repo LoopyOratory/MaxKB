@@ -48,7 +48,7 @@ class AliyunBaiLianOmiSpeechToText(MaxKBBaseModel, BaseSpeechToText):
     def speech_to_text(self, audio_file):
         try:
             client = OpenAI(
-                # 若没有配置环境变量，请用阿里云百炼API Key将下行替换为：api_key="sk-xxx",
+                # 若NoneConfigurationEnvironmentVariable, please用阿里云百炼API Key将下行Replace为：api_key="sk-xxx",
                 api_key=self.api_key,
                 base_url=self.api_url,
             )
@@ -68,13 +68,13 @@ class AliyunBaiLianOmiSpeechToText(MaxKBBaseModel, BaseSpeechToText):
                                     "format": "mp3",
                                 },
                             },
-                            {"type": "text", "text": self.params.get('CueWord') or '这段音频在说什么'},
+                            {"type": "text", "text": self.params.get('CueWord') or '这段Audio在说什么'},
                         ],
                     },
                 ],
-                # 设置输出数据的模态，当前支持两种：["text","audio"]、["text"]
+                # SettingsOutputData的模态，Current支持两种：["text","audio"]、["text"]
                 modalities=["text"],
-                # stream 必须设置为 True，否则会报错
+                # stream MustSettings为 True，否则会报错
                 stream=True,
                 stream_options={"include_usage": True},
                 extra_body = {'enable_thinking': False, **self.params},

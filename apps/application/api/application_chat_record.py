@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： application_chat_record.py
+    @Author: Tiger
+    @file: application_chat_record.py
     @date：2025/6/10 15:19
     @desc:
 """
@@ -29,7 +29,7 @@ class ApplicationChatRecordQueryAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -98,7 +98,7 @@ class ApplicationChatRecordImproveParagraphAPI(APIMixin):
     def get_parameters():
         return [OpenApiParameter(
             name="workspace_id",
-            description="工作空间id",
+            description="Workspace id",
             type=OpenApiTypes.STR,
             location='path',
             required=True,
@@ -166,7 +166,7 @@ class ApplicationChatRecordAddKnowledgeAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

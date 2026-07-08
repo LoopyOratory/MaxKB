@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： rsa_util.py
+    @Author: Tiger
+    @file: rsa_util.py
     @date：2023/11/3 11:13
     @desc:
 """
@@ -21,19 +21,19 @@ from system_manage.models import SystemSetting, SettingType
 lock = threading.Lock()
 rsa_cache = cache.cache
 cache_key = "rsa_key"
-# 对密钥加密的密码
+# 对Secret keyEncrypt的Password
 secret_code = "mac_kb_password"
 
 
 def generate():
     """
-    生成 私钥秘钥对
-    :return:{key:'公钥',value:'私钥'}
+    Generate Private keySecret key对
+    :return:{key:'Public key',value:'Private key'}
     """
-    # 生成一个 2048 位的密钥
+    # GenerateOne 2048 位的Secret key
     key = RSA.generate(2048)
 
-    # 获取私钥
+    # GetPrivate key
     encrypted_key = key.export_key(passphrase=secret_code, pkcs=8,
                                    protection="scryptAndAES128-CBC")
     return {'key': key.publickey().export_key(), 'value': encrypted_key}
@@ -64,10 +64,10 @@ def get_key_pair_by_sql():
 
 def encrypt(msg, public_key: str | None = None):
     """
-    加密
-    :param msg:        加密数据
-    :param public_key: 公钥
-    :return: 加密后的数据
+    Encrypt
+    :param msg:        EncryptData
+    :param public_key: Public key
+    :return: Encrypt afterData
     """
     if public_key is None:
         public_key = get_key_pair().get('key')
@@ -78,10 +78,10 @@ def encrypt(msg, public_key: str | None = None):
 
 def decrypt(msg, pri_key: str | None = None):
     """
-    解密
-    :param msg: 需要解密的数据
-    :param pri_key: 私钥
-    :return: 解密后数据
+    Decrypt
+    :param msg: NeedsDecrypt的Data
+    :param pri_key: Private key
+    :return: Decrypt后Data
     """
     if pri_key is None:
         pri_key = get_key_pair().get('value')
@@ -93,18 +93,18 @@ def decrypt(msg, pri_key: str | None = None):
 
 @lru_cache(maxsize=2)
 def _get_encrypt_cipher(public_key: str):
-    """缓存加密 cipher 对象"""
+    """CacheEncrypt cipher Object"""
     return PKCS1_cipher.new(RSA.importKey(extern_key=public_key, passphrase=secret_code))
 
 
 def rsa_long_encrypt(message, public_key: str | None = None, length=200):
     """
-    超长文本加密
+    Extra longTextEncrypt
 
-    :param message:         需要加密的字符串
-    :param public_key   公钥
-    :param length:      1024bit的证书用100, 2048bit的证书用 200
-    :return: 加密后的数据
+    :param message:         NeedsEncrypt的String
+    :param public_key   Public key
+    :param length:      1024bit certificate for100, 2048bit certificate for 200
+    :return: Encrypt afterData
     """
     if public_key is None:
         public_key = get_key_pair().get('key')
@@ -126,17 +126,17 @@ def rsa_long_encrypt(message, public_key: str | None = None, length=200):
 
 @lru_cache(maxsize=2)
 def _get_cipher(pri_key: str):
-    """缓存 cipher 对象,避免重复创建"""
+    """Cache cipher Object,避免重复Creation"""
     return PKCS1_cipher.new(RSA.importKey(pri_key, passphrase=secret_code))
 
 
 def rsa_long_decrypt(message, pri_key: str | None = None, length=256):
     """
-    超长文本解密,优化内存使用
-    :param  message:    需要解密的数据
-    :param  pri_key:    秘钥
-    :param  length :     1024bit的证书用128,2048bit证书用256位
-    :return: 解密后的数据
+    Extra longTextDecrypt,OptimizationMemoryUse
+    :param  message:    NeedsDecrypt的Data
+    :param  pri_key:    Secret key
+    :param  length :     1024bit certificate for128,2048bit证书用256位
+    :return: Decrypt afterData
     """
     if pri_key is None:
         pri_key = get_key_pair().get('value')
@@ -144,7 +144,7 @@ def rsa_long_decrypt(message, pri_key: str | None = None, length=256):
     cipher = _get_cipher(pri_key)
     base64_de = base64.b64decode(message)
 
-    # 使用 bytearray 减少内存分配
+    # Use bytearray 减少Memory分配
     result = bytearray()
     for i in range(0, len(base64_de), length):
         result.extend(cipher.decrypt(base64_de[i:i + length], 0))

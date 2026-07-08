@@ -22,11 +22,11 @@ const ModelRouter = {
     {
       path: '/knowledge',
       name: 'knowledge-index',
-      meta: { title: '知识库主页', activeMenu: '/knowledge', sameRoute: 'knowledge' },
+      meta: { title: 'Knowledge baseHomepage', activeMenu: '/knowledge', sameRoute: 'knowledge' },
       component: () => import('@/views/knowledge/index.vue'),
     },
 
-    // 上传文档
+    // UploadDocument
     {
       path: '/knowledge/document/upload/:folderId/:type',
       name: 'UploadDocument',
@@ -34,7 +34,7 @@ const ModelRouter = {
       component: () => import('@/views/document/UploadDocument.vue'),
       hidden: true,
     },
-    // 上传文档 - 飞书文档
+    // UploadDocument - FeishuDocument
     {
       path: '/knowledge/import/lark/:folderId',
       name: 'ImportLarkDocument',
@@ -42,7 +42,7 @@ const ModelRouter = {
       component: () => import('@/views/document/ImportLarkDocument.vue'),
       hidden: true,
     },
-    // 上传文档 - 工作流
+    // UploadDocument - Workflow
     {
       path: '/knowledge/import/workflow/:folderId',
       name: 'ImportWorkflowDocument',

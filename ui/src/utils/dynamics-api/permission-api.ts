@@ -10,7 +10,7 @@ import systemUserGroupApi from '@/api/system/user-group'
 import workspaceUserGroupApi from '@/api/workspace/user-group'
 import useStore from "@/stores";
 
-// 系统管理员 API
+// SystemAdmin API
 const systemApiMap = {
   role: roleSystemApi,
   workspace: systemWorkspaceApi,
@@ -18,7 +18,7 @@ const systemApiMap = {
   userGroup: systemUserGroupApi,
 } as any
 
-// 企业版工作空间管理员 API
+// EnterpriseWorkspaceAdmin API
 const workspaceApiMap = {
   role: roleWorkspaceApi,
   workspace: workspaceApi,
@@ -26,7 +26,7 @@ const workspaceApiMap = {
   userGroup: workspaceUserGroupApi,
 } as any
 
-/** 动态导入 API 模块的函数
+/** DynamicImport API ModuleFunction
  *  loadPermissionApi('role')
  */
 const {user} = useStore()
@@ -47,12 +47,12 @@ export function loadPermissionApi(type: string) {
   if (hasPermission([EditionConst.IS_EE, EditionConst.IS_PE], 'OR')) {
     user.getHasPermissionWorkspaceManage()
     if (hasPermission(systemPermissionMap[type as keyof typeof systemPermissionMap], 'OR')) {
-      // 加载系统管理员 API
+      // LoadSystemAdmin API
       return systemApiMap[type]
     } else if (
       hasPermission(workspacePermissionMap[type as keyof typeof workspacePermissionMap], 'OR')
     ) {
-      // 加载企业版工作空间管理员 API
+      // LoadEnterpriseWorkspaceAdmin API
       return workspaceApiMap[type]
     }
   }

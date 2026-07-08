@@ -63,7 +63,7 @@ class ParagraphSerializer(serializers.ModelSerializer):
 
 class ParagraphInstanceSerializer(serializers.Serializer):
     """
-    段落实例对象
+    ParagraphInstanceObject
     """
 
     content = NullCharacterStrippedCharField(
@@ -126,9 +126,9 @@ class ParagraphSerializers(serializers.Serializer):
 
         def list(self, with_valid=False):
             """
-            获取问题列表
-            :param with_valid: 是否校验
-            :return: 问题列表
+            GetQuestionList
+            :param with_valid: WhetherValidate
+            :return: QuestionList
             """
             if with_valid:
                 self.is_valid(raise_exception=True)
@@ -198,11 +198,11 @@ class ParagraphSerializers(serializers.Serializer):
 
     class Operate(serializers.Serializer):
         workspace_id = serializers.CharField(required=True, label=_("workspace id"))
-        # 段落id
+        # Paragraphid
         paragraph_id = serializers.UUIDField(required=True, label=_("paragraph id"))
-        # 知识库id
+        # Knowledge baseid
         knowledge_id = serializers.UUIDField(required=True, label=_("knowledge id"))
-        # 文档id
+        # Documentid
         document_id = serializers.UUIDField(required=True, label=_("document id"))
 
         def is_valid(self, *, raise_exception=True):
@@ -253,14 +253,14 @@ class ParagraphSerializers(serializers.Serializer):
 
                 create_problem_list = list(filter(lambda row: row.get("id") is None, instance.get("problem_list")))
 
-                # 问题集合
+                # Question集合
                 problem_list = QuerySet(Problem).filter(paragraph_id=self.data.get("paragraph_id"))
 
-                # 校验前端 携带过来的id
+                # ValidateFrontend 携带过 fromid
                 for update_problem in update_problem_list:
                     if not set([str(row.id) for row in problem_list]).__contains__(update_problem.get("id")):
                         raise AppApiException(500, _("Problem id does not exist"))
-                # 对比需要删除的问题
+                # 对比NeedsDeletion的Question
                 delete_problem_list = (
                     list(
                         filter(
@@ -275,11 +275,11 @@ class ParagraphSerializers(serializers.Serializer):
                     if len(update_problem_list) > 0
                     else []
                 )
-                # 删除问题
+                # DeletionQuestion
                 QuerySet(Problem).filter(id__in=[row.id for row in delete_problem_list]).delete() if len(
                     delete_problem_list
                 ) > 0 else None
-                # 插入新的问题
+                # Insert新的Question
                 QuerySet(Problem).bulk_create(
                     [
                         Problem(
@@ -293,7 +293,7 @@ class ParagraphSerializers(serializers.Serializer):
                     ]
                 ) if len(create_problem_list) else None
 
-                # 修改问题集合
+                # ModificationQuestion集合
                 QuerySet(Problem).bulk_update(
                     [Problem(id=row.get("id"), content=row.get("content")) for row in update_problem_list], ["content"]
                 ) if len(update_problem_list) > 0 else None
@@ -356,7 +356,7 @@ class ParagraphSerializers(serializers.Serializer):
             knowledge_id = self.data.get("knowledge_id")
             document_id = self.data.get("document_id")
 
-            # 先将同一文档中的所有段落位置向下移动一位
+            # 先将同一Document in AllParagraphPosition向下移动一位
             Paragraph.objects.filter(document_id=document_id).update(position=F("position") + 1)
 
             paragraph_problem_model = self.get_paragraph_problem_model(knowledge_id, document_id, instance)
@@ -368,7 +368,7 @@ class ParagraphSerializers(serializers.Serializer):
             # 新加的在最上面
             paragraph.position = 1
             paragraph.save()
-            # 调整位置
+            # AdjustPosition
             if "position" in instance:
                 if type(instance["position"]) is not int:
                     instance["position"] = 1
@@ -383,13 +383,13 @@ class ParagraphSerializers(serializers.Serializer):
                     "workspace_id": self.data.get("workspace_id"),
                 }
             ).adjust_position(instance.get("position"))
-            # 插入問題
+            # Insert問題
             QuerySet(Problem).bulk_create(problem_model_list) if len(problem_model_list) > 0 else None
-            # 插入问题关联关系
+            # InsertQuestionAssociationRelation
             QuerySet(ProblemParagraphMapping).bulk_create(problem_paragraph_mapping_list) if len(
                 problem_paragraph_mapping_list
             ) > 0 else None
-            # 修改长度
+            # ModificationLength
             update_document_char_length(document_id)
             if with_embedding:
                 model_id = get_embedding_model_id_by_knowledge_id(knowledge_id)
@@ -494,7 +494,7 @@ class ParagraphSerializers(serializers.Serializer):
         def association(self, with_valid=True, with_embedding=True):
             if with_valid:
                 self.is_valid(raise_exception=True)
-            # 已关联则直接返回
+            # 已Association则DirectReturn
             if (
                 QuerySet(ProblemParagraphMapping)
                 .filter(
@@ -571,7 +571,7 @@ class ParagraphSerializers(serializers.Serializer):
             QuerySet(Paragraph).filter(id__in=paragraph_id_list).delete()
             delete_problems_and_mappings(paragraph_id_list)
             update_document_char_length(self.data.get("document_id"))
-            # 删除向量库
+            # DeletionVector库
             delete_embedding_by_paragraph_ids(paragraph_id_list)
             return True
 
@@ -655,32 +655,32 @@ class ParagraphSerializers(serializers.Serializer):
                 knowledge_id=knowledge_id, document_id=document_id, id__in=paragraph_id_list
             )
             problem_paragraph_mapping_list = QuerySet(ProblemParagraphMapping).filter(paragraph__in=paragraph_list)
-            # 同数据集迁移
+            # 同DatasetMigration
             if target_knowledge_id == knowledge_id:
                 if len(problem_paragraph_mapping_list):
                     problem_paragraph_mapping_list = [
                         self.update_problem_paragraph_mapping(target_document_id, problem_paragraph_mapping)
                         for problem_paragraph_mapping in problem_paragraph_mapping_list
                     ]
-                    # 修改mapping
+                    # Modificationmapping
                     QuerySet(ProblemParagraphMapping).bulk_update(problem_paragraph_mapping_list, ["document_id"])
                 update_embedding_document_id(
                     [paragraph.id for paragraph in paragraph_list], target_document_id, target_knowledge_id, None
                 )
-                # 修改段落信息
+                # ModificationParagraphInfo
                 paragraph_list.update(document_id=target_document_id)
 
-                # 将当前文档中所有段落的位置向下移动，为新段落腾出空间
+                # 将CurrentDocument中AllParagraph的Position向下移动，为新Paragraph腾出空间
                 Paragraph.objects.filter(document_id=target_document_id).exclude(id__in=paragraph_id_list).update(
                     position=F("position") + len(paragraph_id_list)
                 )
-                # 重新查询迁移的段落
+                # Re-QueryMigration的Paragraph
                 paragraph_list = Paragraph.objects.filter(id__in=paragraph_id_list, document_id=target_document_id)
-                # 将迁移的段落位置设置为从1开始的序号
+                # 将Migration的ParagraphPositionSettings为从1Start的序号
                 for i, paragraph in enumerate(paragraph_list):
                     paragraph.position = i + 1
                     paragraph.save()
-            # 不同数据集迁移
+            # DifferentDatasetMigration
             else:
                 problem_list = QuerySet(Problem).filter(
                     id__in=[
@@ -688,7 +688,7 @@ class ParagraphSerializers(serializers.Serializer):
                         for problem_paragraph_mapping in problem_paragraph_mapping_list
                     ]
                 )
-                # 目标数据集问题
+                # TargetDatasetQuestion
                 target_problem_list = list(
                     QuerySet(Problem).filter(
                         content__in=[problem.content for problem in problem_list], knowledge_id=target_knowledge_id
@@ -709,9 +709,9 @@ class ParagraphSerializers(serializers.Serializer):
                 create_problem_list = [
                     problem for problem, is_create in target_handle_problem_list if is_create is not None and is_create
                 ]
-                # 插入问题
+                # InsertQuestion
                 QuerySet(Problem).bulk_create(create_problem_list)
-                # 修改mapping
+                # Modificationmapping
                 QuerySet(ProblemParagraphMapping).bulk_update(
                     problem_paragraph_mapping_list, ["problem_id", "knowledge_id", "document_id"]
                 )
@@ -721,20 +721,20 @@ class ParagraphSerializers(serializers.Serializer):
                 if target_knowledge.embedding_model_id != knowledge.embedding_model_id:
                     embedding_model_id = str(target_knowledge.embedding_model_id)
                 pid_list = [paragraph.id for paragraph in paragraph_list]
-                # 修改段落信息
+                # ModificationParagraphInfo
                 paragraph_list.update(knowledge_id=target_knowledge_id, document_id=target_document_id)
 
-                # 将当前文档中所有段落的位置向下移动，为新段落腾出空间
+                # 将CurrentDocument中AllParagraph的Position向下移动，为新Paragraph腾出空间
                 Paragraph.objects.filter(document_id=target_document_id).exclude(id__in=pid_list).update(
                     position=F("position") + len(pid_list)
                 )
-                # 重新查询迁移的段落
+                # Re-QueryMigration的Paragraph
                 paragraph_list = Paragraph.objects.filter(id__in=pid_list, document_id=target_document_id)
-                # 将迁移的段落位置设置为从1开始的序号
+                # 将Migration的ParagraphPositionSettings为从1Start的序号
                 for i, paragraph in enumerate(paragraph_list):
                     paragraph.position = i + 1
                     paragraph.save()
-                # 修改向量段落信息
+                # ModificationVectorParagraphInfo
                 update_embedding_document_id(pid_list, target_document_id, target_knowledge_id, embedding_model_id)
 
             update_document_char_length(document_id)
@@ -792,30 +792,30 @@ class ParagraphSerializers(serializers.Serializer):
         @transaction.atomic
         def adjust_position(self, new_position):
             """
-            调整段落顺序
-            :param new_position: 新的顺序值
+            AdjustParagraph顺序
+            :param new_position: 新 order值
             """
             self.is_valid(raise_exception=True)
             try:
                 new_position = int(new_position)
             except (TypeError, ValueError):
                 raise serializers.ValidationError(_("new_position must be an integer"))
-            # 获取当前段落
+            # GetCurrentParagraph
             paragraph = Paragraph.objects.get(id=self.data.get("paragraph_id"))
             old_position = paragraph.position
 
             if old_position < new_position:
-                # 如果新顺序在当前顺序之后，更新受影响段落的顺序
+                # IfNew order在Current顺序之After, Update受影响Paragraph order
                 Paragraph.objects.filter(position__gt=old_position, position__lte=new_position).update(
                     position=F("position") - 1
                 )
             elif old_position > new_position:
-                # 如果新顺序在当前顺序之前，更新受影响段落的顺序
+                # IfNew order在Current顺序之前，Update受影响Paragraph order
                 Paragraph.objects.filter(position__lt=old_position, position__gte=new_position).update(
                     position=F("position") + 1
                 )
 
-            # 更新当前段落的顺序
+            # UpdateCurrentParagraph order
             paragraph.position = new_position
             paragraph.save()
 

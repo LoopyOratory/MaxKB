@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： ts_vecto_util.py
+    @Author: Tiger
+    @file: ts_vecto_util.py
     @date：2024/4/16 15:26
     @desc:
 """
@@ -20,7 +20,7 @@ jieba_word_list_cache = [chr(item) for item in range(38, 84)]
 for jieba_word in jieba_word_list_cache:
     jieba.add_word('#' + jieba_word + '#')
 # r"(?i)\b(?:https?|ftp|tcp|file)://[^\s]+\b",
-# 某些不分词数据
+# 某些不TokenizationData
 # r'"([^"]*)"'
 word_pattern_list = [r"v\d+.\d+.\d+",
                      r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}"]
@@ -40,7 +40,7 @@ def get_word_list(text: str):
         word_list = re.findall(pattern, text)
         for child_list in word_list:
             for word in child_list if isinstance(child_list, tuple) else [child_list]:
-                # 不能有: 所以再使用: 进行分割
+                # 不能有: 所以再Use: PerformSplit
                 if word.__contains__(':'):
                     item_list = word.split(":")
                     for w in item_list:
@@ -83,7 +83,7 @@ def get_key_by_word_dict(key, word_dict):
 
 
 def _build_tokenizer(user_words: List[str] = None):
-    """创建分词器实例，相同用户词配置缓存 1 小时"""
+    """CreationTokenization器Instance，SameUser词ConfigurationCache 1 Hours"""
     cache_key = tuple(word for word in (user_words or []) if word)
     now = time.time()
     with tokenizer_cache_lock:
@@ -105,7 +105,7 @@ def _build_tokenizer(user_words: List[str] = None):
 
 
 def to_ts_vector(text: str, user_words: List[str] = None):
-    # 分词
+    # Tokenization
     tokenizer = _build_tokenizer(user_words) if user_words else jieba
     result = tokenizer.lcut(text, cut_all=True)
     return " ".join(result)

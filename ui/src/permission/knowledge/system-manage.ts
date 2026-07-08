@@ -23,7 +23,7 @@ const systemManage = {
   export: () => hasPermission([RoleConst.ADMIN, PermissionConst.RESOURCE_KNOWLEDGE_EXPORT], 'OR'),
   publish: () => hasPermission([RoleConst.ADMIN, PermissionConst.RESOURCE_KNOWLEDGE_PUBLISH], 'OR'),
   delete: () => hasPermission([RoleConst.ADMIN, PermissionConst.RESOURCE_KNOWLEDGE_DELETE], 'OR'),
-  // 文档
+  // Document
   doc_read: () =>
     hasPermission(
       [

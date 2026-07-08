@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： authenticate.py
+    @Author: Tiger
+    @file: authenticate.py
     @date：2024/3/14 03:02
-    @desc:  用户认证
+    @desc:  UserAuthentication
 """
 from functools import reduce
 from typing import List
@@ -31,9 +31,9 @@ permission_constants_dict = {p.value.__str__(): p for p in PermissionConstants}
 
 def get_permission(permission_id):
     """
-    获取权限字符串
-    @param permission_id: 权限id
-    @return:  权限字符串
+    GetPermissionString
+    @param permission_id: Permissionid
+    @return:  PermissionString
     """
     if isinstance(permission_id, PermissionConstants):
         permission_id = permission_id.value
@@ -42,10 +42,10 @@ def get_permission(permission_id):
 
 def get_workspace_permission(permission_id, workspace_id, role=None):
     """
-    获取工作空间权限字符串
-    @param permission_id: 权限id
-    @param workspace_id:  工作空间id
-    @param role:     角色
+    GetWorkspacePermissionString
+    @param permission_id: Permissionid
+    @param workspace_id:  Workspace id
+    @param role:     Role
     @return:
     """
     if isinstance(permission_id, PermissionConstants):
@@ -58,9 +58,9 @@ def get_workspace_permission(permission_id, workspace_id, role=None):
 
 def get_role_permission(role, workspace_id):
     """
-    获取工作空间角色
-    @param role:  角色
-    @param workspace_id: 工作空间id
+    GetWorkspaceRole
+    @param role:  Role
+    @param workspace_id: Workspace id
     @return:
     """
     if isinstance(role, RoleConstants):
@@ -70,11 +70,11 @@ def get_role_permission(role, workspace_id):
 
 def get_workspace_permission_list(role_permission_mapping_dict, workspace_user_role_mapping_list, role_model_dict):
     """
-    获取工作空间下所有的权限
-    @param role_permission_mapping_dict:   角色权限关联字典
-    @param workspace_user_role_mapping_list: 工作空间用户角色关联列表
-    @param role_model_dict:         角色字典
-    @return: 工作空间下的权限
+    GetWorkspace下All的Permission
+    @param role_permission_mapping_dict:   RolePermissionAssociationDict
+    @param workspace_user_role_mapping_list: WorkspaceUserRoleAssociationList
+    @param role_model_dict:         RoleDict
+    @return: Workspace underPermission
     """
     workspace_permission_list = [
         [get_workspace_permission(role_permission_mapping.permission_id, w_u_r.workspace_id,
@@ -90,17 +90,17 @@ def get_workspace_resource_permission_list(
         workspace_user_role_mapping_dict):
     """
 
-    @param workspace_user_resource_permission_list: 工作空间用户资源权限列表
-    @param role_permission_mapping_dict:            角色权限关联字典        key为role_id
-    @param workspace_user_role_mapping_dict:        工作空间用户角色映射字典  key为role_id
-    @return: 工作空间资源权限列表
+    @param workspace_user_resource_permission_list: WorkspaceUserResourcePermissionList
+    @param role_permission_mapping_dict:            RolePermissionAssociationDict        key为role_id
+    @param workspace_user_role_mapping_dict:        WorkspaceUserRoleMappingDict  key为role_id
+    @return: WorkspaceResourcePermissionList
     """
     resource_permission_list = [
         get_workspace_resource_permission_list_by_workspace_user_permission(workspace_user_resource_permission,
                                                                             role_permission_mapping_dict,
                                                                             workspace_user_role_mapping_dict) for
         workspace_user_resource_permission in workspace_user_resource_permission_list]
-    # 将二维数组扁平为一维
+    # 将二维Array扁平为一维
     return reduce(lambda x, y: [*x, *y], resource_permission_list, [])
 
 
@@ -110,12 +110,12 @@ def get_workspace_resource_permission_list_by_workspace_user_permission(
         workspace_user_role_mapping_dict):
     """
 
-    @param workspace_user_resource_permission: 工作空间用户资源权限对象
-    @param role_permission_mapping_dict:       角色权限关联字典            key为role_id
-    @param workspace_user_role_mapping_dict:   工作空间用户角色关联字典  key为role_id
-    @return: 工作空间用户资源的权限列表
+    @param workspace_user_resource_permission: WorkspaceUserResourcePermissionObject
+    @param role_permission_mapping_dict:       RolePermissionAssociationDict            key为role_id
+    @param workspace_user_role_mapping_dict:   WorkspaceUserRoleAssociationDict  key为role_id
+    @return: WorkspaceUserResource的PermissionList
     """
-    # 判断用户在当前工作空间是否为内置USER
+    # DetermineUser在CurrentWorkspaceIsBuilt-inUSER
     workspace_role_ids = [
         wur.role_id
         for wur in
@@ -128,7 +128,7 @@ def get_workspace_resource_permission_list_by_workspace_user_permission(
                                     workspace_user_role_mapping_dict.get(
                                         workspace_user_resource_permission.workspace_id)]
     role_permission_mapping_list = reduce(lambda x, y: [*x, *y], role_permission_mapping_list, [])
-    # 如果是根据角色
+    # IfBased onRole
     if (workspace_user_resource_permission.auth_type == ResourceAuthType.ROLE
             and workspace_user_resource_permission.permission_list.__contains__(
                 ResourcePermissionRole.ROLE)):
@@ -150,7 +150,7 @@ def get_workspace_resource_permission_list_by_workspace_user_permission(
                                         ResourcePermission(resource_permission)))]
             for resource_permission in workspace_user_resource_permission.permission_list if
             ResourcePermission.values.__contains__(resource_permission)]
-        # 将二维数组扁平为一维
+        # 将二维Array扁平为一维
         return reduce(lambda x, y: [*x, *y], resource_permission_list, [])
     return []
 
@@ -163,18 +163,18 @@ def get_permission_list(user,
     user_id = user.id
     version = Cache_Version.PERMISSION_LIST.get_version()
     key = Cache_Version.PERMISSION_LIST.get_key(user_id=user_id)
-    # 获取权限列表
+    # GetPermissionList
     is_query_model = workspace_user_role_mapping_model is not None and workspace_model is not None and role_model is not None and role_permission_mapping_model is not None
     permission_list = cache.get(key, version=version)
     if permission_list is None:
         if is_query_model:
-            # 获取工作空间 用户 角色映射数据
+            # GetWorkspace User RoleMappingData
             workspace_user_role_mapping_list = QuerySet(workspace_user_role_mapping_model).filter(user_id=user_id)
             workspace_user_role_mapping_dict = group_by(workspace_user_role_mapping_list,
                                                         lambda item: item.workspace_id)
             role_id_list = list(set([workspace_user_role_mapping.role_id for workspace_user_role_mapping in
                                      workspace_user_role_mapping_list]))
-            # 获取角色权限映射数据
+            # GetRolePermissionMappingData
             role_permission_mapping_list = QuerySet(role_permission_mapping_model).filter(
                 role_id__in=role_id_list)
             role_model_list = QuerySet(role_model).filter(id__in=role_id_list)
@@ -191,17 +191,17 @@ def get_permission_list(user,
                                    role_model_dict.get(workspace_user_role.role_id) else False)],
                 user_id=user_id)
 
-            # 资源权限
+            # ResourcePermission
             workspace_resource_permission_list = get_workspace_resource_permission_list(workspace_user_permission_list,
                                                                                         role_permission_mapping_dict,
                                                                                         workspace_user_role_mapping_dict)
 
             workspace_permission_list = get_workspace_permission_list(role_permission_mapping_dict,
                                                                       workspace_user_role_mapping_list, role_model_dict)
-            # 系统权限
+            # SystemPermission
             system_permission_list = [role_permission_mapping.permission_id for role_permission_mapping in
                                       role_permission_mapping_list]
-            # 合并权限
+            # MergePermission
             permission_list = system_permission_list + workspace_permission_list + workspace_resource_permission_list
             permission_list = list(set(permission_list))
             cache.set(key, permission_list, version=version)
@@ -214,12 +214,12 @@ def get_permission_list(user,
             workspace_user_role_mapping_list = get_default_workspace_user_role_mapping_list([user.role])
             workspace_user_role_mapping_dict = group_by(workspace_user_role_mapping_list,
                                                         lambda item: item.workspace_id)
-            # 资源权限
+            # ResourcePermission
             workspace_resource_permission_list = get_workspace_resource_permission_list(
                 workspace_user_resource_permission_list,
                 role_permission_mapping_dict,
                 workspace_user_role_mapping_dict)
-            # 合并权限
+            # MergePermission
             permission_list = workspace_resource_permission_list
             permission_list = list(set(permission_list))
             cache.set(key, permission_list, version=version)
@@ -254,16 +254,16 @@ def get_role_list(user,
                   role_model,
                   role_permission_mapping_model):
     """
-    获取当前用户的角色列表
+    GetCurrentUser的RoleList
     """
     version = Cache_Version.ROLE_LIST.get_version()
     key = Cache_Version.ROLE_LIST.get_key(user_id=user.id)
     role_list = cache.get(key, version=version)
-    # 获取权限列表
+    # GetPermissionList
     is_query_model = workspace_user_role_mapping_model is not None and workspace_model is not None and role_model is not None and role_permission_mapping_model is not None
     if role_list is None:
         if is_query_model:
-            # 获取工作空间 用户 角色映射数据
+            # GetWorkspace User RoleMappingData
             workspace_user_role_mapping_list = QuerySet(workspace_user_role_mapping_model).filter(user_id=user.id)
             role_list = QuerySet(role_model).filter(id__in=[wurm.role_id for wurm in workspace_user_role_mapping_list])
             role_dict = {r.id: r for r in role_list}

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： homepage.py
+    @Author: Tiger
+    @file: homepage.py
     @date：2026/5/13 14:34
     @desc:
 """
@@ -225,7 +225,7 @@ class HomePageSerializer(serializers.Serializer):
             end_time = get_end_time(self.data.get("end_time"))
             name = self.data.get("name")
 
-            # ---- 基础查询：不再按 Chat.create_time 过滤 ----
+            # ---- BasicQuery：不再按 Chat.create_time Filter ----
             base_queryset = (
                 Chat.objects.filter(
                     is_deleted=False,
@@ -237,21 +237,21 @@ class HomePageSerializer(serializers.Serializer):
             if name:
                 base_queryset = base_queryset.filter(asker__username__contains=name)
 
-            # ---- 权限过滤 ----
+            # ---- PermissionFilter ----
             base_queryset = self._apply_permission_filter(
                 base_queryset, auth, workspace_id, user_id
             )
 
-            # ---- 窗口函数：一次查询拿到每个用户最新的 asker ----
+            # ---- 窗口Function：OnceQuery拿到EachUser最新的 asker ----
             asker_map = self._build_asker_map(base_queryset)
 
-            # ---- 时间条件针对 ChatRecord ----
+            # ---- TimeCondition针对 ChatRecord ----
             record_time_filter = Q(
                 chatrecord__create_time__gte=start_time,
                 chatrecord__create_time__lte=end_time,
             )
 
-            # ---- 聚合统计 ----
+            # ---- AggregationStatistics ----
             queryset = (
                 base_queryset
                 .filter(record_time_filter)
@@ -330,7 +330,7 @@ class HomePageSerializer(serializers.Serializer):
             return response
 
         def _apply_permission_filter(self, queryset, auth, workspace_id, user_id):
-            """根据用户角色过滤可见的应用范围"""
+            """Based onUserRoleFilter可见的ApplicationRange"""
             if is_workspace_manage(auth, workspace_id):
                 return queryset.filter(application__workspace_id=workspace_id)
             elif is_extends_workspace_manage(auth, workspace_id):
@@ -362,8 +362,8 @@ class HomePageSerializer(serializers.Serializer):
         @staticmethod
         def _build_asker_map(base_queryset):
             """
-            用窗口函数一次查询拿到每个 (chat_user_id, chat_user_type) 最新的 asker，
-            替代原来每行一次的 Subquery。
+            用窗口FunctionOnceQuery拿到Each (chat_user_id, chat_user_type) 最新的 asker，
+            替代原来每行Once的 Subquery。
             """
             latest_rows = (
                 base_queryset
@@ -437,7 +437,7 @@ class HomePageSerializer(serializers.Serializer):
                     & Q(chat__chatrecord__create_time__lte=end_time)
             )
             return queryset.annotate(
-                # 问题数（按 ChatRecord 条数统计）
+                # Question数（按 ChatRecord 条数Statistics）
                 chat_record_count_total=Coalesce(
                     Count(
                         "chat__chatrecord__id",
@@ -447,7 +447,7 @@ class HomePageSerializer(serializers.Serializer):
                     output_field=BigIntegerField(),
                 ),
 
-                # 对话用户数量，按 chat_user_id 去重
+                # ConversationUserCount, by chat_user_id 去重
                 chat_user_count=Count(
                     "chat__chat_user_id",
                     filter=(
@@ -528,7 +528,7 @@ class HomePageSerializer(serializers.Serializer):
                 output_field=BigIntegerField()
             )
 
-            # 时间条件针对 ChatRecord
+            # TimeCondition针对 ChatRecord
             record_time_filter = (
                     Q(chat__is_deleted=False)
                     & Q(chat__chatrecord__create_time__gte=start_time)

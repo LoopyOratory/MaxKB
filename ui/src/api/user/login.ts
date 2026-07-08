@@ -5,10 +5,10 @@ import type {Ref} from 'vue'
 import type {User} from "@/api/type/user.ts";
 
 /**
- * 登录
- * @param request 登录接口请求表单
- * @param loading 接口加载器
- * @returns 认证数据
+ * Login
+ * @param request LoginInterfaceRequestForm
+ * @param loading InterfaceLoader
+ * @returns AuthenticationData
  */
 const login: (request: LoginRequest, loading?: Ref<boolean>) => Promise<Result<any>> = (
   request,
@@ -26,8 +26,8 @@ const ldapLogin: (request: LoginRequest, loading?: Ref<boolean>) => Promise<Resu
 
 
 /**
- * 登出
- * @param loading 接口加载器
+ * Logout
+ * @param loading InterfaceLoader
  * @returns
  */
 const logout: (loading?: Ref<boolean>) => Promise<Result<boolean>> = (loading) => {
@@ -35,22 +35,22 @@ const logout: (loading?: Ref<boolean>) => Promise<Result<boolean>> = (loading) =
 }
 
 /**
- * 获取验证码
- * @param loading 接口加载器
+ * GetVerifyCode
+ * @param loading InterfaceLoader
  */
 const getCaptcha: (username?: string, loading?: Ref<boolean>) => Promise<Result<any>> = (username, loading) => {
   return get('/user/captcha', {username}, loading)
 }
 
 /**
- * 获取登录方式
+ * GetLoginMethod
  */
 const getAuthType: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('auth/types', undefined, loading)
 }
 
 /**
- * 获取二维码类型
+ * GetQR codeType
  */
 const getQrType: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get('qr_type', undefined, loading)
@@ -88,7 +88,7 @@ const getLarkCallback: (code: string, loading?: Ref<boolean>) => Promise<Result<
 }
 
 /**
- * 设置语言
+ * SettingsLanguage
  * data: {
  * "language": "string"
  * }

@@ -28,24 +28,24 @@ export interface VisibilityRules {
 
 export interface VisibilityCtx {
   formValue: Record<string, any>
-  currentNodeId: string // field 同节点判读 node_id
+  currentNodeId: string // field Same node - interpret as node_id
   currentNodeName: string // current node display name, {{currentNodeName.result}}, same form value. reference
 }
 
 /**
- * 解析 匹配值 残留的 {{}}
+ * Parse MatchValue Residual {{}}
  *
- * 前端只处理 同 node 表单 引用
- * ex: 当前节点叫「表单收集」，{{表单收集.region}} → formValue.region
+ * Frontend only processes same-node form references
+ * ex: CurrentNodeCalled "FormCollect", {{FormCollect.region}} → formValue.region
  *
- * 跨节点 {{开始.question}} / {{全局变量.x}} / {{chat.x}} 已由后端 form-node
- * reset_field 阶段（过滤掉本节点的 field_list 后）通过 generate_prompt
- * 预渲染为字面量，前端不会再看到这些形态。
+ * Cross-node {{Start.question}} / {{GlobalVariable.x}} / {{chat.x}} already handled by backend form-node
+ * reset_field Phase (FilterRemove localNode field_list After)Through generate_prompt
+ * Pre-rendered as literal; frontend will no longer see these forms.
  */
 export function resolveValue(raw: string, ctx: VisibilityCtx): string {
   return raw.replace(/\{\{([^.\s}]+)\.([^.\s}]+)\}\}/g, (match, nodeName, fieldName) => {
     if (nodeName !== ctx.currentNodeName) {
-      return match // 非同表单，前置node 引用
+      return match // Non-identicalForm, prefixnode Reference
     }
     const v = ctx.formValue?.[fieldName]
     return v == null ? match : String(v)
@@ -55,9 +55,9 @@ export function resolveValue(raw: string, ctx: VisibilityCtx): string {
 export function lookupLeft(cond: VisibilityCondition, ctx: VisibilityCtx): any {
   const scope = cond.field[0] === 'global' ? 'base-node' : cond.field[0]
   if (scope === ctx.currentNodeId) {
-    return ctx.formValue?.[cond.field[1]] // 同节点：实时从 formValue 取
+    return ctx.formValue?.[cond.field[1]] // SameNode: Real-time from formValue 
   }
-  return (cond as any)._left // 跨节点：后端 返回
+  return (cond as any)._left // Cross-Node: Backend Return
 }
 
 type CmpFn = (left: any, right: any) => boolean
@@ -156,10 +156,10 @@ export function evaluateVisibility(
 }
 
 /**
- * 单向扫描计算整个字段列表的显隐表。
+ * Single-direction scanCalculateEntireFieldListVisibility table.
  * @param fields
  * @param formValue
- * @returns { 字段名: 是否可见 } 的 map
+ * @returns { FieldName: WhetherVisible }  map
  */
 export function computeVisibilityMap(
   fields: Array<{ field: string; visibility_rules?: VisibilityRules }>,

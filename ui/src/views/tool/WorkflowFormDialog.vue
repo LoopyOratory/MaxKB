@@ -155,7 +155,7 @@ watch(dialogVisible, (bool) => {
 const details = ref<any>()
 const open = (data?: any) => {
   if (data) {
-    //  编辑当前id
+    //  EditCurrentid
     isEdit.value = !!data?.id
     editId.value = data?.id
     details.value = data

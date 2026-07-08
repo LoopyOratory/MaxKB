@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： workflow_manage.py
+    @Author: Tiger
+    @file: workflow_manage.py
     @date：2024/1/9 17:40
     @desc:
 """
@@ -128,8 +128,8 @@ class LoopWorkflowManage(WorkflowManage):
 
     def get_reference_field(self, node_id: str, fields: List[str]):
         """
-        @param node_id: 节点id
-        @param fields:  字段
+        @param node_id: node id
+        @param fields: field list
         @return:
         """
         if node_id == 'global':
@@ -181,9 +181,9 @@ class LoopWorkflowManage(WorkflowManage):
 
     def generate_prompt(self, prompt: str):
         """
-        格式化生成提示词
-        @param prompt: 提示词信息
-        @return: 格式化后的提示词
+        Format and generate prompt
+        @param prompt: prompt info
+        @return: formatted prompt
         """
 
         context = {**self.get_workflow_content(), **self.parentWorkflowManage.get_workflow_content()}

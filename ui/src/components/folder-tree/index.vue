@@ -334,7 +334,7 @@ const sortedData = computed(() => {
   return sortTreeData(treeData, compareFn)
 })
 
-// 获取指定父节点的位置数据
+// Get specified parent node position data
 function getPositions(parentId: string) {
   try {
     const data = localStorage.getItem(CUSTOM_STORAGE_KEY)
@@ -387,7 +387,7 @@ function initAllPositions(parentId: string, children: any[]) {
   localStorage.setItem(CUSTOM_STORAGE_KEY, JSON.stringify(allPositions))
 }
 
-// 对原始数据递归排序
+// Recursively sort original data
 function sortTreeData(nodes: any[], compareFn: (a: any, b: any) => number): any[] {
   if (!compareFn || nodes.length === 0 || !nodes) {
     return nodes
@@ -469,7 +469,7 @@ const handleDrop = (draggingNode: any, dropNode: any, dropType: string, ev: Drag
         emit('refreshTree')
       })
   } else {
-    // 同级拖拽，直接放置
+    // SiblingDrag，DirectPlace
     sortAfterDrop(dragData, dropData, dropType, newParentId)
   }
 }
@@ -494,7 +494,7 @@ function sortAfterDrop(
         savePositions(newParentId, positions)
         return
       }
-      // 放到最后
+      // Put inLast
       const maxPos = Math.max(...childrenPositions)
       positions[draggingNodeData.id] = maxPos + encode(1, 0)
       savePositions(newParentId, positions)

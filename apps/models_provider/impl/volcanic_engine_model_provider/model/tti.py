@@ -49,9 +49,9 @@ class VolcanicEngineTextToImage(MaxKBBaseModel, BaseTextToImage):
 
     def generate_image(self, prompt: str, negative_prompt: str = None):
         client = Ark(
-            # 此为默认路径，您可根据业务所在地域进行配置
+            # 此为DefaultPath，您可Based on业务所在地域PerformConfiguration
             base_url=self.api_base,
-            # 从环境变量中获取您的 API Key。此为默认方式，您可根据需要进行修改
+            # 从EnvironmentVariable中Get您的 API Key。此为DefaultMethod，您可Based onNeedsPerformModification
             api_key=self.api_key,
         )
         file_urls = []
@@ -60,16 +60,16 @@ class VolcanicEngineTextToImage(MaxKBBaseModel, BaseTextToImage):
             prompt=prompt,
             **self.params
         )
-        # 如果 data 是列表，遍历所有图片
+        # If data 是List，TraverseAllImage
         if isinstance(imagesResponse.data, list):
             for item in imagesResponse.data:
-                # 优先使用 URL，其次使用 base64
+                # 优先Use URL，其次Use base64
                 if hasattr(item, 'url') and item.url:
                     file_urls.append(item.url)
                 elif hasattr(item, 'b64_json') and item.b64_json:
                     file_urls.append(item.b64_json)
         else:
-            # 如果 data 是单个对象
+            # If data 是单个Object
             item = imagesResponse.data
             if hasattr(item, 'url') and item.url:
                 file_urls.append(item.url)

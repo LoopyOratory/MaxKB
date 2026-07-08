@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： api.py
+    @Author: Tiger
+    @file: api.py
     @date：2025/4/14 15:20
     @desc:
 """
@@ -12,7 +12,7 @@ from rest_framework import serializers
 
 class DefaultResultSerializer(serializers.Serializer):
     """
-    响应结果
+    ResponseResult
     """
     code = serializers.IntegerField(required=True, help_text=_('response code'), label=_('response code'))
     message = serializers.CharField(required=False, default="success", help_text=_('error prompt'),
@@ -22,7 +22,7 @@ class DefaultResultSerializer(serializers.Serializer):
 
 class ResultSerializer(serializers.Serializer):
     """
-    响应结果
+    ResponseResult
     """
     code = serializers.IntegerField(required=True, help_text=_('response code'), label=_('response code'))
     message = serializers.CharField(required=False, default="success", help_text=_('error prompt'),
@@ -38,7 +38,7 @@ class ResultSerializer(serializers.Serializer):
 
 class PageDataResponse(serializers.Serializer):
     """
-    分页数据
+    PaginationData
     """
     total = serializers.IntegerField(required=True, label=_('total number of data'))
     current = serializers.IntegerField(required=True, label=_('current page'))

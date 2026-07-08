@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 #
-#  错误码链接：https://www.xfyun.cn/document/error-code （code返回错误码时必看）
+#  Error码Link：https://www.xfyun.cn/document/error-code （codeReturnErrorMust-read when coding)
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 import asyncio
 import base64
@@ -22,7 +22,7 @@ from models_provider.impl.base_stt import BaseSpeechToText
 
 STATUS_FIRST_FRAME = 0  # 第一帧的标识
 STATUS_CONTINUE_FRAME = 1  # 中间帧标识
-STATUS_LAST_FRAME = 2  # 最后一帧的标识
+STATUS_LAST_FRAME = 2  # Last一帧的标识
 
 ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
 ssl_context.check_hostname = False
@@ -67,19 +67,19 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             **optional_params
         )
 
-    # 生成url
+    # Generateurl
     def create_url(self):
         url = self.spark_api_url
         host = urlparse(url).hostname
-        # 生成RFC1123格式的时间戳
+        # GenerateRFC1123Format的Time戳
         gmt_format = '%a, %d %b %Y %H:%M:%S GMT'
         date = datetime.now(UTC).strftime(gmt_format)
 
-        # 拼接字符串
+        # ConcatenateString
         signature_origin = "host: " + host + "\n"
         signature_origin += "date: " + date + "\n"
         signature_origin += "GET " + "/v2/iat " + "HTTP/1.1"
-        # 进行hmac-sha256进行加密
+        # Performhmac-sha256PerformEncrypt
         signature_sha = hmac.new(self.spark_api_secret.encode('utf-8'), signature_origin.encode('utf-8'),
                                  digestmod=hashlib.sha256).digest()
         signature_sha = base64.b64encode(signature_sha).decode(encoding='utf-8')
@@ -87,17 +87,17 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
         authorization_origin = "api_key=\"%s\", algorithm=\"%s\", headers=\"%s\", signature=\"%s\"" % (
             self.spark_api_key, "hmac-sha256", "host date request-line", signature_sha)
         authorization = base64.b64encode(authorization_origin.encode('utf-8')).decode(encoding='utf-8')
-        # 将请求的鉴权参数组合为字典
+        # 将Request的鉴权ParametersCombine为Dict
         v = {
             "authorization": authorization,
             "date": date,
             "host": host
         }
-        # 拼接鉴权参数，生成url
+        # Concatenate鉴权Parameters，Generateurl
         url = url + '?' + urlencode(v)
         # print("date: ",date)
         # print("v: ",v)
-        # 此处打印出建立连接时候的url,参考本demo的时候可取消上方打印的注释，比对相同参数时生成的url与自己代码生成的url是否一致
+        # 此处打印出建立Connect时候的url,参考本demo的时候可Cancel上方打印的注释，比对SameParameters时Generate的url与自己CodeGenerate的urlWhetherConsistent
         # print('websocket url :', url)
         return url
 
@@ -109,7 +109,7 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
     def speech_to_text(self, file):
         async def handle():
             async with websockets.connect(self.create_url(), max_size=1000000000, ssl=ssl_context) as ws:
-                # 发送 full client request
+                # Send full client request
                 await self.send(ws, file)
                 return await self.handle_message(ws)
 
@@ -133,10 +133,10 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
             return result
 
-    # 收到websocket连接建立的处理
+    # 收到websocketConnect建立的Process
     async def send(self, ws, file):
-        frameSize = 8000  # 每一帧的音频大小
-        status = STATUS_FIRST_FRAME  # 音频的状态信息，标识音频是第一帧，还是中间帧、最后一帧
+        frameSize = 8000  # 每一帧的AudioSize
+        status = STATUS_FIRST_FRAME  # Audio的StatusInfo，标识Audio是第一帧，Or中间帧、Last一帧
 
         allowed_params = {'language', 'domain', 'accent', 'vad_eos', 'dwa', 'pd', 'ptt',
                           'pcm', 'ltc', 'rlang', 'vinfo', 'nunum', 'speex_size', 'nbest', 'wbest'}
@@ -152,12 +152,12 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
             }
         while True:
             buf = file.read(frameSize)
-            # 文件结束
+            # FileEnd
             if not buf:
                 status = STATUS_LAST_FRAME
-            # 第一帧处理
-            # 发送第一帧音频，带business 参数
-            # appid 必须带上，只需第一帧发送
+            # 第一帧Process
+            # Send第一帧Audio，带business Parameters
+            # appid Must带上，只需第一帧Send
             if status == STATUS_FIRST_FRAME:
                 d = {
                     "common": {"app_id": self.spark_app_id},
@@ -172,13 +172,13 @@ class XFSparkSpeechToText(MaxKBBaseModel, BaseSpeechToText):
                 d = json.dumps(d)
                 await ws.send(d)
                 status = STATUS_CONTINUE_FRAME
-            # 中间帧处理
+            # 中间帧Process
             elif status == STATUS_CONTINUE_FRAME:
                 d = {"data": {"status": 1, "format": "audio/L16;rate=16000",
                               "audio": str(base64.b64encode(buf), 'utf-8'),
                               "encoding": "lame"}}
                 await ws.send(json.dumps(d))
-            # 最后一帧处理
+            # Last一帧Process
             elif status == STATUS_LAST_FRAME:
                 d = {"data": {"status": 2, "format": "audio/L16;rate=16000",
                               "audio": str(base64.b64encode(buf), 'utf-8'),

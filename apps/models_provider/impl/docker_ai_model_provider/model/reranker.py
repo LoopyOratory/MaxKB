@@ -1,10 +1,10 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： siliconcloud_reranker.py
+    @Author: Tiger
+    @file: siliconcloud_reranker.py
     @date：2024/9/10 9:45
-    @desc: SiliconCloud 文档重排封装
+    @desc: SiliconCloud Document重排封装
 """
 import json
 from typing import Sequence, Optional, Any, Dict
@@ -20,7 +20,7 @@ class DockerAIReranker(MaxKBBaseModel, BaseDocumentCompressor):
     api_base: Optional[str]
     model: Optional[str]
 
-    top_n: Optional[int] = 3  # 取前 N 个最相关的结果
+    top_n: Optional[int] = 3  # Take first N 个最Related的Result
 
     @staticmethod
     def new_instance(model_type, model_name, model_credential: Dict[str, object], **model_kwargs):
@@ -35,7 +35,7 @@ class DockerAIReranker(MaxKBBaseModel, BaseDocumentCompressor):
         if not documents:
             return []
 
-        # 预处理文本
+        # 预ProcessText
         texts = [doc.page_content for doc in documents]
 
         headers = {
@@ -51,11 +51,11 @@ class DockerAIReranker(MaxKBBaseModel, BaseDocumentCompressor):
         response = requests.post(f"{self.api_base}/rerank", data=json.dumps(payload), headers=headers)
 
         if response.status_code != 200:
-            raise RuntimeError(f"Docker AI API 请求失败: {response.text}")
+            raise RuntimeError(f"Docker AI API RequestFailure: {response.text}")
 
         res = response.json()
 
-        # 解析返回结果
+        # ParseReturn result
         return [
             Document(
                 page_content=payload['documents'][item.get('index')],

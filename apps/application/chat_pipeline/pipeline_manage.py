@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： pipeline_manage.py
+    @Author: Tiger
+    @file: pipeline_manage.py
     @date：2024/1/9 17:40
     @desc:
 """
@@ -19,10 +19,10 @@ class PipelineManage:
     def __init__(self, step_list: List[Type[IBaseChatPipelineStep]],
                  base_to_response: BaseToResponse = SystemToResponse(),
                  debug=False):
-        # 步骤执行器
+        # StepExecute器
         self.step_list = [step() for step in step_list]
         self.run_step_list = []
-        # 上下文
+        # Context
         self.context = {'message_tokens': 0, 'answer_tokens': 0}
         self.base_to_response = base_to_response
         self.debug = debug

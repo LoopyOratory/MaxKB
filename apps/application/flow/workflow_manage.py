@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： workflow_manage.py
+    @Author: Tiger
+    @file: workflow_manage.py
     @date：2024/1/9 17:40
     @desc:
 """
@@ -154,7 +154,7 @@ class WorkflowManage:
             node_id = node.id
             node_config = properties.get('config')
             field_list.append(
-                {'label': '异常信息', 'value': 'exception_message', 'node_id': node_id, 'node_name': node_name})
+                {'label': 'Exception info', 'value': 'exception_message', 'node_id': node_id, 'node_name': node_name})
             if node_config is not None:
                 fields = node_config.get('fields')
                 if fields is not None:
@@ -232,8 +232,8 @@ class WorkflowManage:
 
     def run_block(self, language='zh'):
         """
-        非流式响应
-        @return: 结果
+        Non-streaming response
+        @return: result
         """
         try:
             self.params['stream'] = True
@@ -262,8 +262,8 @@ class WorkflowManage:
         return res
 
     def _cleanup(self):
-        """清理所有对象引用"""
-        # 清理列表
+        """Clean up all object references"""
+        # Clean up list
         self.future_list.clear()
         self.field_list.clear()
         self.global_field_list.clear()
@@ -276,12 +276,12 @@ class WorkflowManage:
         if hasattr(self, 'node_context'):
             self.node_context.clear()
 
-        # 清理字典
+        # Clean up dict
         self.context.clear()
         self.chat_context.clear()
         self.form_data.clear()
 
-        # 清理对象引用
+        # Clean up object references
         self.node_chunk_manage = None
         self.work_flow_post_handler = None
         self.flow = None
@@ -295,7 +295,7 @@ class WorkflowManage:
 
     def run_stream(self, current_node, node_result_future, language='zh'):
         """
-        流式响应
+        Streaming response
         @return:
         """
         self.run_chain_async(current_node, node_result_future, language)
@@ -359,7 +359,7 @@ class WorkflowManage:
             start_node = self.get_start_node()
             current_node = get_node(start_node.type, self.flow.workflow_mode)(start_node, self.params, self)
         self.node_chunk_manage.add_node_chunk(current_node.node_chunk)
-        # 添加节点
+        # Add node
         self.append_node(current_node)
         result = self.run_chain(current_node, node_result_future)
         if result is None:
@@ -369,7 +369,7 @@ class WorkflowManage:
             self.run_chain_manage(node_list[0], None, language)
         elif len(node_list) > 1:
             sorted_node_run_list = sorted(node_list, key=lambda n: n.node.y)
-            # 获取到可执行的子节点
+            # Get executable child nodes
             result_list = [{'node': node, 'future': executor.submit(self.run_chain_manage, node, None, language)} for
                            node in
                            sorted_node_run_list]
@@ -394,7 +394,7 @@ class WorkflowManage:
             current_result = node_result_future.result()
             result = current_result.write_context(current_node, self)
             if result is not None:
-                # 阻塞获取结果
+                # Block and get result
                 list(result)
             return current_result
         except Exception as e:
@@ -493,7 +493,7 @@ class WorkflowManage:
                 return None
             return current_result
         except Exception as e:
-            # 添加节点
+            # Add node
             maxkb_logger.error(f'Exception: {e}', exc_info=True)
             enableException = current_node.node.properties.get('enableException')
             current_node.get_write_error_context(e)
@@ -523,7 +523,7 @@ class WorkflowManage:
                                   _is_interrupt=lambda node, step_variable, global_variable: False)
         finally:
             current_node.node_chunk.end()
-            # 归还链接到连接池
+            # Return connection to pool
             connection.close()
 
     def send_progress(self, current_node):
@@ -580,7 +580,7 @@ class WorkflowManage:
 
     def _has_next_node(self, current_node, node_result: NodeResult | None):
         """
-        是否有下一个可运行的节点
+        Check if there is a next runnable node
         """
         next_edge_node_list = self.flow.get_next_edge_nodes(current_node.id) or []
         for next_edge_node in next_edge_node_list:
@@ -593,7 +593,7 @@ class WorkflowManage:
 
     def has_next_node(self, node_result: NodeResult | None):
         """
-        是否有下一个可运行的节点
+        Check if there is a next runnable node
         """
         return self._has_next_node(self.get_start_node() if self.current_node is None else self.current_node,
                                    node_result)
@@ -639,7 +639,7 @@ class WorkflowManage:
                         result.insert(0, [current_answer])
                 up_node = current_answer
         if len(result) == 0:
-            # 如果没有响应 就响应一个空数据
+            # If no response, respond with empty data
             return [[]]
         return [[item.to_dict() for item in r] for r in result]
 
@@ -662,8 +662,8 @@ class WorkflowManage:
 
     def dependent_node_been_executed(self, node_id):
         """
-        判断依赖节点是否都已执行
-        @param node_id: 需要判断的节点id
+        Check if all dependency nodes have been executed
+        @param node_id: node id to check
         @return:
         """
         up_edge_list = [edge for edge in self.flow.edges if edge.targetNodeId == node_id]
@@ -674,12 +674,12 @@ class WorkflowManage:
 
     def get_next_node_list(self, current_node, current_node_result):
         """
-        获取下一个可执行节点列表
-        @param current_node:         当前可执行节点
-        @param current_node_result:  当前可执行节点结果
-        @return:  可执行节点列表
+        Get下One可ExecuteNode list
+        @param current_node:         Current可ExecuteNode
+        @param current_node_result:  Current可ExecuteNodeResult
+        @return:  可ExecuteNode list
         """
-        # 判断是否中断执行
+        # DetermineWhetherInterruptExecute
         if current_node_result.is_interrupt_exec(current_node):
             return []
         node_list = []
@@ -733,8 +733,8 @@ class WorkflowManage:
 
     def get_reference_field(self, node_id: str, fields: List[str]):
         """
-        @param node_id: 节点id
-        @param fields:  字段
+        @param node_id: node id
+        @param fields: field list
         @return:
         """
         if node_id == 'global':
@@ -764,7 +764,7 @@ class WorkflowManage:
             globeValue = f"context.get('{field.get('node_id')}',{placeholder}).get('{field.get('value', '')}','')"
             prompt = prompt.replace(globeLabel, globeValue)
         for field in self.global_field_list:
-            globeLabel = f"全局变量.{field.get('value')}"
+            globeLabel = f"GlobalVariable.{field.get('value')}"
             globeLabelNew = f"global.{field.get('value')}"
             globeValue = f"context.get('global').get('{field.get('value', '')}','')"
             prompt = prompt.replace(globeLabel, globeValue).replace(globeLabelNew, globeValue)
@@ -777,9 +777,9 @@ class WorkflowManage:
 
     def generate_prompt(self, prompt: str):
         """
-        格式化生成提示词
-        @param prompt: 提示词信息
-        @return: 格式化后的提示词
+        Format and generate prompt
+        @param prompt: prompt info
+        @return: formatted prompt
         """
         context = self.get_workflow_content()
         prompt = self.reset_prompt(prompt)
@@ -789,7 +789,7 @@ class WorkflowManage:
 
     def get_start_node(self):
         """
-        获取启动节点
+        GetStartNode
         @return:
         """
         start_node_list = [node for node in self.flow.nodes if node.type == 'start-node']
@@ -797,7 +797,7 @@ class WorkflowManage:
 
     def get_base_node(self):
         """
-        获取基础节点
+        Get base node
         @return:
         """
         base_node_list = [node for node in self.flow.nodes if node.type == 'base-node']

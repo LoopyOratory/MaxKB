@@ -270,7 +270,7 @@ const icon = computed(() => {
 })
 
 /**
- * 初始化轮询
+ * InitializePoll
  */
 const initInterval = () => {
   interval = setInterval(() => {
@@ -290,7 +290,7 @@ const initInterval = () => {
 }
 
 /**
- * 关闭轮询
+ * ClosePoll
  */
 const closeInterval = () => {
   if (interval) {
@@ -315,7 +315,7 @@ onMounted(() => {
   initInterval()
 })
 onBeforeUnmount(() => {
-  // 清除定时任务
+  // ClearScheduledTask
   closeInterval()
 })
 </script>

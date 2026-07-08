@@ -12,8 +12,8 @@ Object.defineProperty(prefix, 'value', {
 })
 
 /**
- * 获得文件夹列表
- * @params 参数
+ * GetFolderList
+ * @params Parameters
  *  source : APPLICATION, KNOWLEDGE, TOOL
  *  data : {name: string}
  */
@@ -26,8 +26,8 @@ const getFolder: (
 }
 
 /**
- * 添加文件夹
- * @params 参数
+ * AddFolder
+ * @params Parameters
  *  source : APPLICATION, KNOWLEDGE, TOOL
  {
  "name": "string",
@@ -44,8 +44,8 @@ const postFolder: (
 }
 
 /**
- * 获得文件夹详情
- * @params 参数
+ * GetFolderDetails
+ * @params Parameters
  *  folder_id
  *  source : APPLICATION, KNOWLEDGE, TOOL
  */
@@ -57,8 +57,8 @@ const getFolderDetail: (
   return get(`${prefix.value}/${source}/folder/${folder_id}`, null, loading)
 }
 /**
- * 修改文件夹
- * @params 参数
+ * ModificationFolder
+ * @params Parameters
  *  folder_id: string,
  *  source : APPLICATION, KNOWLEDGE, TOOL
  {
@@ -77,8 +77,8 @@ const putFolder: (
 }
 
 /**
- * 删除文件夹
- * @params 参数
+ * DeletionFolder
+ * @params Parameters
  *  folder_id
  *  source : APPLICATION, KNOWLEDGE, TOOL
  */

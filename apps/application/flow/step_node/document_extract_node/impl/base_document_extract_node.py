@@ -27,7 +27,7 @@ class BaseDocumentExtractNode(IDocumentExtractNode):
         if document is None or not isinstance(document, list):
             return NodeResult({'content': '', 'document_list': []}, {})
 
-        # 安全获取 application
+        # Safely get application
         application_id = None
         tool_id = None
         knowledge_id = None
@@ -39,7 +39,7 @@ class BaseDocumentExtractNode(IDocumentExtractNode):
         elif [WorkflowMode.TOOL, WorkflowMode.TOOL_LOOP].__contains__(self.workflow_manage.flow.workflow_mode):
             tool_id = self.workflow_params.get('tool_id')
 
-        # doc文件中的图片保存
+        # Save images from doc file
         def save_image(image_list):
             for image in image_list:
                 meta = {
@@ -70,7 +70,7 @@ class BaseDocumentExtractNode(IDocumentExtractNode):
 
             for split_handle in (parse_table_handle_list + split_handles):
                 if split_handle.support(buffer, get_buffer):
-                    # 回到文件头
+                    # Seek back to file start
                     buffer.seek(0)
                     file_content = split_handle.get_content(buffer, save_image)
                     content.append('### ' + doc['name'] + '\n' + file_content)
@@ -81,7 +81,7 @@ class BaseDocumentExtractNode(IDocumentExtractNode):
 
     def get_details(self, index: int, **kwargs):
         content = self.context.get('content', '').split(splitter)
-        # 不保存content全部内容，因为content内容可能会很大
+        # Do not save entire content because content may be very large
         return {
             'name': self.node.properties.get('stepName'),
             "index": index,

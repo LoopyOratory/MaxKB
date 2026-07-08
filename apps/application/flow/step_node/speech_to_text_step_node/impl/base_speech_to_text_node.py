@@ -23,7 +23,7 @@ class BaseSpeechToTextNode(ISpeechToTextNode):
 
     def execute(self, stt_model_id, audio, model_params_setting=None, stt_model_id_type=None, stt_model_id_reference=None,**kwargs) -> NodeResult:
 
-        # 处理引用类型
+        # Handle reference types
         if stt_model_id_type == 'reference' and stt_model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 stt_model_id_reference[0],
@@ -44,7 +44,7 @@ class BaseSpeechToTextNode(ISpeechToTextNode):
 
         def process_audio_item(audio_item, model):
             file = QuerySet(File).filter(id=audio_item['file_id']).first()
-            # 根据file_name 吧文件转成mp3格式
+            # Convert file to MP3 format based on file_name
             file_format = file.file_name.split('.')[-1]
             with tempfile.NamedTemporaryFile(delete=False, suffix=f'.{file_format}') as temp_file:
                 temp_file.write(file.get_bytes())

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： embedding.py
+    @Author: Tiger
+    @file: embedding.py
     @date：2024/10/16 17:01
     @desc:
 """
@@ -48,7 +48,7 @@ class AliyunBaiLianEmbeddingCredential(BaseForm, BaseModelCredential):
             raise_exception: bool = False
     ) -> bool:
         """
-        验证模型凭据是否有效
+        VerifyModel凭据Whether有效
         """
         model_type_list = provider.get_model_type_list()
         if not any(mt.get('value') == model_type for mt in model_type_list):
@@ -84,7 +84,7 @@ class AliyunBaiLianEmbeddingCredential(BaseForm, BaseModelCredential):
 
     def encryption_dict(self, model: Dict[str, Any]) -> Dict[str, Any]:
         """
-        加密敏感信息
+        EncryptSensitiveInfo
         """
         api_key = model.get('dashscope_api_key', '')
         return {**model, 'dashscope_api_key': super().encryption(api_key)}

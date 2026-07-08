@@ -176,12 +176,12 @@ export const knowledgeWriteNode = {
 }
 
 /**
- * 说明
- * type 与 nodes 文件对应
+ * Note
+ * type corresponds to the nodes file
  */
 export const baseNodes = [baseNode, startNode]
 /**
- * ai对话节点配置数据
+ * AI chat node configuration data
  */
 export const aiChatNode = {
   type: WorkflowType.AiChat,
@@ -209,7 +209,7 @@ export const aiChatNode = {
   },
 }
 /**
- * 知识库检索配置数据
+ * Knowledge base search configuration data
  */
 export const searchKnowledgeNode = {
   type: WorkflowType.SearchKnowledge,
@@ -242,7 +242,7 @@ export const searchKnowledgeNode = {
 }
 
 /**
- * 知识库检索配置数据
+ * Knowledge base search configuration data
  */
 export const searchDocumentNode = {
   type: WorkflowType.SearchDocument,
@@ -580,7 +580,7 @@ export const textToSpeechNode = {
 }
 
 /**
- * 自定义工具配置数据
+ * Custom tool configuration data
  */
 export const toolNode = {
   type: WorkflowType.ToolLibCustom,
@@ -1066,7 +1066,7 @@ export const workflowModelDict: any = {
 }
 
 /**
- * 工具配置数据
+ * Tool configuration data
  */
 export const toolLibNode = {
   type: WorkflowType.ToolLib,
@@ -1087,7 +1087,7 @@ export const toolLibNode = {
 }
 
 /**
- * 工作流工具配置数据
+ * Workflow tool configuration data
  */
 export const toolWorkflowLibNode = {
   type: WorkflowType.ToolWorkflowLib,

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： model_apply_serializers.py
+    @Author: Tiger
+    @file: model_apply_serializers.py
     @date：2024/8/20 20:39
     @desc:
 """
@@ -83,7 +83,7 @@ def get_local_model(model, **kwargs):
 
 def get_embedding_model(model_id):
     model = QuerySet(Model).filter(id=model_id).first()
-    # 手动关闭数据库连接
+    # ManualCloseData库Connect
     connection.close()
     embedding_model = ModelManage.get_model(model_id,
                                             lambda _id: get_local_model(model, use_local=True))

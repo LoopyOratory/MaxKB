@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： tools.py
+    @Author: Tiger
+    @file: tools.py
     @date：2024/9/11 16:41
     @desc:
 """
@@ -79,18 +79,18 @@ def handle_images(deps, archive: ZipFile) -> []:
         except Exception as e:
             maxkb_logger.error(f"Error reading image {dep.target}: {e}, {traceback.format_exc()}")
             continue
-        image.embed = dep.id  # 文件rId
-        image.target = dep.target  # 文件地址
+        image.embed = dep.id  # FilerId
+        image.target = dep.target  # FileAddress
         images.append(image)
     return images
 
 
 def xlsx_embed_cells_images(buffer) -> {}:
     archive = ZipFile(buffer)
-    # 解析cellImage.xml文件
+    # ParsecellImage.xmlFile
     deps = get_dependents(archive, get_rels_path("xl/cellimages.xml"))
     image_rel = handle_images(deps=deps, archive=archive)
-    # 工作表及其中图片ID
+    # Work表及其中ImageID
     sheet_list = {}
     for item in archive.namelist():
         if not item.startswith('xl/worksheets/sheet'):

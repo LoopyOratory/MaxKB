@@ -11,7 +11,7 @@ const isDefaultTheme = computed(() => {
   return theme.isDefaultTheme()
 })
 const {
-  params: { folderId }, // id为knowledgeID
+  params: { folderId }, // idisknowledgeID
   query: { from },
 } = route as any
 

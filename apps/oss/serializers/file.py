@@ -56,7 +56,7 @@ mime_types = {
     "csv": "text/csv", "tsv": "text/tab-separated-values", "ics": "text/calendar",
 }
 
-# 如果是音频文件并且有range请求，处理部分内容
+# IfAudioFile并且有rangeRequest，ProcessPartContent
 audio_types = ['mp3', 'wav', 'ogg', 'flac', 'aac', 'opus', 'm4a']
 
 
@@ -105,7 +105,7 @@ class FileSerializer(serializers.Serializer):
             file_type = file.file_name.split(".")[-1].lower()
             content_type = mime_types.get(file_type, 'application/octet-stream')
             encoded_filename = urllib.parse.quote(file.file_name)
-            # 获取文件内容
+            # GetFileContent
             file_bytes = file.get_bytes()
             file_size = len(file_bytes)
 
@@ -115,7 +115,7 @@ class FileSerializer(serializers.Serializer):
             if response:
                 return response
 
-            # 对于非范围请求或其他类型文件，返回完整内容
+            # 对于非RangeRequest或OtherTypeFile，ReturnCompleteContent
             headers = {
                 'Content-Type': content_type,
                 'Content-Disposition': f'attachment; filename={encoded_filename}'
@@ -128,24 +128,24 @@ class FileSerializer(serializers.Serializer):
 
         def handle_audio(self, file_size, file_bytes, content_type, encoded_filename):
 
-            # 解析range请求 (格式如 "bytes=0-1023")
+            # ParserangeRequest (Format如 "bytes=0-1023")
             range_match = re.match(r'bytes=(\d+)-(\d*)', self.data.get('http_range', ''))
             if range_match:
                 start = int(range_match.group(1))
                 end = int(range_match.group(2)) if range_match.group(2) else file_size - 1
 
-                # 确保范围合法
+                # EnsureRange合法
                 end = min(end, file_size - 1)
                 length = end - start + 1
 
-                # 创建部分响应
+                # CreationPartResponse
                 response = HttpResponse(
                     file_bytes[start:start + length],
                     status=206,
                     content_type=content_type
                 )
 
-                # 设置部分内容响应头
+                # SettingsPartContentResponse头
                 response['Content-Range'] = f'bytes {start}-{end}/{file_size}'
                 response['Accept-Ranges'] = 'bytes'
                 response['Content-Length'] = str(length)

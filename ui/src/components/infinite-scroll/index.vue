@@ -17,21 +17,21 @@ import { ref, computed, watch } from 'vue'
 defineOptions({ name: 'InfiniteScroll' })
 const props = defineProps({
   /**
-   * 对象数量
+   * ObjectCount
    */
   size: {
     type: Number,
     default: 0,
   },
   /**
-   * 总数
+   * Total
    */
   total: {
     type: Number,
     default: 0,
   },
   /**
-   * 总数
+   * Total
    */
   page_size: {
     type: Number,
@@ -85,10 +85,10 @@ function loadData() {
 }
 
 .text-with-lines::before {
-  left: -88px; /* 左侧线条位置 */
+  left: -88px; /* Left linePosition */
 }
 
 .text-with-lines::after {
-  right: -82px; /* 右侧线条位置 */
+  right: -82px; /* Right linePosition */
 }
 </style>

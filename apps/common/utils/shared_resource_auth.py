@@ -40,13 +40,13 @@ def _filter_user_authorized_tool_ids(ids: List[str], workspace_id: str, user_id=
 
 def filter_authorized_ids(resource_type: str, ids: List[str], workspace_id: str, user_id=None) -> List[str]:
     """
-    通用授权过滤函数
+    GeneralAuthorizationFilterFunction
 
-    @param resource_type: 资源类型 ('model', 'tool', 'knowledge')
-    @param ids: 待过滤的ID列表
-    @param workspace_id: 工作空间ID
-    @param user_id: 当前工作空间用户ID（仅 tool 类型会按用户级授权进一步过滤）
-    @return: 授权通过的ID列表
+    @param resource_type: Resource type ('model', 'tool', 'knowledge')
+    @param ids: 待Filter的IDList
+    @param workspace_id: WorkspaceID
+    @param user_id: CurrentWorkspaceUserID（仅 tool Type会按User级Authorization进一步Filter）
+    @return: AuthorizationThrough的IDList
     """
 
     if not ids:

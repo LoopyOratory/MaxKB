@@ -34,7 +34,7 @@ def get_celery_periodic_task(task_name):
 
 
 def make_dirs(name, mode=0o700, exist_ok=False):
-    """ 默认权限设置为 0o700 """
+    """ DefaultPermissionSettings为 0o700 """
     return os.makedirs(name, mode=mode, exist_ok=exist_ok)
 
 
@@ -61,7 +61,7 @@ def get_celery_status():
     ping_data = i.ping() or {}
     active_nodes = [k for k, v in ping_data.items() if v.get('ok') == 'pong']
     active_queue_worker = set([n.split('@')[0] for n in active_nodes if n])
-    # Celery Worker 数量: 2
+    # Celery Worker Count: 2
     if len(active_queue_worker) < 2:
         maxkb_logger.info("Not all celery worker worked")
         return False

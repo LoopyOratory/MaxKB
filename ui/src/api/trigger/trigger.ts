@@ -22,7 +22,7 @@ Object.defineProperty(prefixWorkspace, 'value', {
 })
 
 /**
- * 触发器列表
+ * TriggerList
  * @param data
  * @param loading
  * @returns
@@ -35,7 +35,7 @@ const getTriggerList: (data?: any, loading?: Ref<boolean>) => Promise<Result<any
 }
 
 /**
- * 触发器详情
+ * TriggerDetails
  * @param trigger_id
  * @param loading
  * @returns
@@ -48,7 +48,7 @@ const getTriggerDetail: (trigger_id: string, loading?: Ref<boolean>) => Promise<
 }
 
 /**
- * 创建触发器
+ * CreationTrigger
  * @param data
  * @param loading
  * @returns
@@ -61,7 +61,7 @@ const postTrigger: (data: TriggerData, loading?: Ref<boolean>) => Promise<Result
 }
 
 /**
- * 修改触发器
+ * ModificationTrigger
  * @param trigger_id
  * @param data
  * @param loading
@@ -76,7 +76,7 @@ const putTrigger: (
 }
 
 /**
- * 删除触发器
+ * DeletionTrigger
  * @param trigger_id
  * @param loading
  * @returns
@@ -89,7 +89,7 @@ const deleteTrigger: (trigger_id: string, loading?: Ref<boolean>) => Promise<Res
 }
 
 /**
- * 批量删除触发器
+ * BatchDeletionTrigger
  * @param data
  * @param loading
  * @returns
@@ -102,7 +102,7 @@ const delMulTrigger: (data: any, loading?: Ref<boolean>) => Promise<Result<boole
 }
 
 /**
- * 批量激活/禁用触发器
+ * BatchActivate/DisableTrigger
  * @param data
  * @param loading
  * @returns
@@ -120,21 +120,21 @@ const activateMulTrigger: (data: any, loading?: Ref<boolean>) => Promise<Result<
 }
 
 /**
- * 分页查询触发器
- * @param page    分页参数
- * @param param   查询参数
- * @param loading 加载器
+ * PaginationQueryTrigger
+ * @param page    PaginationParameters
+ * @param param   QueryParameters
+ * @param loading Loader
  * @returns
  */
 const pageTrigger = (page: pageRequest, param: any, loading?: Ref<boolean>) => {
   return get(`${prefix.value}/${page.current_page}/${page.page_size}`, param, loading)
 }
 /**
- * 分页查询触发器执行任务
- * @param trigger_id 触发器id
- * @param page       分页参数
- * @param param      查询参数
- * @param loading    记载器
+ * PaginationQueryTriggerExecuteTask
+ * @param trigger_id Triggerid
+ * @param page       PaginationParameters
+ * @param param      QueryParameters
+ * @param loading    Recorder
  * @returns
  */
 const pageTriggerTaskRecord = (
@@ -164,11 +164,11 @@ const getTriggerTaskRecordDetails = (
 }
 
 /**
- * 资源端创建触发器
- * @param source_type  资源类型
- * @param source_id    资源id
- * @param data         数据
- * @param loading      加载器
+ * Resource endpoint - create trigger
+ * @param source_type  Resource type
+ * @param source_id    Resourceid
+ * @param data         Data
+ * @param loading      Loader
  * @returns
  */
 const postResourceTrigger: (
@@ -186,7 +186,7 @@ const postResourceTrigger: (
 }
 
 /**
- * 资源端触发器列表
+ * Resource endpoint - trigger list
  * @param source_type
  * @param source_id
  * @param loading
@@ -205,7 +205,7 @@ const getResourceTriggerList: (
 }
 
 /**
- * 资源端触发器详情
+ * Resource endpoint - trigger details
  * @param source_type
  * @param source_id
  * @param trigger_id
@@ -226,7 +226,7 @@ const getResourceTriggerDetail: (
 }
 
 /**
- * 资源端删除触发器
+ * Resource endpoint - delete trigger
  * @param source_type
  * @param source_id
  * @param trigger_id
@@ -248,12 +248,12 @@ const deleteResourceTrigger: (
 }
 
 /**
- * 资源端修改触发器
- * @param source_type 资源类型
- * @param source_id   资源id
- * @param trigger_id  触发器id
- * @param data        触发器数据
- * @param loading     加载器
+ * Resource endpoint - modify trigger
+ * @param source_type Resource type
+ * @param source_id   Resourceid
+ * @param trigger_id  Triggerid
+ * @param data        TriggerData
+ * @param loading     Loader
  * @returns
  */
 const putResourceTrigger: (

@@ -61,10 +61,10 @@ def embedding_by_paragraph_list(paragraph_id_list, model_id):
 @celery_app.task(base=QueueOnce, once={"keys": ["document_id"]}, name="celery:embedding_by_document")
 def embedding_by_document(document_id, model_id, state_list=None):
     """
-    向量化文档
+    VectorizationDocument
     @param state_list:
-    @param document_id: 文档id
-    @param model_id 向量模型
+    @param document_id: Documentid
+    @param model_id VectorModel
     :return: None
     """
 
@@ -95,9 +95,9 @@ def embedding_by_document(document_id, model_id, state_list=None):
 @celery_app.task(name="celery:embedding_by_document_list")
 def embedding_by_document_list(document_id_list, model_id):
     """
-    向量化文档
-    @param document_id_list: 文档id列表
-    @param model_id 向量模型
+    VectorizationDocument
+    @param document_id_list: DocumentidList
+    @param model_id VectorModel
     :return: None
     """
     for document_id in document_id_list:
@@ -107,9 +107,9 @@ def embedding_by_document_list(document_id_list, model_id):
 @celery_app.task(base=QueueOnce, once={"keys": ["knowledge_id"]}, name="celery:embedding_by_knowledge")
 def embedding_by_knowledge(knowledge_id, model_id):
     """
-    向量化知识库
-    @param knowledge_id: 知识库id
-    @param model_id 向量模型
+    VectorizationKnowledge base
+    @param knowledge_id: Knowledge baseid
+    @param model_id VectorModel
     :return: None
     """
     maxkb_logger.info(_("Start--->Vectorized knowledge: {knowledge_id}").format(knowledge_id=knowledge_id))
@@ -139,9 +139,9 @@ def embedding_by_knowledge(knowledge_id, model_id):
 
 def embedding_by_problem(args, model_id):
     """
-    向量话问题
-    @param args:    问题对象
-    @param model_id: 模型id
+    Vector话Question
+    @param args:    QuestionObject
+    @param model_id: Modelid
     @return:
     """
     embedding_model = get_embedding_model(model_id)
@@ -160,8 +160,8 @@ def tokenize_by_document(document_id, state_list):
 
 def delete_embedding_by_document(document_id):
     """
-    删除指定文档id的向量
-    @param document_id: 文档id
+    DeletionSpecifyDocumentid的Vector
+    @param document_id: Documentid
     @return: None
     """
 
@@ -170,8 +170,8 @@ def delete_embedding_by_document(document_id):
 
 def delete_embedding_by_document_list(document_id_list: List[str]):
     """
-    删除指定文档列表的向量数据
-    @param document_id_list: 文档id列表
+    DeletionSpecifyDocumentList的VectorData
+    @param document_id_list: DocumentidList
     @return: None
     """
     ListenerManagement.delete_embedding_by_document_list(document_id_list)
@@ -179,8 +179,8 @@ def delete_embedding_by_document_list(document_id_list: List[str]):
 
 def delete_embedding_by_knowledge(knowledge_id):
     """
-    删除指定数据集向量数据
-    @param knowledge_id: 数据集id
+    DeletionSpecifyDatasetVectorData
+    @param knowledge_id: Datasetid
     @return: None
     """
     ListenerManagement.delete_embedding_by_knowledge(knowledge_id)
@@ -188,8 +188,8 @@ def delete_embedding_by_knowledge(knowledge_id):
 
 def delete_embedding_by_paragraph(paragraph_id):
     """
-    删除指定段落的向量数据
-    @param paragraph_id: 段落id
+    DeletionSpecifyParagraph的VectorData
+    @param paragraph_id: Paragraphid
     @return: None
     """
     ListenerManagement.delete_embedding_by_paragraph(paragraph_id)
@@ -197,8 +197,8 @@ def delete_embedding_by_paragraph(paragraph_id):
 
 def delete_embedding_by_source(source_id):
     """
-    删除指定资源id的向量数据
-    @param source_id: 资源id
+    DeletionSpecifyResourceid的VectorData
+    @param source_id: Resourceid
     @return: None
     """
     ListenerManagement.delete_embedding_by_source(source_id)
@@ -206,8 +206,8 @@ def delete_embedding_by_source(source_id):
 
 def disable_embedding_by_paragraph(paragraph_id):
     """
-    禁用某个段落id的向量
-    @param paragraph_id: 段落id
+    Disable某个Paragraphid的Vector
+    @param paragraph_id: Paragraphid
     @return: None
     """
     ListenerManagement.disable_embedding_by_paragraph(paragraph_id)
@@ -215,8 +215,8 @@ def disable_embedding_by_paragraph(paragraph_id):
 
 def enable_embedding_by_paragraph(paragraph_id):
     """
-    开启某个段落id的向量数据
-    @param paragraph_id: 段落id
+    Enable某个Paragraphid的VectorData
+    @param paragraph_id: Paragraphid
     @return: None
     """
     ListenerManagement.enable_embedding_by_paragraph(paragraph_id)
@@ -224,7 +224,7 @@ def enable_embedding_by_paragraph(paragraph_id):
 
 def delete_embedding_by_source_ids(source_ids: List[str]):
     """
-    删除向量根据source_id_list
+    DeletionVectorBased onsource_id_list
     @param source_ids:
     @return:
     """
@@ -233,7 +233,7 @@ def delete_embedding_by_source_ids(source_ids: List[str]):
 
 def update_problem_embedding(problem_id: str, problem_content: str, model_id):
     """
-    更新问题
+    UpdateQuestion
     @param problem_id:
     @param problem_content:
     @param model_id:
@@ -245,9 +245,9 @@ def update_problem_embedding(problem_id: str, problem_content: str, model_id):
 
 def update_embedding_knowledge_id(paragraph_id_list, target_knowledge_id):
     """
-    修改向量数据到指定知识库
-    @param paragraph_id_list: 指定段落的向量数据
-    @param target_knowledge_id: 知识库id
+    ModificationVectorData到SpecifyKnowledge base
+    @param paragraph_id_list: SpecifyParagraph的VectorData
+    @param target_knowledge_id: Knowledge baseid
     @return:
     """
 
@@ -258,8 +258,8 @@ def update_embedding_knowledge_id(paragraph_id_list, target_knowledge_id):
 
 def delete_embedding_by_paragraph_ids(paragraph_ids: List[str]):
     """
-    删除指定段落列表的向量数据
-    @param paragraph_ids: 段落列表
+    DeletionSpecifyParagraphList的VectorData
+    @param paragraph_ids: ParagraphList
     @return: None
     """
     ListenerManagement.delete_embedding_by_paragraph_ids(paragraph_ids)

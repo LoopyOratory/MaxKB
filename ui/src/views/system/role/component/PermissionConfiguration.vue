@@ -132,11 +132,11 @@ function handleCellChange(
     return
   }
   const readItem = row.permission.find((p) => /:READ$/.test(p.id))
-  // 如果勾选的不是 READ，则强制把 READ 也勾上
+  // IfChecked is not READ, thenForce READ Also check
   if (value && item.id !== readItem?.id && readItem && !readItem.enable) {
     readItem.enable = true
   } else if (!value && item.id === readItem?.id) {
-    // 取消 READ 整行其他权限全部取消
+    // Cancel READ Entire rowOtherPermissionAllCancel
     row.permission.forEach((p) => (p.enable = false))
   }
 

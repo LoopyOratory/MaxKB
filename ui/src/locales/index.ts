@@ -2,7 +2,7 @@ import { useLocalStorage, usePreferredLanguages } from '@vueuse/core'
 import { computed } from 'vue'
 import { createI18n } from 'vue-i18n'
 
-// 导入语言文件
+// Import language file
 const langModules = import.meta.glob('./lang/*/index.ts', { eager: true }) as Record<
   string,
   { default: Record<string, any> }
@@ -23,8 +23,8 @@ export function getBrowserLang() {
     return 'zh-Hant'
   }
 
-  if (browserLang === 'zh-CN') {
-    return 'zh-CN'
+  if (browserLang === 'en-US') {
+    return 'en-US'
   }
 
   return 'en-US'
@@ -61,7 +61,7 @@ export const i18n = createI18n({
   globalInjection: true,
 })
 
-// 外置语言包目录（相对于 public 目录）
+// External language pack directory (relative to public directory)
 const EXTERNAL_LOCALES_DIR = `${window.MaxKB?.prefix || '/chat'}/locales`
 
 async function discoverExternalLocales(): Promise<string[]> {

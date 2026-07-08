@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： base_label.py
+    @Author: Tiger
+    @file: base_label.py
     @date：2024/8/22 17:11
     @desc:
 """

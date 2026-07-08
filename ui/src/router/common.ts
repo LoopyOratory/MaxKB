@@ -27,7 +27,7 @@ export const getChildRouteList: (
   return []
 }
 /**
- * 获取同级路由
+ * GetSibling route
  * @param routeList
  * @param name
  * @returns
@@ -52,7 +52,7 @@ export const getSameRouteList: (
 }
 
 /**
- * 获取有权限的路由
+ * Get routes with permission
  * @param routes
  * @param to
  * @returns
@@ -89,7 +89,7 @@ export const getPermissionRoute = (routes: Array<RouteRecordRaw>, to: RouteLocat
 }
 
 
-// 寻找有权限的路由
+// Find availablePermission route
  
 const findAccessibleRoute = (routes: Array<RouteRecordRaw>): RouteRecordRaw | null => {
   for (const route of routes) {

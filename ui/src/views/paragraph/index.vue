@@ -103,7 +103,7 @@
                     >
                       <template v-for="(item, index) in paragraphDetail" :key="item.id">
                         <div :id="`m${item.id}`" class="flex mb-16">
-                          <!-- 批量操作 -->
+                          <!-- BatchActions -->
                           <div class="paragraph-card flex w-full" v-if="isBatch === true">
                             <el-checkbox :value="item.id" />
                             <ParagraphCard
@@ -116,7 +116,7 @@
                               @clickCard="toggleSelect(item.id)"
                             />
                           </div>
-                          <!-- 非批量操作 -->
+                          <!-- Non-BatchActions -->
                           <div class="handle paragraph-card flex w-full" :id="item.id" v-else>
                             <img
                               src="@/assets/sort.svg"
@@ -292,7 +292,7 @@ const handleClick = (e: MouseEvent, ele: any) => {
   document.querySelector(`${ele}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 
-// 批量操作
+// BatchActions
 const isBatch = ref(false)
 const multipleSelection = ref<any[]>([])
 const checkAll = ref(false)
@@ -454,13 +454,13 @@ function openGenerateDialog(row?: any) {
 function onEnd(event?: any, params?: any, index?: number) {
   console.log('onEnd', event, params, index)
   if (event && event.newIndex === event.oldIndex) {
-    // 没有移动
+    // NoneMove
     return
   }
   const p = cloneDeep(params)
   const obj = p ?? {
-    paragraph_id: paragraphDetail.value[event.newIndex].id, // 当前拖动的段落ID
-    // 向下拖动时取前一个元素的position，向上拖动时取后一个元素的position
+    paragraph_id: paragraphDetail.value[event.newIndex].id, // CurrentDraggedParagraphID
+    // When dragging downTake firstOneElementposition, when dragging upward, take the latterOneElementposition
     new_position:
       event.newIndex > event.oldIndex
         ? paragraphDetail.value[event.newIndex - 1]?.position ?? paragraphDetail.value.length

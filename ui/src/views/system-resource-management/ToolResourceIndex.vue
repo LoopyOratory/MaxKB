@@ -625,7 +625,7 @@ const DataSourceToolDrawertitle = ref('')
 const SkillToolDrawertitle = ref('')
 
 function openCreateDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
@@ -641,7 +641,7 @@ function openCreateDialog(data?: any) {
 }
 
 function openCreateMcpDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
@@ -659,7 +659,7 @@ function openCreateMcpDialog(data?: any) {
 }
 
 function openCreateDataSourceDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
@@ -677,7 +677,7 @@ function openCreateDataSourceDialog(data?: any) {
 }
 
 function openCreateSkillToolDialog(data?: any) {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }
@@ -697,7 +697,7 @@ function openCreateSkillToolDialog(data?: any) {
 const workflowFormDialogRef = ref<InstanceType<typeof WorkflowFormDialog>>()
 const workflowFormDialogtitle = ref('')
 const openCreateWorkflowDialog = (data?: any) => {
-  // 有template_id的不允许编辑，是模板转换来的
+  // Has template_id, not allowed to edit, transformed from template
   if (data?.template_id) {
     return
   }

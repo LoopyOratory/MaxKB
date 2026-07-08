@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： gzip.py
+    @Author: Tiger
+    @file: gzip.py
     @date：2025/2/27 10:03
     @desc:
 """

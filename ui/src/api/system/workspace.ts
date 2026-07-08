@@ -7,28 +7,28 @@ import type { pageRequest, PageList } from '@/api/type/common'
 const prefix = '/system/workspace'
 
 /**
- * 获取首页的工作空间下拉列表
+ * GetHomepageWorkspaceDropdownList
  */
 const getWorkspaceListByUser: (loading?: Ref<boolean>) => Promise<Result<WorkspaceItem[]>> = (loading) => {
   return get('/workspace/by_user', undefined, loading)
 }
 
 /**
- * 获取添加成员时的工作空间下拉列表
+ * GetAddMember at WorkspaceDropdownList
  */
 const getWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (loading) => {
   return get('/workspace/current_user', undefined, loading)
 }
 
 /**
- * 获取工作空间列表
+ * GetWorkspaceList
  */
 const getSystemWorkspaceList: (loading?: Ref<boolean>) => Promise<Result<WorkspaceItem[]>> = (loading) => {
   return get(`${prefix}`, undefined, loading)
 }
 
 /**
- * 新建或更新工作空间
+ * CreateorUpdateWorkspace
  */
 const CreateOrUpdateWorkspace: (
   data: WorkspaceItem,
@@ -38,7 +38,7 @@ const CreateOrUpdateWorkspace: (
 }
 
 /**
- * 删除工作空间前的校验
+ * DeletionWorkspaceBeforeValidate
  */
 const deleteWorkspaceCheck: (workspace_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   workspace_id,
@@ -48,7 +48,7 @@ const deleteWorkspaceCheck: (workspace_id: string, loading?: Ref<boolean>) => Pr
 }
 
 /**
- * 删除工作空间
+ * DeletionWorkspace
  */
 const deleteWorkspace: (workspace_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   workspace_id,
@@ -58,7 +58,7 @@ const deleteWorkspace: (workspace_id: string, loading?: Ref<boolean>) => Promise
 }
 
 /**
- * 获取工作空间成员列表
+ * GetWorkspaceMemberList
  */
 const getWorkspaceMemberList: (
   workspace_id: string,
@@ -74,7 +74,7 @@ const getWorkspaceMemberList: (
 }
 
 /**
- * 新建工作空间成员
+ * CreateWorkspaceMember
  */
 const CreateWorkspaceMember: (
   workspace_id: string,
@@ -85,7 +85,7 @@ const CreateWorkspaceMember: (
 }
 
 /**
- * 删除工作空间成员
+ * DeletionWorkspaceMember
  */
 const deleteWorkspaceMember: (workspace_id: string, user_relation_id: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   workspace_id,
@@ -96,7 +96,7 @@ const deleteWorkspaceMember: (workspace_id: string, user_relation_id: string, lo
 }
 
 /**
- * 获取添加成员时的角色下拉列表
+ * GetAddMember at RoleDropdownList
  */
 const getWorkspaceRoleList: (loading?: Ref<boolean>) => Promise<Result<Record<string, any>[]>> = (loading) => {
   return get('/role_list/current_user', undefined, loading)

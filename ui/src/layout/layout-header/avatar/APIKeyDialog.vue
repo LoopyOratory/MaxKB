@@ -231,9 +231,9 @@ function getApiKeyList() {
 function getExpiryClass(expireTime: any) {
   const status = fromNowDate(expireTime)
   if (status === t('layout.time.expired')) {
-    return 'color-danger' // 红色
+    return 'color-danger' // Red
   } else {
-    return 'color-warning' // 橙色
+    return 'color-warning' // Orange
   }
 }
 
@@ -259,12 +259,12 @@ defineExpose({open})
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    min-width: 0; /* 允许弹性收缩 */
-    cursor: pointer; /* 显示手型光标提示可悬停 */
+    min-width: 0; /* Allow elastic shrinking */
+    cursor: pointer; /* ShowHand cursorTipHoverable */
   }
 
   .copy-btn {
-    flex-shrink: 0; /* 复制按钮不收缩 */
+    flex-shrink: 0; /* CopyButtonNot shrink */
   }
 }
 

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： model.py
+    @Author: Tiger
+    @file: model.py
     @date：2025/11/5 14:53
     @desc:
 """
@@ -149,13 +149,13 @@ USE_I18N = True
 
 USE_TZ = True
 
-# 文件上传配置
+# FileUploadConfiguration
 DATA_UPLOAD_MAX_NUMBER_FILES = 1000
 
-# 支持的语言
+# SupportedLanguage
 LANGUAGES = CONFIG.get_languages()
 
-# 翻译文件路径
+# TranslationFilePath
 LOCALE_PATHS = [
     os.path.join(BASE_DIR.parent, 'locales')
 ]

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： object_card.py
+    @Author: Tiger
+    @file: object_card.py
     @date：2023/10/31 18:02
     @desc:
 """
@@ -13,7 +13,7 @@ from common.forms.base_field import BaseExecField, TriggerType
 
 class ObjectCard(BaseExecField):
     """
-    收集对象子表卡片
+    CollectObject子表卡片
     """
 
     def __init__(self,

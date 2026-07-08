@@ -68,7 +68,7 @@ const props = defineProps<{
   otherParams: any
   formField: FormField
   view?: boolean
-  // 选中的值
+  // Selected in value
   modelValue?: Array<any>
 }>()
 const rowTemp = ref<any>()
@@ -143,7 +143,7 @@ const tableData = computed(() => {
 })
 
 /**
- * 监听表格数据，设置默认值
+ * ListenTableData，SettingsDefaultValue
  */
 watch(
   () => tableData.value,

@@ -80,7 +80,7 @@ const open = (
 
   if (model_form_field_list) {
     model_form_field.value = model_form_field_list
-    // 渲染动态表单
+    // RenderDynamicForm
     nextTick(() => {
       dynamicsFormRef.value?.render(model_form_field.value, model_setting_data)
     })
@@ -88,7 +88,7 @@ const open = (
     const api = getApi(model_id, application_id)
     api.then((ok: any) => {
       model_form_field.value = ok.data
-      // 渲染动态表单
+      // RenderDynamicForm
       dynamicsFormRef.value?.render(model_form_field.value, model_setting_data)
     })
   }

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： ApiMixin.py
+    @Author: Tiger
+    @file: ApiMixin.py
     @date：2025/4/14 18:03
     @desc:
 """
@@ -21,16 +21,16 @@ class APIMixin:
     def get_parameters():
         """
          return OpenApiParameter(
-            # 参数的名称是done
+            # Parameters的Name是done
             name="done",
-            # 对参数的备注
-            description="是否完成",
-            # 指定参数的类型
+            # 对Parameters的Remark
+            description="WhetherComplete",
+            # SpecifyParameters的Type
             type=OpenApiTypes.BOOL,
             location=OpenApiParameter.QUERY,
-            # 指定必须给
+            # SpecifyMust给
             required=True,
-            # 指定枚举项
+            # Specify枚举项
             enum=[True, False],
         )
 

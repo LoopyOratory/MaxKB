@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： local_model.py
+    @Author: Tiger
+    @file: local_model.py
     @date：2024/8/21 13:28
     @desc:
 """
@@ -51,7 +51,7 @@ class GunicornLocalModelService(BaseService):
         return APPS_DIR
 
     def open_subprocess(self):
-        # 复制当前环境变量，并设置 ENABLE_SCHEDULER=1
+        # CopyCurrentEnvironmentVariable, andSettings ENABLE_SCHEDULER=1
         env = os.environ.copy()
         env['SERVER_NAME'] = 'local_model'
         kwargs = {

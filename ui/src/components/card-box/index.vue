@@ -20,7 +20,7 @@
           </div>
 
           <div class="status-tag">
-            <slot name="tag" :hoverShow="show"> <!-- 放标签 --> </slot>
+            <slot name="tag" :hoverShow="show"> <!-- PlaceTag --> </slot>
           </div>
         </div>
       </slot>
@@ -50,15 +50,15 @@ defineOptions({ name: 'CardBox' })
 const props = withDefaults(
   defineProps<{
     /**
-     * 标题
+     * Title
      */
     title?: string
     /**
-     * 描述
+     * Description
      */
     description?: string
     /**
-     * 是否展示icon
+     * WhetherDisplayicon
      */
     showIcon?: boolean
     disabled?: boolean
@@ -76,7 +76,7 @@ watch(
   },
 )
 const show = ref(false)
-// card上面存在dropdown菜单
+// cardAboveExistsdropdownMenu
 const subHovered = ref(false)
 function cardEnter() {
   if (props.disabled) return

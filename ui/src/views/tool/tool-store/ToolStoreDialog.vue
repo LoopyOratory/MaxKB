@@ -206,7 +206,7 @@ async function getStoreToolList() {
       filterList.value = null
       categories = tags.map((tag: any) => ({
         id: tag.key,
-        title: tag.name, // 国际化
+        title: tag.name, // Internationalization
         tools: storeTools.filter((tool: any) => tool.label === tag.key),
       }))
     }

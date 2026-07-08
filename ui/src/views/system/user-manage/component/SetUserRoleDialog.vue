@@ -124,7 +124,7 @@ const submit = async (formEl: FormInstance | undefined) => {
         list.value = list.value.map((item) => {
           const isAdminRole = adminRoleList.value.find((item1) => item1.id === item.role_id)
 
-          // 如果是管理员角色，则设置为 ['None']
+          // IfAdminRole, thenSettingsis ['None']
           if (isAdminRole) {
             return {...item, workspace_ids: ['None']}
           }

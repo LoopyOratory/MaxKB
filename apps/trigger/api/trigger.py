@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：niu
-    @file： trigger.py
+    @Author: Niu
+    @file: trigger.py
     @date：2026/1/14 15:49
     @desc:
 """
@@ -18,17 +18,17 @@ from trigger.serializers.trigger import TriggerCreateRequest, TriggerResponse, B
 
 
 class TriggerQueryResponseSerializer(serializers.Serializer):
-    id = serializers.UUIDField(required=True, help_text="触发器id", label='触发器id')
-    workspace_id = serializers.CharField(required=True, help_text="触发器工作空间", label='触发器工作空间')
-    name = serializers.CharField(required=True, help_text="触发器名称", label='触发器名称')
-    desc = serializers.CharField(required=True, help_text="触发器描述", label="触发器描述")
-    trigger_type = serializers.CharField(required=True, help_text="触发器类型", label="触发器类型")
-    type = serializers.CharField(required=True, help_text="资源类型", label="资源类型")
-    is_active = serializers.BooleanField(required=True, help_text="是否激活", label="是否激活")
-    source_name = serializers.CharField(required=True, help_text="资源类型", label="资源类型")
-    source_icon = serializers.CharField(required=True, help_text="资源图标", label="资源图标")
-    create_time = serializers.CharField(required=True, help_text="创建时间", label="创建时间")
-    update_time = serializers.CharField(required=True, help_text="修改时间", label="修改时间")
+    id = serializers.UUIDField(required=True, help_text="Triggerid", label='Triggerid')
+    workspace_id = serializers.CharField(required=True, help_text="TriggerWorkspace", label='TriggerWorkspace')
+    name = serializers.CharField(required=True, help_text="TriggerName", label='TriggerName')
+    desc = serializers.CharField(required=True, help_text="TriggerDescription", label="TriggerDescription")
+    trigger_type = serializers.CharField(required=True, help_text="TriggerType", label="TriggerType")
+    type = serializers.CharField(required=True, help_text="Resource type", label="Resource type")
+    is_active = serializers.BooleanField(required=True, help_text="Whether激活", label="Whether激活")
+    source_name = serializers.CharField(required=True, help_text="Resource type", label="Resource type")
+    source_icon = serializers.CharField(required=True, help_text="ResourceIcon", label="ResourceIcon")
+    create_time = serializers.CharField(required=True, help_text="Creation time", label="Creation time")
+    update_time = serializers.CharField(required=True, help_text="ModificationTime", label="ModificationTime")
 
 
 class TriggerTaskRecordResponse(ResultSerializer):
@@ -42,38 +42,38 @@ class TriggerQueryAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="name",
-                description="触发器名称",
+                description="TriggerName",
                 type=OpenApiTypes.STR,
                 required=True,
             ),
             OpenApiParameter(
                 name="type",
-                description="触发器类型",
+                description="TriggerType",
                 type=OpenApiTypes.STR,
                 required=True,
             ),
             OpenApiParameter(
                 name="task",
-                description="任务名称",
+                description="TaskName",
                 type=OpenApiTypes.STR,
                 required=True,
             ),
             OpenApiParameter(
                 name="is_active",
-                description="启用状态",
+                description="EnableStatus",
                 type=OpenApiTypes.STR,
                 required=True,
             ),
             OpenApiParameter(
                 name="create_user",
-                description="创建者",
+                description="Creation者",
                 type=OpenApiTypes.STR,
                 required=True,
             ),
@@ -114,7 +114,7 @@ class TriggerCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -136,21 +136,21 @@ class TaskSourceTriggerCreateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_id",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_type",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -172,7 +172,7 @@ class TriggerBatchDeleteAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -196,14 +196,14 @@ class TriggerOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_id",
-                description="触发器id",
+                description="Triggerid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -235,21 +235,21 @@ class TaskSourceTriggerAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_id",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_type",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
@@ -267,28 +267,28 @@ class TaskSourceTriggerOperateAPI(APIMixin):
         return [
             OpenApiParameter(
                 name="workspace_id",
-                description="工作空间id",
+                description="Workspace id",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_id",
-                description="资源id",
+                description="Resourceid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="source_type",
-                description="资源类型",
+                description="Resource type",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,
             ),
             OpenApiParameter(
                 name="trigger_id",
-                description="触发器id",
+                description="Triggerid",
                 type=OpenApiTypes.STR,
                 location='path',
                 required=True,

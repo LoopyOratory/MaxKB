@@ -16,7 +16,7 @@ let currentSup: HTMLElement | null = null
 let cleanupAutoUpdate: (() => void) | null = null
 let initialized = false
 
-// ---- 创建 tooltip DOM ----
+// ---- Creation tooltip DOM ----
 function createTooltip() {
   const el = document.createElement('div')
   el.className = 'sup-popover'
@@ -33,7 +33,7 @@ function createTooltip() {
   return { el, arrowEl: av, contentEl: inner }
 }
 
-// ---- 定位计算 ----
+// ---- PositionCalculate ----
 async function updatePosition(reference: HTMLElement) {
   if (!tooltipEl || !arrowEl) return
 
@@ -60,11 +60,11 @@ async function updatePosition(reference: HTMLElement) {
   })
 }
 
-// ---- 显示 / 隐藏 ----
+// ---- Show / Hide ----
 function show(sup: HTMLElement) {
   if (!tooltipEl || !contentEl) return
 
-  // 过滤 XSS，只保留安全的 HTML 标签和属性
+  // Filter XSS, onlyRetainSafe HTML TagAnd properties
   contentEl.innerHTML = DOMPurify.sanitize(sup.dataset.title ?? '')
 
   tooltipEl.style.display = 'block'
@@ -82,8 +82,8 @@ function hide() {
   currentSup = null
 }
 
-// ---- 核心：用 pointer 路径判断是否在安全区内 ----
-// 记录鼠标坐标
+// ---- Core: use pointer PathDetermineWhetherWithin safe zone ----
+// RecordMouse coordinates
 let mouseX = 0
 let mouseY = 0
 document.addEventListener(
@@ -101,8 +101,8 @@ function isMouseInsideSafeZone(): boolean {
   const supRect = currentSup.getBoundingClientRect()
   const tipRect = tooltipEl.getBoundingClientRect()
 
-  // 把 sup 和 tooltip 的 rect 各扩展 2px 容差，
-  // 再判断鼠标是否在两个矩形的凸包（union bbox）内
+  //  Sup and tooltip rect each extended by 2px tolerance, 
+  // Then determine if mouse is within the convex hull of two rectangles (union bbox)
   const pad = 2
   const minX = Math.min(supRect.left, tipRect.left) - pad
   const maxX = Math.max(supRect.right, tipRect.right) + pad
@@ -112,7 +112,7 @@ function isMouseInsideSafeZone(): boolean {
   return mouseX >= minX && mouseX <= maxX && mouseY >= minY && mouseY <= maxY
 }
 
-// ---- 事件处理 ----
+// ---- EventProcess ----
 function onMouseOver(e: MouseEvent) {
   const sup = (e.target as HTMLElement).closest('sup[data-title]') as HTMLElement | null
   if (!sup) return
@@ -126,7 +126,7 @@ function onMouseOver(e: MouseEvent) {
 function onMouseMove(e: MouseEvent) {
   if (!currentSup) return
 
-  // 鼠标在 tooltip 内部，直接跳过，不做任何处理
+  // Mouse on tooltip Internal，DirectSkip, notDo anyProcess
   if (tooltipEl && (e.target === tooltipEl || tooltipEl.contains(e.target as Node))) return
 
   const overSup = (e.target as HTMLElement).closest('sup[data-title]')
@@ -136,7 +136,7 @@ function onMouseMove(e: MouseEvent) {
   }
 }
 
-// ---- 单例公共 API ----
+// ---- SingletonPublic API ----
 export const supPopover = {
   init() {
     if (initialized) return

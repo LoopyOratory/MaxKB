@@ -1,26 +1,26 @@
 import { type Dict } from '@/api/type/common'
 interface TaskTypeInterface {
-  // 向量化
+  // Vectorization
   EMBEDDING: number
-  // 生成问题
+  // GenerateQuestion
   GENERATE_PROBLEM: number
-  // 同步
+  // Sync
   SYNC: number
-  // 分词索引
+  // TokenizationIndex
   TOKENIZE: number
 }
 interface StateInterface {
-  // 等待
+  // Wait
   PENDING: '0'
-  // 执行中
+  // Execute in 
   STARTED: '1'
-  // 成功
+  // Success
   SUCCESS: '2'
-  // 失败
+  // Failure
   FAILURE: '3'
-  // 取消任务
+  // CancelTask
   REVOKE: '4'
-  // 取消成功
+  // CancelSuccess
   REVOKED: '5'
   IGNORED: 'n'
 }
@@ -31,17 +31,17 @@ const TaskType: TaskTypeInterface = {
   TOKENIZE: 4,
 }
 const State: StateInterface = {
-  // 等待
+  // Wait
   PENDING: '0',
-  // 执行中
+  // Execute in 
   STARTED: '1',
-  // 成功
+  // Success
   SUCCESS: '2',
-  // 失败
+  // Failure
   FAILURE: '3',
-  // 取消任务
+  // CancelTask
   REVOKE: '4',
-  // 取消成功
+  // CancelSuccess
   REVOKED: '5',
   IGNORED: 'n'
 }

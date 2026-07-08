@@ -8,7 +8,7 @@ export function inferFieldType(
   return getFieldConfig(fieldPath, nodeModel, currentNodeFields)?.input_type
 }
 
-// input_type → 允许的运算符（按设计文档表格）
+// input_type → Allowed operators (by designDocumentTable）
 const TYPE_OP_MAP: Record<string, Array<string>> = {
   SwitchInput: ['is_true', 'is_not_true'],
 
@@ -50,8 +50,8 @@ export function getAllowedOps(inputType: string | undefined): Array<string> {
 }
 
 /**
- * 根据 [node_id, field_name] 取回完整字段配置对象。
- * 推不出 → 返回 undefined
+ * Based on [node_id, field_name] RetrieveCompleteFieldConfigurationObject。
+ * Cannot infer → Return undefined
  */
 export function getFieldConfig(
   fieldPath: [string, string] | Array<string>,

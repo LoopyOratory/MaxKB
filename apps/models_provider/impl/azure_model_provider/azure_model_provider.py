@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： azure_model_provider.py
+    @Author: Tiger
+    @file: azure_model_provider.py
     @date：2023/10/31 16:19
     @desc:
 """

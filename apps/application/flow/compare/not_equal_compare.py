@@ -2,7 +2,7 @@
 """
     @project: maxkb
     @Author：wangliang181230
-    @file： not_equal_compare.py
+    @file: not_equal_compare.py
     @date：2026/3/17 9:41
     @desc:
 """

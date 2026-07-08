@@ -340,7 +340,7 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
                 meta={},
             )
             knowledge.save()
-            # 自动资源给授权当前用户
+            # AutomaticResource给AuthorizationCurrentUser
             UserResourcePermissionSerializer(
                 data={
                     "workspace_id": self.data.get("workspace_id"),
@@ -359,13 +359,13 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
             knowledge_workflow.save()
             save_workflow_mapping(instance.get("work_flow", {}), ResourceType.KNOWLEDGE, str(knowledge_id))
 
-            # 处理 work_flow_template
+            # Process work_flow_template
             if instance.get("work_flow_template") is not None:
                 template_instance = instance.get("work_flow_template")
                 download_url = template_instance.get("downloadUrl")
                 if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
                     raise AppApiException(500, _("Illegal download url"))
-                # 查找匹配的版本名称
+                # Find matchingVersionName
                 res = requests.get(download_url, timeout=5)
                 KnowledgeWorkflowSerializer.Import(
                     data={
@@ -412,11 +412,11 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
                     [[tool.get("id"), generate_uuid((tool.get("id") + workspace_id or ""))] for tool in tool_list],
                     [],
                 )
-                # 存在的工具列表
+                # ExistingToolList
                 exits_tool_id_list = [
                     str(tool.id) for tool in QuerySet(Tool).filter(id__in=tool_id_list, workspace_id=workspace_id)
                 ]
-                # 需要更新的工具集合
+                # NeedsUpdate的Toolset合
                 update_tool_map = {
                     tool.get("id"): generate_uuid((tool.get("id") + workspace_id or ""))
                     for tool in tool_list
@@ -484,7 +484,7 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
 
         @staticmethod
         def to_tool(tool, workspace_id, user_id):
-            # 如果是技能类型的工具，需要将code保存为文件
+            # IfSkillsType的Tool，Needs将codeSave为File
             code = tool.get("code")
             if tool.get("tool_type") == ToolType.SKILL:
                 skill_file_id = uuid.uuid7()
@@ -537,7 +537,7 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
                     )
                 }
 
-                # 如果是技能工具，则需要将code字段转换为文件内容的base64字符串
+                # IfSkillsTool, thenNeeds将codeFieldTransform为FileContent的base64String
                 for tool in tool_list:
                     if tool.tool_type == ToolType.SKILL:
                         skill_file = QuerySet(File).filter(id=tool.code).first()
@@ -612,7 +612,7 @@ class KnowledgeWorkflowSerializer(serializers.Serializer):
                 download_url = template_instance.get("downloadUrl")
                 if not download_url.startswith("https://apps-assets.fit2cloud.com/"):
                     raise AppApiException(500, _("Illegal download url"))
-                # 查找匹配的版本名称
+                # Find matchingVersionName
                 res = requests.get(download_url, timeout=5)
                 KnowledgeWorkflowSerializer.Import(
                     data={

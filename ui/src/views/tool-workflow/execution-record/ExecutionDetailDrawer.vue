@@ -212,16 +212,16 @@ import { arraySort } from '@/utils/array'
 const props = withDefaults(
   defineProps<{
     /**
-     * 当前的action_id
+     * Currentaction_id
      */
     currentId: string
     currentContent: any
     /**
-     * 下一条
+     * Next item
      */
     next: () => void
     /**
-     * 上一条
+     * Previous item
      */
     pre: () => void
 

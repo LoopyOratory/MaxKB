@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: maxkb
-@Author：虎
-@file： base_question_node.py
+@Author: Tiger
+@file: base_question_node.py
 @date：2024/6/4 14:30
 @desc:
 """
@@ -52,11 +52,11 @@ def _write_context(
 
 def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据 (流式)
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点
-    @param workflow:           工作流管理器
+    Write context data (streaming)
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance
+    @param workflow: workflow manager
     """
     response = node_variable.get("result")
     answer = ""
@@ -105,11 +105,11 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
 
 def write_context(node_variable: Dict, workflow_variable: Dict, node: INode, workflow):
     """
-    写入上下文数据
-    @param node_variable:      节点数据
-    @param workflow_variable:  全局数据
-    @param node:               节点实例对象
-    @param workflow:           工作流管理器
+    Write context data
+    @param node_variable: node data
+    @param workflow_variable: global data
+    @param node: node instance object
+    @param workflow: workflow manager
     """
     response = node_variable.get("result")
     model_setting = node.context.get(
@@ -235,7 +235,7 @@ class BaseChatNode(IChatNode):
             chat_user_type=body.get("chat_user_type"),
         )
 
-        # 过滤tool_id
+        # Filter tool_id
         all_tool_ids = list(
             set(
                 (mcp_tool_ids or [])
@@ -250,7 +250,7 @@ class BaseChatNode(IChatNode):
         tool_ids = [i for i in (tool_ids or []) if i in authorized_set]
         skill_tool_ids = [i for i in (skill_tool_ids or []) if i in authorized_set]
         mcp_tool_id = mcp_tool_id if (mcp_tool_id and mcp_tool_id in authorized_set) else None
-        # 处理 MCP 请求
+        # Handle MCP request
         mcp_result = self._handle_mcp_request(
             mcp_source,
             mcp_servers,
@@ -318,10 +318,10 @@ class BaseChatNode(IChatNode):
 
         mcp_servers_config = {}
 
-        # 迁移过来mcp_source是None
+        # Migrated mcp_source is None
         if mcp_source is None:
             mcp_source = "custom"
-        # 兼容老数据
+        # Backward compatible with old data
         if not mcp_tool_ids:
             mcp_tool_ids = []
         if mcp_tool_id:
@@ -335,7 +335,7 @@ class BaseChatNode(IChatNode):
                 if mcp_tool and mcp_tool["is_active"]:
                     mcp_servers_config = {**mcp_servers_config, **json.loads(mcp_tool["code"])}
                     mcp_servers_config = self.handle_variables(mcp_servers_config)
-        # 校验代码是否包括禁止的关键字
+        # Validate that code does not include forbidden keywords
         ToolExecutor().validate_mcp_transport(json.dumps(mcp_servers_config))
 
         tool_init_params = {}
@@ -346,7 +346,7 @@ class BaseChatNode(IChatNode):
             workspace_id,
             runtime_user_id,
         )
-        if tool_ids and len(tool_ids) > 0:  # 如果有工具ID，则将其转换为MCP
+        if tool_ids and len(tool_ids) > 0:  # If tool IDs exist, convert them to MCP
             self.context["tool_ids"] = tool_ids
             custom_tools_map = {
                 str(t.id): t for t in QuerySet(Tool).filter(id__in=tool_ids, tool_type=ToolType.CUSTOM, is_active=True)
@@ -418,7 +418,7 @@ class BaseChatNode(IChatNode):
             mcp_servers_config["skills"] = skill_file_items
 
         if len(mcp_servers_config) > 0 or len(tools) > 0:
-            # 安全获取 application
+            # Safely get application
             application_id = None
             tool_id = None
             knowledge_id = None
@@ -465,7 +465,7 @@ class BaseChatNode(IChatNode):
         return None
 
     def handle_variables(self, tool_params):
-        # 处理参数中的变量
+        # Process variables in parameters
         for k, v in tool_params.items():
             if type(v) == str:
                 tool_params[k] = self.workflow_manage.generate_prompt(tool_params[k])
@@ -548,7 +548,7 @@ class BaseChatNode(IChatNode):
 
     def _process_images(self, image):
         """
-        处理图像数据，转换为模型可识别的格式
+        Process image data, convert to model-recognizable format
         """
         images = []
         if isinstance(image, str) and image.startswith("http"):

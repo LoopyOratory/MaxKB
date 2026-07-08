@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎虎
-    @file： user.py
+    @Author: Tiger
+    @file: user.py
     @date：2025/4/14 19:25
     @desc:
 """
@@ -81,7 +81,7 @@ class TestPermissionsUserView(APIView):
     @extend_schema(methods=['GET'],
                    summary=_("Get current user information"),
                    description=_("Get current user information"),
-                   operation_id="测试",
+                   operation_id="Test",
                    tags=[_("User Management")],  # type: ignore
                    responses=UserProfileAPI.get_response())
     @has_permissions(PermissionConstants.USER_EDIT, RoleConstants.ADMIN)
@@ -112,9 +112,9 @@ class TestWorkspacePermissionUserView(APIView):
     authentication_classes = [TokenAuth]
 
     @extend_schema(methods=['GET'],
-                   summary="针对工作空间下权限校验",
-                   description="针对工作空间下权限校验",
-                   operation_id="针对工作空间下权限校验",
+                   summary="针对Workspace下PermissionValidate",
+                   description="针对Workspace下PermissionValidate",
+                   operation_id="针对Workspace下PermissionValidate",
                    tags=[_("User Management")],  # type: ignore
                    responses=UserProfileAPI.get_response(),
                    parameters=TestWorkspacePermissionUserApi.get_parameters())
@@ -388,7 +388,7 @@ class ResetCurrentUserPasswordView(APIView):
         if encrypted_data:
             try:
                 decrypted_raw = decrypt(encrypted_data)
-                # decrypt 可能返回非 JSON 字符串，防护解析异常
+                # decrypt PossibleReturn非 JSON String，防护ParseException
                 decrypted_data = json.loads(decrypted_raw) if decrypted_raw else {}
                 if isinstance(decrypted_data, dict):
                     request_data = decrypted_data

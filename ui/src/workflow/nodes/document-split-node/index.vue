@@ -297,7 +297,7 @@ import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const {
-  query: { id }, // id为knowledgeID
+  query: { id }, // id is knowledgeID
 } = route as any
 
 const apiType = computed(() => {

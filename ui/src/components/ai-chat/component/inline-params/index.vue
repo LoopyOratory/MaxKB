@@ -225,7 +225,7 @@ defineExpose({
           (typeof value === 'object' && Object.keys(value).length === 0)
         if (isEmpty) {
           const name = typeof item.label === 'string' ? item.label : item.label?.label || item.field
-          MsgWarning(`${name} 为必填属性`)
+          MsgWarning(`${name} is a required field`)
           return Promise.reject(false)
         }
       }
@@ -245,7 +245,7 @@ const trigger = (
   self: any,
   loading: any,
 ) => {
-  // 暂留空，后续按需补充
+  // Leave empty for now, fill in later as needed
 }
 
 const initDefaultData = (formField: FormField) => {

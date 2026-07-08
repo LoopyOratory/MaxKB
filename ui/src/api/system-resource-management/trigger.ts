@@ -9,11 +9,11 @@ const prefix = 'system/resource'
 
 
 /**
- * 资源端创建触发器
- * @param source_type  资源类型
- * @param source_id    资源id
- * @param data         数据
- * @param loading      加载器
+ * Resource endpoint - create trigger
+ * @param source_type  Resource type
+ * @param source_id    Resourceid
+ * @param data         Data
+ * @param loading      Loader
  * @returns
  */
 const postResourceTrigger: (
@@ -31,7 +31,7 @@ const postResourceTrigger: (
 }
 
 /**
- * 资源端触发器列表
+ * Resource endpoint - trigger list
  * @param source_type
  * @param source_id
  * @param loading
@@ -50,7 +50,7 @@ const getResourceTriggerList: (
 }
 
 /**
- * 资源端触发器详情
+ * Resource endpoint - trigger details
  * @param source_type
  * @param source_id
  * @param trigger_id
@@ -71,7 +71,7 @@ const getResourceTriggerDetail: (
 }
 
 /**
- * 资源端删除触发器
+ * Resource endpoint - delete trigger
  * @param source_type
  * @param source_id
  * @param trigger_id
@@ -93,12 +93,12 @@ const deleteResourceTrigger: (
 }
 
 /**
- * 资源端修改触发器
- * @param source_type 资源类型
- * @param source_id   资源id
- * @param trigger_id  触发器id
- * @param data        触发器数据
- * @param loading     加载器
+ * Resource endpoint - modify trigger
+ * @param source_type Resource type
+ * @param source_id   Resourceid
+ * @param trigger_id  Triggerid
+ * @param data        TriggerData
+ * @param loading     Loader
  * @returns
  */
 const putResourceTrigger: (

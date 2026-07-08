@@ -350,7 +350,7 @@ const paginationConfig = ref({
 })
 
 const currentRecordList = ref<any>([])
-const currentChatId = ref('new') // 当前历史记录Id 默认为'new'
+const currentChatId = ref('new') // CurrentHistoryRecordId Defaultis'new'
 const currentChatName = ref(t('aiChat.createChat'))
 
 function refreshFieldTitle(chatId: string, abstract: string) {
@@ -446,10 +446,10 @@ function loadInfiniteScroll() {
 }
 
 /**
- * 切回会话时, 把内存中属于该会话、仍在后台流式输出的在途消息接回列表,
- * 这样切走时没被打断的流, 切回来能继续实时显示。
- * - 与 DB 记录 record_id 相同的, 用 live 对象覆盖(否则会显示落库前的空答案)
- * - DB 里还没有的(尚未落库), 追加到末尾
+ * Switch backSessionWhen, MemoryBelongs to thisSession, still in backgroundStreaming output in-flightMessageReconnectList,
+ * So streams not interrupted during switch-away, Switch backCan continue real-timeShow。
+ * - and DB record record_id same, override with live object (otherwise will show empty answer from database)
+ * - DB Still inNone(Not yetDatabase), AppendTo end
  */
 function attachActiveStreams() {
   const activeChats = ChatManagement.getActiveByChatId(currentChatId.value)
@@ -486,7 +486,7 @@ function getChatRecord() {
       if (paginationConfig.value.current_page === 1) {
         attachActiveStreams()
         nextTick(() => {
-          // 将滚动条滚动到最下面
+          // Scroll to the bottom
           AiChatRef.value.setScrollBottom()
         })
       }
@@ -505,7 +505,7 @@ const clickListHandle = (item: any) => {
     if (currentChatId.value !== 'new') {
       getChatRecord()
 
-      // 切换对话后，取消暂停的浏览器播放
+      // SwitchConversationAfter, CancelPauseBrowserPlay
       if (window.speechSynthesis.paused && window.speechSynthesis.speaking) {
         window.speechSynthesis.resume()
         nextTick(() => {
@@ -609,7 +609,7 @@ async function exportHTML(): Promise<void> {
 }
 
 /**
- *初始化历史对话记录
+ *InitializeHistoryConversationRecord
  */
 const init = () => {
   getChatLog()

@@ -21,7 +21,7 @@ def mcp_view(request):
         auth_header = request.headers.get("Authorization", "").replace("Bearer ", "")
         handler = MCPToolHandler(auth_header)
 
-        # 路由方法
+        # 路由Method
         if method == "initialize":
             result = handler.initialize()
 
@@ -41,7 +41,7 @@ def mcp_view(request):
                 }
             })
 
-        # 成功响应
+        # SuccessResponse
         return JsonResponse({
             "jsonrpc": "2.0",
             "id": request_id,

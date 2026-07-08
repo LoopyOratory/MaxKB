@@ -28,7 +28,7 @@ class BaseTextToVideoNode(ITextToVideoNode):
                 chat_record_id,
                 model_id_type=None, model_id_reference=None,
                 **kwargs) -> NodeResult:
-        # 处理引用类型
+        # Handle reference types
         if model_id_type == 'reference' and model_id_reference:
             reference_data = self.workflow_manage.get_reference_field(
                 model_id_reference[0],
@@ -54,7 +54,7 @@ class BaseTextToVideoNode(ITextToVideoNode):
         self.context['dialogue_type'] = dialogue_type
         self.context['negative_prompt'] = self.generate_prompt_question(negative_prompt)
         video_urls = ttv_model.generate_video(question, negative_prompt)
-        # 保存图片
+        # Save image
         if video_urls is None:
             return NodeResult({'answer': gettext('Failed to generate video')}, {})
         file_name = 'generated_video.mp4'

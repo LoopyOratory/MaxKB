@@ -8,15 +8,15 @@ const prefix = '/system/chat_user'
 
 
 /**
- * 用户列表
+ * UserList
  */
 const getChatUserList: (loading?: Ref<boolean>) => Promise<Result<ChatUserItem[]>> = (loading) => {
   return get(`${prefix}/list`, undefined, loading)
 }
 
 /**
- * 用户分页列表
- * @query 参数
+ * UserPaginationList
+ * @query Parameters
  username_or_nickname: string
  */
 const getUserManage: (
@@ -32,8 +32,8 @@ const getUserManage: (
 }
 
 /**
- * 删除用户
- * @param 参数 user_id,
+ * DeletionUser
+ * @param Parameters user_id,
  */
 const delUserManage: (user_id: string, loading?: Ref<boolean>) => Promise<Result<boolean>> = (
   user_id,
@@ -43,7 +43,7 @@ const delUserManage: (user_id: string, loading?: Ref<boolean>) => Promise<Result
 }
 
 /**
- * 创建用户
+ * CreationUser
  */
 const postUserManage: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -53,7 +53,7 @@ const postUserManage: (data: any, loading?: Ref<boolean>) => Promise<Result<any>
 }
 
 /**
- * 编辑用户
+ * EditUser
  */
 const putUserManage: (
   user_id: string,
@@ -64,7 +64,7 @@ const putUserManage: (
 }
 
 /**
- * 修改用户密码
+ * ModificationUserPassword
  */
 const putUserManagePassword: (
   user_id: string,
@@ -75,7 +75,7 @@ const putUserManagePassword: (
 }
 
 /**
- * 设置用户组
+ * Configure user group
  */
 const batchAddGroup: (data: any, loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -85,7 +85,7 @@ const batchAddGroup: (data: any, loading?: Ref<boolean>) => Promise<Result<any>>
 }
 
 /**
- * 批量删除
+ * BatchDeletion
  */
 const batchDelete: (data: string[], loading?: Ref<boolean>) => Promise<Result<any>> = (
   data,
@@ -95,7 +95,7 @@ const batchDelete: (data: string[], loading?: Ref<boolean>) => Promise<Result<an
 }
 
 /**
- * 同步用户
+ * SyncUser
  */
 const batchSync: (sync_type: string, loading?: Ref<boolean>) => Promise<Result<any>> = (
   sync_type,
@@ -105,7 +105,7 @@ const batchSync: (sync_type: string, loading?: Ref<boolean>) => Promise<Result<a
 }
 
 /**
- * 获取同步类型
+ * GetSyncType
  */
 const getSyncType: (loading?: Ref<boolean>) => Promise<Result<any>> = (loading) => {
   return get(`${prefix}/sync_types`, undefined, loading)

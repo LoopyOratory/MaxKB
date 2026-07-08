@@ -53,14 +53,14 @@ class ZhiPuTextToImage(MaxKBBaseModel, BaseTextToImage):
         )
         chat.invoke([HumanMessage([{"type": "text", "text": gettext("Hello")}])])
 
-        # self.generate_image('生成一个小猫图片')
+        # self.generate_image('GenerateOneCatImage')
 
     def generate_image(self, prompt: str, negative_prompt: str = None):
         chat = ZhipuAiClient(api_key=self.api_key, base_url=self.base_url)
         response = chat.images.generations(
-            model=self.model,  # 填写需要调用的模型编码
-            prompt=prompt,  # 填写需要生成图片的文本
-            **self.params,  # 填写额外参数
+            model=self.model,  # 填写NeedsCall的ModelEncoding
+            prompt=prompt,  # 填写NeedsGenerateImage的Text
+            **self.params,  # 填写ExtraParameters
         )
         file_urls = []
         try:

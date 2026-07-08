@@ -349,7 +349,7 @@
           </el-checkbox-group>
         </InfiniteScroll>
       </div>
-      <!-- 批量操作拦 -->
+      <!-- Batch actions bar -->
       <div class="mul-operation border-t w-full flex align-center" v-if="isBatch">
         <el-checkbox
           v-model="checkAll"
@@ -475,7 +475,7 @@ const applicationList = ref<any[]>([])
 const CopyApplicationDialogRef = ref()
 const BatchClearStrategyDialogRef = ref<InstanceType<typeof BatchClearStrategyDialog>>()
 
-// 批量操作
+// BatchActions
 const isBatch = ref(false)
 const multipleSelection = ref<any[]>([])
 const checkAll = ref(false)
@@ -567,7 +567,7 @@ function openMoveToDialog(data?: any) {
       id_list: multipleSelection.value,
     }
   } else {
-    // 仅2个参数就行
+    // Only 2 parameters are sufficient
     obj = {
       id: data.id,
       folder_id: data.folder,
@@ -579,7 +579,7 @@ function openMoveToDialog(data?: any) {
 
 function refreshApplicationList(row?: any) {
   if (row) {
-    // 不是根目录才会移除
+    // Not rootDirectoryOnly thenRemove
     if (folder.currentFolder?.parent_id) {
       const index = applicationList.value.findIndex((v) => v.id === row.id)
       applicationList.value.splice(index, 1)
@@ -792,7 +792,7 @@ function mapToUrlParams(map: any[]) {
     params.append(encodeURIComponent(item.name), encodeURIComponent(item.value))
   })
 
-  return params.toString() // 返回 URL 查询字符串
+  return params.toString() // Return URL QueryString
 }
 
 function copyApplication(row: any) {
@@ -882,7 +882,7 @@ const importApplication = (file: any) => {
     })
 }
 
-// 文件夹相关
+// FolderRelated
 const CreateFolderDialogRef = ref()
 
 function openCreateFolder() {
@@ -897,7 +897,7 @@ function getFolder(bool?: boolean) {
       folderList.value = res.data
 
       if (bool) {
-        // 初始化刷新
+        // InitializeRefresh
         folder.setCurrentFolder(res.data?.[0] || {})
       }
       getList()

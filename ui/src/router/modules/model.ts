@@ -23,7 +23,7 @@ const ModelRouter = {
       path: '/model',
       name: 'model-index',
       meta: {
-        title: '模型主页',
+        title: 'ModelHomepage',
         activeMenu: '/model',
         sameRoute: 'model',
       },

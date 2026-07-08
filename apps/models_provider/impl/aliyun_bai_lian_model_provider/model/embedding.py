@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: MaxKB
-    @Author：虎
-    @file： embedding.py
+    @Author: Tiger
+    @file: embedding.py
     @date：2024/10/16 16:34
     @desc:
 """
@@ -47,7 +47,7 @@ class AliyunBaiLianEmbedding(MaxKBBaseModel):
     def embed_documents(
             self, texts: List[str], chunk_size: int | None = None
     ) -> List[List[float]]:
-        # 处理多模态的向量化
+        # Process多模态的Vectorization
         if any(k in self.model_name for k in ("vl-embedding", "embedding-vision", "multimodal")):
             import dashscope
             dashscope.api_key = self.api_key

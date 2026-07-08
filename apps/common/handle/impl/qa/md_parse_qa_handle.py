@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： md_parse_qa_handle.py
+    @Author: Tiger
+    @file: md_parse_qa_handle.py
     @date：2024/5/21 14:59
     @desc:
 """
@@ -24,17 +24,17 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
         return False
 
     def parse_markdown_table(self, content):
-        """解析 Markdown 表格,返回表格数据列表"""
+        """Parse Markdown Table,ReturnTableDataList"""
         tables = []
         lines = content.split('\n')
         i = 0
 
         while i < len(lines):
             line = lines[i].strip()
-            # 检测表格开始(包含 | 符号)
+            # DetectTableStart(Contains | Symbol)
             if '|' in line and line.startswith('|'):
                 table_data = []
-                # 读取表头
+                # ReadHeader
                 header = [cell.strip() for cell in line.split('|')[1:-1]]
                 table_data.append(header)
                 i += 1
@@ -43,7 +43,7 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
                 if i < len(lines) and re.match(r'\s*\|[\s\-:]+\|\s*', lines[i]):
                     i += 1
 
-                # 读取数据行
+                # ReadData行
                 while i < len(lines):
                     line = lines[i].strip()
                     if not line.startswith('|'):
@@ -53,7 +53,7 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
                         table_data.append(row)
                     i += 1
 
-                if len(table_data) > 1:  # 至少有表头和一行数据
+                if len(table_data) > 1:  # 至少有Header和一行Data
                     tables.append(table_data)
             else:
                 i += 1
@@ -68,22 +68,22 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
     def handle(self, file, get_buffer, save_image):
         buffer = get_buffer(file)
         try:
-            # 检测编码并读取文件内容
+            # DetectEncoding并ReadFileContent
             encoding = detect(buffer)['encoding']
             content = buffer.decode(encoding if encoding else 'utf-8')
 
-            # 按 sheet 分割内容
+            # 按 sheet SplitContent
             sheet_sections = self.split_by_sheets(content)
 
             result = []
 
             for sheet_name, sheet_content in sheet_sections:
-                # 解析该 sheet 的表格
+                # Parse该 sheet 的Table
                 tables = self.parse_markdown_table(sheet_content)
 
                 paragraph_list = []
 
-                # 处理每个表格
+                # ProcessEachTable
                 for table in tables:
                     if len(table) < 2:
                         continue
@@ -91,7 +91,7 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
                     title_row_list = table[0]
                     title_row_index_dict = get_title_row_index_dict(title_row_list)
 
-                    # 处理表格的每一行数据
+                    # ProcessTable的每一行Data
                     for row in table[1:]:
                         content_text = get_row_value(row, title_row_index_dict, 'content')
                         if content_text is None:
@@ -119,14 +119,14 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
             return [{'name': file.name, 'paragraphs': []}]
 
     def split_by_sheets(self, content):
-        """按二级标题(##)分割 sheet"""
+        """按二级Title(##)Split sheet"""
         lines = content.split('\n')
         sheets = []
         current_sheet_name = None
         current_content = []
 
         for line in lines:
-            # 检测二级标题作为 sheet 名称
+            # Detect二级TitleAs sheet Name
             if line.strip().startswith('## '):
                 if current_sheet_name is not None:
                     sheets.append((current_sheet_name, '\n'.join(current_content)))
@@ -135,11 +135,11 @@ class MarkdownParseQAHandle(BaseParseQAHandle):
             else:
                 current_content.append(line)
 
-        # 添加最后一个 sheet
+        # AddLastOne sheet
         if current_sheet_name is not None:
             sheets.append((current_sheet_name, '\n'.join(current_content)))
 
-        # 如果没有找到 sheet 标题,返回整个内容
+        # IfNone找到 sheet Title,Return整个Content
         if not sheets:
             sheets.append(('default', content))
 

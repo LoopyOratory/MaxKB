@@ -1,8 +1,8 @@
 # coding=utf-8
 """
 @project: MaxKB
-@Author：虎
-@file： sync.py
+@Author: Tiger
+@file: sync.py
 @date：2024/8/20 21:37
 @desc:
 """

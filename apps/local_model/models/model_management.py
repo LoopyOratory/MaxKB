@@ -8,41 +8,41 @@ from local_model.models.user import User
 
 
 class Status(models.TextChoices):
-    """系统设置类型"""
-    SUCCESS = "SUCCESS", '成功'
+    """SystemSettingsType"""
+    SUCCESS = "SUCCESS", 'Success'
 
-    ERROR = "ERROR", "失败"
+    ERROR = "ERROR", "Failure"
 
-    DOWNLOAD = "DOWNLOAD", '下载中'
+    DOWNLOAD = "DOWNLOAD", 'Download中'
 
-    PAUSE_DOWNLOAD = "PAUSE_DOWNLOAD", '暂停下载'
+    PAUSE_DOWNLOAD = "PAUSE_DOWNLOAD", 'PauseDownload'
 
 
 class Model(AppModelMixin):
     """
-    模型数据
+    ModelData
     """
-    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="主键id")
+    id = models.UUIDField(primary_key=True, max_length=128, default=uuid.uuid7, editable=False, verbose_name="Primary keyid")
 
-    name = models.CharField(max_length=128, verbose_name="名称", db_index=True)
+    name = models.CharField(max_length=128, verbose_name="Name", db_index=True)
 
-    status = models.CharField(max_length=20, verbose_name='设置类型', choices=Status.choices,
+    status = models.CharField(max_length=20, verbose_name='SettingsType', choices=Status.choices,
                               default=Status.SUCCESS, db_index=True)
 
-    model_type = models.CharField(max_length=128, verbose_name="模型类型", db_index=True)
+    model_type = models.CharField(max_length=128, verbose_name="Model type", db_index=True)
 
-    model_name = models.CharField(max_length=128, verbose_name="模型名称", db_index=True)
+    model_name = models.CharField(max_length=128, verbose_name="ModelName", db_index=True)
 
     user = models.ForeignKey(User, on_delete=models.SET_NULL, db_constraint=False, blank=True, null=True)
 
-    provider = models.CharField(max_length=128, verbose_name='供应商', db_index=True)
+    provider = models.CharField(max_length=128, verbose_name='Provider', db_index=True)
 
-    credential = models.CharField(max_length=102400, verbose_name="模型认证信息")
+    credential = models.CharField(max_length=102400, verbose_name="ModelAuthenticationInfo")
 
-    meta = models.JSONField(verbose_name="模型元数据,用于存储下载,或者错误信息", default=dict)
+    meta = models.JSONField(verbose_name="Model元Data,Used forStorageDownload,OrErrorInfo", default=dict)
 
-    model_params_form = models.JSONField(verbose_name="模型参数配置", default=list)
-    workspace_id = models.CharField(max_length=64, verbose_name="工作空间id", default="default", db_index=True)
+    model_params_form = models.JSONField(verbose_name="ModelParametersConfiguration", default=list)
+    workspace_id = models.CharField(max_length=64, verbose_name="Workspace id", default="default", db_index=True)
 
     class Meta:
         db_table = "model"

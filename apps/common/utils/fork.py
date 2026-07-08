@@ -177,7 +177,7 @@ class Fork:
             tag_list = bf.find_all(**{field: re.compile("^(?!(http:|https:|tel:/|#|mailto:|javascript:)).*")})
             for tag in tag_list:
                 self.reset_url(tag, field, self.base_fork_url)
-            # 去掉 href 以 # 开头的锚点链接，保留文字
+            # Remove href 以 # 开头的锚点Link，Retain文字
         for a in bf.find_all("a", href=re.compile("^#")):
             a.unwrap()
         return bf

@@ -1,8 +1,8 @@
 # coding=utf-8
 """
     @project: maxkb
-    @Author：虎
-    @file： base_field.py
+    @Author: Tiger
+    @file: base_field.py
     @date：2023/10/31 18:07
     @desc:
 """
@@ -15,9 +15,9 @@ from django.utils.translation import gettext_lazy as _
 
 
 class TriggerType(Enum):
-    # 执行函数获取 OptionList数据
+    # ExecuteFunctionGet OptionListData
     OPTION_LIST = 'OPTION_LIST'
-    # 执行函数获取子表单
+    # ExecuteFunctionGet子Form
     CHILD_FORMS = 'CHILD_FORMS'
 
 
@@ -34,14 +34,14 @@ class BaseField:
                  props_info: Dict[str, object] = None):
         """
 
-        :param input_type: 字段
-        :param label: 提示
-        :param default_value: 默认值
-        :param relation_show_field_dict:        {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才显示
-        :param relation_trigger_field_dict:     {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才 执行函数获取 数据
-        :param trigger_type:                    执行器类型  OPTION_LIST请求Option_list数据 CHILD_FORMS请求子表单
-        :param attrs:                           前端attr数据
-        :param props_info:                      其他额外信息
+        :param input_type: Field
+        :param label: Tip
+        :param default_value: Default值
+        :param relation_show_field_dict:        {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly inShow
+        :param relation_trigger_field_dict:     {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly in ExecuteFunctionGet Data
+        :param trigger_type:                    Execute器Type  OPTION_LISTRequestOption_listData CHILD_FORMSRequest子Form
+        :param attrs:                           FrontendattrData
+        :param props_info:                      OtherExtraInfo
         """
         if props_info is None:
             props_info = {}
@@ -91,16 +91,16 @@ class BaseDefaultOptionField(BaseField):
                  props_info: Dict[str, object] = None):
         """
 
-        :param input_type:           字段
+        :param input_type:           Field
         :param label:           label
-        :param text_field:      文本字段
-        :param value_field:     值字段
-        :param option_list:     可选列表
-        :param required:        是否必填
-        :param default_value:   默认值
-        :param relation_show_field_dict:        {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才显示
-        :param attrs:                           前端attr数据
-        :param props_info:                      其他额外信息
+        :param text_field:      TextField
+        :param value_field:     值Field
+        :param option_list:     可选List
+        :param required:        WhetherRequired
+        :param default_value:   Default值
+        :param relation_show_field_dict:        {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly inShow
+        :param attrs:                           FrontendattrData
+        :param props_info:                      OtherExtraInfo
         """
         super().__init__(input_type, label, required, default_value, relation_show_field_dict,
                          {}, TriggerType.OPTION_LIST, attrs, props_info)
@@ -130,19 +130,19 @@ class BaseExecField(BaseField):
                  props_info: Dict[str, object] = None):
         """
 
-        :param input_type:  字段
-        :param label:  提示
-        :param text_field:  文本字段
-        :param value_field: 值字段
-        :param provider:    指定供应商
-        :param method:      执行供应商函数 method
-        :param required:    是否必填
-        :param default_value: 默认值
-        :param relation_show_field_dict:        {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才显示
-        :param relation_trigger_field_dict:     {field:field_value_list} 表示在 field有值 ,并且值在field_value_list中才 执行函数获取 数据
-        :param trigger_type:                    执行器类型  OPTION_LIST请求Option_list数据 CHILD_FORMS请求子表单
-        :param attrs:                           前端attr数据
-        :param props_info:                      其他额外信息
+        :param input_type:  Field
+        :param label:  Tip
+        :param text_field:  TextField
+        :param value_field: 值Field
+        :param provider:    SpecifyProvider
+        :param method:      ExecuteProviderFunction method
+        :param required:    WhetherRequired
+        :param default_value: Default值
+        :param relation_show_field_dict:        {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly inShow
+        :param relation_trigger_field_dict:     {field:field_value_list} Indicates in fieldHas value ,And value is infield_value_listOnly in ExecuteFunctionGet Data
+        :param trigger_type:                    Execute器Type  OPTION_LISTRequestOption_listData CHILD_FORMSRequest子Form
+        :param attrs:                           FrontendattrData
+        :param props_info:                      OtherExtraInfo
         """
         super().__init__(input_type, label, required, default_value, relation_show_field_dict,
                          relation_trigger_field_dict,

@@ -34,7 +34,7 @@
     </template>
     <div class="generate-prompt-dialog-bg border-r-8">
       <div class="scrollbar-height">
-        <!-- 生成内容 -->
+        <!-- GenerateContent -->
         <div class="p-16 pb-0 lighter">
           <el-scrollbar ref="scrollDiv">
             <div
@@ -73,7 +73,7 @@
           </div>
         </div>
 
-        <!-- 文本输入框 -->
+        <!-- TextInputDialog -->
 
         <div class="generate-prompt-operate p-16">
           <div v-if="showStopButton" class="text-center mb-8">
@@ -147,7 +147,7 @@ const apiType = computed(() => {
     return 'workspace'
   }
 })
-// 原始输入
+// OriginalInput
 const originalUserInput = ref<string>('')
 const dialogVisible = ref(false)
 const inputValue = ref<string>('')
@@ -160,32 +160,32 @@ const model_id = ref('')
 const model_params_setting = ref({})
 
 const promptTemplates = {
-  INIT_TEMPLATE: `你是资深的 Python 工程师，专注于为 MaxKB 平台的工具 / 数据源场景生成可直接运行的 Python 代码。严格遵守以下规则：
+  INIT_TEMPLATE: `You are a senior Python Engineer, focused on MaxKB PlatformTools / Data sourceScenarioGeneratecanDirectRun Python Code。StrictFollowBelowRule：
 
-- 仅输出纯 Python 代码块，无任何多余的文字解释、注释以外的说明；
-- 代码兼容 Python 3.8 及以上版本，符合 PEP8 编码规范，关键逻辑添加简洁中文注释；
-- 仅使用 MaxKB 内置依赖（如 requests、pymysql、pandas、json 等），不引入未声明的第三方库。
+- Only output pure Python code block, without any extra text beyond explanations and comment notes;
+- CodeCompatible Python 3.8 And aboveVersion，Matches PEP8 EncodingStandard, keyLogicAddConcise Chinese comments;
+- Only use MaxKB built-in dependencies (e.g., requests, pymysql, pandas, json, etc.), do not introduce undeclared third-party libraries.
 
 {userInput}
 
-请为 MaxKB 工具 生成 Python 代码，需求如下：
+Please for MaxKB Tools Generate Python Code, requirements as follows:
 
-- 核心功能：用户输入的主题 / 功能需求
-- 启动参数：平台配置的启动参数，如 API 密钥、数据库地址、账号密码等, 已声明参数：{initFieldList}
-- 输入参数：平台配置的输入参数，已声明参数：{inputFieldList}
-- 函数定义：依次列举所有启动参数和输入参数并声明返回类型
-- 输出要求：代码需接收输入参数，启动参数完成业务逻辑，仅输出函数定义
+- Core functionality:User inputTheme / Functional requirements
+- Start parameters: Platform configuration init parameters, such as API secret key, database address, account password, etc. Declared parameters: {initFieldList}
+- InputParameters：PlatformConfigurationInputParameters, already declaredParameters：{inputFieldList}
+- Function definition: List all start parameters and input parameters in order and declare return type
+- OutputRequires：CodeNeedsReceiveInputParameters，StartParametersCompleteBusinessLogic, onlyOutputFunctionDefinition
 `,
 }
 
-const isStreaming = ref<boolean>(false) // 是否正在流式输出
-const isPaused = ref<boolean>(false) // 是否暂停
-const fullContent = ref<string>('') // 完整内容缓存
-const currentDisplayIndex = ref<number>(0) // 当前显示到的字符位置
-let streamTimer: number | null = null // 定时器引用
+const isStreaming = ref<boolean>(false) // Whether currently streaming output
+const isPaused = ref<boolean>(false) // Whether paused
+const fullContent = ref<string>('') // Complete content cache
+const currentDisplayIndex = ref<number>(0) // Current display character position
+let streamTimer: number | null = null // Timer reference
 const isOutputComplete = ref<boolean>(false)
 
-// 模拟流式输出的定时器函数
+// Timer function simulating streaming output
 const startStreamingOutput = () => {
   if (streamTimer) {
     clearInterval(streamTimer)
@@ -196,7 +196,7 @@ const startStreamingOutput = () => {
 
   streamTimer = setInterval(() => {
     if (isApiComplete.value && !isPaused.value) {
-      // 更新显示内容
+      // Update display content
       const currentAnswer = chatMessages.value[chatMessages.value.length - 1]
       if (currentAnswer && currentAnswer.role === 'ai') {
         currentAnswer.content = fullContent.value
@@ -205,11 +205,11 @@ const startStreamingOutput = () => {
       return
     }
     if (!isPaused.value && currentDisplayIndex.value < fullContent.value.length) {
-      // 每次输出1-3个字符，模拟真实的流式输出
+      // Output 1-3 characters each time, simulating real streaming output
       const step = Math.min(3, fullContent.value.length - currentDisplayIndex.value)
       currentDisplayIndex.value += step
 
-      // 更新显示内容
+      // Update display content
       const currentAnswer = chatMessages.value[chatMessages.value.length - 1]
       if (currentAnswer && currentAnswer.role === 'ai') {
         currentAnswer.content = fullContent.value.substring(0, currentDisplayIndex.value)
@@ -220,7 +220,7 @@ const startStreamingOutput = () => {
   }, 50) as any
 }
 
-// 停止流式输出
+// Stop streaming output
 const stopStreaming = () => {
   if (streamTimer) {
     clearInterval(streamTimer)
@@ -236,13 +236,13 @@ const showStopButton = computed(() => {
   return isStreaming.value
 })
 
-// 暂停流式输出
+// Pause streaming output
 const pauseStreaming = () => {
   isPaused.value = true
   isStreaming.value = false
 }
 
-// 继续流式输出
+// Continue streaming output
 const continueStreaming = () => {
   if (currentDisplayIndex.value < fullContent.value.length) {
     startStreamingOutput()
@@ -250,17 +250,17 @@ const continueStreaming = () => {
 }
 
 /**
- * 获取一个递归函数,处理流式数据
- * @param chat    每一条对话记录
- * @param reader  流数据
- * @param stream  是否是流式数据
+ * Get a recursive function to process streaming data
+ * @param chat    Each conversation record
+ * @param reader  Stream data
+ * @param stream  Whether it is streaming data
  */
 const getWrite = (reader: any) => {
   let tempResult = ''
   const middleAnswer = reactive({ content: '', role: 'ai' })
   chatMessages.value.push(middleAnswer)
 
-  // 初始化状态并
+  // Initialize state and
   fullContent.value = ''
   currentDisplayIndex.value = 0
   isOutputComplete.value = false
@@ -269,20 +269,20 @@ const getWrite = (reader: any) => {
 
   /**
    *
-   * @param done  是否结束
-   * @param value 值
+   * @param done  Whether ended
+   * @param value Value
    */
   const write_stream = ({ done, value }: { done: boolean; value: any }) => {
     try {
       if (done) {
-        // 流数据接收完成，但定时器继续运行直到显示完所有内容
+        // Stream data received completely, but timer continues running until all content is displayed
         loading.value = false
         isApiComplete.value = true
         return
       }
       const decoder = new TextDecoder('utf-8')
       let str = decoder.decode(value, { stream: true })
-      // 这里解释一下 start 因为数据流返回流并不是按照后端chunk返回 我们希望得到的chunk是data:{xxx}\n\n 但是它获取到的可能是 data:{ -> xxx}\n\n 总而言之就是 fetch不能保证每个chunk都说以data:开始 \n\n结束
+      // Explanation start Because the data stream return is not aligned with backend chunks. We expect chunks as data:{xxx}\n\n but may receive partial chunks like data:{ -> xxx}\n\n. In summary, fetch cannot guarantee each chunk starts with data: and ends with \n\n
       tempResult += str
       const split = tempResult.match(/data:.*}\n\n/g)
       if (split) {
@@ -291,7 +291,7 @@ const getWrite = (reader: any) => {
       } else {
         return reader.read().then(write_stream)
       }
-      // 这里解释一下 end
+      // Explanation end
       if (str && str.startsWith('data:')) {
         if (split) {
           for (const index in split) {
@@ -303,7 +303,7 @@ const getWrite = (reader: any) => {
               return Promise.reject(new Error(chunk.error))
             }
             if (!chunk.is_end) {
-              // 实时将新接收的内容添加到完整内容中
+              // Add newly received content to the complete content in real time
               fullContent.value += chunk.content
               if (!streamingStarted) {
                 streamingStarted = true
@@ -336,7 +336,7 @@ const answer = computed(() => {
   return ''
 })
 
-// 按钮状态计算
+// Calculate button state
 const showContinueButton = computed(() => {
   return (
     !isStreaming.value && isPaused.value && currentDisplayIndex.value < fullContent.value.length
@@ -362,7 +362,7 @@ function generatePrompt(inputValue: any) {
     .then((response: any) => {
       nextTick(() => {
         if (dialogScrollbar.value) {
-          // 将滚动条滚动到最下面
+          // Scroll to the bottom
           scrollDiv.value.setScrollTop(getMaxHeight())
         }
       })
@@ -371,11 +371,11 @@ function generatePrompt(inputValue: any) {
     })
 }
 
-// 重新生成点击
+// Re-generate click
 const reAnswerClick = () => {
   if (originalUserInput.value) {
     generatePrompt(
-      `上一次回答不满意。请针对原始问题"${originalUserInput.value}"并结合对话记录，严格按照格式规范重新生成。`,
+      `The previous answer was unsatisfactory. Regarding the original question "${originalUserInput.value}" and based on the conversation record, strictly re-generate following the format standard.`,
     )
   }
 }
@@ -384,7 +384,7 @@ const quickInputRef = ref()
 
 const handleSubmit = (event?: any) => {
   if (!event?.ctrlKey && !event?.shiftKey && !event?.altKey && !event?.metaKey) {
-    // 如果没有按下组合键，则会阻止默认事件
+    // If no modifier key is pressed, block the default event
     event?.preventDefault()
     if (!inputValue.value.trim() || loading.value || isStreaming.value || !model_id.value) {
       return
@@ -400,7 +400,7 @@ const handleSubmit = (event?: any) => {
       inputValue.value = ''
     }
   } else {
-    // 如果同时按下ctrl/shift/cmd/opt +enter，则会换行
+    // If ctrl/shift/cmd/opt + enter is pressed simultaneously, insert a newline
     insertNewlineAtCursor(event)
   }
 }
@@ -410,12 +410,12 @@ const insertNewlineAtCursor = (event?: any) => {
   ) as HTMLTextAreaElement
   const startPos = textarea.selectionStart
   const endPos = textarea.selectionEnd
-  // 阻止默认行为（避免额外的换行符）
+  // Block default behavior (avoid extra newlines)
   event.preventDefault()
-  // 在光标处插入换行符
+  // At cursor, insert newline
   inputValue.value = inputValue.value.slice(0, startPos) + '\n' + inputValue.value.slice(endPos)
   nextTick(() => {
-    textarea.setSelectionRange(startPos + 1, startPos + 1) // 光标定位到换行后位置
+    textarea.setSelectionRange(startPos + 1, startPos + 1) // Position cursor after newline
   })
 }
 
@@ -478,13 +478,13 @@ const getMaxHeight = () => {
 }
 
 /**
- * 处理跟随滚动条
+ * Handle scroll following
  */
 const handleScroll = () => {
   if (scrollDiv.value) {
-    // 内部高度小于外部高度 就需要出滚动条
+    // Scrollbar needed when inner height exceeds outer height
     if (scrollDiv.value.wrapRef.offsetHeight < dialogScrollbar.value?.scrollHeight) {
-      // 如果当前滚动条距离最下面的距离在 规定距离 滚动条就跟随
+      // If the current scrollbar distance from the bottom is within the specified range, make the scrollbar follow
       scrollDiv.value.setScrollTop(getMaxHeight())
     }
   }
@@ -492,30 +492,30 @@ const handleScroll = () => {
 
 const handleDialogClose = (done: () => void) => {
   if (answer.value) {
-    // 弹出 消息
+    // Show popup message
     MsgConfirm(t('common.tip'), t('views.application.generateDialog.exit'), {
       confirmButtonText: t('common.confirm'),
       cancelButtonText: t('common.cancel'),
       distinguishCancelAndClose: true,
     })
       .then(() => {
-        // 点击确认，清除状态
+        // Click confirm, clear state
         stopStreaming()
         chatMessages.value = []
         fullContent.value = ''
         currentDisplayIndex.value = 0
         isOutputComplete.value = false
-        done() // 真正关闭
+        done() // Actually close
       })
       .catch(() => {
-        // 点击取消
+        // Click cancel
       })
   } else {
     done()
   }
 }
 
-// 组件卸载时清理定时器
+// Clean up timer when component unmounts
 onUnmounted(() => {
   stopStreaming()
 })
