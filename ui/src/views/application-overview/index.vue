@@ -9,10 +9,17 @@
           </h4>
           <el-card shadow="never" class="overview-card" v-loading="loading">
             <div class="title flex align-center">
-              <div class="edit-avatar mr-12">
-                <el-avatar shape="square" :size="32" style="background: none">
+              <div class="edit-avatar mr-12" @click="handleIconClick" v-loading="iconUploading">
+                <el-avatar shape="square" :size="32" style="background: none; cursor: pointer">
                   <img :src="resetUrl(detail?.icon, resetUrl('./favicon.ico'))" alt="" />
                 </el-avatar>
+                <input
+                  ref="iconInputRef"
+                  type="file"
+                  accept="image/jpeg,image/png,image/gif,image/svg+xml"
+                  style="display: none"
+                  @change="handleIconUpload"
+                />
               </div>
 
               <h4>{{ detail?.name || '-' }}</h4>
@@ -210,6 +217,8 @@ import { EditionConst } from '@/utils/permission/data'
 import { hasPermission } from '@/utils/permission/index'
 import permissionMap from '@/permission'
 import { loadSharedApi } from '@/utils/dynamics-api/shared-api'
+import { MsgError, MsgSuccess } from '@/utils/message'
+import { t } from '@/locales'
 
 const route = useRoute()
 const {
@@ -238,6 +247,41 @@ const accessToken = ref<any>({})
 const detail = ref<any>(null)
 
 const loading = ref(false)
+const iconUploading = ref(false)
+const iconInputRef = ref<HTMLInputElement>()
+
+const handleIconClick = () => {
+  iconInputRef.value?.click()
+}
+
+const handleIconUpload = async (event: Event) => {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+
+  if (file.size / 1024 / 1024 >= 10) {
+    MsgError('File size exceeds 10 MB')
+    input.value = ''
+    return
+  }
+
+  iconUploading.value = true
+  try {
+    const api = loadSharedApi({ type: 'application', systemType: apiType.value })
+    const res: any = await api.postUploadFile(file, id, 'APPLICATION', iconUploading)
+    const iconPath = res?.data
+    if (iconPath && typeof iconPath === 'string') {
+      await api.putApplication(id, { icon: iconPath })
+      detail.value.icon = iconPath
+      MsgSuccess(t('common.saveSuccess'))
+    }
+  } catch {
+    MsgError('Upload failed')
+  } finally {
+    iconUploading.value = false
+    input.value = ''
+  }
+}
 
 const urlParams = computed(() =>
   mapToUrlParams(apiInputParams.value) ? '?' + mapToUrlParams(apiInputParams.value) : '',

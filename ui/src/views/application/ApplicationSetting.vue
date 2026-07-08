@@ -69,22 +69,6 @@
                   />
                 </el-form-item>
 
-                <el-form-item :label="$t('views.application.form.appIcon')">
-                  <IconUploader
-                    v-model="applicationForm.icon"
-                    :application-id="id"
-                    shape="square"
-                  />
-                </el-form-item>
-
-                <el-form-item :label="$t('views.application.form.userIcon')">
-                  <IconUploader
-                    v-model="applicationForm.user_avatar"
-                    :application-id="id"
-                    shape="circle"
-                  />
-                </el-form-item>
-
                 <el-form-item :label="$t('views.application.form.aiModel.label')">
                   <template #label>
                     <div class="flex-between">
@@ -984,7 +968,6 @@ import ToolDialog from '@/views/application/component/ToolDialog.vue'
 import ApplicationDialog from '@/views/application/component/ApplicationDialog.vue'
 import useStore from '@/stores'
 import LongTermSettingDialog from '@/views/application/component/LongTermSettingDialog.vue'
-import IconUploader from '@/views/application/component/IconUploader.vue'
 const route = useRoute()
 const router = useRouter()
 const {
