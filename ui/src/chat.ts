@@ -98,7 +98,7 @@ for (const [key, component] of Object.entries(ElementPlusIcons)) {
   app.component(key, component)
 }
 const locale_map: any = {
-  'en-US': zhCn,
+  'zh-CN': zhCn,
   'zh-Hant': zhTW,
   'en-US': enUs,
 }
