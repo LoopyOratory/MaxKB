@@ -646,6 +646,8 @@ class ApplicationEditSerializer(serializers.Serializer):
     problem_optimization = serializers.BooleanField(required=False, allow_null=True, label=_("Question completion"))
     icon = serializers.CharField(required=False, allow_null=True, label=_("Icon"))
 
+    user_avatar = serializers.CharField(required=False, allow_null=True, allow_blank=True, label=_("User Icon"))
+
     model_params_setting = serializers.DictField(required=False, label=_("Model parameters"))
 
     tts_model_enable = serializers.BooleanField(required=False, label=_("Voice playback enabled"))
@@ -1149,6 +1151,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             "stt_model_params_setting": "stt_model_params_setting",
             "problem_optimization": "problem_optimization",
             "icon": "icon",
+            "user_avatar": "user_avatar",
             "work_flow": "work_flow",
             "problem_optimization_prompt": "problem_optimization_prompt",
             "tts_model_id": "tts_model_id",
@@ -1364,6 +1367,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             "file_upload_setting",
             "api_key_is_active",
             "icon",
+            "user_avatar",
             "work_flow",
             "model_params_setting",
             "tts_model_params_setting",

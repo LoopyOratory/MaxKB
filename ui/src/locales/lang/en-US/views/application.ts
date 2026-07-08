@@ -63,6 +63,8 @@ After disabling, the long-term memory of the conversation users will be cleared,
       placeholder:
         'Describe the Agent scenario and use, e.g.: XXX assistant answering user questions about XXX product usage',
     },
+    appIcon: 'Agent Icon',
+    userIcon: 'User Icon',
     appType: {
       simplePlaceholder: 'Suitable for beginners to create assistant.',
       workflowPlaceholder: 'Suitable for advanced users to customize the workflow of assistant',

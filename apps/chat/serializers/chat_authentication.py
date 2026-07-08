@@ -157,6 +157,19 @@ class ApplicationProfileSerializer(serializers.Serializer):
                                             'show_share': application_setting.show_share,
                                             'float_location': application_setting.float_location,
                                             'chat_background': application_setting.chat_background}
+        # Fallback for open-source when application_setting model is not available
+        if not application_setting_dict:
+            application_setting_dict = {
+                'show_source': application_access_token.show_source,
+                'show_history': True,
+                'draggable': True,
+                'show_guide': True,
+                'avatar': application.icon if application.icon else None,
+                'show_avatar': True,
+                'user_avatar': application.user_avatar or None,
+                'show_user_avatar': bool(application.user_avatar),
+                'show_share': True,
+            }
         base_node = [node for node in ((application.work_flow or {}).get('nodes', []) or []) if
                      node.get('id') == 'base-node']
         return {**ApplicationSerializerModel(application).data,

@@ -69,6 +69,22 @@
                   />
                 </el-form-item>
 
+                <el-form-item :label="$t('views.application.form.appIcon')">
+                  <IconUploader
+                    v-model="applicationForm.icon"
+                    :application-id="id"
+                    shape="square"
+                  />
+                </el-form-item>
+
+                <el-form-item :label="$t('views.application.form.userIcon')">
+                  <IconUploader
+                    v-model="applicationForm.user_avatar"
+                    :application-id="id"
+                    shape="circle"
+                  />
+                </el-form-item>
+
                 <el-form-item :label="$t('views.application.form.aiModel.label')">
                   <template #label>
                     <div class="flex-between">
@@ -968,6 +984,7 @@ import ToolDialog from '@/views/application/component/ToolDialog.vue'
 import ApplicationDialog from '@/views/application/component/ApplicationDialog.vue'
 import useStore from '@/stores'
 import LongTermSettingDialog from '@/views/application/component/LongTermSettingDialog.vue'
+import IconUploader from '@/views/application/component/IconUploader.vue'
 const route = useRoute()
 const router = useRouter()
 const {
@@ -1076,6 +1093,7 @@ const applicationForm = ref<ApplicationFormType>({
   long_term_model_params_setting: {},
   long_term_trigger_setting: { rounds: 10 },
   long_term_trigger_type: 'ROUND',
+  user_avatar: '',
 })
 
 const rules = reactive<FormRules<ApplicationFormType>>({

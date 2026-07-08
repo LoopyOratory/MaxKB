@@ -14,6 +14,7 @@ interface ApplicationFormType {
   problem_optimization?: boolean
   problem_optimization_prompt?: string
   icon?: string | undefined
+  user_avatar?: string | undefined
   type?: string
   work_flow?: any
   model_params_setting?: any
