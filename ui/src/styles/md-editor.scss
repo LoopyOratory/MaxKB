@@ -8,16 +8,39 @@
   }
 }
 
+.md-editor-preview-wrapper,
+.md-editor-preview {
+  background: transparent !important;
+}
+
 .md-editor-preview {
   padding: 0;
   margin: 0;
   font-size: inherit;
   word-break: break-word;
+  color: var(--md-color, var(--el-text-color-primary)) !important;
   table {
     display: block;
+    th,
+    td {
+      border-color: var(--el-border-color-lighter) !important;
+    }
+    th {
+      background: var(--el-fill-color-light) !important;
+    }
   }
   p {
     padding: 0 !important;
+  }
+  code,
+  pre {
+    background: var(--el-fill-color-light) !important;
+    color: var(--el-text-color-primary) !important;
+  }
+  blockquote {
+    background: var(--el-fill-color-light) !important;
+    border-left-color: var(--el-color-primary) !important;
+    color: var(--el-text-color-secondary) !important;
   }
   .md-editor-admonition {
     margin: 0;
