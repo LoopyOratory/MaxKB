@@ -1,0 +1,236 @@
+MaxKB — Agent Embed & Chat UI Theming Plan
+============================================
+Status: proposed, not yet implemented
+Scope: embedded widget (iframe + floating script) and the chat UI (embed/pc/mobile
+       chat views). Does NOT touch the admin dashboard theme system (separate,
+       already implemented in stores/modules/theme.ts).
+
+
+0. CURRENT STATE (codebase findings that shaped this plan)
+------------------------------------------------------------
+- Community edition currently has ZERO theme data. The `custom_theme` concept
+  (theme_color, header_font_color) only exists on the Enterprise/Professional
+  path: ui/src/views/application-overview/xpack-component/XPackDisplaySettingDialog.vue,
+  gated by hasPermission([EditionConst.IS_EE, EditionConst.IS_PE]), backed by a
+  dynamically loaded `application_setting` model (apps/common/database_model_manage).
+  The community fallback dict in apps/chat/serializers/chat_authentication.py
+  (~line 161-172) does not include a custom_theme key at all today.
+
+- The chat UI is already wired to CONSUME a theme, it just has nothing feeding
+  it in community edition. ui/src/views/chat/embed/index.vue (lines 5-18) sets
+  --el-color-primary and two light variants from
+  applicationDetail.custom_theme.theme_color.
+
+- Existing gap even on the EE path: only 3 of the ~9 CSS variables Element Plus
+  needs are overridden (--el-color-primary, light-9, light-6). component.scss /
+  app.scss also depend on light-3, light-5, light-7, light-8, dark-2 for
+  buttons, tags, and chat bubbles. Those silently stay MaxKB-blue regardless of
+  the picked color. This plan fixes that as a side effect.
+
+- No dark-mode infrastructure exists anywhere in the frontend: no .dark class,
+  no prefers-color-scheme handling, no alternate token set. The neutral dark
+  preset is genuinely new work.
+
+- Established repo pattern for porting an EE-only customization into community
+  edition (see commits b75bd80d7, 293cdd351, 7049556bf — icon/avatar upload):
+  add the field directly to Application + ApplicationVersion models, write a
+  migration, extend the serializer, extend the community fallback dict in
+  chat_authentication.py, build the UI, add i18n. This plan follows the same
+  shape for `theme` so it's consistent with how this project already works.
+
+- Given the placement requested (Get Embed dialog, not the EE Display Settings
+  dialog), this is a COMMUNITY-FIRST feature: a preset picker (not an arbitrary
+  color picker — that stays an EE differentiator), stored directly on
+  Application.
+
+
+1. THE PALETTE — 8 mutually-exclusive presets
+------------------------------------------------------------
+7 hues + 1 neutral dark, single-select swatch row. Rather than hand-picking
+every shade (the EE picker today has no ramp logic at all), derive each preset
+from one base hex algorithmically — same idea as `useElementPlusTheme`
+(already a dependency, already used by ui/src/stores/modules/theme.ts) — so
+light-3 through dark-2 are generated, not guessed, and stay correct if a base
+hex is ever tweaked.
+
+  Preset   | Base hex  | On-primary text        | Rationale
+  ---------|-----------|-------------------------|----------------------------
+  Red      | #DC2626   | white                   | ~4.8:1 contrast w/ white
+  Orange   | #EA580C   | white                   |
+  Yellow   | #CA8A04   | black (#1F2329)         | Full-sat yellow fails white
+                                                    text contrast at any
+                                                    usable lightness
+  Green    | #16A34A   | white                   |
+  Blue     | #3370FF   | white                   | MaxKB's existing brand blue
+                                                    — becomes the default,
+                                                    zero visual change for
+                                                    existing agents
+  Indigo   | #4F46E5   | white                   |
+  Violet   | #7C3AED   | white                   |
+  Dark     | (neutral, surface-based, not hue)    | See section 2
+
+Text color is NOT hardcoded per swatch. Compute relative luminance of the base
+hex and pick white or #1F2329 (matches the app's existing primary text token)
+at a ~0.4 luminance threshold. This is a ~15-line utility; adding a 9th preset
+later won't require a design review to pick text color by eye.
+
+Each hue preset expands to the full Element Plus ramp: primary, light-3, -5,
+-6, -7, -8, -9, dark-2. Reuse useElementPlusTheme's generation instead of the
+current hand-rolled 3-variable patch.
+
+
+2. THE DARK PRESET IS A DIFFERENT AXIS, NOT AN 8TH HUE
+------------------------------------------------------------
+"Neutral dark mode" changes surfaces, not just the accent color. It needs its
+own token set, scoped only to the chat surfaces (embed/pc/mobile chat views),
+NOT the admin dashboard:
+
+  Token                          | Light (current)  | Dark
+  --------------------------------|-------------------|------------------
+  --app-layout-bg-color           | #f5f6f7           | #16171A
+  --app-header-bg-color           | gradient          | flat #1B1C1F
+  --dialog-bg-gradient-color      | light gradient    | flat #1B1C1F
+  --app-view-bg-color (bubbles)   | #ffffff           | #202225
+  --el-text-color-primary         | #1f2329           | #F5F5F5
+  --app-text-color-secondary      | #646a73           | #A6ADBB
+  --el-border-color               | light gray        | rgba(255,255,255,.08)
+  accent (--el-color-primary)     | —                 | slate-blue #8B93A7
+                                                          (own mini-ramp)
+
+Needs a scoped class (e.g. .chat-embed--dark) applied at the root of the three
+chat views, NOT a global data-theme switch, so it never touches the admin UI.
+
+
+3. DATA MODEL & BACKEND (mirrors the icon/avatar precedent exactly)
+------------------------------------------------------------
+Model
+  Add to both Application and ApplicationVersion in
+  apps/application/models/application.py (next to icon / user_avatar, ~line 77
+  and ~line 162):
+
+    theme = models.CharField(max_length=32,
+                              verbose_name="Chat widget theme preset",
+                              default="blue", blank=True)
+
+  Choices: red | orange | yellow | green | blue | indigo | violet | dark.
+  Default "blue" preserves current visual behavior for every existing agent —
+  no silent redesign on upgrade.
+
+Migration
+  New file mirroring apps/application/migrations/0014_application_user_avatar.py,
+  adding the column to both application and application_version tables.
+
+Serializer
+  ApplicationSerializerModel picks it up automatically (fields = "__all__").
+  Add explicit `theme` field to ApplicationEditSerializer (~line 647) and to
+  ApplicationOperateSerializer's field lists (~lines 1151, 1369), exactly like
+  user_avatar was added in b75bd80d7.
+  Do NOT add it to the version->application update_field_dict sync map
+  (chat_authentication.py ~line 100) — icon/user_avatar aren't in there either;
+  theme is a live display setting, not versioned workflow content.
+
+Community fallback
+  Extend the open-source fallback dict at chat_authentication.py (~lines
+  161-172):
+
+    'theme': application.theme or 'blue',
+
+Precedence with EE
+  If application_setting.custom_theme.theme_color (arbitrary hex, EE-only) is
+  set, it wins over the community `theme` preset. EE users keep their
+  finer-grained control; the preset system is the default tier everyone gets.
+
+Floating embed widget
+  apps/chat/serializers/chat_embed_serializers.py + apps/chat/template/embed.js
+  currently only thread header_font_color through for the open/close icon
+  fills. Recommend NOT expanding the Django-templated JS to carry the full
+  ramp — keep the floating chrome neutral/icon-only as-is, and let the iframe
+  (which already receives full applicationDetail) own all real color theming.
+  Less surface area, no snippet regeneration needed when a user changes their
+  theme later.
+
+
+4. FRONTEND THEMING ENGINE
+------------------------------------------------------------
+Extend ui/src/utils/theme.ts (already home to hexToRgba) with:
+  - AGENT_THEME_PRESETS — the registry from section 1, plus the dark surface
+    tokens from section 2.
+  - getContrastText(hex) — luminance-based white/black decision.
+  - applyAgentTheme(el, presetKey) — sets the full Element Plus ramp via
+    useElementPlusTheme generation, plus (for "dark") the surface tokens, all
+    scoped to the chat root element's inline style / class — not global
+    :root, so multiple embeds on one host page never collide.
+
+Update the 3 chat views:
+  - ui/src/views/chat/embed/index.vue (lines 5-18)
+  - ui/src/views/chat/pc/index.vue
+  - ui/src/views/chat/mobile/index.vue
+to call applyAgentTheme instead of the current manual 3-variable patch.
+
+
+5. UX — WHERE IT LIVES IN THE GET EMBED DIALOG
+------------------------------------------------------------
+ui/src/views/application-overview/component/EmbedDialog.vue currently has no
+footer, no persistence, no state beyond three read-only code blocks. Add a new
+section above the existing 3-column code grid (dialog stays 900px wide, no
+need for tabs):
+
+  +-----------------------------------------------------------+
+  |  Widget theme                                    [Save]   |
+  |  o o o o o o o (D)   <- 8 circular swatches, selected=ring |
+  |                                                             |
+  |  +----------------------+                                  |
+  |  |  mini chat header    |  <- live preview: header bar in  |
+  |  |  (icon) Agent Name X |     on-primary text, one user    |
+  |  |                      |     bubble + one agent bubble,   |
+  |  |        [user bubble] |     send button — restyled       |
+  |  |  [agent bubble]      |     instantly on swatch click     |
+  |  |  [Send...........>]  |                                  |
+  |  +----------------------+                                  |
+  +-------------------------------------------------------------+
+  |  (existing) Fullscreen | Mobile | Floating code cards        |
+  +-------------------------------------------------------------+
+
+  - Swatch click updates the local preview instantly (no round trip) —
+    satisfies "preview how the chosen color looks" directly.
+  - Explicit Save button persists via the same application-update call already
+    used for inline icon upload in application-overview/index.vue (pattern
+    from 7049556bf), sending { theme: 'orange' }. Toast on success.
+  - The 8th swatch (dark) rendered visually distinct (half-moon icon or a
+    small "Aa" sample on near-black) so it doesn't read as just another hue.
+  - Preview built as a reusable ThemePreview.vue component — useful later if
+    this needs to appear elsewhere (e.g. EE Display Settings dialog could
+    offer presets as quick picks above its arbitrary picker).
+
+
+6. I18N
+------------------------------------------------------------
+Add preset labels (theme.presets.red, .orange, ... .dark) to all three locale
+files (en-US, zh-CN, zh-Hant), matching the existing admin theme.ts locale
+file structure.
+
+
+7. SUGGESTED IMPLEMENTATION SEQUENCE (commit-sized, matching repo style)
+------------------------------------------------------------
+  1. Backend: theme field on Application/ApplicationVersion + migration
+  2. Backend: serializer wiring + community fallback in chat_authentication.py
+  3. Frontend: theme.ts preset registry + contrast/ramp utilities
+  4. Frontend: wire the 3 chat views to consume the new preset system
+     (replaces the incomplete manual patch)
+  5. Frontend: dark-mode surface tokens + scoped .chat-embed--dark styles
+  6. Frontend: ThemePreview.vue + swatch picker, integrated into
+     EmbedDialog.vue with save/persist
+  7. i18n labels across 3 locales
+  8. QA pass: contrast check per preset, visual check of all 8 across
+     fullscreen/mobile/floating embed modes, verify EE precedence still
+     works, verify default "blue" renders identically to pre-change agents
+
+
+8. OPEN QUESTION
+------------------------------------------------------------
+Should the dark preset's accent color (section 2, currently proposed as a
+fixed slate-blue) be FIXED, or should dark mode be combinable with one of the
+7 hues (i.e. "orange, but dark surface")? The original request phrasing
+("these color presets AND one neutral dark mode") reads as 8 mutually
+exclusive options, which is what this plan is built around — flagging it
+since a combinable model would roughly double the preview/testing matrix.

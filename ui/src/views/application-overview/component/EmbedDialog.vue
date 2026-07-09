@@ -7,6 +7,19 @@
     :close-on-click-modal="false"
     :close-on-press-escape="false"
   >
+    <!-- Theme picker section -->
+    <div class="embed-dialog__theme-section mb-16">
+      <div class="flex-between mb-8">
+        <span class="bold">{{ $t('theme.widgetTheme') }}</span>
+        <el-button type="primary" size="small" @click="handleSave" :loading="saving">
+          {{ $t('common.save') }}
+        </el-button>
+      </div>
+      <ThemePreview v-model="selectedTheme" />
+    </div>
+
+    <el-divider />
+
     <el-row :gutter="12">
       <el-col :span="8">
         <div class="border">
@@ -83,23 +96,33 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { copyClick } from '@/utils/clipboard'
+import { MsgSuccess } from '@/utils/message'
+import { t } from '@/locales'
 import useStore from '@/stores'
+import ThemePreview from './ThemePreview.vue'
+import { loadSharedApi } from '@/utils/dynamics-api/shared-api'
 
 const { application } = useStore()
 
 const props = defineProps({
   data: Object,
   apiInputParams: String,
+  apiType: {
+    type: String,
+    default: 'workspace',
+  },
 })
 
-const emit = defineEmits(['addData'])
+const emit = defineEmits(['addData', 'themeSaved'])
 
 const dialogVisible = ref<boolean>(false)
+const saving = ref(false)
 
 const source1 = ref('')
-
 const source2 = ref('')
 const source3 = ref('')
+
+const selectedTheme = ref('blue')
 
 const urlParams1 = computed(() => (props.apiInputParams ? '?' + props.apiInputParams : ''))
 const urlParams2 = computed(() => (props.apiInputParams ? '&' + props.apiInputParams : ''))
@@ -115,6 +138,9 @@ watch(dialogVisible, (bool) => {
 })
 
 const open = (val: string) => {
+  // Sync selected theme from application data
+  selectedTheme.value = props.data?.theme || 'blue'
+
   source1.value = `<iframe
 src="${application.location + val + urlParams1.value}"
 style="width: 100%; height: 100%;"
@@ -132,6 +158,7 @@ src="${application.location}api/embed?protocol=${window.location.protocol.replac
   )}&host=${window.location.host}&token=${val}${urlParams2.value}">
 <\/script>
 `
+
   source3.value = `<iframe
 src="${application.location + val + urlParams3.value}"
 style="width: 100%; height: 100%;"
@@ -141,6 +168,21 @@ allow="microphone">
 `
 
   dialogVisible.value = true
+}
+
+const handleSave = async () => {
+  if (!props.data?.id) return
+  saving.value = true
+  try {
+    const api = loadSharedApi({ type: 'application', systemType: props.apiType })
+    await api.putApplication(props.data.id, { theme: selectedTheme.value })
+    MsgSuccess(t('common.saveSuccess'))
+    emit('themeSaved', selectedTheme.value)
+  } catch {
+    // Error handled by API interceptor
+  } finally {
+    saving.value = false
+  }
 }
 
 defineExpose({ open })
@@ -158,6 +200,14 @@ defineExpose({ open })
     font-size: 13px;
     white-space: pre;
     height: 210px;
+  }
+
+  &__theme-section {
+    .bold {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--app-text-color);
+    }
   }
 }
 </style>

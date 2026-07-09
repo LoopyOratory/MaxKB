@@ -188,6 +188,8 @@
       ref="EmbedDialogRef"
       :data="detail"
       :api-input-params="mapToUrlParams(apiInputParams)"
+      :api-type="apiType"
+      @theme-saved="handleThemeSaved"
     />
     <APIKeyDialog ref="APIKeyDialogRef" />
 
@@ -278,6 +280,12 @@ const handleIconUpload = async (event: Event) => {
   } finally {
     iconUploading.value = false
     input.value = ''
+  }
+}
+
+const handleThemeSaved = (theme: string) => {
+  if (detail.value) {
+    detail.value.theme = theme
   }
 }
 

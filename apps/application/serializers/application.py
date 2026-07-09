@@ -648,6 +648,8 @@ class ApplicationEditSerializer(serializers.Serializer):
 
     user_avatar = serializers.CharField(required=False, allow_null=True, allow_blank=True, label=_("User Icon"))
 
+    theme = serializers.CharField(required=False, allow_null=True, allow_blank=True, label=_("Chat widget theme preset"))
+
     model_params_setting = serializers.DictField(required=False, label=_("Model parameters"))
 
     tts_model_enable = serializers.BooleanField(required=False, label=_("Voice playback enabled"))
@@ -1152,6 +1154,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             "problem_optimization": "problem_optimization",
             "icon": "icon",
             "user_avatar": "user_avatar",
+            "theme": "theme",
             "work_flow": "work_flow",
             "problem_optimization_prompt": "problem_optimization_prompt",
             "tts_model_id": "tts_model_id",
@@ -1368,6 +1371,7 @@ class ApplicationOperateSerializer(serializers.Serializer):
             "api_key_is_active",
             "icon",
             "user_avatar",
+            "theme",
             "work_flow",
             "model_params_setting",
             "tts_model_params_setting",

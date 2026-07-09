@@ -76,6 +76,7 @@ class Application(AppModelMixin):
     problem_optimization = models.BooleanField(verbose_name="QuestionOptimization", default=False)
     icon = models.CharField(max_length=256, verbose_name="Applicationicon", default="./favicon.ico")
     user_avatar = models.CharField(max_length=256, verbose_name="User Avatar", default="", blank=True)
+    theme = models.CharField(max_length=32, verbose_name="Chat widget theme preset", default="blue", blank=True)
     work_flow = models.JSONField(verbose_name="WorkflowData", default=dict)
     type = models.CharField(verbose_name="ApplicationType", choices=ApplicationTypeChoices.choices,
                             default=ApplicationTypeChoices.SIMPLE, max_length=256)
@@ -161,6 +162,7 @@ class ApplicationVersion(AppModelMixin):
     problem_optimization = models.BooleanField(verbose_name="QuestionOptimization", default=False)
     icon = models.CharField(max_length=256, verbose_name="Applicationicon", default="./favicon.ico")
     user_avatar = models.CharField(max_length=256, verbose_name="User Avatar", default="", blank=True)
+    theme = models.CharField(max_length=32, verbose_name="Chat widget theme preset", default="blue", blank=True)
     work_flow = models.JSONField(verbose_name="WorkflowData", default=dict)
     type = models.CharField(verbose_name="ApplicationType", choices=ApplicationTypeChoices.choices,
                             default=ApplicationTypeChoices.SIMPLE, max_length=256)

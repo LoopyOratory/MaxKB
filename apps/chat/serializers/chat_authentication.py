@@ -169,6 +169,7 @@ class ApplicationProfileSerializer(serializers.Serializer):
                 'user_avatar': application.user_avatar or None,
                 'show_user_avatar': bool(application.user_avatar),
                 'show_share': True,
+                'theme': application.theme or 'blue',
             }
         base_node = [node for node in ((application.work_flow or {}).get('nodes', []) or []) if
                      node.get('id') == 'base-node']

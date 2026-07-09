@@ -39,4 +39,17 @@ export default {
   saveAndApply: 'Save and Apply',
   fileMessageError: 'File size exceeds 10MB',
   saveSuccess: 'Appearance settings successfully applied',
+
+  // Agent widget theme presets
+  widgetTheme: 'Widget Theme',
+  presets: {
+    red: 'Red',
+    orange: 'Orange',
+    yellow: 'Yellow',
+    green: 'Green',
+    blue: 'Blue',
+    indigo: 'Indigo',
+    violet: 'Violet',
+    dark: 'Dark',
+  },
 }

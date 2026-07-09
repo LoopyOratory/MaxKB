@@ -1,23 +1,9 @@
 <template>
   <div
+    ref="chatRootRef"
     class="chat-pc"
     :class="classObj"
     v-loading="loading"
-    :style="{
-      '--el-color-primary': applicationDetail?.custom_theme?.theme_color,
-      '--el-color-primary-light-9': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.1,
-      ),
-      '--el-color-primary-light-6': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.4,
-      ),
-      '--el-color-primary-light-06': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.04,
-      ),
-    }"
   >
     <div class="flex h-full w-full">
       <div class="chat-pc__left">
@@ -250,7 +236,7 @@ import sanitizeHtml from 'sanitize-html'
 import chatAPI from '@/api/chat/chat'
 import useStore from '@/stores'
 import useResize from '@/layout/hooks/useResize'
-import { hexToRgba } from '@/utils/theme'
+import { applyAgentTheme, applyThemeColor } from '@/utils/theme'
 import { useRoute, useRouter } from 'vue-router'
 import ResetPassword from '@/layout/layout-header/avatar/ResetPassword.vue'
 import { t } from '@/locales'
@@ -331,6 +317,7 @@ const props = defineProps<{
   applicationAvailable: boolean
 }>()
 const AiChatRef = ref()
+const chatRootRef = ref<HTMLElement>()
 const loading = ref(false)
 const left_loading = ref(false)
 
@@ -339,6 +326,35 @@ const applicationDetail = computed({
     return props.application_profile
   },
   set: (v) => {},
+})
+
+// Apply theme color ramp to chat root element on mount and when applicationDetail changes
+watch(
+  () => applicationDetail.value,
+  (detail) => {
+    const el = chatRootRef.value
+    if (!el) return
+    // EE custom_theme.theme_color wins over community preset
+    if (detail?.custom_theme?.theme_color) {
+      applyThemeColor(el, detail.custom_theme.theme_color)
+    } else {
+      const themeKey = detail?.theme || 'blue'
+      applyAgentTheme(el, themeKey)
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  const el = chatRootRef.value
+  if (!el) return
+  const detail = applicationDetail.value
+  if (detail?.custom_theme?.theme_color) {
+    applyThemeColor(el, detail.custom_theme.theme_color)
+  } else {
+    const themeKey = detail?.theme || 'blue'
+    applyAgentTheme(el, themeKey)
+  }
 })
 
 const chatLogData = ref<any[]>([])

@@ -1,20 +1,8 @@
 <template>
   <div
+    ref="chatRootRef"
     class="chat-mobile layout-bg chat-background"
     :style="{
-      '--el-color-primary': applicationDetail?.custom_theme?.theme_color,
-      '--el-color-primary-light-9': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.1,
-      ),
-      '--el-color-primary-light-6': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.4,
-      ),
-      '--el-color-primary-light-06': hexToRgba(
-        applicationDetail?.custom_theme?.theme_color || '#3370FF',
-        0.04,
-      ),
       backgroundImage: `url(${applicationDetail?.chat_background})`,
     }"
   >
@@ -100,9 +88,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted, reactive, nextTick, computed, provide } from 'vue'
+import { ref, onMounted, reactive, nextTick, computed, provide, watch } from 'vue'
 import { isAppIcon } from '@/utils/common'
-import { hexToRgba } from '@/utils/theme'
+import { getEffectiveThemeColor, getContrastText, applyAgentTheme, applyThemeColor } from '@/utils/theme'
 import useStore from '@/stores'
 import { t } from '@/locales'
 import ChatHistoryDrawer from './component/ChatHistoryDrawer.vue'
@@ -115,6 +103,7 @@ provide('chatLogPagination', () => chatLogPagination)
 const { common } = useStore()
 
 const AiChatRef = ref()
+const chatRootRef = ref<HTMLElement>()
 const loading = ref(false)
 const left_loading = ref(false)
 const chatLogData = ref<any[]>([])
@@ -139,9 +128,40 @@ const currentRecordList = ref<any>([])
 const currentChatId = ref('new') // CurrentHistoryRecordId Defaultis'new'
 
 const customStyle = computed(() => {
+  const color = getEffectiveThemeColor(applicationDetail.value)
   return {
-    background: applicationDetail.value?.custom_theme?.theme_color,
-    color: applicationDetail.value?.custom_theme?.header_font_color,
+    background: color,
+    color:
+      applicationDetail.value?.custom_theme?.header_font_color || getContrastText(color),
+  }
+})
+
+// Apply theme color ramp to chat root element on mount and when applicationDetail changes
+watch(
+  () => applicationDetail.value,
+  (detail) => {
+    const el = chatRootRef.value
+    if (!el) return
+    // EE custom_theme.theme_color wins over community preset
+    if (detail?.custom_theme?.theme_color) {
+      applyThemeColor(el, detail.custom_theme.theme_color)
+    } else {
+      const themeKey = detail?.theme || 'blue'
+      applyAgentTheme(el, themeKey)
+    }
+  },
+  { immediate: true },
+)
+
+onMounted(() => {
+  const el = chatRootRef.value
+  if (!el) return
+  const detail = applicationDetail.value
+  if (detail?.custom_theme?.theme_color) {
+    applyThemeColor(el, detail.custom_theme.theme_color)
+  } else {
+    const themeKey = detail?.theme || 'blue'
+    applyAgentTheme(el, themeKey)
   }
 })
 
