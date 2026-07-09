@@ -94,7 +94,7 @@
   </el-dialog>
 </template>
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, type PropType } from 'vue'
 import { copyClick } from '@/utils/clipboard'
 import { MsgSuccess } from '@/utils/message'
 import { t } from '@/locales'
@@ -108,7 +108,7 @@ const props = defineProps({
   data: Object,
   apiInputParams: String,
   apiType: {
-    type: String,
+    type: String as PropType<'workspace' | 'systemShare' | 'systemManage' | 'workspaceShare'>,
     default: 'workspace',
   },
 })
