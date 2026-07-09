@@ -6,15 +6,15 @@ const guideHtml=`
 <div class="maxkb-tips">
   <div class="maxkb-close">
       <svg style="vertical-align: middle;overflow: hidden;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path d="M9.95317 8.73169L15.5511 3.13376C15.7138 2.97104 15.9776 2.97104 16.1403 3.13376L16.7296 3.72301C16.8923 3.88573 16.8923 4.14955 16.7296 4.31227L11.1317 9.9102L16.7296 15.5081C16.8923 15.6708 16.8923 15.9347 16.7296 16.0974L16.1403 16.6866C15.9776 16.8494 15.7138 16.8494 15.5511 16.6866L9.95317 11.0887L4.35524 16.6866C4.19252 16.8494 3.9287 16.8494 3.76598 16.6866L3.17673 16.0974C3.01401 15.9347 3.01401 15.6708 3.17673 15.5081L8.77465 9.9102L3.17673 4.31227C3.01401 4.14955 3.01401 3.88573 3.17673 3.72301L3.76598 3.13376C3.9287 2.97104 4.19252 2.97104 4.35524 3.13376L9.95317 8.73169Z" fill="#ffffff"></path>
+          <path d="M9.95317 8.73169L15.5511 3.13376C15.7138 2.97104 15.9776 2.97104 16.1403 3.13376L16.7296 3.72301C16.8923 3.88573 16.8923 4.14955 16.7296 4.31227L11.1317 9.9102L16.7296 15.5081C16.8923 15.6708 16.8923 15.9347 16.7296 16.0974L16.1403 16.6866C15.9776 16.8494 15.7138 16.8494 15.5511 16.6866L9.95317 11.0887L4.35524 16.6866C4.19252 16.8494 3.9287 16.8494 3.76598 16.6866L3.17673 16.0974C3.01401 15.9347 3.01401 15.6708 3.17673 15.5081L8.77465 9.9102L3.17673 4.31227C3.01401 4.14955 3.01401 3.88573 3.17673 3.72301L3.76598 3.13376C3.9287 2.97104 4.19252 2.97104 4.35524 3.13376L9.95317 8.73169Z" fill="#8F959E"></path>
           </svg>
   </div>
 
-  <div class="maxkb-title"> 🌟 遇见Question, not再有障碍！</div>
-  <p>你好，I am你的智能小助手。<br/>
-      点我，Enable高效解答Mode，让Question变成过去式。</p>
+  <div class="maxkb-title">👋 Need a hand?</div>
+  <p>Hi there! I'm your AI assistant.<br/>
+      Click here anytime you need a quick answer.</p>
   <div class="maxkb-button">
-      <button>我知道了</button>
+      <button>Got it</button>
   </div>
   <span class="maxkb-arrow" ></span>
 </div>
@@ -43,7 +43,7 @@ const getChatContainerHtml=(protocol,host,token,query,prefix)=>{
 `
 }
 /**
- * InitializeGuide
+ * Initialize the onboarding guide tooltip
  * @param {*} root
  */
 const initGuide=(root)=>{
@@ -59,16 +59,16 @@ const initGuide=(root)=>{
    close_icon.onclick=close_func
 }
 const initChat=(root)=>{
-  // AddConversationicon
+  // Add the chat launcher button
   root.insertAdjacentHTML("beforeend",chatButtonHtml)
-  // AddConversation框
+  // Add the chat container
   root.insertAdjacentHTML('beforeend',getChatContainerHtml('{{protocol}}','{{host}}','{{token}}','{{query}}','{{prefix}}'))
-  // ButtonElement
+  // Button elements
   const chat_button=root.querySelector('.maxkb-chat-button')
   const chat_button_img=root.querySelector('.maxkb-chat-button > img')
-  //  Conversation框Element
+  // Chat container element
   const chat_container=root.querySelector('#maxkb-chat-container')
-    // Guide层
+    // Guide overlay elements
   const mask_content = root.querySelector('.maxkb-mask > .maxkb-content')
   const mask_tips = root.querySelector('.maxkb-tips')
  chat_button_img.onload=(event)=>{
@@ -127,7 +127,7 @@ const initChat=(root)=>{
   closeviewport.onclick=viewport_func
 }
 /**
- * 第Once进 fromGuideTip
+ * Entry point: mount the widget and show the first-visit guide
  */
 function initMaxkb(){
   const maxkb=document.createElement('div')
@@ -145,12 +145,12 @@ function initMaxkb(){
 }
 
 
-// InitializeGlobalStyle
+// Initialize global styles
 function initMaxkbStyle(root, maxkbId){
   style=document.createElement('style')
   style.type='text/css'
   style.innerText=  `
-  /* 放大 */
+  /* Enlarged view */
   #maxkb .maxkb-enlarge {
       width: 50%!important;
       height: 100%!important;
@@ -180,7 +180,7 @@ function initMaxkbStyle(root, maxkbId){
   #maxkb .maxkb-mask .maxkb-content {
       width: 64px;
       height: 64px;
-      box-shadow: 1px 1px 1px 9999px rgba(0,0,0,.6);
+      box-shadow: 1px 1px 1px 9999px rgba(0,0,0,.45);
       position: absolute;
       {{x_type}}: {{x_value}}px;
       {{y_type}}: {{y_value}}px;
@@ -190,54 +190,70 @@ function initMaxkbStyle(root, maxkbId){
       position: fixed;
       {{x_type}}:calc({{x_value}}px + 75px);
       {{y_type}}: calc({{y_value}}px + 0px);
-      padding: 22px 24px 24px;
-      border-radius: 6px;
-      color: #ffffff;
+      width: 272px;
+      padding: 20px 20px 18px;
+      border-radius: 14px;
+      color: #1F2329;
       font-size: 14px;
-      background: #3370FF;
+      background: #FFFFFF;
+      border: 1px solid rgba(31, 35, 41, 0.08);
+      box-shadow: 0 12px 32px rgba(31, 35, 41, 0.16);
       z-index: 10001;
   }
   #maxkb .maxkb-tips .maxkb-arrow {
       position: absolute;
-      background: #3370FF;
+      background: #FFFFFF;
       width: 10px;
       height: 10px;
       pointer-events: none;
       transform: rotate(45deg);
       box-sizing: border-box;
-      /* left  */
+      /* offset toward the launcher icon */
       {{x_type}}: -5px;
       {{y_type}}: 33px;
-      border-left-color: transparent;
-      border-bottom-color: transparent
   }
   #maxkb .maxkb-tips .maxkb-title {
-      font-size: 20px;
-      font-weight: 500;
+      font-size: 16px;
+      font-weight: 600;
       margin-bottom: 8px;
+  }
+  #maxkb .maxkb-tips p {
+      color: #646A73;
+      line-height: 1.5;
+      margin: 0;
   }
   #maxkb .maxkb-tips .maxkb-button {
       text-align: right;
-      margin-top: 24px;
+      margin-top: 18px;
   }
   #maxkb .maxkb-tips .maxkb-button button {
-      border-radius: 4px;
-      background: #FFF;
-      padding: 3px 12px;
-      color: #3370FF;
+      border-radius: 8px;
+      background: #1F2329;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #FFFFFF;
       cursor: pointer;
       outline: none;
       border: none;
+      transition: background-color .15s ease;
+  }
+  #maxkb .maxkb-tips .maxkb-button button:hover {
+      background: #383D45;
   }
   #maxkb .maxkb-tips .maxkb-button button::after{
       border: none;
     }
   #maxkb .maxkb-tips .maxkb-close {
       position: absolute;
-      right: 20px;
-      top: 20px;
+      right: 16px;
+      top: 16px;
       cursor: pointer;
-
+      opacity: 0.5;
+      transition: opacity .15s ease;
+  }
+  #maxkb .maxkb-tips .maxkb-close:hover {
+      opacity: 1;
   }
   #maxkb-chat-container {
         width: 460px;
@@ -321,7 +337,7 @@ function embedChatbot() {
   white_list=white_list_str.split(',')
 
   if ({{is_auth}}&&({{white_active}}?white_list.includes(window.location.origin):true)) {
-    // Initializemaxkb智能小助手
+    // Initialize the MaxKB widget
     initMaxkb()
   } else console.error('invalid parameter')
 }
