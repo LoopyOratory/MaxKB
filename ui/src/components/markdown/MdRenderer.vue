@@ -238,6 +238,7 @@ function handleQuestionClick(content: string) {
   width: 100%;
   border-radius: 8px;
   background: var(--app-layout-bg-color);
+  color: var(--el-text-color-primary);
   padding: 12px;
   box-sizing: border-box;
   word-break: break-all;

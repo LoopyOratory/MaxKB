@@ -103,6 +103,7 @@ defineExpose({
     margin-bottom: 4px;
     min-height: 24px;
     line-height: 24px;
+    color: var(--el-text-color-primary);
     &.active {
       background: var(--el-color-primary-light-9);
       border-radius: var(--app-border-radius-small);
