@@ -92,6 +92,13 @@ export const AGENT_THEME_PRESETS: Record<string, AgentThemePreset> = {
 /**
  * Dark-mode surface tokens — applied when the "dark" preset is selected.
  * Scoped to chat surfaces only, not the admin dashboard.
+ *
+ * Includes Element Plus's own core design tokens (--el-bg-color,
+ * --el-fill-color-*, etc.) so every el-card / el-button / el-input inside
+ * the dark chat widget picks up dark surfaces automatically — without this,
+ * anything that doesn't go through our custom --chat-* tokens (the "thinking
+ * process" card, the stop-response button, quick-question chip cards, url
+ * upload popups...) silently falls back to Element Plus's white defaults.
  */
 export const DARK_SURFACE_TOKENS: Record<string, string> = {
   '--app-layout-bg-color': '#16171A',
@@ -99,8 +106,20 @@ export const DARK_SURFACE_TOKENS: Record<string, string> = {
   '--dialog-bg-gradient-color': '#1B1C1F',
   '--app-view-bg-color': '#202225',
   '--el-text-color-primary': '#F5F5F5',
+  '--el-text-color-regular': '#D6D9DE',
+  '--el-text-color-secondary': '#A6ADBB',
   '--app-text-color-secondary': '#A6ADBB',
-  '--el-border-color': 'rgba(255,255,255,.08)',
+  '--el-border-color': 'rgba(255, 255, 255, 0.08)',
+  '--el-border-color-light': 'rgba(255, 255, 255, 0.08)',
+  '--el-border-color-lighter': 'rgba(255, 255, 255, 0.06)',
+  '--el-bg-color': '#202225',
+  '--el-bg-color-overlay': '#2A2B30',
+  '--el-fill-color-blank': '#1B1C1F',
+  '--el-fill-color': '#26272B',
+  '--el-fill-color-light': '#2A2B30',
+  '--el-fill-color-lighter': '#26272B',
+  '--el-fill-color-extra-light': '#202225',
+  '--el-mask-color': 'rgba(0, 0, 0, 0.6)',
 }
 
 /**
@@ -150,17 +169,23 @@ export function mixColors(color1: string, color2: string, ratio: number): string
  *   light-9: mix 90% white
  *   dark-2:  mix 20% black
  */
-export function generateColorRamp(baseHex: string): Record<string, string> {
+export function generateColorRamp(baseHex: string, isDark = false): Record<string, string> {
+  // In dark mode, "light" tints mix toward black (a subtle highlight on a dark
+  // surface) instead of white — otherwise every hover/tag/tint state (e.g.
+  // .problem-button:hover, default-tag) flashes near-white against the dark
+  // chat background.
+  const tintTarget = isDark ? '#000000' : '#ffffff'
+  const shadeTarget = isDark ? '#ffffff' : '#000000'
   return {
     '--el-color-primary': baseHex,
-    '--el-color-primary-light-3': mixColors(baseHex, '#ffffff', 0.3),
-    '--el-color-primary-light-5': mixColors(baseHex, '#ffffff', 0.5),
-    '--el-color-primary-light-6': mixColors(baseHex, '#ffffff', 0.6),
-    '--el-color-primary-light-06': hexToRgba(baseHex, 0.04),
-    '--el-color-primary-light-7': mixColors(baseHex, '#ffffff', 0.7),
-    '--el-color-primary-light-8': mixColors(baseHex, '#ffffff', 0.8),
-    '--el-color-primary-light-9': mixColors(baseHex, '#ffffff', 0.9),
-    '--el-color-primary-dark-2': mixColors(baseHex, '#000000', 0.2),
+    '--el-color-primary-light-3': mixColors(baseHex, tintTarget, 0.3),
+    '--el-color-primary-light-5': mixColors(baseHex, tintTarget, 0.5),
+    '--el-color-primary-light-6': mixColors(baseHex, tintTarget, 0.6),
+    '--el-color-primary-light-06': hexToRgba(baseHex, isDark ? 0.14 : 0.04),
+    '--el-color-primary-light-7': mixColors(baseHex, tintTarget, 0.7),
+    '--el-color-primary-light-8': mixColors(baseHex, tintTarget, 0.8),
+    '--el-color-primary-light-9': mixColors(baseHex, tintTarget, isDark ? 0.82 : 0.9),
+    '--el-color-primary-dark-2': mixColors(baseHex, shadeTarget, 0.2),
   }
 }
 
@@ -244,7 +269,7 @@ export function applyAgentTheme(el: HTMLElement | null, presetKey: string): void
   if (!el) return
 
   const preset = AGENT_THEME_PRESETS[presetKey] || AGENT_THEME_PRESETS['blue']
-  const ramp = generateColorRamp(preset.base)
+  const ramp = generateColorRamp(preset.base, preset.isDark)
   const surfaceTokens = generateChatSurfaceTokens(preset.base, preset.isDark)
 
   // Apply primary color ramp + gradient/glass surface tokens
