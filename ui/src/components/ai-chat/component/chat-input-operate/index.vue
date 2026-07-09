@@ -1328,16 +1328,23 @@ async function saveUrl() {
 
   :deep(.operate-textarea) {
     box-shadow: 0px 6px 24px 0px rgba(var(--el-text-color-primary-rgb), 0.08);
-    background-color: #ffffff;
+    background: var(--chat-input-bg, #ffffff);
+    backdrop-filter: var(--chat-glass-blur, none);
+    -webkit-backdrop-filter: var(--chat-glass-blur, none);
     border-radius: 8px;
-    border: 1px solid #ffffff;
+    border: 1px solid var(--chat-input-border, #ffffff);
     box-sizing: border-box;
+    transition:
+      background 0.2s ease,
+      border-color 0.2s ease;
 
     &:has(.el-textarea__inner:focus) {
       border: 1px solid var(--el-color-primary);
+      box-shadow: 0 0 0 3px var(--chat-accent-glow, transparent);
     }
 
     .el-textarea__inner {
+      background: transparent !important;
       border-radius: 8px !important;
       box-shadow: none;
       resize: none;

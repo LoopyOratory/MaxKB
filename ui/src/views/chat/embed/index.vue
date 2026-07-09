@@ -92,7 +92,7 @@
 <script setup lang="ts">
 import { ref, onMounted, reactive, nextTick, computed, provide, watch } from 'vue'
 import { isAppIcon } from '@/utils/common'
-import { getEffectiveThemeColor, getContrastText, applyAgentTheme, applyThemeColor } from '@/utils/theme'
+import { applyAgentTheme, applyThemeColor } from '@/utils/theme'
 import { t } from '@/locales'
 import ChatHistoryDrawer from './component/ChatHistoryDrawer.vue'
 import chatAPI from '@/api/chat/chat'
@@ -127,11 +127,9 @@ const currentRecordList = ref<any>([])
 const currentChatId = ref('new') // CurrentHistoryRecordId Defaultis'new'
 
 const customStyle = computed(() => {
-  const color = getEffectiveThemeColor(applicationDetail.value)
   return {
-    background: color,
-    color:
-      applicationDetail.value?.custom_theme?.header_font_color || getContrastText(color),
+    background: 'var(--chat-header-gradient)',
+    color: applicationDetail.value?.custom_theme?.header_font_color || 'var(--chat-header-text)',
   }
 })
 
@@ -343,7 +341,8 @@ onMounted(() => {
     height: var(--app-header-height);
     line-height: var(--app-header-height);
     box-sizing: border-box;
-    border-bottom: 1px solid var(--el-border-color);
+    box-shadow: var(--chat-header-shadow);
+    transition: background 0.2s ease;
   }
   &__main {
     padding-top: calc(var(--app-header-height) + 16px);

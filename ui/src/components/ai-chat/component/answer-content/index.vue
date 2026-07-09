@@ -30,7 +30,7 @@
             </div>
           </el-card>
         </template>
-        <el-card shadow="always" class="border-r-8" style="--el-card-padding: 6px 16px">
+        <el-card shadow="always" class="answer-bubble border-r-8" style="--el-card-padding: 6px 16px">
           <MdRenderer
             v-if="
               (chatRecord.write_ed === undefined || chatRecord.write_ed === true) &&
@@ -211,4 +211,14 @@ const startChat = (chat: chatType) => {
   props.chatManagement.write(chat.id)
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.answer-bubble {
+  background: var(--chat-answer-bubble-bg, var(--el-bg-color));
+  border: 1px solid var(--chat-answer-bubble-border, var(--el-border-color));
+  backdrop-filter: var(--chat-glass-blur, none);
+  -webkit-backdrop-filter: var(--chat-glass-blur, none);
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease;
+}
+</style>

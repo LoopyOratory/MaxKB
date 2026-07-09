@@ -2,7 +2,7 @@
   <!-- QuestionContent -->
   <div @mouseenter.stop="showIcon = true" @mouseleave.stop="showIcon = false">
     <div class="question-content item-content lighter">
-      <div v-if="!isReQuestion" class="content p-12-16 border-r-8" :class="getClassName">
+      <div v-if="!isReQuestion" class="content question-bubble p-12-16 border-r-8" :class="getClassName">
         <div class="text break-all pre-wrap">
           <div class="mb-8" v-if="document_list.length">
             <el-space wrap class="w-full media-file-width">
@@ -356,7 +356,8 @@ onMounted(() => {})
   box-sizing: border-box;
 
   .content {
-    background: #d6e2ff;
+    background: var(--chat-question-bubble-bg, #d6e2ff);
+    color: var(--chat-question-bubble-text, inherit);
     padding-left: 16px;
     padding-right: 16px;
   }

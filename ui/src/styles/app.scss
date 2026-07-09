@@ -574,33 +574,15 @@ h5 {
 
 // Dark mode for chat embed/pc/mobile surfaces (community edition preset system).
 // Scoped to .chat-embed--dark so it never touches the admin dashboard.
+// Header gradient, bubble fills, and glass surfaces are driven by the
+// --chat-* custom properties (see ui/src/utils/theme.ts generateChatSurfaceTokens),
+// which are already set to their dark variants whenever this class is applied.
 .chat-embed--dark {
   --app-layout-bg-color: #16171A;
   --app-header-bg-color: #1B1C1F;
   --dialog-bg-gradient-color: #1B1C1F;
   --app-view-bg-color: #202225;
   --app-text-color-secondary: #A6ADBB;
-
-  // Override header gradient with flat dark surface
-  .chat-embed__header,
-  .chat-mobile__header {
-    background: #1B1C1F !important;
-  }
-
-  // Chat bubbles and card surfaces
-  .ai-chat__bubble--user,
-  .ai-chat__bubble--agent {
-    .el-card {
-      background: #2A2B30;
-      color: #F5F5F5;
-    }
-  }
-
-  // Input area
-  .ai-chat__operate {
-    background: #1B1C1F;
-    border-top-color: rgba(255, 255, 255, 0.08);
-  }
 }
 
 

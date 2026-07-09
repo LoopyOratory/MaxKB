@@ -129,7 +129,7 @@ export function getContrastText(hex: string): string {
  * Mix two hex colors by a given ratio (0..1).
  * ratio=0 → pure color1, ratio=1 → pure color2.
  */
-function mixColors(color1: string, color2: string, ratio: number): string {
+export function mixColors(color1: string, color2: string, ratio: number): string {
   const c1 = color1.replace('#', '')
   const c2 = color2.replace('#', '')
   const r = Math.round(parseInt(c1.substring(0, 2), 16) * (1 - ratio) + parseInt(c2.substring(0, 2), 16) * ratio)
@@ -165,6 +165,45 @@ export function generateColorRamp(baseHex: string): Record<string, string> {
 }
 
 /**
+ * Chat surface tokens power the modern look of the embedded widget: a diagonal
+ * gradient header, gradient-filled outgoing bubbles, and frosted-glass
+ * (backdrop-blur) incoming bubbles / input bar. Generated per preset so every
+ * hue gets a cohesive, professional look without hand-tuning each one.
+ */
+export function generateChatSurfaceTokens(base: string, isDark: boolean): Record<string, string> {
+  if (isDark) {
+    return {
+      '--chat-header-gradient': 'linear-gradient(135deg, #24262B 0%, #17181B 100%)',
+      '--chat-header-text': '#F5F5F5',
+      '--chat-header-shadow': '0 8px 24px rgba(0, 0, 0, 0.35)',
+      '--chat-question-bubble-bg': `linear-gradient(135deg, ${mixColors(base, '#ffffff', 0.15)} 0%, ${base} 100%)`,
+      '--chat-question-bubble-text': '#ffffff',
+      '--chat-answer-bubble-bg': 'rgba(42, 43, 48, 0.6)',
+      '--chat-answer-bubble-border': 'rgba(255, 255, 255, 0.08)',
+      '--chat-glass-blur': 'blur(20px) saturate(180%)',
+      '--chat-input-bg': 'rgba(27, 28, 31, 0.6)',
+      '--chat-input-border': 'rgba(255, 255, 255, 0.1)',
+      '--chat-accent-glow': hexToRgba(base, 0.3),
+    }
+  }
+
+  return {
+    '--chat-header-gradient': `linear-gradient(135deg, ${base} 0%, ${mixColors(base, '#000000', 0.24)} 100%)`,
+    '--chat-header-text': getContrastText(base),
+    '--chat-header-shadow': `0 8px 24px ${hexToRgba(base, 0.28)}`,
+    '--chat-question-bubble-bg': `linear-gradient(135deg, ${base} 0%, ${mixColors(base, '#000000', 0.16)} 100%)`,
+    '--chat-question-bubble-text': getContrastText(base),
+    '--chat-answer-bubble-bg': 'rgba(255, 255, 255, 0.6)',
+    '--chat-answer-bubble-border': 'rgba(255, 255, 255, 0.7)',
+    '--chat-glass-blur': 'blur(20px) saturate(180%)',
+    '--chat-input-bg': 'rgba(255, 255, 255, 0.6)',
+    '--chat-input-border': 'rgba(255, 255, 255, 0.8)',
+    '--chat-accent-glow': hexToRgba(base, 0.3),
+    '--app-layout-bg-color': mixColors(base, '#ffffff', 0.94),
+  }
+}
+
+/**
  * Apply a raw hex color ramp to a chat root element.
  *
  * Used when EE custom_theme.theme_color is set (arbitrary hex wins over preset).
@@ -177,9 +216,10 @@ export function applyThemeColor(el: HTMLElement | null, hex: string): void {
   if (!el) return
 
   const ramp = generateColorRamp(hex)
+  const surfaceTokens = generateChatSurfaceTokens(hex, false)
 
-  // Apply primary color ramp
-  for (const [varName, value] of Object.entries(ramp)) {
+  // Apply primary color ramp + gradient/glass surface tokens
+  for (const [varName, value] of Object.entries({ ...ramp, ...surfaceTokens })) {
     el.style.setProperty(varName, value)
   }
 
@@ -205,9 +245,10 @@ export function applyAgentTheme(el: HTMLElement | null, presetKey: string): void
 
   const preset = AGENT_THEME_PRESETS[presetKey] || AGENT_THEME_PRESETS['blue']
   const ramp = generateColorRamp(preset.base)
+  const surfaceTokens = generateChatSurfaceTokens(preset.base, preset.isDark)
 
-  // Apply primary color ramp
-  for (const [varName, value] of Object.entries(ramp)) {
+  // Apply primary color ramp + gradient/glass surface tokens
+  for (const [varName, value] of Object.entries({ ...ramp, ...surfaceTokens })) {
     el.style.setProperty(varName, value)
   }
 
