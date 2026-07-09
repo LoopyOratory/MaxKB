@@ -4,7 +4,7 @@
       text
       bg
       class="microphone-button w-full"
-      style="font-size: 1rem; padding: 1.2rem 0 !important; background-color: #eff0f1"
+      style="font-size: 1rem; padding: 1.2rem 0 !important; background-color: var(--el-fill-color-light)"
       @touchstart="onTouchStart"
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
@@ -131,7 +131,8 @@ function onTouchEnd() {
   left: 50%; /* Horizontal center */
   transform: translateX(-50%);
   width: 92%;
-  border: 1px solid #ffffff;
+  background: var(--el-bg-color-overlay);
+  border: 1px solid var(--el-border-color-light);
   box-shadow: 0px 6px 24px 0px rgba(var(--el-text-color-primary-rgb), 0.08);
   z-index: 999;
   text-align: center;
@@ -144,15 +145,15 @@ function onTouchEnd() {
   user-select: none;
   .close {
     box-shadow: 0px 4px 8px 0px rgba(var(--el-text-color-primary-rgb), 0.1);
-    border: 1px solid rgba(222, 224, 227, 1);
-    background: rgba(255, 255, 255, 1);
+    border: 1px solid var(--el-border-color-light);
+    background: var(--el-fill-color-blank);
     color: var(--app-text-color-secondary);
     font-size: 1.6rem;
     margin: 20px 0;
   }
   .speech-img {
     text-align: center;
-    background: #ebf1ff;
+    background: var(--el-color-primary-light-9);
     padding: 8px;
     img {
       height: 25px;
@@ -166,7 +167,7 @@ function onTouchEnd() {
       font-size: 2rem;
     }
     .speech-img {
-      background: #eff0f1;
+      background: var(--el-fill-color-light);
     }
   }
 }

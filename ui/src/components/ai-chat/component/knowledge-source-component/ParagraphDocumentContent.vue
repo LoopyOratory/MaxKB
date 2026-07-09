@@ -331,13 +331,13 @@ onBeforeUnmount(async () => {
 .pdf-viewer {
   width: 100%;
   height: calc(100vh - 57px);
-  background: #fff;
+  background: var(--el-bg-color);
 }
 
 .pdf-viewer:fullscreen {
   width: 100vw;
   height: 100vh;
-  background: #fff;
+  background: var(--el-bg-color);
 }
 
 .pdf-stage {
@@ -345,7 +345,7 @@ onBeforeUnmount(async () => {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background: #fff;
+  background: var(--el-bg-color);
 }
 
 .pdf-actions {
@@ -394,7 +394,7 @@ onBeforeUnmount(async () => {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #fff;
+  background: var(--el-bg-color);
   color: var(--el-text-color-regular);
   font-size: 14px;
   z-index: 2;

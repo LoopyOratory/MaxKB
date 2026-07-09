@@ -312,11 +312,11 @@ function refreshFieldTitle(chatId: string, abstract: string) {
   }
 
   :deep(.common-list li.active) {
-    background-color: #ffffff;
+    background-color: var(--el-fill-color-blank);
     font-weight: 500;
     color: var(--el-text-color-primary);
     &:hover {
-      background-color: #ffffff;
+      background-color: var(--el-fill-color-blank);
     }
   }
 
@@ -329,7 +329,7 @@ function refreshFieldTitle(chatId: string, abstract: string) {
 </style>
 <style lang="scss">
 .chat-pc-popper {
-  background: #eef1f4;
+  background: var(--el-bg-color-overlay);
   .el-menu {
     background: var(--el-color-primary-light-06) !important;
   }
@@ -348,7 +348,7 @@ function refreshFieldTitle(chatId: string, abstract: string) {
       background-color: rgba(var(--el-text-color-primary-rgb), 0.1);
     }
     &.is-active {
-      background-color: #ffffff;
+      background-color: var(--el-fill-color-blank);
       color: var(--el-text-color-primary);
       // & > div {
       //   font-weight: 500;

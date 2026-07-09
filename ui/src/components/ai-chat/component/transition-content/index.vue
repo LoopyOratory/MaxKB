@@ -35,7 +35,8 @@ defineProps<{
   box-sizing: border-box;
 
   .content {
-    background: #d6e2ff;
+    background: var(--chat-question-bubble-bg, #d6e2ff);
+    color: var(--chat-question-bubble-text, inherit);
     padding-left: 16px;
     padding-right: 16px;
   }

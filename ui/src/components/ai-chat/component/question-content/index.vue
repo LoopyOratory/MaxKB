@@ -445,9 +445,9 @@ onMounted(() => {})
 
     :deep(.operate-textarea) {
       box-shadow: 0px 6px 24px 0px rgba(var(--el-text-color-primary-rgb), 0.08);
-      background-color: #ffffff;
+      background-color: var(--el-bg-color-overlay);
       border-radius: 8px;
-      border: 1px solid #ffffff;
+      border: 1px solid var(--el-bg-color-overlay);
       box-sizing: border-box;
 
       &:has(.el-textarea__inner:focus) {
