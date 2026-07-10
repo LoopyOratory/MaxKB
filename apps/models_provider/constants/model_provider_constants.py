@@ -24,6 +24,7 @@ from models_provider.impl.wenxin_model_provider.wenxin_model_provider import Wen
 from models_provider.impl.xf_model_provider.xf_model_provider import XunFeiModelProvider
 from models_provider.impl.xinference_model_provider.xinference_model_provider import XinferenceModelProvider
 from models_provider.impl.minimax_model_provider.minimax_model_provider import MiniMaxModelProvider
+from models_provider.impl.mimo_model_provider.mimo_model_provider import MiMoModelProvider
 from models_provider.impl.zhipu_model_provider.zhipu_model_provider import ZhiPuModelProvider
 
 
@@ -50,3 +51,4 @@ class ModelProvideConstants(Enum):
     model_siliconCloud_provider = SiliconCloudModelProvider()
     model_regolo_provider = RegoloModelProvider()
     model_minimax_provider = MiniMaxModelProvider()
+    model_mimo_provider = MiMoModelProvider()
