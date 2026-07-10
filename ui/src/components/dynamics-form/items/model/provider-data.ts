@@ -113,5 +113,10 @@ export const providerList = [
     "provider": "model_mimo_provider",
     "name": "Xiaomi MiMo",
     "icon": "<svg width=\"100%\" height=\"100%\" viewBox=\"0 0 1024 1024\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"512\" cy=\"512\" r=\"496\" fill=\"#1A1A1A\" stroke=\"#FF6900\" stroke-width=\"32\"/><rect x=\"320\" y=\"380\" width=\"160\" height=\"264\" rx=\"24\" fill=\"#FF6900\"/><path d=\"M480 410 L640 310 L640 714 L480 614 Z\" fill=\"#FF8C3A\"/><path d=\"M680 380 Q760 440 760 512 Q760 584 680 644\" stroke=\"#FF6900\" stroke-width=\"36\" fill=\"none\" stroke-linecap=\"round\"/><path d=\"M720 330 Q840 410 840 512 Q840 614 720 694\" stroke=\"#FF8C3A\" stroke-width=\"28\" fill=\"none\" stroke-linecap=\"round\" opacity=\"0.6\"/><text x=\"512\" y=\"880\" text-anchor=\"middle\" fill=\"#FF6900\" font-family=\"Arial,sans-serif\" font-size=\"120\" font-weight=\"bold\">MiMo</text></svg>"
+  },
+  {
+    "provider": "model_opencode_provider",
+    "name": "OpenCode Zen",
+    "icon": "<svg width=\"100%\" height=\"100%\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"12\" cy=\"12\" r=\"11\" stroke=\"#6366F1\" stroke-width=\"2\" fill=\"#0F0F1A\"/><path d=\"M7 9L4 12L7 15\" stroke=\"#6366F1\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M17 9L20 12L17 15\" stroke=\"#6366F1\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M14 7L10 17\" stroke=\"#818CF8\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
   }
 ]
