@@ -25,15 +25,14 @@ class MiMoTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
     api_key: str
     model: str
     params: dict
-
-    # MiMo API base URL
-    API_BASE = 'https://api.xiaomimimo.com/v1'
+    api_base: str
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.api_key = kwargs.get('api_key')
         self.model = kwargs.get('model')
         self.params = kwargs.get('params')
+        self.api_base = kwargs.get('api_base') or 'https://api.xiaomimimo.com/v1'
 
     @staticmethod
     def is_cache_model():
@@ -92,7 +91,7 @@ class MiMoTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
         }
 
         response = requests.post(
-            f'{self.API_BASE}/chat/completions',
+            f'{self.api_base}/chat/completions',
             json=payload,
             headers=headers,
             timeout=120,
