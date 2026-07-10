@@ -25,6 +25,7 @@ from models_provider.impl.xf_model_provider.xf_model_provider import XunFeiModel
 from models_provider.impl.xinference_model_provider.xinference_model_provider import XinferenceModelProvider
 from models_provider.impl.minimax_model_provider.minimax_model_provider import MiniMaxModelProvider
 from models_provider.impl.mimo_model_provider.mimo_model_provider import MiMoModelProvider
+from models_provider.impl.opencode_go_model_provider.opencode_go_model_provider import OpenCodeGoModelProvider
 from models_provider.impl.opencode_model_provider.opencode_model_provider import OpenCodeModelProvider
 from models_provider.impl.zhipu_model_provider.zhipu_model_provider import ZhiPuModelProvider
 
@@ -54,3 +55,4 @@ class ModelProvideConstants(Enum):
     model_minimax_provider = MiniMaxModelProvider()
     model_mimo_provider = MiMoModelProvider()
     model_opencode_provider = OpenCodeModelProvider()
+    model_opencode_go_provider = OpenCodeGoModelProvider()
