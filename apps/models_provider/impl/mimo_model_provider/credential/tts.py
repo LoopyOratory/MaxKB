@@ -73,6 +73,10 @@ class MiMoTTSVoicecloneParams(BaseForm):
 
 
 class MiMoTTSModelCredential(BaseForm, BaseModelCredential):
+    api_base = forms.TextInputField(
+        'API URL', required=True,
+        default_value='https://api.xiaomimimo.com/v1',
+    )
     api_key = forms.PasswordInputField('API Key', required=True)
 
     def is_valid(self, model_type: str, model_name, model_credential: Dict[str, object], model_params, provider,
@@ -82,11 +86,12 @@ class MiMoTTSModelCredential(BaseForm, BaseModelCredential):
             raise AppApiException(ValidCode.valid_error.value,
                                   gettext('{model_type} Model type is not supported').format(model_type=model_type))
 
-        if 'api_key' not in model_credential:
-            if raise_exception:
-                raise AppApiException(ValidCode.valid_error.value, gettext('{key}  is required').format(key='api_key'))
-            else:
-                return False
+        for key in ['api_base', 'api_key']:
+            if key not in model_credential:
+                if raise_exception:
+                    raise AppApiException(ValidCode.valid_error.value, gettext('{key}  is required').format(key=key))
+                else:
+                    return False
         try:
             model = provider.get_model(model_type, model_name, model_credential, **model_params)
             model.check_auth()

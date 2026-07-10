@@ -46,6 +46,7 @@ class MiMoTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
                 optional_params['params'][key] = value
         return MiMoTextToSpeech(
             model=model_name,
+            api_base=model_credential.get('api_base', 'https://api.xiaomimimo.com/v1'),
             api_key=model_credential.get('api_key'),
             **optional_params,
         )

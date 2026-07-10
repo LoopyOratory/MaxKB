@@ -34,6 +34,27 @@ opencode_llm_credential = OpenCodeLLMModelCredential()
 # Full catalog: https://opencode.ai/zen/v1/models
 
 model_info_list = [
+    # -- Free tier (no cost, via OpenCode Zen) --
+    ModelInfo(
+        'big-pickle', _('Free tier model — no cost.'),
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'deepseek-v4-flash-free', _('Free tier model — no cost.'),
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'mimo-v2.5-free', _('Free tier model — no cost.'),
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'north-mini-code-free', _('Free tier model — no cost.'),
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'nemotron-3-ultra-free', _('Free tier model — no cost.'),
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
     # -- DeepSeek (via OpenCode Zen) --
     ModelInfo(
         'deepseek-chat', '',
