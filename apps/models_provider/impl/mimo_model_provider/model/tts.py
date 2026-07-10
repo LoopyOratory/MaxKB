@@ -74,9 +74,14 @@ class MiMoTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
             messages.append({'role': 'assistant', 'content': text})
 
         else:
-            # Built-in voices (mimo-v2.5-tts)
+            # Built-in voices (mimo-v2.5-tts): the API requires a user-turn
+            # style instruction alongside the assistant-turn text to synthesize.
             voice = self.params.get('voice', 'Chloe')
+            style_instruction = self.params.get(
+                'style_instruction', 'Natural, clear, conversational tone at a moderate pace.'
+            )
             audio['voice'] = voice
+            messages.append({'role': 'user', 'content': style_instruction})
             messages.append({'role': 'assistant', 'content': text})
 
         payload = {
@@ -96,7 +101,12 @@ class MiMoTextToSpeech(MaxKBBaseModel, BaseTextToSpeech):
             headers=headers,
             timeout=120,
         )
-        response.raise_for_status()
+        if not response.ok:
+            try:
+                error_message = response.json().get('error', {}).get('message', response.text)
+            except ValueError:
+                error_message = response.text
+            raise Exception(f'MiMo TTS API error ({response.status_code}): {error_message}')
 
         result = response.json()
         choices = result.get('choices', [])

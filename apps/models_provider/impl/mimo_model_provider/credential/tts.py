@@ -36,6 +36,14 @@ class MiMoTTSModelGeneralParams(BaseForm):
             {'text': _('Milo - EN Male'), 'value': 'Milo'},
             {'text': _('Dean - EN Male'), 'value': 'Dean'},
         ])
+    style_instruction = forms.TextInputField(
+        TooltipLabel(_('Style Instruction'),
+                     _('Tone/style direction for the delivery, e.g. "Warm, calm, and clear, '
+                       'moderate pace." The MiMo API requires this as the user-turn message '
+                       'alongside the text being synthesized.')),
+        required=True,
+        default_value='Natural, clear, conversational tone at a moderate pace.',
+    )
 
 
 class MiMoTTSVoicedesignParams(BaseForm):
