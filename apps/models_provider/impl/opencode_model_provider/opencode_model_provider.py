@@ -57,45 +57,59 @@ model_info_list = [
     ),
     # -- DeepSeek (via OpenCode Zen) --
     ModelInfo(
-        'deepseek-chat', '',
+        'deepseek-v4-pro', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     ModelInfo(
-        'deepseek-reasoner', '',
+        'deepseek-v4-flash', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     # -- MiniMax (via OpenCode Zen) --
+    ModelInfo(
+        'minimax-m3', '',
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
     ModelInfo(
         'minimax-m2.7', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     ModelInfo(
-        'minimax-m3', '',
+        'minimax-m2.5', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     # -- GLM / ZhiPu (via OpenCode Zen) --
     ModelInfo(
-        'glm-4.7', '',
+        'glm-5.2', '',
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'glm-5.1', '',
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'glm-5', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     # -- Kimi / Moonshot (via OpenCode Zen) --
+    ModelInfo(
+        'kimi-k2.7-code', '',
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
+    ModelInfo(
+        'kimi-k2.6', '',
+        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
+    ),
     ModelInfo(
         'kimi-k2.5', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
     # -- Grok / xAI (via OpenCode Zen) --
     ModelInfo(
-        'grok-4', '',
+        'grok-4.5', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
-    # -- Cohere / North (via OpenCode Zen) --
     ModelInfo(
-        'north', '',
-        ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
-    ),
-    # -- NVIDIA Nemotron (via OpenCode Zen) --
-    ModelInfo(
-        'nemotron-3', '',
+        'grok-build-0.1', '',
         ModelTypeConst.LLM, opencode_llm_credential, OpenCodeChatModel,
     ),
 ]
