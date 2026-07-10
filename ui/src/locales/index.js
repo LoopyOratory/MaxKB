@@ -1,0 +1,114 @@
+import { useLocalStorage, usePreferredLanguages } from '@vueuse/core';
+import { computed } from 'vue';
+import { createI18n } from 'vue-i18n';
+// Import language file
+const langModules = import.meta.glob('./lang/*/index.ts', { eager: true });
+const langModuleMap = new Map();
+export const langCode = [];
+export const localeConfigKey = 'MaxKB-locale';
+const languages = usePreferredLanguages();
+export function getBrowserLang() {
+    const browserLang = navigator.language || languages.value[0] || 'en-US';
+    if (browserLang === 'zh-HK' || browserLang === 'zh-TW') {
+        return 'zh-Hant';
+    }
+    if (browserLang === 'en-US') {
+        return 'en-US';
+    }
+    return 'en-US';
+}
+function generateLangModuleMap() {
+    if (langModuleMap.size > 0)
+        return;
+    Object.keys(langModules).forEach((fullPath) => {
+        const code = fullPath.replace('./lang/', '').replace('/index.ts', '');
+        const module = langModules[fullPath];
+        langModuleMap.set(code, module.default);
+        if (!langCode.includes(code)) {
+            langCode.push(code);
+        }
+    });
+}
+const importMessages = computed(() => {
+    generateLangModuleMap();
+    const message = {};
+    langModuleMap.forEach((value, key) => {
+        message[key] = value;
+    });
+    return message;
+});
+export const i18n = createI18n({
+    legacy: false,
+    locale: useLocalStorage(localeConfigKey, getBrowserLang()).value || getBrowserLang(),
+    fallbackLocale: getBrowserLang(),
+    messages: importMessages.value,
+    globalInjection: true,
+});
+// External language pack directory (relative to public directory)
+const EXTERNAL_LOCALES_DIR = `${window.MaxKB?.prefix || '/chat'}/locales`;
+async function discoverExternalLocales() {
+    try {
+        const response = await fetch(`${EXTERNAL_LOCALES_DIR}/index.json`);
+        if (!response.ok) {
+            console.warn('Failed to fetch external locales index, returning empty array');
+            return [];
+        }
+        if (!response.headers.get('content-type')?.includes('application/json')) {
+            return [];
+        }
+        const index = await response.json();
+        return Array.isArray(index.locales) ? index.locales : [];
+    }
+    catch (error) {
+        console.warn('Error discovering external locales:', error);
+        return [];
+    }
+}
+async function loadExternalLocale(localeCode) {
+    try {
+        const response = await fetch(`${EXTERNAL_LOCALES_DIR}/${localeCode}.json`);
+        if (!response.ok) {
+            return null;
+        }
+        return await response.json();
+    }
+    catch {
+        return null;
+    }
+}
+export async function initExternalLocales() {
+    const availableLocales = await discoverExternalLocales();
+    for (const code of availableLocales) {
+        if (langModuleMap.has(code))
+            continue;
+        const data = await loadExternalLocale(code);
+        if (!data)
+            continue;
+        i18n.global.setLocaleMessage(code, data);
+        if (!langCode.includes(code)) {
+            langCode.push(code);
+        }
+    }
+}
+export const langList = computed(() => {
+    generateLangModuleMap();
+    const list = [];
+    langModuleMap.forEach((value, key) => {
+        list.push({
+            label: value.lang || key,
+            value: key,
+        });
+    });
+    langCode.forEach((locale) => {
+        if (langModuleMap.has(locale))
+            return;
+        const messages = i18n.global.getLocaleMessage(locale);
+        list.push({
+            label: messages?.lang || locale,
+            value: locale,
+        });
+    });
+    return list;
+});
+export const { t } = i18n.global;
+export default i18n;

@@ -1,0 +1,22 @@
+import DynamicsForm from '@/components/dynamics-form/index.vue';
+let components = import.meta.glob('@/components/dynamics-form/**/**.vue', {
+    eager: true,
+});
+components = {
+    ...components,
+    ...import.meta.glob('@/components/dynamics-form/**/**/**.vue', {
+        eager: true,
+    }),
+};
+const install = (app) => {
+    Object.keys(components).forEach((key) => {
+        const commentName = key
+            .substring(key.lastIndexOf('/') + 1, key.length)
+            .replace('.vue', '');
+        if (key !== '/src/components/dynamics-form/constructor/index.vue') {
+            app.component(commentName, components[key].default);
+        }
+    });
+    app.component('DynamicsForm', DynamicsForm);
+};
+export default { install };

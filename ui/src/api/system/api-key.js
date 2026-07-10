@@ -1,0 +1,39 @@
+import { get, post, del, put } from '@/request/index';
+const prefix = '/system/api_key';
+/**
+ * API_KEYList
+ */
+const getAPIKey = (currentPage, pageSize, params, loading) => {
+    return get(`${prefix}/${currentPage}/${pageSize}`, params);
+};
+/**
+ * AddAPI_KEY
+ */
+const postAPIKey = (loading) => {
+    return post(`${prefix}`, {}, undefined, loading);
+};
+/**
+ * DeletionAPI_KEY
+ * @param Parameters application_id api_key_id
+ */
+const delAPIKey = (api_key_id, loading) => {
+    return del(`${prefix}/${api_key_id}`, undefined, undefined, loading);
+};
+/**
+ * ModificationAPI_KEY
+ * data {
+ *   is_active: boolean
+ * }
+ * @param api_key_id
+ * @param data
+ * @param loading
+ */
+const putAPIKey = (api_key_id, data, loading) => {
+    return put(`${prefix}/${api_key_id}`, data, undefined, loading);
+};
+export default {
+    getAPIKey,
+    postAPIKey,
+    delAPIKey,
+    putAPIKey
+};
